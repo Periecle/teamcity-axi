@@ -26,6 +26,16 @@ import {
   normalizeServer,
 } from './metadata.js';
 import type { AuthenticatedIdentity, LogTail, Project, ServerInfo } from '../domain/teamcity.js';
+import type { EvidenceQuery, EvidencePage, Problem, TestOccurrence } from '../domain/teamcity.js';
+import {
+  evidenceRequest,
+  normalizeEvidencePage,
+  normalizeProblem,
+  normalizeTest,
+  occurrenceLocator,
+  problemFields,
+  testFields,
+} from './evidence.js';
 
 // Frozen in tests/fixtures/native-operations.mjs and the released-binary capture.
 export const runDetailFields =
@@ -37,6 +47,74 @@ export class NativeTeamCityReader implements TeamCityReader {
     private readonly serverUrl: string,
     private readonly secrets: readonly string[] = [],
   ) {}
+
+  async listProblems(
+    query: EvidenceQuery,
+    budget: Budget,
+  ): Promise<ReadResult<EvidencePage<Problem>>> {
+    const request = evidenceRequest('problems', query);
+
+    return this.metadata('problems.page', request.path, budget, (body) =>
+      normalizeEvidencePage('problems', body, query, this.serverUrl, this.secrets),
+    );
+  }
+
+  async listTests(
+    query: EvidenceQuery,
+    budget: Budget,
+  ): Promise<ReadResult<EvidencePage<TestOccurrence>>> {
+    const request = evidenceRequest('tests', query);
+
+    return this.metadata('tests.page', request.path, budget, (body) =>
+      normalizeEvidencePage('tests', body, query, this.serverUrl, this.secrets),
+    );
+  }
+
+  async getProblem(
+    ref: { runId: string; id: string },
+    budget: Budget,
+  ): Promise<ReadResult<Problem>> {
+    const locator = occurrenceLocator('problems', ref.id, ref.runId);
+
+    return this.metadata(
+      'problem.detail',
+      `/app/rest/problemOccurrences/${locator}?fields=${problemFields}`,
+      budget,
+      (body) => {
+        const value = normalizeProblem(body, ref.runId, this.secrets);
+
+        if (value.id !== ref.id)
+          throw new DomainError('CONTEXT_MISMATCH', 'Server returned another problem occurrence');
+
+        return value;
+      },
+    );
+  }
+
+  async getTest(
+    ref: { runId: string; id: string },
+    budget: Budget,
+  ): Promise<ReadResult<TestOccurrence>> {
+    const locator = occurrenceLocator('tests', ref.id, ref.runId),
+      limitations: Provenance['limitations'] = [];
+    const result = await this.metadata(
+      'test.detail',
+      `/app/rest/testOccurrences/${locator}?fields=${testFields}`,
+      budget,
+      (body) => {
+        const value = normalizeTest(body, ref.runId, this.secrets, limitations);
+
+        if (value.id !== ref.id)
+          throw new DomainError('CONTEXT_MISMATCH', 'Server returned another test occurrence');
+
+        return value;
+      },
+    );
+
+    result.provenance.limitations = limitations;
+
+    return result;
+  }
 
   private async metadata<T>(
     operation: string,
@@ -130,6 +208,7 @@ export class NativeTeamCityReader implements TeamCityReader {
       const value = normalizeLogTail(dto, id, tail, this.secrets);
 
       provenance.observedAt = new Date().toISOString();
+      provenance.limitations = value.limitations;
 
       return { state: 'available', value, provenance };
     } catch (error) {

@@ -167,6 +167,101 @@ export async function mockServer() {
     if (mode === 'logs-unsupported' && path === '/app/messages')
       return error(404, 'Capability not found');
     if (mode === 'logs-hang' && path === '/app/messages') return;
+    if (mode === 'problems-denied' && path.startsWith('/app/rest/problemOccurrences'))
+      return error(403, 'Problem source denied');
+    if (mode === 'tests-denied' && path.startsWith('/app/rest/testOccurrences'))
+      return error(403, 'Test source denied');
+    if (mode === 'evidence-huge' && path.startsWith('/app/rest/problemOccurrences'))
+      return res.end(
+        JSON.stringify({
+          count: 1,
+          problemOccurrence: [
+            { ...wire.problems.problemOccurrence[0], details: 'x'.repeat(3000000) },
+          ],
+        }),
+      );
+    if (
+      path.startsWith('/app/rest/problemOccurrences/') ||
+      path.startsWith('/app/rest/testOccurrences/') ||
+      ((path === '/app/rest/problemOccurrences' || path === '/app/rest/testOccurrences') &&
+        url.searchParams.get('locator')?.includes('start:'))
+    ) {
+      const isProblem = path.includes('problemOccurrences'),
+        key = isProblem ? 'problemOccurrence' : 'testOccurrence';
+      let items = isProblem
+        ? [
+            { ...wire.problems.problemOccurrence[0], id: 'build:(id:482193),problem:(id:1)' },
+            {
+              ...wire.problems.problemOccurrence[0],
+              id: 'build:(id:482193),problem:(id:2)',
+              identity: 'another-problem',
+            },
+          ]
+        : [
+            {
+              ...wire.tests.testOccurrence[0],
+              id: 'build:(id:482193),id:2000000000',
+              test: { id: '517450581327024597' },
+            },
+            {
+              ...wire.tests.testOccurrence[1],
+              id: 'build:(id:482193),id:2000000001',
+              test: { id: '517450581327024598' },
+            },
+            {
+              ...wire.tests.testOccurrence[0],
+              id: 'build:(id:482193),id:2000000002',
+              status: 'IGNORED',
+              ignored: true,
+            },
+          ];
+      if (mode === 'evidence-wrong-run')
+        items = items.map((item) => ({ ...item, build: { id: 482100 } }));
+      if (mode === 'evidence-duplicate-id') items[1].id = items[0].id;
+      if (mode === 'evidence-unknown-test') items[0].status = 'FUTURE_RESULT';
+      if (mode === 'evidence-no-flags') {
+        delete items[0].muted;
+        delete items[0].ignored;
+      }
+      if (mode === 'evidence-preview')
+        items[1][isProblem ? 'details' : 'details'] = '🦊'.repeat(2500);
+      if (mode === 'evidence-secret') items[0].details = longCanary;
+      const locator = url.searchParams.get('locator') ?? '';
+      if (locator.includes('status:FAILURE'))
+        items = items.filter((item) => item.status === 'FAILURE');
+      if (locator.includes('muted:false')) items = items.filter((item) => item.muted !== true);
+      if (locator.includes('muted:true')) items = items.filter((item) => item.muted === true);
+      if (path.endsWith('Occurrences')) {
+        const count = Number(/(?:^|,)count:(\d+)/.exec(locator)?.[1] ?? 20),
+          start = Number(/(?:^|,)start:(\d+)/.exec(locator)?.[1] ?? 0);
+        const nextHref =
+          '/teamcity' +
+          path +
+          '?' +
+          new URLSearchParams({
+            locator: locator.replace(/start:\d+/, `start:${start + count}`),
+            fields: url.searchParams.get('fields'),
+          });
+        const rows = mode === 'evidence-empty' ? [] : items.slice(start, start + count);
+        return res.end(
+          JSON.stringify({
+            count: rows.length,
+            [key]: rows,
+            ...(mode === 'evidence-unsafe'
+              ? { nextHref: 'https://attacker.invalid/app/rest/testOccurrences' }
+              : start + count <= items.length || mode === 'evidence-empty'
+                ? { nextHref }
+                : {}),
+          }),
+        );
+      }
+      const id = path.slice(path.lastIndexOf('/') + 1);
+      const item = items.find((item) => item.id === id);
+      if (!item) return error(404, 'Occurrence missing');
+      return res.end(
+        JSON.stringify(mode === 'evidence-wrong-id' ? { ...item, id: items[1].id } : item),
+      );
+    }
     let value;
     if (path === '/app/rest/server') value = wire.server;
     else if (path === '/app/rest/users/current') value = { id: 2, username: 'fixture-reader' };
@@ -218,7 +313,34 @@ export async function mockServer() {
     else if (path === '/app/rest/buildTypes') value = wire.jobs;
     else if (path === '/app/rest/buildQueue') value = wire.queue;
     else if (path === '/app/rest/agents') value = wire.agents;
-    else if (path === '/app/messages') value = wire.messages;
+    else if (path === '/app/messages')
+      value =
+        mode === 'log-window'
+          ? {
+              messages: [
+                {
+                  ...wire.messages.messages[0],
+                  id: 12,
+                  text: 'x'.repeat(2500) + 'literal[needle]',
+                },
+                { ...wire.messages.messages[0], id: 13, text: 'plain' },
+              ],
+              lastMessageIncluded: true,
+              lastMessageIndex: 13,
+              focusIndex: 13,
+            }
+          : mode === 'log-overdelivery'
+            ? {
+                ...wire.messages,
+                messages: Array.from({ length: 81 }, (_, id) => ({
+                  ...wire.messages.messages[0],
+                  id,
+                  text: 'plain',
+                })),
+                lastMessageIndex: 80,
+                focusIndex: 80,
+              }
+            : wire.messages;
     else return error(404, 'No fixture for requested path');
     if (path === '/app/rest/builds' && mode.startsWith('list-')) {
       const locator = url.searchParams.get('locator'),

@@ -49,9 +49,54 @@ export interface AuthenticatedIdentity {
 
 export interface LogTail {
   runId: string;
-  messages: { id: string; text: string; level: number; status: number }[];
+  messages: {
+    id: string;
+    text: string;
+    level: number;
+    status: number;
+    timestamp?: string | null;
+  }[];
   providerReturned: number;
   truncated: boolean;
+  limitations: Limitation[];
+}
+
+export interface Problem {
+  id: string;
+  runId: string;
+  type: string;
+  description: string;
+  identity?: string;
+}
+
+export interface TestOccurrence {
+  id: string;
+  runId: string;
+  name: string;
+  result: 'success' | 'failure' | 'ignored' | 'unknown';
+  testId?: string;
+  durationMs: number | null;
+  muted: boolean | null;
+  ignored: boolean | null;
+  details?: string;
+  rawStatus?: string;
+}
+
+export interface EvidenceQuery {
+  runId: string;
+  count: number;
+  start: number;
+  scanLimit: number;
+  failed?: boolean;
+  muted?: boolean;
+}
+
+export interface EvidencePage<T> {
+  items: T[];
+  providerReturned: number;
+  position: number | null;
+  hasMore: boolean | null;
+  limitations: Limitation[];
 }
 
 export interface RunQuery {
@@ -95,6 +140,13 @@ export type ReadResult<T> =
 // The first vertical adapter implements this slice. Additional read primitives
 // extend this interface as their recorded contracts and tests are added.
 export interface TeamCityReader {
+  listProblems(query: EvidenceQuery, budget: Budget): Promise<ReadResult<EvidencePage<Problem>>>;
+  listTests(
+    query: EvidenceQuery,
+    budget: Budget,
+  ): Promise<ReadResult<EvidencePage<TestOccurrence>>>;
+  getProblem(ref: { runId: string; id: string }, budget: Budget): Promise<ReadResult<Problem>>;
+  getTest(ref: { runId: string; id: string }, budget: Budget): Promise<ReadResult<TestOccurrence>>;
   getServer(budget: Budget): Promise<ReadResult<ServerInfo>>;
   getIdentity(budget: Budget): Promise<ReadResult<AuthenticatedIdentity>>;
   getProject(ref: { id: string }, budget: Budget): Promise<ReadResult<Project>>;

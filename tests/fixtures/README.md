@@ -23,7 +23,7 @@ The raw operations verify CLI request construction and response transport. They
 do not prove that a real server implements locator/field/continuation semantics.
 No minimum supported server version is inferred from them.
 
-`teamcity-2026.2-native-1.5.0/contract.json` contains 31 captured reads through
+`teamcity-2026.2-native-1.5.0/contract.json` contains 39 captured reads through
 the same released Linux x64 CLI against actual TeamCity 2026.2 build 238924.
 Its projects, builds, tests and user are original synthetic test data. The
 permission inventory proves project viewing without build-run permission;
@@ -33,6 +33,13 @@ New context/doctor contracts include exact encoded project/root metadata, the
 current user ID, a one-row job/project sample page and native `--tail 1` returning
 two entries. The public adapter enforces the requested log cap and exposes only
 an identity fingerprint.
+Independent evidence captures include bounded count/start problem/test pages,
+unmuted/muted failure filters and exact occurrence expansion with duration and
+string test definition IDs. Encoding an entire compound occurrence locator as
+base64 is rejected by the server; adapters reconstruct structural syntax from
+validated numeric components. Actual muted results are empty; positive muted
+failures and duplicate names are covered by invented mock data and remain live
+fixture gates.
 JSON payloads are decoded before redaction so JSON escaping cannot hide a
 known credential. Unparseable payloads are replaced with an explicit omission
 marker; native stderr is retained only as a presence marker. No arbitrary raw

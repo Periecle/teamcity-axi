@@ -533,6 +533,142 @@
       "signal": null,
       "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 12:51:30 GMT\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716044018831593472\nContent-Type: application/json\nContent-Length: 836\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)&locator=branch:(default:any),buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)),count:1,defaultFilter:false,lookupLimit:5000,project:(id:($base64:QXhpQ29udHJhY3Q)),start:1\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}],\"count\":1}",
       "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "problems-page": {
+      "args": [
+        "api",
+        "/app/rest/problemOccurrences?locator=build%3A%28id%3A1%29%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2CproblemOccurrence%28id%2Ctype%2Cidentity%2Cdetails%2Cbuild%28id%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nDate: Fri, 02 Oct 2026 13:05:07 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nContent-Length: 352\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716047443627610112\nCache-Control: no-store\nContent-Type: application/json\n\n{\"count\":1,\"nextHref\":\"/app/rest/problemOccurrences?fields=count,nextHref,problemOccurrence(id,type,identity,details,build(id))&locator=build:(id:1),count:1,lookupLimit:5000,start:1\",\"problemOccurrence\":[{\"id\":\"build:(id:1),problem:(id:2)\",\"type\":\"TC_SERVICE_MESSAGE\",\"identity\":\"fixture-problem\",\"details\":\"Synthetic build problem\",\"build\":{\"id\":1}}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "tests-page": {
+      "args": [
+        "api",
+        "/app/rest/testOccurrences?locator=build%3A%28id%3A1%29%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2CtestOccurrence%28id%2Cname%2Cstatus%2Cduration%2Cmuted%2Cignored%2Cdetails%2Cbuild%28id%29%2Ctest%28id%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 471\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716047443719884800\nDate: Fri, 02 Oct 2026 13:05:07 GMT\n\n{\"count\":1,\"nextHref\":\"/app/rest/testOccurrences?fields=count,nextHref,testOccurrence(id,name,status,duration,muted,ignored,details,build(id),test(id))&locator=build:(id:1),count:1,lookupLimit:5000,start:1\",\"testOccurrence\":[{\"id\":\"build:(id:1),id:2000000000\",\"name\":\"Fixture suite: same name\",\"status\":\"FAILURE\",\"ignored\":false,\"duration\":25,\"muted\":false,\"details\":\"Connection refused\\nSynthetic fixture assertion\",\"test\":{\"id\":\"517450581327024597\"},\"build\":{\"id\":1}}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "tests-failed": {
+      "args": [
+        "api",
+        "/app/rest/testOccurrences?locator=build%3A%28id%3A1%29%2Cstatus%3AFAILURE%2Cmuted%3Afalse%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2CtestOccurrence%28id%2Cname%2Cstatus%2Cduration%2Cmuted%2Cignored%2Cdetails%2Cbuild%28id%29%2Ctest%28id%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 275\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716047443795382272\nDate: Fri, 02 Oct 2026 13:05:07 GMT\n\n{\"count\":1,\"testOccurrence\":[{\"id\":\"build:(id:1),id:2000000000\",\"name\":\"Fixture suite: same name\",\"status\":\"FAILURE\",\"ignored\":false,\"duration\":25,\"muted\":false,\"details\":\"Connection refused\\nSynthetic fixture assertion\",\"test\":{\"id\":\"517450581327024597\"},\"build\":{\"id\":1}}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "tests-muted": {
+      "args": [
+        "api",
+        "/app/rest/testOccurrences?locator=build%3A%28id%3A1%29%2Cstatus%3AFAILURE%2Cmuted%3Atrue%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2CtestOccurrence%28id%2Cname%2Cstatus%2Cduration%2Cmuted%2Cignored%2Cdetails%2Cbuild%28id%29%2Ctest%28id%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716047443883462656\nCache-Control: no-store\nX-Content-Type-Options: nosniff\nContent-Type: application/json\nContent-Length: 31\nDate: Fri, 02 Oct 2026 13:05:07 GMT\n\n{\"count\":0,\"testOccurrence\":[]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "problem-selected": {
+      "args": [
+        "api",
+        "/app/rest/problemOccurrences/build:(id:1),problem:(id:2)?fields=id,type,identity,details,build(id)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nMixed-Content: noupgrade\nX-Request-Id: 716047443950571520\nContent-Length: 146\nDate: Fri, 02 Oct 2026 13:05:07 GMT\n\n{\"id\":\"build:(id:1),problem:(id:2)\",\"type\":\"TC_SERVICE_MESSAGE\",\"identity\":\"fixture-problem\",\"details\":\"Synthetic build problem\",\"build\":{\"id\":1}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "test-selected": {
+      "args": [
+        "api",
+        "/app/rest/testOccurrences/build:(id:1),id:2000000000?fields=id,name,status,duration,muted,ignored,details,build(id),test(id)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 244\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716047444026068992\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 13:05:07 GMT\nStrict-Transport-Security: max-age=31536000;\n\n{\"id\":\"build:(id:1),id:2000000000\",\"name\":\"Fixture suite: same name\",\"status\":\"FAILURE\",\"ignored\":false,\"duration\":25,\"muted\":false,\"details\":\"Connection refused\\nSynthetic fixture assertion\",\"test\":{\"id\":\"517450581327024597\"},\"build\":{\"id\":1}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "problem-selected-encoded": {
+      "args": [
+        "api",
+        "/app/rest/problemOccurrences/($base64:YnVpbGQ6KGlkOjEpLHByb2JsZW06KGlkOjIp)?fields=id,type,identity,details,build(id)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 400 Bad Request\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nContent-Length: 685\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nX-Request-Id: 716047444105760768\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 13:05:07 GMT\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 400 (Bad Request).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.BadRequestException: Unsupported problem occurrence locator '($base64:YnVpbGQ6KGlkOjEpLHByb2JsZW06KGlkOjIp)'. Try one of locator dimensions: \\\"build:XXX\\\", \\\"problem:XXX\\\", \\\"affectedProject:XXX,currentlyFailing:true\\\", \\\"affectedProject:XXX,currentlyMuted:true\\\".\",\"stackTrace\":null,\"message\":\"Unsupported problem occurrence locator '($base64:YnVpbGQ6KGlkOjEpLHByb2JsZW06KGlkOjIp)'. Try one of locator dimensions: \\\"build:XXX\\\", \\\"problem:XXX\\\", \\\"affectedProject:XXX,currentlyFailing:true\\\", \\\"affectedProject:XXX,currentlyMuted:true\\\"\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "test-selected-encoded": {
+      "args": [
+        "api",
+        "/app/rest/testOccurrences/($base64:YnVpbGQ6KGlkOjEpLGlkOjIwMDAwMDAwMDA)?fields=id,name,status,duration,muted,ignored,details,build(id),test(id)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 400 Bad Request\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716047444181258240\nCache-Control: no-store\nContent-Length: 715\nDate: Fri, 02 Oct 2026 13:05:07 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 400 (Bad Request).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.BadRequestException: Unsupported test occurrence locator '($base64:YnVpbGQ6KGlkOjEpLGlkOjIwMDAwMDAwMDA)'. Try one of locator dimensions: \\\"build:XXX,id:XXX\\\", \\\"build:XXX\\\", \\\"test:XXX\\\", \\\"affectedProject:XXX,currentlyFailing:true\\\", \\\"affectedProject:XXX,currentlyMuted:true\\\".\",\"stackTrace\":null,\"message\":\"Unsupported test occurrence locator '($base64:YnVpbGQ6KGlkOjEpLGlkOjIwMDAwMDAwMDA)'. Try one of locator dimensions: \\\"build:XXX,id:XXX\\\", \\\"build:XXX\\\", \\\"test:XXX\\\", \\\"affectedProject:XXX,currentlyFailing:true\\\", \\\"affectedProject:XXX,currentlyMuted:true\\\"\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
     }
   },
   "fixture": {

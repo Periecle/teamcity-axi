@@ -247,3 +247,106 @@ test('live context verification and doctor preserve restricted scope and optiona
     await f.close();
   }
 });
+
+test('live independent occurrences retain exact run, selected occurrence, filter and paging identities', async () => {
+  const f = await liveFixture();
+  try {
+    const id = f.contract.fixture.failedRunId;
+    for (const format of ['json', 'toon']) {
+      const r = await f.wrapper(['run', 'tests', id, '--format', format]);
+      assert.equal(r.code, 0);
+      const value = format === 'json' ? JSON.parse(r.stdout) : decode(r.stdout);
+      validateResponse(value);
+      assert.equal(value.data.tests[0].runId, id);
+      assert.equal(value.data.tests[0].testId, '517450581327024597');
+      assert.equal(value.data.tests[0].result, 'failure');
+      assert.equal(value.data.page.total, null);
+    }
+    const selected = await f.wrapper([
+      'run',
+      'tests',
+      id,
+      '--test',
+      'build:(id:1),id:2000000000',
+      '--full',
+      '--json',
+    ]);
+    assert.equal(selected.code, 0);
+    const detail = JSON.parse(selected.stdout);
+    validateResponse(detail);
+    assert.equal(detail.status, 'ok');
+    assert.equal(detail.data.tests[0].durationMs, 25);
+    assert.equal(detail.data.page.total, 1);
+    const first = JSON.parse(
+      (await f.wrapper(['run', 'problems', id, '--limit', '1', '--json'])).stdout,
+    );
+    validateResponse(first);
+    assert.equal(first.status, 'ok');
+    assert.equal(first.data.page.hasMore, true);
+    first.next.forEach((a) => parse(a.argv.slice(1)));
+    const second = JSON.parse((await f.wrapper([...first.next[0].argv.slice(1), '--json'])).stdout);
+    assert.notEqual(second.data.problems[0].id, first.data.problems[0].id);
+    const problem = JSON.parse(
+      (await f.wrapper(['run', 'problems', id, '--problem', first.data.problems[0].id, '--json']))
+        .stdout,
+    );
+    assert.equal(problem.data.problems[0].id, first.data.problems[0].id);
+    assert.equal(problem.data.page.totalKind, 'exact');
+    const failed = JSON.parse((await f.wrapper(['run', 'tests', id, '--failed', '--json'])).stdout);
+    assert.equal(failed.data.tests.length, 1);
+    assert.equal(failed.data.tests[0].muted, false);
+    const muted = JSON.parse((await f.wrapper(['run', 'tests', id, '--muted', '--json'])).stdout);
+    assert.deepEqual(muted.data.tests, []);
+    assert.equal(muted.status, 'partial');
+    assert.equal(muted.data.page.total, null);
+    const foreign = await f.wrapper(['run', 'tests', f.contract.fixture.deniedRunId, '--json']);
+    assert.equal(foreign.code, 1);
+    assert.equal(JSON.parse(foreign.stdout).error.code, 'PERMISSION_DENIED');
+  } finally {
+    await f.close();
+  }
+});
+
+test('live bounded logs cap native overdelivery and failure view accounts independent sources', async () => {
+  const f = await liveFixture();
+  try {
+    const id = f.contract.fixture.failedRunId;
+    const r = await f.wrapper(['run', 'log', id, '--tail', '1', '--json']);
+    assert.equal(r.code, 0);
+    const value = JSON.parse(r.stdout);
+    validateResponse(value);
+    assert.equal(value.data.messages.length, 1);
+    assert.equal(value.data.window.providerReturned, 2);
+    assert.equal(value.data.window.omittedProviderMessages, 1);
+    assert.equal(value.data.messages[0].runId, id);
+    assert.match(value.data.messages[0].timestamp, /Z$/);
+    const noMatches = JSON.parse(
+      (
+        await f.wrapper([
+          'run',
+          'log',
+          id,
+          '--tail',
+          '1',
+          '--contains',
+          'synthetic-no-match-canary',
+          '--json',
+        ])
+      ).stdout,
+    );
+    assert.equal(noMatches.data.messages.length, 0);
+    assert.equal(noMatches.data.window.retained, 1);
+    const failure = await f.wrapper(['run', 'log', id, '--failed', '--json']);
+    assert.equal(failure.code, 0);
+    const view = JSON.parse(failure.stdout);
+    validateResponse(view);
+    assert.equal(view.status, 'partial');
+    assert.equal(view.data.problems.length, 3);
+    assert.equal(view.data.tests.length, 1);
+    assert.equal(view.data.sources.tests.coverage, 'bounded_page');
+    assert.equal(view.data.sources.log.coverage, 'tail_window');
+    assert.equal(view.meta.counts.childProcesses, 5);
+  } finally {
+    await f.close();
+  }
+});

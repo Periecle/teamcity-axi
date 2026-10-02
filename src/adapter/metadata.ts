@@ -4,6 +4,43 @@ import { DomainError } from '../domain/errors.js';
 import type { AuthenticatedIdentity, LogTail, Project, ServerInfo } from '../domain/teamcity.js';
 import { sanitizeText } from '../output/sanitize.js';
 import { identity, object } from './run.js';
+import type { Limitation } from '../domain/response.js';
+
+function logTimestamp(value: unknown, limitations: Limitation[]): string | null {
+  if (typeof value !== 'string') invalid();
+  const matched = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)(\.\d{1,3})?(Z|[+-]\d\d:?\d\d)$/.exec(
+    value,
+  );
+
+  if (matched) {
+    const [, y, m, d, h, min, s, , zone] = matched;
+    const digits = zone!.replace(/[^0-9]/g, '');
+
+    if (
+      Number(y) >= 100 &&
+      Number(m) >= 1 &&
+      Number(m) <= 12 &&
+      Number(d) >= 1 &&
+      Number(d) <= new Date(Date.UTC(Number(y), Number(m), 0)).getUTCDate() &&
+      Number(h) < 24 &&
+      Number(min) < 60 &&
+      Number(s) < 60 &&
+      (zone === 'Z' || (Number(digits.slice(0, 2)) <= 23 && Number(digits.slice(2)) < 60))
+    ) {
+      const canonicalZone = value.replace(/([+-]\d\d)(\d\d)$/, '$1:$2');
+
+      return new Date(canonicalZone).toISOString();
+    }
+  }
+
+  limitations.push({
+    code: 'INVALID_TIMESTAMP',
+    message: 'The server supplied an invalid log timestamp',
+    source: 'log',
+  });
+
+  return null;
+}
 
 function invalid(): never {
   throw new DomainError('UPSTREAM_SCHEMA_MISMATCH', 'Invalid scoped metadata response');
@@ -70,11 +107,15 @@ export function normalizeLogTail(
 ): LogTail {
   const dto = object(value);
 
+  if (!Number.isInteger(tail) || tail < 1 || tail > 1000)
+    throw new DomainError('USAGE_ERROR', 'Invalid bounded log tail', 2);
+
   if (identity(dto.run_id, true) !== expectedId)
     throw new DomainError('CONTEXT_MISMATCH', 'Log belongs to another execution');
   if (!Array.isArray(dto.messages) || dto.messages.length > 1001) invalid();
   const seen = new Set<string>();
-  let textTruncated = false;
+  const limitations: Limitation[] = [];
+  let previousId = -1;
   const messages = dto.messages.map((value) => {
     const m = object(value);
 
@@ -88,17 +129,17 @@ export function normalizeLogTail(
       invalid();
     const id = String(m.id);
 
-    if (seen.has(id)) invalid();
+    if (seen.has(id) || Number(m.id) <= previousId) invalid();
+    previousId = Number(m.id);
     seen.add(id);
-    const text = Array.from(sanitizeText(m.text, secrets));
-
-    if (text.length > 2000) textTruncated = true;
+    const text = sanitizeText(m.text, secrets);
 
     return {
       id,
-      text: text.slice(0, 2000).join(''),
+      text,
       level: Number(m.level),
       status: Number(m.status),
+      ...(m.timestamp !== undefined ? { timestamp: logTimestamp(m.timestamp, limitations) } : {}),
     };
   });
 
@@ -106,6 +147,7 @@ export function normalizeLogTail(
     runId: expectedId,
     messages: messages.slice(-tail),
     providerReturned: messages.length,
-    truncated: messages.length > tail || textTruncated,
+    truncated: messages.length > tail,
+    limitations,
   };
 }

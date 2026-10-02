@@ -69,6 +69,17 @@ test('native log overdelivery is capped and credentials are removed before text 
   assert.throws(() =>
     normalizeLogTail({ ...dto, messages: [dto.messages[0], dto.messages[0]] }, '1', 1, []),
   );
+  assert.throws(
+    () => normalizeLogTail({ ...dto, messages: [...dto.messages].reverse() }, '1', 1, []),
+    (e) => e.code === 'UPSTREAM_SCHEMA_MISMATCH',
+  );
+  const gaps = normalizeLogTail(
+    { ...dto, messages: dto.messages.map((m, index) => ({ ...m, id: index * 10 })) },
+    '1',
+    1,
+    [],
+  );
+  assert.equal(gaps.messages[0].id, '10');
 });
 test('policy admits only observed ancestor chains and caches within one invocation', async () => {
   const calls = [];

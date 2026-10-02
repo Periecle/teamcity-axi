@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:run-tests:1.0",
+  "type": "object",
+  "properties": {
+    "run": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Run"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "runId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "name": {
+            "type": "string"
+          },
+          "result": {
+            "enum": ["success", "failure", "ignored", "unknown"]
+          },
+          "testId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "durationMs": {
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
+          "muted": {
+            "type": ["boolean", "null"]
+          },
+          "ignored": {
+            "type": ["boolean", "null"]
+          },
+          "details": {
+            "type": "string"
+          },
+          "rawStatus": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "runId", "name", "result", "muted", "ignored"],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": ["page", "occurrence"]
+        },
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "providerReturned": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4999
+        },
+        "scanLimit": {
+          "const": 5000
+        },
+        "consistency": {
+          "const": "best_effort_offset"
+        },
+        "occurrenceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "filter": {
+          "enum": ["all", "unmuted_failures", "muted_failures", "failures_including_muted"]
+        }
+      },
+      "required": ["kind", "pageSize", "providerReturned", "position", "scanLimit", "consistency"],
+      "additionalProperties": false
+    },
+    "page": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Page"
+    }
+  },
+  "required": ["run", "tests", "selection", "page"],
+  "additionalProperties": false
+}

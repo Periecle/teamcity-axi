@@ -59,7 +59,9 @@ export async function main(args: readonly string[]): Promise<void> {
                 ? { payload: packagedSchema('context-show') }
                 : d.name === 'doctor'
                   ? { payload: packagedSchema('doctor') }
-                  : {}),
+                  : ['run.problems', 'run.tests', 'run.log'].includes(d.name)
+                    ? { payload: packagedSchema(d.name.replace('.', '-')) }
+                    : {}),
       });
       maxBytes = Number(parsed.flags['max-bytes'] ?? 65536);
     } else {
@@ -99,7 +101,17 @@ export async function main(args: readonly string[]): Promise<void> {
           output.next = [
             { reason: 'Inspect local context', argv: ['teamcity-axi', 'context', 'show'] },
           ];
-      } else if (['run.view', 'run.list', 'context.show', 'doctor'].includes(command)) {
+      } else if (
+        [
+          'run.view',
+          'run.list',
+          'run.problems',
+          'run.tests',
+          'run.log',
+          'context.show',
+          'doctor',
+        ].includes(command)
+      ) {
         if (!context.server && !(command === 'doctor' && parsed.flags.offline))
           throw new DomainError('CONTEXT_REQUIRED', 'Select a registered trusted server', 2);
         const controller = new AbortController();
@@ -126,6 +138,10 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (['run.problems', 'run.tests', 'run.log'].includes(command)) {
+            const { readEvidence } = await import('../commands/run-evidence.js');
+
+            output = await readEvidence(parsed, context, controller.signal);
           } else {
             const { diagnose } = await import('../commands/diagnostics.js');
 

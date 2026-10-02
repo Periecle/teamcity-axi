@@ -51,13 +51,16 @@ export function validateResponse(value: Response): void {
   for (const [command, schema] of [
     ['context.show', 'context-show'],
     ['doctor', 'doctor'],
+    ['run.problems', 'run-problems'],
+    ['run.tests', 'run-tests'],
+    ['run.log', 'run-log'],
   ]) {
     if (
       value.command === command &&
       value.status !== 'error' &&
       !ajv.validate(`urn:teamcity-axi:${schema}:1.0`, value.data)
     )
-      throw new DomainError('INTERNAL_ERROR', 'Diagnostics violated its payload contract');
+      throw new DomainError('INTERNAL_ERROR', 'Normalized payload violated its public contract');
   }
 }
 

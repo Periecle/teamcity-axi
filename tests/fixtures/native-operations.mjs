@@ -65,6 +65,30 @@ export const operations = [
       '/app/rest/agents?locator=pool:(id:1),count:20&fields=count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name))',
     ),
   ],
+  [
+    'bounded-problems',
+    api(
+      '/app/rest/problemOccurrences?locator=build:(id:482193),count:1,start:0,lookupLimit:5000&fields=count,nextHref,problemOccurrence(id,type,identity,details,build(id))',
+    ),
+  ],
+  [
+    'bounded-tests',
+    api(
+      '/app/rest/testOccurrences?locator=build:(id:482193),count:1,start:0,lookupLimit:5000&fields=count,nextHref,testOccurrence(id,name,status,duration,muted,ignored,details,build(id),test(id))',
+    ),
+  ],
+  [
+    'selected-problem',
+    api(
+      '/app/rest/problemOccurrences/build:(id:482193),problem:(id:1)?fields=id,type,identity,details,build(id)',
+    ),
+  ],
+  [
+    'selected-test',
+    api(
+      '/app/rest/testOccurrences/build:(id:482193),id:2000000000?fields=id,name,status,duration,muted,ignored,details,build(id),test(id)',
+    ),
+  ],
   ['log-tail', ['run', 'log', '482193', '--tail', '80', '--json', '--no-input']],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];

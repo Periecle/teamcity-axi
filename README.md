@@ -6,9 +6,10 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
-exact-ID `run view`, bounded `run list`, verified `context show` and scoped
-`doctor` with typed validation, scope assertions and query-bound cursors. Other remote
-services remain gated pending adapter implementation. See
+exact-ID `run view`, bounded `run list`, independent `run problems` and `run tests`,
+bounded `run log`, verified `context show` and scoped `doctor`. Reads use typed
+validation, scope assertions and query-bound cursors. Other remote services remain
+gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
 
 Requires Node 24 and a separately installed official `teamcity` CLI. The tested
@@ -26,6 +27,8 @@ node bin/teamcity-axi.mjs --help
 node bin/teamcity-axi.mjs context show --json
 node bin/teamcity-axi.mjs schema run.view --json
 node bin/teamcity-axi.mjs run view 482193 --server work --json
+node bin/teamcity-axi.mjs run tests 482193 --server work --failed --json
+node bin/teamcity-axi.mjs run log 482193 --server work --tail 80 --json
 npm test
 npm run format
 npm run format:check
@@ -43,6 +46,19 @@ bounded scan exhaustion cannot be proved. Exact contextual branches can be
 elided from projected rows; all-branch rows retain branch identity. Fractional
 finish-time filters and canceled/failed-to-start/unknown outcome filters remain
 explicitly gated while their contracts are verified.
+
+Problems and tests retain exact run-bound occurrence IDs, including duplicate
+test names. `run tests --failed` excludes muted failures unless `--include-muted`
+is supplied; `--muted` selects muted failures. Pages keep totals unknown when
+bounded exhaustion is unproven. Select an emitted occurrence ID with `--problem`
+or `--test` for exact expansion; test definition IDs are not occurrence IDs.
+
+Logs expose a declared retained tail window and stable message IDs. `--contains`
+matches literal text within the full retained messages before display previews.
+`run log --failed` combines independent problem, unmuted failed-test and bounded
+log reads; unavailable sources remain explicit while available siblings survive.
+It does not imply causal attribution or complete-log coverage. `--full` expands
+bounded text previews, subject to the output byte budget and a text ceiling.
 
 `context show` makes no server calls unless `--verify` is supplied. Verification
 reads only selected jobs/projects and the current identity; it reports a safe
