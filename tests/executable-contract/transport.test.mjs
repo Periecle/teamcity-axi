@@ -174,6 +174,43 @@ test('shared child launch and concurrency bounds govern overlapping reads', asyn
     await f.dispose();
   }
 });
+test('overlapping reads cannot consume reserved launches or raise the configured ceiling', async () => {
+  const f = await fixture({
+    limits: {
+      deadline: Date.now() + 5000,
+      concurrency: 1,
+      maxChildren: 3,
+      stdoutBytes: 2097152,
+      stderrBytes: 65536,
+    },
+  });
+  try {
+    for (const ceiling of [-1, 1.5, 257])
+      await assert.rejects(
+        f.transport.execute({ kind: 'version' }, ceiling),
+        (e) => e.code === 'INTERNAL_ERROR',
+      );
+    assert.equal(f.transport.childProcesses, 0);
+    const results = await Promise.allSettled(
+      Array.from({ length: 3 }, () =>
+        f.transport.execute({ kind: 'api', path: '/app/rest/builds?fields=wait' }, 2),
+      ),
+    );
+    assert.equal(results.filter((r) => r.status === 'fulfilled').length, 2);
+    assert.equal(results.find((r) => r.status === 'rejected').reason.code, 'CALL_LIMIT_EXCEEDED');
+    assert.equal(f.transport.childProcesses, 2);
+    await f.transport.execute({ kind: 'version' });
+    assert.equal(f.transport.childProcesses, 3);
+    await assert.rejects(
+      f.transport.execute({ kind: 'version' }, 256),
+      (e) => e.code === 'INPUT_LIMIT_EXCEEDED',
+    );
+    assert.equal(f.transport.childProcesses, 3);
+  } finally {
+    await f.dispose();
+  }
+});
+
 test('oversized stdout and stderr are rejected, nonzero status remains distinct from valid JSON', async () => {
   const f = await fixture();
   try {

@@ -23,7 +23,14 @@ export async function main(args: readonly string[]): Promise<void> {
 
     format = parsed.format;
     command = parsed.descriptor.name;
-    maxBytes = Number(parsed.flags['max-bytes'] ?? (command === 'status' ? 6144 : 16384));
+    maxBytes = Number(
+      parsed.flags['max-bytes'] ??
+        (command === 'status'
+          ? 6144
+          : ['run.tree', 'run.failure'].includes(command)
+            ? 24576
+            : 16384),
+    );
 
     if (parsed.flags.help) {
       process.stdout.write(
@@ -59,7 +66,9 @@ export async function main(args: readonly string[]): Promise<void> {
                 ? { payload: packagedSchema('context-show') }
                 : d.name === 'doctor'
                   ? { payload: packagedSchema('doctor') }
-                  : ['run.problems', 'run.tests', 'run.log', 'run.changes'].includes(d.name)
+                  : ['run.problems', 'run.tests', 'run.log', 'run.changes', 'run.tree'].includes(
+                        d.name,
+                      )
                     ? { payload: packagedSchema(d.name.replace('.', '-')) }
                     : {}),
       });
@@ -109,6 +118,7 @@ export async function main(args: readonly string[]): Promise<void> {
           'run.tests',
           'run.log',
           'run.changes',
+          'run.tree',
           'context.show',
           'doctor',
         ].includes(command)
@@ -139,6 +149,10 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (command === 'run.tree') {
+            const { readTree } = await import('../commands/run-tree.js');
+
+            output = await readTree(parsed, context, controller.signal);
           } else if (command === 'run.changes') {
             const { readChanges } = await import('../commands/run-changes.js');
 

@@ -266,7 +266,14 @@ export async function resolveContext(
 ): Promise<ExecutionContext> {
   const deadline =
     Date.now() +
-    Number(parsed.flags.timeout ?? (parsed.descriptor.name === 'status' ? 5000 : 10000));
+    Number(
+      parsed.flags.timeout ??
+        (parsed.descriptor.name === 'status'
+          ? 5000
+          : ['run.tree', 'run.failure'].includes(parsed.descriptor.name)
+            ? 20000
+            : 10000),
+    );
 
   const within = async <T>(operation: Promise<T>): Promise<T> => {
     const remaining = deadline - Date.now();

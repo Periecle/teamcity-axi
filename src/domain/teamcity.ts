@@ -147,6 +147,8 @@ export interface RunPage {
 
 export interface Budget {
   deadline: number;
+  // Optional absolute invocation launch ceiling, leaving reserved capacity unused.
+  maxChildProcesses?: number;
 }
 
 export interface Provenance {

@@ -232,7 +232,12 @@ export function normalizeDependencyPage(
 
     if (ids.has(normalized.run.id)) invalid();
     ids.add(normalized.run.id);
-    limitations.push(...normalized.limitations);
+    limitations.push(
+      ...normalized.limitations.map((limitation) => ({
+        ...limitation,
+        runId: limitation.runId ?? normalized.run.id,
+      })),
+    );
 
     return { run: normalized.run, projectId: normalized.projectId };
   });

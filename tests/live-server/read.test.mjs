@@ -407,3 +407,68 @@ test('live changes preserve root identity, message expansion, files and cursor s
     await f.close();
   }
 });
+
+test('actual restricted run tree proves immediate direction and scoped leaves with bounded partial expansion', async () => {
+  const f = await liveFixture();
+  try {
+    const rootId = f.contract.fixture.vcsRunId;
+    const childId = f.contract.fixture.dependencyRunId;
+    const args = ['run', 'tree', rootId];
+    const wire = await f.wrapper([...args, '--json']);
+    assert.equal(wire.code, 0);
+    assert.equal(wire.stderr, '');
+    const result = JSON.parse(wire.stdout);
+    validateResponse(result);
+    assert.equal(result.status, 'ok');
+    assert.equal(result.meta.complete, true);
+    assert.equal(result.meta.counts.childProcesses, 5);
+    assert.equal(result.data.graph.complete, true);
+    assert.deepEqual(
+      result.data.graph.nodes.map((n) => n.run.id),
+      [rootId, childId],
+    );
+    assert.deepEqual(result.data.graph.edges, [
+      { fromRunId: rootId, toRunId: childId, kind: 'snapshot' },
+    ]);
+    assert.deepEqual(result.data.graph.cycles, []);
+    assert.deepEqual(
+      result.data.graph.nodes.map((n) => [n.dependencyCount, n.observedDependencies]),
+      [
+        [1, 1],
+        [0, 0],
+      ],
+    );
+    assert.ok(result.data.graph.nodes.every((n) => n.expansion === 'complete'));
+    const toon = decode((await f.wrapper(args)).stdout);
+    validateResponse(toon);
+    assert.deepEqual(toon.data, result.data);
+    const zero = JSON.parse((await f.wrapper([...args, '--depth', '0', '--json'])).stdout);
+    validateResponse(zero);
+    assert.equal(zero.status, 'partial');
+    assert.equal(zero.data.graph.nodes[0].expansion, 'depth_limit');
+    assert.equal(zero.data.graph.nodes[0].dependencyCount, null);
+    assert.equal(zero.meta.counts.childProcesses, 2);
+    const capWire = await f.wrapper([
+      ...args,
+      '--max-nodes',
+      '1',
+      '--require-complete',
+      '--no-hints',
+      '--json',
+    ]);
+    assert.equal(capWire.code, 1);
+    const cap = JSON.parse(capWire.stdout);
+    validateResponse(cap);
+    assert.equal(cap.status, 'partial');
+    assert.equal(cap.data.graph.nodes.length, 1);
+    assert.equal(cap.data.graph.edges.length, 0);
+    assert.equal(cap.data.graph.nodes[0].expansion, 'node_limit');
+    assert.equal(cap.data.selection.omittedTargets, 1);
+    assert.equal(cap.next, undefined);
+    const denied = await f.wrapper(['run', 'tree', f.contract.fixture.deniedRunId, '--json']);
+    assert.equal(denied.code, 1);
+    assert.equal(JSON.parse(denied.stdout).error.code, 'PERMISSION_DENIED');
+  } finally {
+    await f.close();
+  }
+});

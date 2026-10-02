@@ -3,14 +3,14 @@
 The full objective remains active. This is a development foundation, not a v0.1
 release or a live-certified TeamCity integration.
 
-| Milestone | Current evidence | Remaining gate |
-|---|---|---|
-| 0: upstream contract | v1.5.0 pinned; four Unix checksums; 27 Linux x64 binary/mock fixtures and 45 actual TeamCity 2026.2 restricted-identity captures; summary omission confirmed | Multi-root/hostile-branch/shared-DAG/positive-queue cases, live muted/duplicate tests, live context prefix, actual expired token, other platforms executed |
-| 1: executable boundary | Strict registry/parser; local help/version/schema; JSON/TOON equivalence; run-view/list/problems/tests/log and diagnostic payload schemas; redaction and bounded-output error path | Remaining command-specific payload schemas and generated docs |
-| 2: context/transport | Trusted configuration, native TOML path scope, worktree Git, origin binding, neutral CWD, restricted environment, shared semaphore/deadline/capture limits, process-group cleanup; read-service signal handlers | Integration into remaining command services, full budget reporting and remaining adversarial cases |
-| 3: vertical read | Strict raw-HTTP/run/job/page adapters; exact-ID run view and bounded run list; current policy/scope rechecks, reconstructed continuation and fixed-window query-bound cursors; actual wrapper/native/live tests | Remaining list outcome/time precision contracts, positive revision/branch cases, full command-specific capability probes; full certification |
-| 4–6: read product | Independent problem/test/change pages and expansion; bounded structured logs; immediate dependency adapter and exact counts; registry expresses remaining grammar | Graph/investigation integration, job/queue/agents, exact checkout status, watch and generated portable skill |
-| 7: evaluation/release | No release claims | Sanitized evaluation corpus/native baseline measurements, CI/platform/package gates and actual support matrix |
+| Milestone              | Current evidence                                                                                                                                                                                                | Remaining gate                                                                                                                                             |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0: upstream contract   | v1.5.0 pinned; four Unix checksums; 27 Linux x64 binary/mock fixtures and 45 actual TeamCity 2026.2 restricted-identity captures; summary omission confirmed                                                    | Multi-root/hostile-branch/shared-DAG/positive-queue cases, live muted/duplicate tests, live context prefix, actual expired token, other platforms executed |
+| 1: executable boundary | Strict registry/parser; local help/version/schema; JSON/TOON equivalence; run-view/list/problems/tests/log and diagnostic payload schemas; redaction and bounded-output error path                              | Remaining command-specific payload schemas and generated docs                                                                                              |
+| 2: context/transport   | Trusted configuration, native TOML path scope, worktree Git, origin binding, neutral CWD, restricted environment, shared semaphore/deadline/capture limits, process-group cleanup; read-service signal handlers | Integration into remaining command services, full budget reporting and remaining adversarial cases                                                         |
+| 3: vertical read       | Strict raw-HTTP/run/job/page adapters; exact-ID run view and bounded run list; current policy/scope rechecks, reconstructed continuation and fixed-window query-bound cursors; actual wrapper/native/live tests | Remaining list outcome/time precision contracts, positive revision/branch cases, full command-specific capability probes; full certification               |
+| 4–6: read product      | Independent problem/test/change pages and expansion; bounded structured logs; bounded concrete run graphs with exact counts and reserved final-state reads; registry expresses remaining grammar                | Failure investigation, job/queue/agents, exact checkout status, watch and generated portable skill                                                         |
+| 7: evaluation/release  | No release claims                                                                                                                                                                                               | Sanitized evaluation corpus/native baseline measurements, CI/platform/package gates and actual support matrix                                              |
 
 Deferred comparisons/setup and separately approved writes remain outside the
 initial read-only scope.
@@ -20,14 +20,14 @@ supported runtime. Tests that spawn Node/Git or bind local HTTP require normal
 process/network permissions; the current sandbox returns `EPERM` with empty
 captured child output. Such failures are rerun outside the sandbox, never skipped.
 
-Current focused evidence: TypeScript build and 55 deterministic unit/executable
-tests pass on Node 24.14.0 Linux x64; 14 real-CLI/mock-server tests pass,
+Current focused evidence: TypeScript build and 65 deterministic unit/executable
+tests pass on Node 24.14.0 Linux x64; 18 real-CLI/mock-server tests pass,
 including the 27 native wire observations and end-to-end evidence reads. No skipped
 tests. Independent review identified and drove fixes for credential previews,
 control-sequence reconstruction, missing revision metadata, safe timestamps,
 assertion-preserving hints, and Unicode byte budgets. Foundation GitHub CI passed
-both jobs on the preceding `f70ef36` checkpoint (run
-https://github.com/Periecle/teamcity-axi/actions/runs/37001837205).
+both jobs on the preceding `76edfe6` checkpoint (run
+https://github.com/Periecle/teamcity-axi/actions/runs/37004840270).
 
 Run list now consumes the paging helpers. It performs a bounded exact-job
 preflight, validates every row against declared scope and current trusted policy,
@@ -38,17 +38,17 @@ Revision filtering emits only exact selected-root tuples from the fetched page;
 missing metadata remains partial. Positive live VCS/branch matches, fractional
 time boundaries and additional explicit outcome metadata remain open.
 
-Next: integrate bounded graph traversal and investigation, and finish remaining list contracts
+Next: implement source-accounted failure investigation, and finish remaining list contracts
 from recorded contracts. The user has no existing TeamCity sandbox. A temporary official
 2026.2 server (build 238924) is running on localhost with dedicated test volumes
 and a resource-bounded official build agent. The user approved its local test
 licence. The test reader has project-view permission on `AxiContract`, with no
 build-run permission or inherited All Users role. Its native GET for the foreign
-project returns 403. Seven live-server tests pass: bounded independent native
+project returns 403. Eight live-server tests pass: bounded independent native
 reads, permission inventory, and actual wrapper JSON/TOON exact-ID run view with
 denied/missing/mismatch/invalid-authentication errors, plus actual list and
 cursor continuation, project scope, branch projection and precision rejection,
-verified context/doctor, exact problem/test occurrence expansion, bounded logs and positive changes.
+verified context/doctor, exact problem/test occurrence expansion, bounded logs, positive changes and concrete bounded run-tree expansion.
 No skipped tests.
 
 Pinned Prettier 3.9.9 formats source, tests, scripts, schemas and configuration.
@@ -105,5 +105,23 @@ cursors preserve selected run, current policy and file-fetch semantics. Positive
 live fixture builds verify change paging, message expansion and file data; direct
 counts and immediate-dependency pages provide the next graph slice with recorded
 contracts. Missing change roots remain explicit partial evidence. Independent
-review caught and corrected global no-hints/require-complete handling. The full
-graph/investigation, multi-root and hostile branch gates remain open.
+review caught and corrected global no-hints/require-complete handling. Failure investigation, live shared-DAG/cycle cases, multi-root and hostile branch gates remain open.
+
+Wrapper-owned breadth-first `run tree` now retains unique execution nodes and all
+retained directed edges, detects cycles separately from shared prerequisites,
+and declares every expansion boundary. Independent scoped counts reconcile
+bounded pages; a zero count establishes a known leaf. Non-terminal roots reserve
+one final observation through an atomic transport launch ceiling, including
+ancestry and overlapping reads. Failed or changed final observations invalidate
+root expansion; still-running graphs are provisional. Shared limit diagnostics
+are grouped while affected nodes retain their explicit states.
+
+Nine planner cases, an executable reservation regression and four actual
+released-CLI mock tests verify shared DAGs, cycles, denied/foreign/conflicting
+observations, safe empty continuation, limits, metadata/state changes and
+JSON/TOON equivalence. Independent review corrected child diagnostic attribution
+and excluded rejected child metadata, including repeated retained IDs. The live
+restricted reader proves root 9 to dependency 8, scoped counts one and zero,
+known-leaf completion and bounded partial expansion. Live shared-DAG/cycle and
+non-terminal state-change cases remain open; focused tree evidence does not
+certify the full failure-investigation product.

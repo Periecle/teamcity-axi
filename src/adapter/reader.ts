@@ -169,7 +169,10 @@ export class NativeTeamCityReader implements TeamCityReader {
     try {
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
-      const captured = await this.transport.execute({ kind: 'api', path });
+      const captured = await this.transport.execute(
+        { kind: 'api', path },
+        budget.maxChildProcesses,
+      );
       const value = normalize(parseRaw(captured).body);
 
       provenance.observedAt = new Date().toISOString();
@@ -225,7 +228,10 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
-      const captured = await this.transport.execute({ kind: 'log', runId: id, tail });
+      const captured = await this.transport.execute(
+        { kind: 'log', runId: id, tail },
+        budget.maxChildProcesses,
+      );
 
       if (captured.exitCode !== 0 || captured.signal)
         throw new DomainError(
@@ -266,10 +272,13 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
-      const captured = await this.transport.execute({
-        kind: 'api',
-        path: `/app/rest/builds/id:${id}?fields=${runDetailFields}`,
-      });
+      const captured = await this.transport.execute(
+        {
+          kind: 'api',
+          path: `/app/rest/builds/id:${id}?fields=${runDetailFields}`,
+        },
+        budget.maxChildProcesses,
+      );
       const normalized = normalizeRun(parseRaw(captured).body, this.serverUrl, this.secrets);
 
       if (normalized.run.id !== id)
@@ -300,10 +309,13 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
-      const captured = await this.transport.execute({
-        kind: 'api',
-        path: `/app/rest/buildTypes/id:${literal(id)}?fields=id,name,projectId,paused`,
-      });
+      const captured = await this.transport.execute(
+        {
+          kind: 'api',
+          path: `/app/rest/buildTypes/id:${literal(id)}?fields=id,name,projectId,paused`,
+        },
+        budget.maxChildProcesses,
+      );
       const dto = object(parseRaw(captured).body);
       const observedId = identity(dto.id),
         projectId = identity(dto.projectId);
@@ -347,19 +359,22 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
-      const captured = await this.transport.execute({
-        kind: 'api',
-        path: apiPath(
-          'builds',
-          [
-            ...filters,
-            `count:${query.count}`,
-            `start:${query.start}`,
-            `lookupLimit:${query.scanLimit}`,
-          ],
-          fields,
-        ),
-      });
+      const captured = await this.transport.execute(
+        {
+          kind: 'api',
+          path: apiPath(
+            'builds',
+            [
+              ...filters,
+              `count:${query.count}`,
+              `start:${query.start}`,
+              `lookupLimit:${query.scanLimit}`,
+            ],
+            fields,
+          ),
+        },
+        budget.maxChildProcesses,
+      );
       const page = normalizeRunPage(
         parseRaw(captured).body,
         query,

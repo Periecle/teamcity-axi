@@ -300,7 +300,7 @@ export class ProcessTransport {
       throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
   }
 
-  private async acquire(): Promise<void> {
+  private async acquire(maxChildProcesses?: number): Promise<void> {
     this.check();
 
     while (this.active >= this.options.limits.concurrency) {
@@ -308,6 +308,11 @@ export class ProcessTransport {
       this.check();
     }
 
+    if (maxChildProcesses !== undefined && this.launches >= maxChildProcesses)
+      throw new DomainError(
+        'CALL_LIMIT_EXCEEDED',
+        'Reserved child launch capacity cannot be consumed',
+      );
     if (this.launches >= this.options.limits.maxChildren)
       throw new DomainError('INPUT_LIMIT_EXCEEDED', 'Child launch budget exhausted');
     this.active++;
@@ -322,10 +327,15 @@ export class ProcessTransport {
     }
   }
 
-  async execute(operation: Operation): Promise<Captured> {
+  async execute(operation: Operation, maxChildProcesses?: number): Promise<Captured> {
+    if (
+      maxChildProcesses !== undefined &&
+      (!Number.isInteger(maxChildProcesses) || maxChildProcesses < 0 || maxChildProcesses > 256)
+    )
+      throw new DomainError('INTERNAL_ERROR', 'Invalid reserved launch ceiling');
     const args = argv(operation);
 
-    await this.acquire();
+    await this.acquire(maxChildProcesses);
 
     try {
       return await new Promise<Captured>((resolve, reject) => {

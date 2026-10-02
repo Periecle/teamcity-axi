@@ -37,7 +37,7 @@
       "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
-      "scope": "focused restricted-identity contracts, run view/list/problems/tests/log/changes, immediate dependency adapter and counts, verified context and scoped doctor; not release certification",
+      "scope": "focused restricted-identity contracts, run view/list/problems/tests/log/changes, bounded run tree and immediate dependency counts, verified context and scoped doctor; not release certification",
       "contextPath": "/",
       "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
     }

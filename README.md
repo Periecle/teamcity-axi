@@ -7,7 +7,7 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
 exact-ID `run view`, bounded `run list`, independent `run problems` and `run tests`,
-bounded `run log` and `run changes`, verified `context show` and scoped `doctor`. Reads use typed
+bounded `run log` and `run changes`, wrapper-owned `run tree`, verified `context show` and scoped `doctor`. Reads use typed
 validation, scope assertions and query-bound cursors. Other remote services remain
 gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
@@ -64,6 +64,14 @@ bounded text previews, subject to the output byte budget and a text ceiling.
 identity. Messages show their first line by default; `--full` expands the bounded
 page. File names are fetched only with `--files`, capped at 100 per commit with
 explicit omission counts. Changes are contextual evidence, without causal claims.
+
+`run tree` inspects concrete immediate snapshot dependencies with shared budgets.
+Shared prerequisites appear once while retaining every parent edge; cycles are
+reported separately. Scoped counts distinguish known leaves from depth, node,
+call and permission boundaries. Defaults are depth four, 30 nodes, 24 child
+processes, 20 seconds and 24 KiB output. `--depth 0` means root only. Non-terminal
+roots reserve a final observation, with provisional or changed evidence explicit.
+The graph never implies causal attribution. See [graph decisions](docs/decisions/0007-run-graph.md).
 
 `context show` makes no server calls unless `--verify` is supplied. Verification
 reads only selected jobs/projects and the current identity; it reports a safe
