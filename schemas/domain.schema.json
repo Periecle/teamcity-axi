@@ -193,6 +193,7 @@
             "tests",
             "log",
             "changes",
+            "job",
             "dependencies",
             "context",
             "output"
@@ -539,6 +540,29 @@
         }
       },
       "required": ["id", "version", "vcsRootId", "message"],
+      "additionalProperties": false
+    },
+    "Job": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "name": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "paused": {
+          "type": ["boolean", "null"]
+        }
+      },
+      "required": ["id", "name", "projectId", "paused"],
       "additionalProperties": false
     }
   }

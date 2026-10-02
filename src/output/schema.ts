@@ -57,6 +57,8 @@ export function validateResponse(value: Response): void {
     ['run.changes', 'run-changes'],
     ['run.tree', 'run-tree'],
     ['run.failure', 'failure'],
+    ['job.view', 'job-view'],
+    ['job.list', 'job-list'],
   ]) {
     if (
       value.command === command &&

@@ -66,9 +66,15 @@ export async function main(args: readonly string[]): Promise<void> {
                 ? { payload: packagedSchema('context-show') }
                 : d.name === 'doctor'
                   ? { payload: packagedSchema('doctor') }
-                  : ['run.problems', 'run.tests', 'run.log', 'run.changes', 'run.tree'].includes(
-                        d.name,
-                      )
+                  : [
+                        'run.problems',
+                        'run.tests',
+                        'run.log',
+                        'run.changes',
+                        'run.tree',
+                        'job.view',
+                        'job.list',
+                      ].includes(d.name)
                     ? { payload: packagedSchema(d.name.replace('.', '-')) }
                     : {}),
       });
@@ -120,6 +126,8 @@ export async function main(args: readonly string[]): Promise<void> {
           'run.changes',
           'run.tree',
           'run.failure',
+          'job.view',
+          'job.list',
           'context.show',
           'doctor',
         ].includes(command)
@@ -150,6 +158,14 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (command === 'job.view' || command === 'job.list') {
+            const { viewJob, listJobs } = await import('../commands/jobs.js');
+
+            output = await (command === 'job.view' ? viewJob : listJobs)(
+              parsed,
+              context,
+              controller.signal,
+            );
           } else if (command === 'run.failure') {
             const { readFailure } = await import('../commands/run-failure.js');
 

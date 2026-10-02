@@ -549,3 +549,78 @@ test('actual restricted failure reports preserve run-bound source evidence and s
     await f.close();
   }
 });
+test('actual restricted job reads retain direct project scope, safe metadata and unknown bounded exhaustion', async () => {
+  const f = await liveFixture();
+  try {
+    const args = ['job', 'list', '--project', f.contract.fixture.projectId, '--limit', '1'];
+    const first = await f.wrapper([...args, '--json']);
+    assert.equal(first.code, 0);
+    const data = JSON.parse(first.stdout);
+    validateResponse(data);
+    assert.equal(data.data.jobs[0].id, f.contract.fixture.jobId);
+    assert.equal(data.data.jobs[0].paused, false);
+    assert.equal(data.data.page.hasMore, true);
+    assert.equal(data.data.page.total, null);
+    assert.equal(data.data.selection.membership, 'direct');
+    assert.equal(data.meta.counts.childProcesses, 3);
+    for (const hint of data.next) parse(hint.argv.slice(1));
+    const next = JSON.parse((await f.wrapper([...data.next[0].argv.slice(1), '--json'])).stdout);
+    assert.equal(next.data.jobs[0].id, f.contract.fixture.greenJobId);
+    assert.equal(next.data.selection.position, 1);
+    const toon = decode((await f.wrapper(args)).stdout);
+    assert.deepEqual(toon.data.jobs, data.data.jobs);
+    const viewArgs = [
+      'job',
+      'view',
+      f.contract.fixture.jobId,
+      '--project',
+      f.contract.fixture.projectId,
+    ];
+    for (const flags of [['--json'], []]) {
+      const exact = await f.wrapper([...viewArgs, ...flags]);
+      assert.equal(exact.code, 0);
+      const value = flags.length ? JSON.parse(exact.stdout) : decode(exact.stdout);
+      validateResponse(value);
+      assert.deepEqual(value.data.job, data.data.jobs[0]);
+      assert.equal(value.meta.counts.childProcesses, 2);
+      assert.deepEqual(Object.keys(value.data.job).sort(), ['id', 'name', 'paused', 'projectId']);
+    }
+    const all = JSON.parse(
+      (await f.wrapper(['job', 'list', '--project', f.contract.fixture.projectId, '--json']))
+        .stdout,
+    );
+    assert.deepEqual(
+      all.data.jobs.map((j) => j.id),
+      ['AxiContract_Fail', 'AxiContract_Green', 'AxiContract_Vcs'],
+    );
+    assert.equal(all.status, 'partial');
+    assert.equal(all.data.page.hasMore, null);
+    assert.equal(all.data.page.total, null);
+    const strict = await f.wrapper([
+      'job',
+      'list',
+      '--project',
+      f.contract.fixture.projectId,
+      '--require-complete',
+      '--no-hints',
+      '--json',
+    ]);
+    assert.equal(strict.code, 1);
+    assert.equal(JSON.parse(strict.stdout).next, undefined);
+    const denied = await f.wrapper(['job', 'list', '--project', 'AxiDenied', '--json']);
+    assert.equal(denied.code, 1);
+    assert.equal(JSON.parse(denied.stdout).error.code, 'PERMISSION_DENIED');
+    const mismatch = await f.wrapper([
+      'job',
+      'view',
+      f.contract.fixture.jobId,
+      '--project',
+      'AxiDenied',
+      '--json',
+    ]);
+    assert.equal(mismatch.code, 1);
+    assert.equal(JSON.parse(mismatch.stdout).error.code, 'CONTEXT_MISMATCH');
+  } finally {
+    await f.close();
+  }
+});

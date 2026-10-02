@@ -771,6 +771,74 @@
       "signal": null,
       "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 44\nDate: Fri, 02 Oct 2026 13:43:06 GMT\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716057004547772416\n\n{\"id\":8,\"snapshot-dependencies\":{\"count\":0}}",
       "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "bounded-jobs": {
+      "args": [
+        "api",
+        "/app/rest/buildTypes?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2CbuildType%28id%2Cname%2CprojectId%2Cpaused%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 15:16:25 GMT\nMixed-Content: noupgrade\nX-Request-Id: 716080486664900608\nContent-Type: application/json\nContent-Length: 290\nX-Frame-Options: sameorigin\n\n{\"count\":1,\"nextHref\":\"/app/rest/buildTypes?fields=count,nextHref,buildType(id,name,projectId,paused)&locator=count:1,lookupLimit:5000,project:(id:($base64:QXhpQ29udHJhY3Q)),start:1\",\"buildType\":[{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"paused\":false,\"projectId\":\"AxiContract\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "bounded-jobs-next": {
+      "args": [
+        "api",
+        "/app/rest/buildTypes?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A1%2Cstart%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2CbuildType%28id%2Cname%2CprojectId%2Cpaused%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716080486752980992\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 292\nDate: Fri, 02 Oct 2026 15:16:25 GMT\n\n{\"count\":1,\"nextHref\":\"/app/rest/buildTypes?fields=count,nextHref,buildType(id,name,projectId,paused)&locator=count:1,lookupLimit:5000,project:(id:($base64:QXhpQ29udHJhY3Q)),start:2\",\"buildType\":[{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"paused\":false,\"projectId\":\"AxiContract\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "bounded-jobs-empty": {
+      "args": [
+        "api",
+        "/app/rest/buildTypes?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A1%2Cstart%3A4999%2ClookupLimit%3A5000&fields=count%2CnextHref%2CbuildType%28id%2Cname%2CprojectId%2Cpaused%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nDate: Fri, 02 Oct 2026 15:16:25 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716080486824284160\nContent-Type: application/json\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 26\n\n{\"count\":0,\"buildType\":[]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "bounded-jobs-denied": {
+      "args": [
+        "api",
+        "/app/rest/buildTypes?locator=project%3A%28id%3A%28%24base64%3AQXhpRGVuaWVk%29%29%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2CbuildType%28id%2Cname%2CprojectId%2Cpaused%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 403 Forbidden\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nX-Request-Id: 716080486887198720\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 15:16:25 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 356\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 403 (Forbidden).\",\"additionalMessage\":\"jetbrains.buildServer.serverSide.auth.AccessDeniedException: You do not have enough permissions to access project with internal id: project2.\",\"stackTrace\":null,\"message\":\"You do not have enough permissions to access project with internal id: project2\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
     }
   },
   "fixture": {

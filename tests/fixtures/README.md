@@ -23,7 +23,7 @@ The raw operations verify CLI request construction and response transport. They
 do not prove that a real server implements locator/field/continuation semantics.
 No minimum supported server version is inferred from them.
 
-`teamcity-2026.2-native-1.5.0/contract.json` contains 45 captured reads through
+`teamcity-2026.2-native-1.5.0/contract.json` contains 49 captured reads through
 the same released Linux x64 CLI against actual TeamCity 2026.2 build 238924.
 Its projects, builds, tests and user are original synthetic test data. The
 permission inventory proves project viewing without build-run permission;
@@ -79,3 +79,11 @@ read-only product.
 The controlled VCS/dependency fixture and its exact run inventory are documented
 in [SANDBOX.md](SANDBOX.md). Positive adapter contracts do not certify graph
 traversal or failure investigation.
+
+Four additional restricted job-page observations verify encoded direct-project
+scope, bounded count/start/lookupLimit, nextHref, an empty bounded page and
+foreign-project denial. The recorder validates exact job identities before
+accepting repeated captures. The native/mock corpus also records bounded job
+pages and exact job metadata; wrapper tests cover unsafe continuations, local
+cursor rejection, nullable paused state, bounded diagnostics and dash-leading
+retrieval identities. These focused cases do not certify remaining read services.

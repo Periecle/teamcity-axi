@@ -218,6 +218,7 @@ export function verifyLiveCapture(records, contract) {
     ['denied', 'PERMISSION_DENIED'],
     ['missing', 'NOT_FOUND'],
     ['invalid-auth', 'AUTH_REQUIRED'],
+    ['bounded-jobs-denied', 'PERMISSION_DENIED'],
   ]) {
     let observed;
     try {
@@ -228,6 +229,30 @@ export function verifyLiveCapture(records, contract) {
     if (observed !== expected)
       throw Error('Captured error contract differs from the restricted test fixture');
   }
+  for (const [name, expectedId] of [
+    ['bounded-jobs', contract.fixture.jobId],
+    ['bounded-jobs-next', contract.fixture.greenJobId],
+  ]) {
+    const page = body(name),
+      job = page.buildType?.[0];
+    if (
+      page.count !== 1 ||
+      page.buildType.length !== 1 ||
+      job?.id !== expectedId ||
+      job.projectId !== contract.fixture.projectId ||
+      job.paused !== false ||
+      typeof page.nextHref !== 'string'
+    )
+      throw Error('Captured job page identity or scope differs from the fixture');
+  }
+  const emptyJobs = body('bounded-jobs-empty');
+  if (
+    emptyJobs.count !== 0 ||
+    !Array.isArray(emptyJobs.buildType) ||
+    emptyJobs.buildType.length !== 0 ||
+    emptyJobs.nextHref !== undefined
+  )
+    throw Error('Captured empty job page differs from the fixture');
 }
 export function sanitizeLiveStdout(stdout, secrets) {
   const index = stdout.startsWith('HTTP/1.1 ') ? stdout.indexOf('\n\n') : -1;

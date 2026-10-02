@@ -9,15 +9,17 @@ import type {
   Job,
   RunQuery,
   RunPage,
+  JobQuery,
 } from '../domain/teamcity.js';
 import type { ProcessTransport } from '../transport/process.js';
 import { parseRaw } from './raw.js';
-import { identity, normalizeRun, object } from './run.js';
+import { identity, normalizeRun } from './run.js';
 import { literal, apiPath } from './locator.js';
 import { normalizeRunPage, runFilters } from './run-page.js';
-import { sanitizeText } from '../output/sanitize.js';
 
 import { isUtf8 } from 'node:buffer';
+
+import { jobFields, jobLimitations, jobRequest, normalizeJob, normalizeJobPage } from './jobs.js';
 
 import {
   normalizeIdentity,
@@ -297,52 +299,39 @@ export class NativeTeamCityReader implements TeamCityReader {
   }
 
   async getJob(ref: { id: string }, budget: Budget): Promise<ReadResult<Job>> {
-    const provenance: Provenance = {
-      observedAt: new Date().toISOString(),
-      operation: 'job.detail',
-      projectId: null,
-      limitations: [],
-    };
+    const id = identity(ref.id);
+    const result = await this.metadata(
+      'job.detail',
+      `/app/rest/buildTypes/id:${literal(id)}?fields=${jobFields}`,
+      budget,
+      (body) => {
+        const job = normalizeJob(body, this.secrets);
 
-    try {
-      const id = identity(ref.id);
+        if (job.id !== id)
+          throw new DomainError('CONTEXT_MISMATCH', 'Server returned a different job');
 
-      if (Date.now() >= budget.deadline)
-        throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
-      const captured = await this.transport.execute(
-        {
-          kind: 'api',
-          path: `/app/rest/buildTypes/id:${literal(id)}?fields=id,name,projectId,paused`,
-        },
-        budget.maxChildProcesses,
-      );
-      const dto = object(parseRaw(captured).body);
-      const observedId = identity(dto.id),
-        projectId = identity(dto.projectId);
+        return job;
+      },
+    );
 
-      if (observedId !== id)
-        throw new DomainError('CONTEXT_MISMATCH', 'Server returned a different job');
-      if (
-        typeof dto.name !== 'string' ||
-        (dto.paused !== undefined && typeof dto.paused !== 'boolean')
-      )
-        throw new DomainError('UPSTREAM_SCHEMA_MISMATCH', 'Invalid job metadata');
-      provenance.projectId = projectId;
-      provenance.observedAt = new Date().toISOString();
-
-      return {
-        state: 'available',
-        value: {
-          id,
-          name: sanitizeText(dto.name, this.secrets),
-          projectId,
-          paused: typeof dto.paused === 'boolean' ? dto.paused : null,
-        },
-        provenance,
-      };
-    } catch (error) {
-      return { state: 'unavailable', error: asDomainError(error), provenance };
+    if (result.state === 'available') {
+      result.provenance.projectId = result.value.projectId;
+      result.provenance.limitations = jobLimitations(result.value);
     }
+
+    return result;
+  }
+
+  async listJobs(query: JobQuery, budget: Budget): Promise<ReadResult<EvidencePage<Job>>> {
+    const request = jobRequest(query);
+    const result = await this.metadata('job.page', request.path, budget, (body) =>
+      normalizeJobPage(body, query, this.serverUrl, this.secrets),
+    );
+
+    result.provenance.projectId = query.projectId;
+    if (result.state === 'available') result.provenance.limitations = result.value.limitations;
+
+    return result;
   }
 
   async listRuns(query: RunQuery, budget: Budget): Promise<ReadResult<RunPage>> {

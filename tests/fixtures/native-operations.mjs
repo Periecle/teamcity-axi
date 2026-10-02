@@ -108,6 +108,16 @@ export const operations = [
     ),
   ],
   ['dependency-count', api('/app/rest/builds/id:482193?fields=id,snapshot-dependencies(count)')],
+  [
+    'bounded-jobs',
+    api(
+      '/app/rest/buildTypes?locator=project:(id:($base64:UGF5bWVudHM)),count:20,start:0,lookupLimit:5000&fields=count,nextHref,buildType(id,name,projectId,paused)',
+    ),
+  ],
+  [
+    'job-detail',
+    api('/app/rest/buildTypes/id:($base64:UGF5bWVudHNfQnVpbGQ)?fields=id,name,projectId,paused'),
+  ],
   ['log-tail', ['run', 'log', '482193', '--tail', '80', '--json', '--no-input']],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];

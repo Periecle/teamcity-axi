@@ -340,9 +340,21 @@ export async function mockServer() {
       };
       if (mode === 'project-cycle') value.parentProjectId = id;
       if (mode === 'project-wrong-id') value.id = 'Other';
-    } else if (path.startsWith('/app/rest/buildTypes/id:'))
+    } else if (path.startsWith('/app/rest/buildTypes/id:')) {
+      if (mode === 'jobs-detail-denied') return error(403, 'Job unavailable');
+      if (mode === 'jobs-detail-missing') return error(404, 'Job not found');
       value = { id: run.buildTypeId, name: 'Build', projectId: 'Payments', paused: false };
-    else if (path.endsWith('/snapshot-dependencies'))
+      if (mode === 'jobs-wrong-id') value.id = 'Unrelated';
+      if (mode === 'jobs-leading-id') value.id = '--job';
+      if (mode === 'jobs-foreign') value.projectId = 'Forbidden';
+      if (mode === 'jobs-unknown-paused') delete value.paused;
+      if (mode === 'jobs-secret')
+        value = {
+          ...value,
+          name: 'fixture-only-token\x1b[31m',
+          parameters: { secret: 'server-private-parameter' },
+        };
+    } else if (path.endsWith('/snapshot-dependencies'))
       return error(406, 'This subresource does not provide the supported JSON collection');
     else if (
       path === '/app/rest/builds/id:482193' &&
@@ -435,6 +447,56 @@ export async function mockServer() {
       if (mode === 'list-wrong-branch') value.build = [{ ...run, branchName: 'another-branch' }];
       if (mode === 'list-unknown-result') value.build = [{ ...run, status: 'FUTURE_RESULT' }];
       if (mode === 'list-duplicate') value = { build: [run, run], count: 2 };
+    }
+    if (path === '/app/rest/buildTypes' && mode.startsWith('jobs-')) {
+      if (mode === 'jobs-denied') return error(403, 'Job page unavailable');
+      if (mode === 'jobs-unsupported') return error(404, 'Job collection unavailable');
+      const locator = url.searchParams.get('locator'),
+        count = Number(/(?:^|,)count:(\d+)/.exec(locator)?.[1] ?? 20),
+        start = Number(/(?:^|,)start:(\d+)/.exec(locator)?.[1] ?? 0);
+      const nextLocator = locator.replace(/(?:^|,)start:\d+/, (m) =>
+        m.startsWith(',') ? `,start:${start + count}` : `start:${start + count}`,
+      );
+      const nextHref =
+        '/teamcity/app/rest/buildTypes?' +
+        new URLSearchParams({ locator: nextLocator, fields: url.searchParams.get('fields') });
+      const job = { ...wire.jobs.buildType[0] };
+      value = { count: 1, buildType: [job], nextHref };
+      if (mode === 'jobs-empty') value = { count: 0, buildType: [] };
+      if (mode === 'jobs-empty-next') value = { count: 0, buildType: [], nextHref };
+      if (mode === 'jobs-unsafe') value.nextHref = 'https://attacker.invalid/app/rest/buildTypes';
+      if (mode === 'jobs-escalating')
+        value.nextHref = nextHref.replace('lookupLimit%3A5000', 'lookupLimit%3A10000');
+      if (mode === 'jobs-scope-change')
+        value.nextHref = nextHref.replace('UGF5bWVudHM', 'Rm9yYmlkZGVu');
+      if (mode === 'jobs-duplicate') value = { count: 2, buildType: [job, job] };
+      if (mode === 'jobs-foreign') job.projectId = 'Forbidden';
+      if (mode === 'jobs-leading-id') {
+        job.id = '--job';
+        delete value.nextHref;
+      }
+      if (mode === 'jobs-all-unknown')
+        value = {
+          count,
+          buildType: Array.from({ length: count }, (_, i) => ({
+            id: `Payments_Job${i}`,
+            name: 'Build',
+            projectId: 'Payments',
+          })),
+        };
+      if (mode === 'jobs-malformed') value.count = 0;
+      if (mode === 'jobs-unknown-paused') delete job.paused;
+      if (mode === 'jobs-secret') job.name = 'fixture-only-token\x1b[31m';
+      if (mode === 'jobs-huge') job.name = 'x'.repeat(3000000);
+      if (mode === 'jobs-oversized')
+        value = {
+          count,
+          buildType: Array.from({ length: count }, (_, i) => ({
+            ...job,
+            id: `Payments_Job${i}`,
+            name: '🦊'.repeat(100),
+          })),
+        };
     }
     res.end(JSON.stringify(value));
   });

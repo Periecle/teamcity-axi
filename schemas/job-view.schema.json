@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "$id": "urn:teamcity-axi:job-view:1.0",
+  "properties": {
+    "job": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Job"
+    }
+  },
+  "required": ["job"]
+}

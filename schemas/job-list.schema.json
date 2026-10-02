@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "$id": "urn:teamcity-axi:job-list:1.0",
+  "properties": {
+    "jobs": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Job"
+      }
+    },
+    "page": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Page"
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "membership": {
+          "const": "direct"
+        },
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "providerReturned": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4999
+        },
+        "scanLimit": {
+          "const": 5000
+        },
+        "consistency": {
+          "const": "best_effort_offset"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "projectId",
+        "membership",
+        "pageSize",
+        "providerReturned",
+        "position",
+        "scanLimit",
+        "consistency"
+      ]
+    },
+    "emptyReason": {
+      "type": "string",
+      "maxLength": 200
+    }
+  },
+  "required": ["jobs", "page", "selection"]
+}

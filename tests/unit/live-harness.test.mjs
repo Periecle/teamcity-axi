@@ -75,3 +75,14 @@ test('FIFO credential input fails promptly before reading or launching the nativ
     rmSync(dir, { recursive: true, force: true });
   }
 });
+test('live recorder rejects reattributing bounded job pages to another identity or project', () => {
+  for (const patch of [{ id: 'OtherJob' }, { projectId: 'OtherProject' }, { paused: true }]) {
+    const records = structuredClone(contract.records),
+      r = records['bounded-jobs'];
+    const at = r.stdout.indexOf('\n\n'),
+      body = JSON.parse(r.stdout.slice(at + 2));
+    body.buildType[0] = { ...body.buildType[0], ...patch };
+    r.stdout = r.stdout.slice(0, at + 2) + JSON.stringify(body);
+    assert.throws(() => verifyLiveCapture(records, contract), /job page identity or scope/);
+  }
+});
