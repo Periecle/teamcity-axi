@@ -33,9 +33,9 @@ async function fixture() {
   await writeFile(join(dir, 'teamcity-axi', 'config.json'), JSON.stringify(config), {
     mode: 0o600,
   });
-  const call = (args = [], signal = null) =>
+  const call = (args = [], signal = null, command = ['run', 'view', '482193']) =>
     new Promise((resolve, reject) => {
-      const child = spawn(process.execPath, [resolveBin, 'run', 'view', '482193', ...args], {
+      const child = spawn(process.execPath, [resolveBin, ...command, ...args], {
         env: {
           HOME: dir,
           XDG_CONFIG_HOME: dir,
@@ -192,6 +192,113 @@ test('released CLI output redacts long credentials before previews and marks omi
     const strict = await f.call(['--json', '--require-complete']);
     assert.equal(strict.code, 1);
     assert.equal(strict.value.status, 'partial');
+  } finally {
+    await f.close();
+  }
+});
+
+test('released native outcome projections remain explicit across view, list, watch and investigation', async () => {
+  const f = await fixture();
+  try {
+    for (const [mode, result] of [
+      ['outcome-canceled', 'canceled'],
+      ['outcome-failed-to-start', 'failed_to_start'],
+      ['outcome-composite', 'success'],
+    ]) {
+      f.server.setMode(mode);
+      for (const flags of [['--json'], []]) {
+        const view = await f.call(flags);
+        validateResponse(view.value);
+        assert.equal(view.code, 0);
+        assert.equal(view.value.data.run.result, result);
+        assert.equal(view.value.data.run.state, 'finished');
+        assert.equal(view.value.data.run.composite, mode === 'outcome-composite');
+        assert.ok(!view.stdout.includes('Private'));
+      }
+      const list = await f.call(
+        [
+          '--job',
+          'Payments_Build',
+          '--all-branches',
+          '--result',
+          result,
+          '--since',
+          '2026-10-01T00:00:00Z',
+          '--until',
+          '2026-10-02T00:00:00Z',
+          '--json',
+        ],
+        null,
+        ['run', 'list'],
+      );
+      validateResponse(list.value);
+      assert.equal(list.code, 0);
+      assert.equal(list.value.data.runs[0].result, result);
+      assert.equal(list.value.data.aggregates[result], 1);
+      const watch = await f.call(['--check', '--json'], null, ['run', 'watch', '482193']);
+      validateResponse(watch.value);
+      assert.equal(watch.value.data.run.result, result);
+      assert.equal(watch.value.data.check.passed, result === 'success');
+      assert.equal(watch.code, result === 'success' ? 0 : 1);
+      const failure = await f.call(['--json'], null, ['run', 'failure', '482193']);
+      validateResponse(failure.value);
+      assert.equal(failure.value.data.run.result, result);
+      assert.equal(
+        failure.value.data.assessment,
+        result === 'success' ? 'not_failed' : 'failure_observed',
+      );
+    }
+    f.server.setMode('outcome-missing');
+    const watch = await f.call(['--check', '--json'], null, ['run', 'watch', '482193']);
+    assert.equal(watch.code, 1);
+    assert.equal(watch.value.data.run.result, 'unknown');
+    assert.equal(watch.value.data.check.passed, false);
+    const projected = f.server.requests.filter((request) =>
+      request.query.fields?.includes('canceledInfo'),
+    );
+    assert.ok(projected.length > 0);
+    assert.ok(projected.every((request) => !request.query.fields.includes('canceledInfo(user')));
+    assert.ok(f.server.requests.every((request) => request.method === 'GET'));
+  } finally {
+    await f.close();
+  }
+});
+
+test('a full unknown-outcome page retains all rows within the public diagnostic ceiling', async () => {
+  const f = await fixture();
+  try {
+    f.server.setMode('outcome-many-missing');
+    for (const flags of [['--json'], []]) {
+      const result = await f.call(
+        [
+          '--job',
+          'Payments_Build',
+          '--all-branches',
+          '--limit',
+          '100',
+          '--max-bytes',
+          '65536',
+          '--since',
+          '2026-10-01T00:00:00Z',
+          '--until',
+          '2026-10-02T00:00:00Z',
+          ...flags,
+        ],
+        null,
+        ['run', 'list'],
+      );
+      validateResponse(result.value);
+      assert.equal(result.code, 0);
+      assert.equal(result.value.status, 'partial');
+      assert.equal(result.value.meta.complete, false);
+      assert.equal(result.value.data.runs.length, 100);
+      assert.equal(result.value.data.aggregates.unknown, 100);
+      assert.ok(
+        result.value.meta.limitations.some((note) =>
+          note.message.includes('100 distinct executions affected'),
+        ),
+      );
+    }
   } finally {
     await f.close();
   }

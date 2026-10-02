@@ -80,6 +80,37 @@ export function render(
   value.command = input.command;
   value.status = input.status;
   value.meta.observedAt = input.meta.observedAt;
+
+  // Large pages and graphs retain every outcome, while repeated diagnostics
+  // share one note with the exact number of affected executions.
+  if ((value.meta.limitations?.length ?? 0) > 90) {
+    const groups = new Map<string, NonNullable<Response['meta']['limitations']>>();
+
+    for (const note of value.meta.limitations!) {
+      const key = JSON.stringify([note.code, note.source ?? null, note.message, !!note.runId]);
+      const group = groups.get(key) ?? [];
+
+      group.push(note);
+      groups.set(key, group);
+    }
+
+    value.meta.limitations = [...groups.values()].flatMap((group) => {
+      if (group.length === 1) return group;
+
+      const { runId, ...note } = group[0]!;
+      const affected = new Set(group.map((item) => item.runId)).size;
+
+      return [
+        {
+          ...note,
+          ...(runId
+            ? { message: `${note.message} (${affected} distinct executions affected)` }
+            : {}),
+        },
+      ];
+    });
+  }
+
   validateResponse(value);
   let document = serialize(value, format);
 

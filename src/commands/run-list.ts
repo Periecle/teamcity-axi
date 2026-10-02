@@ -46,7 +46,7 @@ export async function listRuns(
 
   const result = parsed.flags.result === undefined ? undefined : String(parsed.flags.result);
 
-  if (result && !['success', 'failure', 'error'].includes(result))
+  if (result && !['success', 'failure', 'error', 'canceled', 'failed_to_start'].includes(result))
     throw new DomainError(
       'DEPENDENCY_UNSUPPORTED',
       'This outcome filter requires explicit metadata not yet verified by the adapter',
@@ -256,6 +256,9 @@ export async function listRuns(
         scope: 'returnedPage',
         failure: runs.filter((r) => r.result === 'failure').length,
         success: runs.filter((r) => r.result === 'success').length,
+        error: runs.filter((r) => r.result === 'error').length,
+        canceled: runs.filter((r) => r.result === 'canceled').length,
+        failed_to_start: runs.filter((r) => r.result === 'failed_to_start').length,
         unknown: runs.filter((r) => r.result === 'unknown').length,
       },
       ...(runs.length

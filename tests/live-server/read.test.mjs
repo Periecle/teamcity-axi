@@ -27,12 +27,19 @@ test('pinned CLI confirms the live server and restricted permission inventory wi
       'change_own_profile',
       'view_project',
       'view_project',
+      'view_project',
     ]);
     assert.ok(
       permissions
         .filter((p) => p.permission.id === 'view_project')
         .every(
-          (p) => !p.isGlobalScope && [f.contract.fixture.projectId, '_Root'].includes(p.project.id),
+          (p) =>
+            !p.isGlobalScope &&
+            [
+              f.contract.fixture.projectId,
+              f.contract.fixture.lifecycle.projectId,
+              '_Root',
+            ].includes(p.project.id),
         ),
     );
     for (const name of [

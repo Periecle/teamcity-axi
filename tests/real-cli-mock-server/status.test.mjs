@@ -329,3 +329,25 @@ test('concurrent separate checkouts preserve their own revisions with invocation
     await b.close();
   }
 });
+
+test('checkout checks distinguish exceptional and composite outcomes without false green', async () => {
+  const f = await fixture();
+  try {
+    for (const [mode, result, passed] of [
+      ['status-canceled', 'canceled', false],
+      ['status-failed-to-start', 'failed_to_start', false],
+      ['status-missing-outcome', 'unknown', false],
+      ['status-composite', 'success', true],
+    ]) {
+      f.server.setMode(mode);
+      const response = await f.call(['status', '--check', '--json']);
+      validateResponse(response.value);
+      assert.equal(response.value.data.jobs[0].run.result, result);
+      assert.equal(response.value.data.check.passed, passed);
+      assert.equal(response.code, passed ? 0 : 1);
+    }
+    assert.ok(f.server.requests.every((request) => request.method === 'GET'));
+  } finally {
+    await f.close();
+  }
+});

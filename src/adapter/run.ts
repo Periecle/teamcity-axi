@@ -126,8 +126,36 @@ export function normalizeRun(
     ['FAILURE', 'failure'],
     ['ERROR', 'error'],
   ]);
-  const result =
-    typeof dto.status === 'string' ? (results.get(dto.status) ?? 'unknown') : 'unknown';
+  let result = typeof dto.status === 'string' ? (results.get(dto.status) ?? 'unknown') : 'unknown';
+  const failedToStart = boolean(dto.failedToStart);
+  const canceledInfo = dto.canceledInfo == null ? undefined : object(dto.canceledInfo);
+  const canceled = canceledInfo !== undefined;
+  const cancellationTime = canceledInfo
+    ? timestamp(canceledInfo.timestamp, 'cancellation', limitations)
+    : null;
+
+  if (failedToStart === null || (canceled && !cancellationTime)) {
+    result = 'unknown';
+    limitations.push({
+      code: 'OUTCOME_METADATA_UNAVAILABLE',
+      message: 'Explicit execution outcome metadata is unavailable',
+      source: 'run',
+      runId: id,
+    });
+  } else if (
+    (canceled && failedToStart) ||
+    ((canceled || failedToStart) && dto.status === 'SUCCESS') ||
+    (failedToStart && state !== 'finished')
+  ) {
+    result = 'unknown';
+    limitations.push({
+      code: 'CONFLICTING_OUTCOME_METADATA',
+      message: 'Execution outcome metadata conflicts with the reported state or status',
+      source: 'run',
+      runId: id,
+    });
+  } else if (canceled) result = 'canceled';
+  else if (failedToStart) result = 'failed_to_start';
 
   if (state === 'unknown')
     limitations.push({
@@ -137,7 +165,7 @@ export function normalizeRun(
       runId: id,
     });
 
-  if (result === 'unknown')
+  if (result === 'unknown' && (dto.status === undefined || !results.has(dto.status)))
     limitations.push({
       code: dto.status === undefined ? 'RESULT_UNAVAILABLE' : 'UNKNOWN_RESULT',
       message:

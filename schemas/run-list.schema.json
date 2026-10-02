@@ -46,6 +46,9 @@
         "scope": { "const": "returnedPage" },
         "failure": { "type": "integer", "minimum": 0 },
         "success": { "type": "integer", "minimum": 0 },
+        "error": { "type": "integer", "minimum": 0 },
+        "canceled": { "type": "integer", "minimum": 0 },
+        "failed_to_start": { "type": "integer", "minimum": 0 },
         "unknown": { "type": "integer", "minimum": 0 }
       },
       "required": ["scope", "failure", "success", "unknown"],

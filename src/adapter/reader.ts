@@ -62,7 +62,7 @@ import {
 
 // Frozen in tests/fixtures/native-operations.mjs and the released-binary capture.
 export const runDetailFields =
-  'id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate';
+  'id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate';
 
 export class NativeTeamCityReader implements TeamCityReader {
   constructor(

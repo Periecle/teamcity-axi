@@ -31,8 +31,8 @@ test('live restricted identity and exact failed/green DTOs are preserved indepen
       .every((p) => !p.isGlobalScope && ['AxiContract', '_Root'].includes(p.project.id)),
   );
   for (const [name, id, result] of [
-    ['run-detail', '1', 'failure'],
-    ['green', '2', 'success'],
+    ['outcome-normal-failed', '1', 'failure'],
+    ['outcome-normal-green', '2', 'success'],
   ]) {
     const n = normalizeRun(body(name), 'http://127.0.0.1:32768');
     assert.equal(n.run.id, id);

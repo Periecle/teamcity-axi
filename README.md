@@ -78,8 +78,11 @@ Run list defaults to finished runs in an emitted seven-day finish-time window.
 It keeps page totals unknown and marks missing continuation as partial when
 bounded scan exhaustion cannot be proved. Exact contextual branches can be
 elided from projected rows; all-branch rows retain branch identity. Fractional
-finish-time filters and canceled/failed-to-start/unknown outcome filters remain
-explicitly gated while their contracts are verified.
+finish-time filters and the unknown-result filter remain explicitly gated.
+`--result canceled` and `--result failed_to_start` use explicit server metadata;
+ordinary success/failure/error filters exclude those exceptional outcomes.
+Missing or conflicting outcome metadata stays unknown. Composite execution is
+reported independently from lifecycle and result.
 
 Problems and tests retain exact run-bound occurrence IDs, including duplicate
 test names. `run tests --failed` excludes muted failures unless `--include-muted`

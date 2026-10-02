@@ -55,13 +55,17 @@ export function runFilters(query: RunQuery): string[] {
   }
 
   if (query.result !== undefined) {
-    if (!['success', 'failure', 'error'].includes(query.result))
+    if (!['success', 'failure', 'error', 'canceled', 'failed_to_start'].includes(query.result))
       throw new DomainError(
         'DEPENDENCY_UNSUPPORTED',
         'Result filter requires separately verified explicit outcome metadata',
       );
 
-    filters.push(`status:${query.result.toUpperCase()}`);
+    if (query.result === 'canceled') filters.push('canceled:true', 'failedToStart:false');
+    else if (query.result === 'failed_to_start')
+      filters.push('canceled:false', 'failedToStart:true');
+    else
+      filters.push(`status:${query.result.toUpperCase()}`, 'canceled:false', 'failedToStart:false');
   }
 
   if (query.window) {

@@ -117,3 +117,25 @@ test('agent capture guards reject reused identity, changed availability, pool mo
     assert.throws(() => verifyLiveCapture(records, contract));
   }
 });
+
+test('lifecycle permission captures cannot broaden the restricted reader inventory', () => {
+  for (const patch of [
+    { isGlobalScope: true },
+    { permission: { id: 'run_build' } },
+    { project: { id: 'AxiDenied' } },
+  ]) {
+    const records = structuredClone(contract.records);
+    const record = records['outcome-permissions'];
+    const at = record.stdout.indexOf('\n\n');
+    const body = JSON.parse(record.stdout.slice(at + 2));
+    const row = body.permissionAssignment.find(
+      (item) => item.project?.id === contract.fixture.lifecycle.projectId,
+    );
+    Object.assign(row, patch);
+    record.stdout = record.stdout.slice(0, at + 2) + JSON.stringify(body);
+    assert.throws(
+      () => verifyLiveCapture(records, contract),
+      /restricted fixture permission inventory/,
+    );
+  }
+});

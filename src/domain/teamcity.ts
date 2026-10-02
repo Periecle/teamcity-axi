@@ -175,7 +175,7 @@ export interface RunQuery {
   projectId?: string;
   branch?: string;
   state?: 'queued' | 'running' | 'finished';
-  result?: 'success' | 'failure' | 'error';
+  result?: 'success' | 'failure' | 'error' | 'canceled' | 'failed_to_start';
   revision?: string;
   vcsRootId?: string;
   window?: { since: string; until: string };

@@ -138,3 +138,41 @@ test('oversized evidence produces one valid bounded error instead of lying about
     validateResponse(r.response);
   }
 });
+
+test('large pages and graphs retain unknown outcomes without exceeding the diagnostic schema ceiling', () => {
+  for (const count of [100, 200]) {
+    const value = response('schema', {
+      runs: Array.from({ length: count }, (_, index) => ({
+        id: String(index + 1),
+        result: 'unknown',
+      })),
+    });
+    value.status = 'partial';
+    value.meta.complete = false;
+    value.meta.limitations = Array.from({ length: count }, (_, index) => ({
+      code: 'OUTCOME_METADATA_UNAVAILABLE',
+      source: 'run',
+      runId: String(index + 1),
+      message: 'Explicit execution outcome metadata is unavailable',
+    }));
+    value.meta.limitations.push({
+      code: 'SCAN_COVERAGE_UNKNOWN',
+      source: 'run',
+      message: 'Exhaustion is unverified',
+    });
+    for (const format of ['json', 'toon']) {
+      const output = render(value, format, 65536).response;
+      validateResponse(output);
+      assert.equal(output.status, 'partial');
+      assert.equal(output.meta.complete, false);
+      assert.equal(output.data.runs.length, count);
+      assert.ok(output.data.runs.every((run) => run.result === 'unknown'));
+      assert.equal(output.meta.limitations.length, 2);
+      assert.equal(output.meta.limitations[0].runId, undefined);
+      assert.ok(
+        output.meta.limitations[0].message.includes(`${count} distinct executions affected`),
+      );
+      assert.ok(output.meta.limitations.some((note) => note.code === 'SCAN_COVERAGE_UNKNOWN'));
+    }
+  }
+});

@@ -1,4 +1,5 @@
 import { statusRequest } from '../../dist/adapter/status.js';
+import { runDetailFields } from '../../dist/adapter/reader.js';
 
 const api = (path) => [
   'api',
@@ -146,6 +147,14 @@ export const operations = [
       '/app/rest/agents/id:7,compatible:(buildType:(id:($base64:UGF5bWVudHNfQnVpbGQ)))?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))',
     ),
   ],
+  ['run-outcomes', api(`/app/rest/builds/id:482193?fields=${runDetailFields}`)],
+  [
+    'dependencies-outcomes',
+    api(
+      `/app/rest/builds?locator=snapshotDependency:(to:(id:482193),recursive:false),defaultFilter:false,count:20,start:0,lookupLimit:5000&fields=count,nextHref,build(${runDetailFields})`,
+    ),
+  ],
+  ['status-outcomes', api(statusRequest({ jobIds: ['Payments_Build'], branch: 'feature/refund' }))],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];
 export const errorModes = ['denied', 'missing', 'expired', 'malformed', 'html'];

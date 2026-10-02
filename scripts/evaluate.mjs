@@ -19,7 +19,7 @@ import {
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const detailFields =
-  'id,buildTypeId,state,status,branchName,personal,composite,buildType(id,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id)))';
+  'id,buildTypeId,state,status,failedToStart,canceledInfo(timestamp),branchName,personal,composite,buildType(id,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id)))';
 const problemFields = 'id,type,identity,details,build(id)';
 const testFields = 'id,name,status,muted,ignored,details,build(id),test(id)';
 

@@ -5,6 +5,7 @@ export const run = {
   number: '42',
   state: 'finished',
   status: 'FAILURE',
+  failedToStart: false,
   branchName: 'feature/refund',
   statusText: 'Tests failed',
   personal: false,
@@ -496,6 +497,16 @@ export async function mockServer() {
           ],
         };
       if (mode === 'status-red') selected.status = 'FAILURE';
+      if (mode === 'status-canceled') {
+        selected.status = 'UNKNOWN';
+        selected.canceledInfo = { timestamp: '20261001T110000+0000' };
+      }
+      if (mode === 'status-failed-to-start') {
+        selected.status = 'FAILURE';
+        selected.failedToStart = true;
+      }
+      if (mode === 'status-missing-outcome') delete selected.failedToStart;
+      if (mode === 'status-composite') selected.composite = true;
       if (mode === 'status-stale')
         selected.revisions = {
           revision: [
@@ -788,6 +799,42 @@ export async function mockServer() {
     if (mode === 'agent-slow-page' && path === '/app/rest/agents') {
       setTimeout(() => res.end(JSON.stringify(value)), 1000);
       return;
+    }
+    if (mode.startsWith('outcome-')) {
+      const exceptional = { ...run };
+      if (mode === 'outcome-canceled') {
+        exceptional.status = 'UNKNOWN';
+        exceptional.canceledInfo = {
+          timestamp: '20261001T110000+0000',
+          text: 'Private cancellation comment',
+          user: { username: 'Private actor' },
+        };
+      }
+      if (mode === 'outcome-failed-to-start') exceptional.failedToStart = true;
+      if (mode === 'outcome-composite') {
+        exceptional.composite = true;
+        exceptional.status = 'SUCCESS';
+      }
+      if (mode === 'outcome-missing' || mode === 'outcome-many-missing')
+        delete exceptional.failedToStart;
+      if (
+        path === '/app/rest/builds/id:482193' &&
+        url.searchParams.get('fields') !== 'id,snapshot-dependencies(count)'
+      )
+        value = exceptional;
+      if (
+        path === '/app/rest/builds' &&
+        !url.searchParams.get('locator')?.includes('snapshotDependency:')
+      )
+        value = { count: 1, build: [exceptional] };
+      if (mode === 'outcome-many-missing' && path === '/app/rest/builds')
+        value = {
+          count: 100,
+          build: Array.from({ length: 100 }, (_, index) => ({
+            ...exceptional,
+            id: exceptional.id + index,
+          })),
+        };
     }
     res.end(JSON.stringify(value));
   });

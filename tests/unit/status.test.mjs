@@ -40,7 +40,7 @@ const root = 'Payments_Git';
 const assess = (builds) => assessStatusJob('Payments_Build', normalized(builds), revision, root);
 
 test('recorded bulk status preserves five exact jobs and queued lifecycles with bounded activity', () => {
-  const input = body('status-five');
+  const input = body('status-five-outcomes');
   const jobs = input.buildType.map((job) => job.id);
   const snapshots = normalizeStatus(input, { jobIds: jobs }, server, []);
   assert.deepEqual(
@@ -68,20 +68,20 @@ test('recorded bulk status preserves five exact jobs and queued lifecycles with 
 test('actual production locators remain identical to recorded unpadded and exact-branch requests', () => {
   assert.equal(
     statusRequest({ jobIds: ['AxiContract_Vcs'] }),
-    contract.records['status-one'].args[1],
+    contract.records['status-one-outcomes'].args[1],
   );
   assert.equal(
     statusRequest({ jobIds: ['AxiContract_Vcs'], branch: 'feature/status,project:AxiDenied' }),
-    contract.records['status-branch'].args[1],
+    contract.records['status-branch-outcomes'].args[1],
   );
   const page = normalizeStatus(
-    body('status-branch'),
+    body('status-branch-outcomes'),
     { jobIds: ['AxiContract_Vcs'], branch: 'feature/status,project:AxiDenied' },
     server,
     [],
   );
   assert.equal(page[0].page.runs.length, 0);
-  for (const name of ['status-missing-job', 'status-denied'])
+  for (const name of ['status-missing-job-outcomes', 'status-denied-outcomes'])
     assert.deepEqual(
       normalizeStatus(body(name), { jobIds: ['AxiContract_Missing'] }, server, []),
       [],
@@ -206,8 +206,8 @@ test('status reader preserves recorded operation and transport failures without 
   const reader = new NativeTeamCityReader(
     {
       execute: async (operation) => {
-        assert.equal(operation.path, contract.records['status-one'].args[1]);
-        return capture('status-one');
+        assert.equal(operation.path, contract.records['status-one-outcomes'].args[1]);
+        return capture('status-one-outcomes');
       },
     },
     server,

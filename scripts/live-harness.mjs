@@ -187,18 +187,30 @@ export function verifyLiveCapture(records, contract) {
   };
   if (body('server').buildNumber !== contract.server.buildNumber)
     throw Error('Captured server build differs from the test fixture');
-  const permissions = body('permissions').permissionAssignment;
-  if (
-    !Array.isArray(permissions) ||
-    JSON.stringify(permissions.map((p) => p.permission?.id).sort()) !==
-      JSON.stringify(['change_own_profile', 'view_project', 'view_project']) ||
-    permissions.some(
-      (p) =>
-        p.permission.id === 'view_project' &&
-        (p.isGlobalScope || ![contract.fixture.projectId, '_Root'].includes(p.project?.id)),
+  for (const name of [
+    'permissions',
+    ...(records['outcome-permissions'] ? ['outcome-permissions'] : []),
+  ]) {
+    const permissions = body(name).permissionAssignment;
+    if (!Array.isArray(permissions))
+      throw Error('Live identity does not match the restricted fixture permission inventory');
+    const projects = permissions.filter((p) => p.permission?.id === 'view_project');
+    const expectedProjects = [
+      contract.fixture.projectId,
+      '_Root',
+      ...(projects.some((p) => p.project?.id === contract.fixture.lifecycle?.projectId)
+        ? [contract.fixture.lifecycle.projectId]
+        : []),
+    ].sort();
+    if (
+      JSON.stringify(permissions.map((p) => p.permission?.id).sort()) !==
+        JSON.stringify(['change_own_profile', ...expectedProjects.map(() => 'view_project')]) ||
+      JSON.stringify(projects.map((p) => p.project?.id).sort()) !==
+        JSON.stringify(expectedProjects) ||
+      projects.some((p) => p.isGlobalScope !== false)
     )
-  )
-    throw Error('Live identity does not match the restricted fixture permission inventory');
+      throw Error('Live identity does not match the restricted fixture permission inventory');
+  }
   for (const [name, id, job, status] of [
     ['run-detail', contract.fixture.failedRunId, contract.fixture.jobId, 'FAILURE'],
     ['green', contract.fixture.greenRunId, contract.fixture.greenJobId, 'SUCCESS'],

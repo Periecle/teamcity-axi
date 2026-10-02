@@ -1000,6 +1000,89 @@
           "authenticated": true
         }
       ]
+    },
+    "run-outcomes": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 509\n\n{\"id\":482193,\"buildTypeId\":\"Payments_Build\",\"number\":\"42\",\"state\":\"finished\",\"status\":\"FAILURE\",\"failedToStart\":false,\"branchName\":\"feature/refund\",\"statusText\":\"Tests failed\",\"personal\":false,\"composite\":false,\"buildType\":{\"id\":\"Payments_Build\",\"name\":\"Build\",\"projectId\":\"Payments\"},\"revisions\":{\"count\":1,\"revision\":[{\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"vcs-root-instance\":{\"id\":\"17\",\"vcs-root-id\":\"Payments_Git\"}}]},\"startDate\":\"20261001T140000+0000\",\"finishDate\":\"20261001T140100+0000\"}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "dependencies-outcomes": {
+      "argv": [
+        "api",
+        "/app/rest/builds?locator=snapshotDependency:(to:(id:482193),recursive:false),defaultFilter:false,count:20,start:0,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 559\n\n{\"count\":1,\"build\":[{\"id\":482188,\"buildTypeId\":\"Payments_IntegrationTests\",\"number\":\"42\",\"state\":\"finished\",\"status\":\"FAILURE\",\"failedToStart\":false,\"branchName\":\"feature/refund\",\"statusText\":\"Tests failed\",\"personal\":false,\"composite\":false,\"buildType\":{\"id\":\"Payments_IntegrationTests\",\"name\":\"Integration\",\"projectId\":\"Payments\"},\"revisions\":{\"count\":1,\"revision\":[{\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"vcs-root-instance\":{\"id\":\"17\",\"vcs-root-id\":\"Payments_Git\"}}]},\"startDate\":\"20261001T140000+0000\",\"finishDate\":\"20261001T140100+0000\"}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds",
+          "query": {
+            "locator": "snapshotDependency:(to:(id:482193),recursive:false),defaultFilter:false,count:20,start:0,lookupLimit:5000",
+            "fields": "count,nextHref,build(id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "status-outcomes": {
+      "argv": [
+        "api",
+        "/app/rest/buildTypes?locator=item%3A%28id%3A%28%24base64%3AUGF5bWVudHNfQnVpbGQ%29%29%2Ccount%3A1%2Cstart%3A0&fields=count%2CbuildType%28id%2Cname%2CprojectId%2Cpaused%2Cbuilds%28%24locator%3A%28defaultFilter%3Afalse%2Cstate%3Aany%2Cbranch%3A%28name%3A%28value%3A%28%24base64%3AZmVhdHVyZS9yZWZ1bmQ%29%29%29%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000%29%2Ccount%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CfailedToStart%2CcanceledInfo%28timestamp%29%2CbranchName%2Cpersonal%2Ccomposite%2CbuildType%28id%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 627\n\n{\"count\":1,\"buildType\":[{\"id\":\"Payments_Build\",\"name\":\"Payments_Build\",\"projectId\":\"Payments\",\"paused\":false,\"builds\":{\"count\":1,\"build\":[{\"id\":482193,\"buildTypeId\":\"Payments_Build\",\"number\":\"42\",\"state\":\"finished\",\"status\":\"SUCCESS\",\"failedToStart\":false,\"branchName\":\"feature/refund\",\"statusText\":\"Tests failed\",\"personal\":false,\"composite\":false,\"buildType\":{\"id\":\"Payments_Build\",\"projectId\":\"Payments\"},\"revisions\":{\"revision\":[{\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"vcs-root-instance\":{\"id\":\"17\",\"vcs-root-id\":\"Payments_Git\"}}]},\"startDate\":\"20261001T140000+0000\",\"finishDate\":\"20261001T140100+0000\"}]}}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/buildTypes",
+          "query": {
+            "locator": "item:(id:($base64:UGF5bWVudHNfQnVpbGQ)),count:1,start:0",
+            "fields": "count,buildType(id,name,projectId,paused,builds($locator:(defaultFilter:false,state:any,branch:(name:(value:($base64:ZmVhdHVyZS9yZWZ1bmQ))),count:20,start:0,lookupLimit:5000),count,nextHref,build(id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,personal,composite,buildType(id,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))))))"
+          },
+          "authenticated": true
+        }
+      ]
     }
   }
 }
