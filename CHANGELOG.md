@@ -31,4 +31,5 @@ not establish token or latency savings. Sixteen actual model-agent sessions pass
 turns were 3 versus 3.5 in this fixed sample, with a secret-task regression of 8
 versus 4. There is no general performance guarantee. The final release audit
 accepts only the recorded compatibility scope. Comparison, setup/hooks and
-mutations remain deferred. No npm or GitHub release has been published.
+mutations remain deferred. The compiled GitHub release asset is the distribution package; npm registry
+publication is not claimed.

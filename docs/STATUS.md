@@ -33,7 +33,8 @@ and has syntax plus actual execution/cleanup checks.
 
 Exact-head CI passed both jobs at the effective-limit checkpoint `8c0e727`
 ([run 37044990473](https://github.com/Periecle/teamcity-axi/actions/runs/37044990473));
-final release CI is checked after pushing its commit. The compiled package ships
+Final product CI passed both jobs at `a88ddef`
+([run37049362753](https://github.com/Periecle/teamcity-axi/actions/runs/37049362753)). The compiled package ships
 MIT licensing, changelog, schemas, skill and generated reference. It excludes
 test/setup/evaluation tools, wire captures and credentials. Native installation
 is separate; there is no postinstall download, hidden update or telemetry.

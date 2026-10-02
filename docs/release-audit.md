@@ -47,5 +47,5 @@ with bypass or metric tampering are invalid. Failed setup and stalled initialize
 cleanup have explicit execution evidence. LSP cannot diagnose the .mjs evaluator;
 Node syntax checks and execution provide its fallback.
 
-v0.1.0 implementation and local package acceptance are complete. Public
-npm/GitHub release publication is separate from this implementation delivery.
+v0.1.0 implementation and package acceptance are complete. The compiled GitHub
+release asset provides distribution; npm registry publication is not claimed.
