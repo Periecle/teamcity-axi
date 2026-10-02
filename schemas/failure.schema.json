@@ -8,12 +8,7 @@
       "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Run"
     },
     "assessment": {
-      "enum": [
-        "not_failed",
-        "in_progress",
-        "failure_observed",
-        "inconclusive"
-      ]
+      "enum": ["not_failed", "in_progress", "failure_observed", "inconclusive"]
     },
     "findings": {
       "type": "array",
@@ -40,12 +35,6 @@
       "maxItems": 100
     }
   },
-  "required": [
-    "run",
-    "assessment",
-    "findings",
-    "sources",
-    "graph"
-  ],
+  "required": ["run", "assessment", "findings", "sources", "graph"],
   "additionalProperties": false
 }

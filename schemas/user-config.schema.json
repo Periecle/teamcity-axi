@@ -51,9 +51,7 @@
             "uniqueItems": true
           }
         },
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "additionalProperties": false
       }
     },
@@ -100,10 +98,6 @@
       "additionalProperties": false
     }
   },
-  "required": [
-    "schemaVersion",
-    "servers",
-    "readOnly"
-  ],
+  "required": ["schemaVersion", "servers", "readOnly"],
   "additionalProperties": false
 }

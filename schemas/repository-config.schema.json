@@ -28,11 +28,7 @@
             "maxLength": 256
           }
         },
-        "required": [
-          "server",
-          "remote",
-          "rootId"
-        ],
+        "required": ["server", "remote", "rootId"],
         "additionalProperties": false
       },
       "maxItems": 100
@@ -48,8 +44,6 @@
       "additionalProperties": false
     }
   },
-  "required": [
-    "schemaVersion"
-  ],
+  "required": ["schemaVersion"],
   "additionalProperties": false
 }

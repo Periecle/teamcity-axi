@@ -4,10 +4,25 @@
   "description": "Bounded read-only TeamCity evidence for coding agents",
   "private": true,
   "type": "module",
-  "engines": {"node": ">=24 <25"},
-  "bin": {"teamcity-axi": "bin/teamcity-axi.mjs"},
-  "files": ["bin", "dist", "schemas", "skills", "docs", "README.md", "LICENSE"],
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "bin": {
+    "teamcity-axi": "bin/teamcity-axi.mjs"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "schemas",
+    "skills",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "format": "prettier --write src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json .github",
+    "format:check": "prettier --check src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json .github",
+    "pretest": "npm run format:check",
     "build": "tsc",
     "test": "npm run build && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
     "test:real-cli": "npm run build && node --test tests/real-cli-mock-server/*.test.mjs",
@@ -16,6 +31,15 @@
     "test:live": "npm run build && node --test tests/live-server/*.test.mjs",
     "check": "npm test"
   },
-  "dependencies": {"@toon-format/toon": "4.1.1", "ajv": "8.20.0", "ajv-formats": "3.0.1", "smol-toml": "1.9.0"},
-  "devDependencies": {"@types/node": "24.19.1", "typescript": "6.0.3"}
+  "dependencies": {
+    "@toon-format/toon": "4.1.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "smol-toml": "1.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1",
+    "prettier": "3.9.9",
+    "typescript": "6.0.3"
+  }
 }

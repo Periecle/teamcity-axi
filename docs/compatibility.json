@@ -37,16 +37,16 @@
       "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
-      "scope": "focused restricted-identity raw contracts and exact run view; not release certification",
+      "scope": "focused restricted-identity raw contracts, exact run view and bounded run list; not release certification",
       "contextPath": "/",
       "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
     }
   ],
   "supportStatus": "development-with-focused-live-contracts",
-  "serverContract": "23 captured restricted-identity reads on a synthetic fixture project in actual TeamCity 2026.2; no full release certification",
+  "serverContract": "26 captured restricted-identity reads on a synthetic fixture project in actual TeamCity 2026.2; no full release certification",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-and-denied",
-    "boundedRunPages": "live-tested-single-page-nextHref-encoded-job-and-finish-window; service pending",
+    "boundedRunPages": "live-tested-wrapper-exact-job-and-project-page-cursor-window; unknown exhaustion; positive branch/revision gates open",
     "independentProblemPages": "live-positive; primitive service pending",
     "independentTestPages": "live-positive; muted and duplicate fixture expansion pending",
     "snapshotDependencyPages": "live-empty-via-snapshotDependency-to-recursive-false; positive graph direction pending",

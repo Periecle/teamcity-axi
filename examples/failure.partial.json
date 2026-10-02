@@ -145,16 +145,7 @@
   "next": [
     {
       "reason": "Inspect accessible child log evidence",
-      "argv": [
-        "teamcity-axi",
-        "run",
-        "log",
-        "482188",
-        "--tail",
-        "80",
-        "--server",
-        "work"
-      ]
+      "argv": ["teamcity-axi", "run", "log", "482188", "--tail", "80", "--server", "work"]
     }
   ]
 }

@@ -23,7 +23,7 @@ The raw operations verify CLI request construction and response transport. They
 do not prove that a real server implements locator/field/continuation semantics.
 No minimum supported server version is inferred from them.
 
-`teamcity-2026.2-native-1.5.0/contract.json` contains 23 captured reads through
+`teamcity-2026.2-native-1.5.0/contract.json` contains 26 captured reads through
 the same released Linux x64 CLI against actual TeamCity 2026.2 build 238924.
 Its projects, builds, tests and user are original synthetic test data. The
 permission inventory proves project viewing without build-run permission;

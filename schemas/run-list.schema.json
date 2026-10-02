@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:run-list:1.0",
+  "title": "Bounded execution page payload",
+  "type": "object",
+  "properties": {
+    "runs": {
+      "type": "array",
+      "maxItems": 100,
+      "items": { "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Run" }
+    },
+    "page": { "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Page" },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "pageSize": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "providerReturned": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "position": { "type": "integer", "minimum": 0, "maximum": 4999 },
+        "scanLimit": { "const": 5000 },
+        "consistency": { "const": "best_effort_offset" },
+        "timestampBasis": { "enum": ["finishTime", null] },
+        "window": {
+          "type": "object",
+          "properties": {
+            "since": { "type": "string", "format": "date-time" },
+            "until": { "type": "string", "format": "date-time" },
+            "bounds": { "const": "exclusive" }
+          },
+          "required": ["since", "until", "bounds"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "pageSize",
+        "providerReturned",
+        "position",
+        "scanLimit",
+        "consistency",
+        "timestampBasis"
+      ],
+      "additionalProperties": false
+    },
+    "aggregates": {
+      "type": "object",
+      "properties": {
+        "scope": { "const": "returnedPage" },
+        "failure": { "type": "integer", "minimum": 0 },
+        "success": { "type": "integer", "minimum": 0 },
+        "unknown": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["scope", "failure", "success", "unknown"],
+      "additionalProperties": false
+    },
+    "emptyReason": { "type": "string", "maxLength": 240 }
+  },
+  "required": ["runs", "page"],
+  "additionalProperties": false
+}

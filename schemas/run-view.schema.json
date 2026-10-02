@@ -1,9 +1,9 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"urn:teamcity-axi:run-view:1.0",
-  "title":"Exact execution observation payload",
-  "type":"object",
-  "properties":{"run":{"$ref":"urn:teamcity-axi:domain:1.0#/$defs/Run"}},
-  "required":["run"],
-  "additionalProperties":false
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:run-view:1.0",
+  "title": "Exact execution observation payload",
+  "type": "object",
+  "properties": { "run": { "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Run" } },
+  "required": ["run"],
+  "additionalProperties": false
 }

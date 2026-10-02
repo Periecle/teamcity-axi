@@ -25,10 +25,7 @@
           ]
         }
       },
-      "required": [
-        "reason",
-        "argv"
-      ],
+      "required": ["reason", "argv"],
       "additionalProperties": false
     },
     "Run": {
@@ -45,80 +42,44 @@
           "maxLength": 256
         },
         "state": {
-          "enum": [
-            "queued",
-            "running",
-            "finished",
-            "unknown"
-          ]
+          "enum": ["queued", "running", "finished", "unknown"]
         },
         "result": {
-          "enum": [
-            "success",
-            "failure",
-            "error",
-            "canceled",
-            "failed_to_start",
-            "unknown"
-          ]
+          "enum": ["success", "failure", "error", "canceled", "failed_to_start", "unknown"]
         },
         "number": {
           "type": "string"
         },
         "branch": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "statusText": {
           "type": "string"
         },
         "personal": {
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "type": ["boolean", "null"]
         },
         "composite": {
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "type": ["boolean", "null"]
         },
         "queuedAt": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "format": "date-time"
         },
         "startedAt": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "format": "date-time"
         },
         "finishedAt": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "format": "date-time"
         },
         "durationMs": {
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "minimum": 0
         },
         "webUrl": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "revisions": {
           "type": "array",
@@ -136,27 +97,16 @@
                 "maxLength": 256
               }
             },
-            "required": [
-              "vcsRootId",
-              "revision"
-            ],
+            "required": ["vcsRootId", "revision"],
             "additionalProperties": false
           },
           "maxItems": 100
         },
         "rawStatus": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       },
-      "required": [
-        "id",
-        "jobId",
-        "state",
-        "result"
-      ],
+      "required": ["id", "jobId", "state", "result"],
       "additionalProperties": false
     },
     "Page": {
@@ -167,40 +117,21 @@
           "minimum": 0
         },
         "total": {
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "minimum": 0
         },
         "totalKind": {
-          "enum": [
-            "exact",
-            "lower_bound",
-            "unknown"
-          ]
+          "enum": ["exact", "lower_bound", "unknown"]
         },
         "hasMore": {
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "type": ["boolean", "null"]
         },
         "cursor": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "maxLength": 4096
         }
       },
-      "required": [
-        "returned",
-        "total",
-        "totalKind",
-        "hasMore",
-        "cursor"
-      ],
+      "required": ["returned", "total", "totalKind", "hasMore", "cursor"],
       "additionalProperties": false,
       "allOf": [
         {
@@ -223,10 +154,7 @@
           "if": {
             "properties": {
               "totalKind": {
-                "enum": [
-                  "exact",
-                  "lower_bound"
-                ]
+                "enum": ["exact", "lower_bound"]
               }
             }
           },
@@ -278,10 +206,7 @@
               "minimum": 0
             },
             "observed": {
-              "type": [
-                "integer",
-                "null"
-              ],
+              "type": ["integer", "null"],
               "minimum": 0
             },
             "reason": {
@@ -292,10 +217,7 @@
           "additionalProperties": false
         }
       },
-      "required": [
-        "code",
-        "message"
-      ],
+      "required": ["code", "message"],
       "additionalProperties": false
     },
     "SourceCoverage": {
@@ -312,36 +234,17 @@
           "maxLength": 30
         },
         "kind": {
-          "enum": [
-            "run",
-            "problems",
-            "tests",
-            "log",
-            "changes",
-            "dependencies"
-          ]
+          "enum": ["run", "problems", "tests", "log", "changes", "dependencies"]
         },
         "state": {
-          "enum": [
-            "complete",
-            "partial",
-            "unavailable",
-            "not_requested",
-            "budget_exhausted"
-          ]
+          "enum": ["complete", "partial", "unavailable", "not_requested", "budget_exhausted"]
         },
         "returned": {
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "minimum": 0
         },
         "total": {
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "minimum": 0
         },
         "reasonCode": {
@@ -354,29 +257,19 @@
           "format": "date-time"
         }
       },
-      "required": [
-        "id",
-        "runId",
-        "kind",
-        "state"
-      ],
+      "required": ["id", "runId", "kind", "state"],
       "additionalProperties": false,
       "allOf": [
         {
           "if": {
             "properties": {
               "state": {
-                "enum": [
-                  "unavailable",
-                  "budget_exhausted"
-                ]
+                "enum": ["unavailable", "budget_exhausted"]
               }
             }
           },
           "then": {
-            "required": [
-              "reasonCode"
-            ]
+            "required": ["reasonCode"]
           }
         }
       ]
@@ -400,19 +293,10 @@
           "maxLength": 30
         },
         "kind": {
-          "enum": [
-            "problem",
-            "test",
-            "log",
-            "revision",
-            "run"
-          ]
+          "enum": ["problem", "test", "log", "revision", "run"]
         },
         "itemId": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "excerpt": {
           "type": "string",
@@ -426,15 +310,7 @@
           "$ref": "urn:teamcity-axi:domain:1.0#/$defs/NextAction"
         }
       },
-      "required": [
-        "id",
-        "sourceRef",
-        "runId",
-        "kind",
-        "excerpt",
-        "observedAt",
-        "retrieve"
-      ],
+      "required": ["id", "sourceRef", "runId", "kind", "excerpt", "observedAt", "retrieve"],
       "additionalProperties": false
     },
     "Finding": {
@@ -460,10 +336,7 @@
           ]
         },
         "claim": {
-          "enum": [
-            "observation",
-            "hypothesis"
-          ]
+          "enum": ["observation", "hypothesis"]
         },
         "summary": {
           "type": "string",
@@ -483,14 +356,7 @@
           "maxItems": 20
         }
       },
-      "required": [
-        "id",
-        "runId",
-        "kind",
-        "claim",
-        "summary",
-        "evidence"
-      ],
+      "required": ["id", "runId", "kind", "claim", "summary", "evidence"],
       "additionalProperties": false,
       "allOf": [
         {
@@ -502,9 +368,7 @@
             }
           },
           "then": {
-            "required": [
-              "uncertainty"
-            ]
+            "required": ["uncertainty"]
           }
         }
       ]
@@ -527,10 +391,7 @@
           ]
         }
       },
-      "required": [
-        "run",
-        "expansion"
-      ],
+      "required": ["run", "expansion"],
       "additionalProperties": false
     },
     "Graph": {
@@ -570,11 +431,7 @@
                 "const": "snapshot"
               }
             },
-            "required": [
-              "fromRunId",
-              "toRunId",
-              "kind"
-            ],
+            "required": ["fromRunId", "toRunId", "kind"],
             "additionalProperties": false
           },
           "maxItems": 2000
@@ -584,13 +441,7 @@
           "minimum": 0
         }
       },
-      "required": [
-        "rootRunId",
-        "complete",
-        "nodes",
-        "edges",
-        "unexpanded"
-      ],
+      "required": ["rootRunId", "complete", "nodes", "edges", "unexpanded"],
       "additionalProperties": false
     },
     "Change": {
@@ -615,12 +466,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "id",
-        "version",
-        "vcsRootId",
-        "message"
-      ],
+      "required": ["id", "version", "vcsRootId", "message"],
       "additionalProperties": false
     }
   }

@@ -6,7 +6,8 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
-exact-ID `run view` with typed validation and scope assertions. Other remote
+exact-ID `run view` and bounded `run list` with typed validation, scope assertions
+and query-bound cursors. Other remote
 services remain gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
 
@@ -26,7 +27,21 @@ node bin/teamcity-axi.mjs context show --json
 node bin/teamcity-axi.mjs schema run.view --json
 node bin/teamcity-axi.mjs run view 482193 --server work --json
 npm test
+npm run format
+npm run format:check
 ```
+
+Code uses pinned Prettier with two-space indentation, semicolons, single quotes,
+trailing commas and LF endings. `npm test` checks formatting before compiling
+and running tests, so the same rules are enforced in CI. Captured wire artifacts
+are excluded from automatic rewriting.
+
+Run list defaults to finished runs in an emitted seven-day finish-time window.
+It keeps page totals unknown and marks missing continuation as partial when
+bounded scan exhaustion cannot be proved. Exact contextual branches can be
+elided from projected rows; all-branch rows retain branch identity. Fractional
+finish-time filters and canceled/failed-to-start/unknown outcome filters remain
+explicitly gated while their contracts are verified.
 
 Trusted configuration is `${XDG_CONFIG_HOME:-~/.config}/teamcity-axi/config.json`.
 Use [the schema](schemas/user-config.schema.json) and

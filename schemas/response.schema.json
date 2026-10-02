@@ -13,11 +13,7 @@
       "pattern": "^[a-z]+(?:\\.[a-z]+)*$"
     },
     "status": {
-      "enum": [
-        "ok",
-        "partial",
-        "error"
-      ]
+      "enum": ["ok", "partial", "error"]
     },
     "context": {
       "type": "object",
@@ -47,16 +43,10 @@
           "maxItems": 100
         },
         "branch": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "revision": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "vcsRootId": {
           "type": "string",
@@ -64,11 +54,7 @@
           "maxLength": 256
         },
         "revisionMatch": {
-          "enum": [
-            "exact",
-            "different",
-            "unverified"
-          ]
+          "enum": ["exact", "different", "unverified"]
         },
         "searchScope": {
           "type": "object",
@@ -80,11 +66,7 @@
               "type": "string"
             },
             "timestampBasis": {
-              "enum": [
-                "finish",
-                "start",
-                "queue"
-              ]
+              "enum": ["finish", "start", "queue"]
             },
             "scanLimit": {
               "type": "integer",
@@ -98,9 +80,7 @@
           "additionalProperties": false
         }
       },
-      "required": [
-        "server"
-      ],
+      "required": ["server"],
       "additionalProperties": false
     },
     "data": {
@@ -126,11 +106,7 @@
           "maxProperties": 20
         }
       },
-      "required": [
-        "code",
-        "message",
-        "retryable"
-      ],
+      "required": ["code", "message", "retryable"],
       "additionalProperties": false
     },
     "meta": {
@@ -196,18 +172,10 @@
           "additionalProperties": false
         },
         "consistency": {
-          "enum": [
-            "single_observation",
-            "best_effort",
-            "state_changed"
-          ]
+          "enum": ["single_observation", "best_effort", "state_changed"]
         }
       },
-      "required": [
-        "observedAt",
-        "complete",
-        "truncated"
-      ],
+      "required": ["observedAt", "complete", "truncated"],
       "additionalProperties": false
     },
     "next": {
@@ -218,12 +186,7 @@
       "maxItems": 3
     }
   },
-  "required": [
-    "schemaVersion",
-    "command",
-    "status",
-    "meta"
-  ],
+  "required": ["schemaVersion", "command", "status", "meta"],
   "additionalProperties": false,
   "allOf": [
     {
@@ -235,13 +198,9 @@
         }
       },
       "then": {
-        "required": [
-          "error"
-        ],
+        "required": ["error"],
         "not": {
-          "required": [
-            "data"
-          ]
+          "required": ["data"]
         },
         "properties": {
           "meta": {
@@ -254,13 +213,9 @@
         }
       },
       "else": {
-        "required": [
-          "data"
-        ],
+        "required": ["data"],
         "not": {
-          "required": [
-            "error"
-          ]
+          "required": ["error"]
         }
       }
     },
@@ -311,17 +266,12 @@
             "const": "run.failure"
           },
           "status": {
-            "enum": [
-              "ok",
-              "partial"
-            ]
+            "enum": ["ok", "partial"]
           }
         }
       },
       "then": {
-        "required": [
-          "context"
-        ],
+        "required": ["context"],
         "properties": {
           "data": {
             "$ref": "urn:teamcity-axi:failure:1.0"

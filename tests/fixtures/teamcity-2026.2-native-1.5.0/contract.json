@@ -9,7 +9,7 @@
     "version": "1.5.0",
     "binarySha256": "796d88b509e11407afdb73b3cfeda99aff5a417258f5f38ba047dd1f2931ee60"
   },
-  "observedAt": "2026-10-02T11:58:36.801Z",
+  "observedAt": "2026-10-02T12:13:30.662Z",
   "records": {
     "server": {
       "args": [
@@ -25,7 +25,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 58\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716030705045344256\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\n\n{\"version\":\"2026.2 (build 238924)\",\"buildNumber\":\"238924\"}",
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716034454014922752\nContent-Type: application/json\nContent-Length: 58\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\n\n{\"version\":\"2026.2 (build 238924)\",\"buildNumber\":\"238924\"}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "run-detail": {
@@ -42,7 +42,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nX-Request-Id: 716030705125036032\nContent-Length: 397\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\n\n{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}",
+      "stdout": "HTTP/1.1 200 OK\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 397\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Request-Id: 716034454090420224\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Content-Type-Options: nosniff\n\n{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "run-detail-counts": {
@@ -59,7 +59,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030705200533504\nContent-Type: application/json\nContent-Length: 407\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\n\n{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"count\":0,\"revision\":[]}}",
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034454161723392\nCache-Control: no-store\nX-Frame-Options: sameorigin\nMixed-Content: noupgrade\nContent-Type: application/json\nContent-Length: 407\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\n\n{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"count\":0,\"revision\":[]}}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "green": {
@@ -76,7 +76,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030705267642368\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 342\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\n\n{\"id\":2,\"buildTypeId\":\"AxiContract_Green\",\"number\":\"1\",\"status\":\"SUCCESS\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Success\",\"buildType\":{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113314+0000\",\"finishDate\":\"20261002T113325+0000\",\"revisions\":{\"revision\":[]}}",
+      "stdout": "HTTP/1.1 200 OK\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 342\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716034454228832256\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"id\":2,\"buildTypeId\":\"AxiContract_Green\",\"number\":\"1\",\"status\":\"SUCCESS\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Success\",\"buildType\":{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113314+0000\",\"finishDate\":\"20261002T113325+0000\",\"revisions\":{\"revision\":[]}}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "denied": {
@@ -93,7 +93,7 @@
       ],
       "code": 1,
       "signal": null,
-      "stdout": "HTTP/1.1 403 Forbidden\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716030705338945536\nCache-Control: no-store\nContent-Length: 320\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 11:58:36 GMT\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 403 (Forbidden).\",\"additionalMessage\":\"jetbrains.buildServer.serverSide.auth.AccessDeniedException: You do not have enough permissions to access build with id: 3.\",\"stackTrace\":null,\"message\":\"You do not have enough permissions to access build with id: 3\"}]}",
+      "stdout": "HTTP/1.1 403 Forbidden\nX-Content-Type-Options: nosniff\nCache-Control: no-store\nContent-Length: 320\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034454300135424\nContent-Type: application/json\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 403 (Forbidden).\",\"additionalMessage\":\"jetbrains.buildServer.serverSide.auth.AccessDeniedException: You do not have enough permissions to access build with id: 3.\",\"stackTrace\":null,\"message\":\"You do not have enough permissions to access build with id: 3\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "missing": {
@@ -110,7 +110,7 @@
       ],
       "code": 1,
       "signal": null,
-      "stdout": "HTTP/1.1 404 Not Found\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nContent-Type: application/json\nContent-Length: 256\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030705414443008\nCache-Control: no-store\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: No build found by id '999999'.\",\"stackTrace\":null,\"message\":\"No build found by id '999999'.\"}]}",
+      "stdout": "HTTP/1.1 404 Not Found\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 256\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034454367244288\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: No build found by id '999999'.\",\"stackTrace\":null,\"message\":\"No build found by id '999999'.\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "problems": {
@@ -127,7 +127,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nContent-Length: 518\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nCache-Control: no-store\nContent-Type: application/json\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030705498329088\n\n{\"count\":3,\"problemOccurrence\":[{\"id\":\"build:(id:1),problem:(id:2)\",\"type\":\"TC_SERVICE_MESSAGE\",\"identity\":\"fixture-problem\",\"details\":\"Synthetic build problem\",\"build\":{\"id\":1}},{\"id\":\"build:(id:1),problem:(id:3)\",\"type\":\"TC_EXIT_CODE\",\"identity\":\"simpleRunnerRUNNER_1_1\",\"details\":\"Process exited with code 1 (Step: Synthetic script (Command Line))\",\"build\":{\"id\":1}},{\"id\":\"build:(id:1),problem:(id:1)\",\"type\":\"TC_FAILED_TESTS\",\"identity\":\"TC_FAILED_TESTS_bt1\",\"details\":\"1 failed test detected\",\"build\":{\"id\":1}}]}",
+      "stdout": "HTTP/1.1 200 OK\nX-Xss-Protection: 1; mode=block\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034454438547456\nCache-Control: no-store\nContent-Length: 518\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\n\n{\"count\":3,\"problemOccurrence\":[{\"id\":\"build:(id:1),problem:(id:2)\",\"type\":\"TC_SERVICE_MESSAGE\",\"identity\":\"fixture-problem\",\"details\":\"Synthetic build problem\",\"build\":{\"id\":1}},{\"id\":\"build:(id:1),problem:(id:3)\",\"type\":\"TC_EXIT_CODE\",\"identity\":\"simpleRunnerRUNNER_1_1\",\"details\":\"Process exited with code 1 (Step: Synthetic script (Command Line))\",\"build\":{\"id\":1}},{\"id\":\"build:(id:1),problem:(id:1)\",\"type\":\"TC_FAILED_TESTS\",\"identity\":\"TC_FAILED_TESTS_bt1\",\"details\":\"1 failed test detected\",\"build\":{\"id\":1}}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "tests": {
@@ -144,7 +144,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nContent-Length: 261\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nX-Request-Id: 716030705573826560\nCache-Control: no-store\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\n\n{\"count\":1,\"testOccurrence\":[{\"id\":\"build:(id:1),id:2000000000\",\"name\":\"Fixture suite: same name\",\"status\":\"FAILURE\",\"ignored\":false,\"muted\":false,\"details\":\"Connection refused\\nSynthetic fixture assertion\",\"test\":{\"id\":\"517450581327024597\"},\"build\":{\"id\":1}}]}",
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Request-Id: 716034454509850624\nCache-Control: no-store\nContent-Length: 261\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\n\n{\"count\":1,\"testOccurrence\":[{\"id\":\"build:(id:1),id:2000000000\",\"name\":\"Fixture suite: same name\",\"status\":\"FAILURE\",\"ignored\":false,\"muted\":false,\"details\":\"Connection refused\\nSynthetic fixture assertion\",\"test\":{\"id\":\"517450581327024597\"},\"build\":{\"id\":1}}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "dependencies-unsupported": {
@@ -161,7 +161,7 @@
       ],
       "code": 1,
       "signal": null,
-      "stdout": "HTTP/1.1 406 Not Acceptable\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nContent-Length: 253\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nX-Request-Id: 716030705657712640\nCache-Control: no-store\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 406 (Not Acceptable).\",\"additionalMessage\":\"javax.ws.rs.NotAcceptableException: HTTP 406 Not Acceptable.\",\"stackTrace\":null,\"message\":\"Make sure you have supplied correct 'Accept' header.\"}]}",
+      "stdout": "HTTP/1.1 406 Not Acceptable\nCache-Control: no-store\nContent-Length: 253\nX-Frame-Options: sameorigin\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034454589542400\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 406 (Not Acceptable).\",\"additionalMessage\":\"javax.ws.rs.NotAcceptableException: HTTP 406 Not Acceptable.\",\"stackTrace\":null,\"message\":\"Make sure you have supplied correct 'Accept' header.\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "dependencies": {
@@ -178,7 +178,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716030705729015808\nContent-Length: 22\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nX-Frame-Options: sameorigin\n\n{\"build\":[],\"count\":0}",
+      "stdout": "HTTP/1.1 200 OK\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nMixed-Content: noupgrade\nX-Request-Id: 716034454652456960\nCache-Control: no-store\nContent-Length: 22\n\n{\"build\":[],\"count\":0}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "changes": {
@@ -195,7 +195,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nX-Request-Id: 716030705796124672\nCache-Control: no-store\nContent-Type: application/json\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nContent-Length: 23\n\n{\"change\":[],\"count\":0}",
+      "stdout": "HTTP/1.1 200 OK\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 23\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Frame-Options: sameorigin\nMixed-Content: noupgrade\nX-Request-Id: 716034454723760128\n\n{\"change\":[],\"count\":0}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "queue": {
@@ -212,7 +212,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030705867427840\nCache-Control: no-store\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nContent-Length: 22\nDate: Fri, 02 Oct 2026 11:58:36 GMT\n\n{\"build\":[],\"count\":0}",
+      "stdout": "HTTP/1.1 200 OK\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034454786674688\nContent-Length: 22\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nCache-Control: no-store\nContent-Type: application/json\n\n{\"build\":[],\"count\":0}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "jobs": {
@@ -229,7 +229,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 213\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030705938731008\nDate: Fri, 02 Oct 2026 11:58:36 GMT\n\n{\"count\":2,\"buildType\":[{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"paused\":false,\"projectId\":\"AxiContract\"},{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"paused\":false,\"projectId\":\"AxiContract\"}]}",
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Request-Id: 716034454853783552\nContent-Type: application/json\nContent-Length: 213\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\n\n{\"count\":2,\"buildType\":[{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"paused\":false,\"projectId\":\"AxiContract\"},{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"paused\":false,\"projectId\":\"AxiContract\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "agents-unknown-pool": {
@@ -246,7 +246,7 @@
       ],
       "code": 1,
       "signal": null,
-      "stdout": "HTTP/1.1 404 Not Found\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nContent-Length: 320\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716030706010034176\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 11:58:36 GMT\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: Nothing is found by locator 'count:1,id:0,orphanedPool:false'.\",\"stackTrace\":null,\"message\":\"Nothing is found by locator 'count:1,id:0,orphanedPool:false'.\"}]}",
+      "stdout": "HTTP/1.1 404 Not Found\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716034454929281024\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 320\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: Nothing is found by locator 'count:1,id:0,orphanedPool:false'.\",\"stackTrace\":null,\"message\":\"Nothing is found by locator 'count:1,id:0,orphanedPool:false'.\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "agents": {
@@ -263,7 +263,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Request-Id: 716030706085531648\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 141\nStrict-Transport-Security: max-age=31536000;\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\n\n{\"count\":1,\"agent\":[{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":0,\"name\":\"Default\"}}]}",
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716034455000584192\nContent-Length: 141\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nReferrer-Policy: origin-when-cross-origin\n\n{\"count\":1,\"agent\":[{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":0,\"name\":\"Default\"}}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "permissions": {
@@ -280,7 +280,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030706156834816\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 763\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\n\n{\"count\":3,\"permissionAssignment\":[{\"isGlobalScope\":true,\"permission\":{\"id\":\"change_own_profile\",\"name\":\"Change own profile\",\"global\":true}},{\"isGlobalScope\":false,\"permission\":{\"id\":\"view_project\",\"name\":\"View project and all parent projects\",\"global\":false},\"project\":{\"id\":\"AxiContract\",\"name\":\"AxiContract\",\"parentProjectId\":\"_Root\",\"href\":\"/app/rest/projects/id:AxiContract\",\"webUrl\":\"http://localhost:8111/project.html?projectId=AxiContract\"}},{\"isGlobalScope\":false,\"permission\":{\"id\":\"view_project\",\"name\":\"View project and all parent projects\",\"global\":false},\"project\":{\"id\":\"_Root\",\"name\":\"<Root project>\",\"description\":\"Contains all other projects\",\"href\":\"/app/rest/projects/id:_Root\",\"webUrl\":\"http://localhost:8111/project.html?projectId=_Root\"}}]}",
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nX-Request-Id: 716034455071887360\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 763\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"count\":3,\"permissionAssignment\":[{\"isGlobalScope\":true,\"permission\":{\"id\":\"change_own_profile\",\"name\":\"Change own profile\",\"global\":true}},{\"isGlobalScope\":false,\"permission\":{\"id\":\"view_project\",\"name\":\"View project and all parent projects\",\"global\":false},\"project\":{\"id\":\"AxiContract\",\"name\":\"AxiContract\",\"parentProjectId\":\"_Root\",\"href\":\"/app/rest/projects/id:AxiContract\",\"webUrl\":\"http://localhost:8111/project.html?projectId=AxiContract\"}},{\"isGlobalScope\":false,\"permission\":{\"id\":\"view_project\",\"name\":\"View project and all parent projects\",\"global\":false},\"project\":{\"id\":\"_Root\",\"name\":\"<Root project>\",\"description\":\"Contains all other projects\",\"href\":\"/app/rest/projects/id:_Root\",\"webUrl\":\"http://localhost:8111/project.html?projectId=_Root\"}}]}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "job": {
@@ -297,7 +297,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030706228137984\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 92\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\n\n{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"paused\":false,\"projectId\":\"AxiContract\"}",
+      "stdout": "HTTP/1.1 200 OK\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Length: 92\nX-Frame-Options: sameorigin\nX-Request-Id: 716034455138996224\nCache-Control: no-store\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\n\n{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"paused\":false,\"projectId\":\"AxiContract\"}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "pages": {
@@ -314,7 +314,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716030706295246848\nCache-Control: no-store\nContent-Length: 292\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status,branchName)&locator=buildType:(id:AxiContract_Fail),count:1,defaultFilter:false,lookupLimit:5000,start:1\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"status\":\"FAILURE\",\"state\":\"finished\"}],\"count\":1}",
+      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716034455210299392\nCache-Control: no-store\nContent-Type: application/json\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Length: 292\nDate: Fri, 02 Oct 2026 12:13:30 GMT\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status,branchName)&locator=buildType:(id:AxiContract_Fail),count:1,defaultFilter:false,lookupLimit:5000,start:1\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"status\":\"FAILURE\",\"state\":\"finished\"}],\"count\":1}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "encoded-page": {
@@ -331,7 +331,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030706370744320\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nCache-Control: no-store\nContent-Length: 438\nReferrer-Policy: origin-when-cross-origin\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status,branchName)&locator=buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)),count:1,defaultFilter:false,finishDate:(date:20261001T000000%2B0000,condition:after),finishDate:(date:20261003T000000%2B0000,condition:before),lookupLimit:5000,start:1,state:finished\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"status\":\"FAILURE\",\"state\":\"finished\"}],\"count\":1}",
+      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034455285796864\nContent-Type: application/json\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Length: 438\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status,branchName)&locator=buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)),count:1,defaultFilter:false,finishDate:(date:20261001T000000%2B0000,condition:after),finishDate:(date:20261003T000000%2B0000,condition:before),lookupLimit:5000,start:1,state:finished\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"status\":\"FAILURE\",\"state\":\"finished\"}],\"count\":1}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "list-detail": {
@@ -348,7 +348,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nX-Request-Id: 716030706442047488\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 791\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)&locator=buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)),count:1,defaultFilter:false,lookupLimit:5000,start:1,state:finished\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}],\"count\":1}",
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716034455357100032\nContent-Length: 791\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nCache-Control: no-store\nContent-Type: application/json\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)&locator=buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)),count:1,defaultFilter:false,lookupLimit:5000,start:1,state:finished\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}],\"count\":1}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "empty-page": {
@@ -365,7 +365,7 @@
       ],
       "code": 0,
       "signal": null,
-      "stdout": "HTTP/1.1 200 OK\nContent-Length: 22\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 11:58:36 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716030706513350656\nCache-Control: no-store\n\n{\"build\":[],\"count\":0}",
+      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nX-Request-Id: 716034455432597504\nCache-Control: no-store\nContent-Type: application/json\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Length: 22\nDate: Fri, 02 Oct 2026 12:13:30 GMT\n\n{\"build\":[],\"count\":0}",
       "stderr": "[Native stderr omitted from public live captures]"
     },
     "log": {
@@ -397,7 +397,58 @@
       ],
       "code": 1,
       "signal": null,
-      "stdout": "HTTP/1.1 401 Unauthorized\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nContent-Type: text/plain;charset=UTF-8\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nWww-Authenticate: Basic [REDACTED]\"TeamCity\"\nWww-Authenticate: Bearer [REDACTED]\"TeamCity\"\nSet-Cookie: [REDACTED]\nDate: Fri, 02 Oct 2026 11:58:36 GMT\n\n[Unparseable payload omitted from public live capture]",
+      "stdout": "HTTP/1.1 401 Unauthorized\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nWww-Authenticate: Basic [REDACTED]\"TeamCity\"\nWww-Authenticate: Bearer [REDACTED]\"TeamCity\"\nSet-Cookie: [REDACTED]\nX-Xss-Protection: 1; mode=block\nContent-Type: text/plain;charset=UTF-8\nDate: Fri, 02 Oct 2026 12:13:30 GMT\n\n[Unparseable payload omitted from public live capture]",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "encoded-job": {
+      "args": [
+        "api",
+        "/app/rest/buildTypes/id:($base64:QXhpQ29udHJhY3RfRmFpbA)?fields=id,name,projectId,paused",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nX-Request-Id: 716034455638118400\nCache-Control: no-store\nContent-Length: 92\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nX-Frame-Options: sameorigin\n\n{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"paused\":false,\"projectId\":\"AxiContract\"}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "all-branches-page": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=buildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfRmFpbA%29%29%2CdefaultFilter%3Afalse%2Cbranch%3Adefault%3Aany%2Cstate%3Afinished%2Ccount%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CbranchName%2CstatusText%2Cpersonal%2Ccomposite%2CbuildType%28id%2Cname%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%2CstartDate%2CfinishDate%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nX-Request-Id: 716034455705227264\nContent-Length: 812\nDate: Fri, 02 Oct 2026 12:13:30 GMT\nX-Frame-Options: sameorigin\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)&locator=branch:(default:any),buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)),count:1,defaultFilter:false,lookupLimit:5000,start:1,state:finished\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "project-page": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2CdefaultFilter%3Afalse%2Cbranch%3Adefault%3Aany%2Cstate%3Afinished%2Ccount%3A20%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CbranchName%2CstatusText%2Cpersonal%2Ccomposite%2CbuildType%28id%2Cname%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%2CstartDate%2CfinishDate%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716034455780724736\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 762\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nDate: Fri, 02 Oct 2026 12:13:30 GMT\n\n{\"build\":[{\"id\":2,\"buildTypeId\":\"AxiContract_Green\",\"number\":\"1\",\"status\":\"SUCCESS\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Success\",\"buildType\":{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113314+0000\",\"finishDate\":\"20261002T113325+0000\",\"revisions\":{\"revision\":[]}},{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"number\":\"1\",\"status\":\"FAILURE\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Tests failed: 1 (1 new), passed: 0; synthetic build problem (new)\",\"buildType\":{\"id\":\"AxiContract_Fail\",\"name\":\"AxiContract_Fail\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T113303+0000\",\"finishDate\":\"20261002T113314+0000\",\"revisions\":{\"revision\":[]}}],\"count\":2}",
       "stderr": "[Native stderr omitted from public live captures]"
     }
   },

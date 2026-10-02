@@ -15,3 +15,8 @@ checksum-verified binary through `TEAMCITY_AXI_TEST_BINARY` and run
 `npm run test:real-cli`. Missing fixtures/binaries are failures, never skips.
 Use independent review of security/evidence handling as required by the plan.
 Do not sign commits. The user authorizes pushes to `Periecle/teamcity-axi`.
+
+Keep source, tests, scripts, schemas and configuration readable with the pinned
+Prettier formatter: run `npm run format` after edits and `npm run format:check`
+before handoff. `npm test` enforces the formatting gate in CI. Preserve captured
+wire artifacts; `.prettierignore` excludes them from automatic rewriting.

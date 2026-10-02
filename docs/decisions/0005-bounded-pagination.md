@@ -19,5 +19,16 @@ authority. The consuming query must revalidate policy and recompute the filter
 hash from the effective query, including its window, before checking binding.
 Cursor binding separately checks fixed window dates.
 
-These helpers have pure adversarial tests and independent review. They are not
-yet a complete run-list adapter or a live pagination support claim.
+The run-list service now consumes these helpers with exact-job preflight,
+scope/policy checks on every row, fixed finish-time windows, cursor binding and
+independent review. It preserves useful rows when continuation is unsafe and
+reports unknown totals. Missing continuation under a bounded scan does not prove
+exhaustion: the response is partial with unknown continuation, including empty
+pages. Known continuation after an empty page remains usable. Offset consistency
+is reported explicitly.
+
+Live root-context reads on TeamCity 2026.2 build 238924 verify encoded job IDs,
+project/all-branch pages, finish-time filters and relative continuation. Positive
+hostile branch names, exact VCS revision matches, other outcomes, sub-second
+time boundaries and live deployment prefixes remain independent gates. Unknown
+result diagnostics and branch identity survive public projection.

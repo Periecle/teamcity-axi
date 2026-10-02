@@ -4,10 +4,7 @@
   "servers": {
     "work": {
       "url": "https://teamcity.example.com/teamcity",
-      "allowedProjects": [
-        "Payments",
-        "Platform"
-      ],
+      "allowedProjects": ["Payments", "Platform"],
       "allowHttpLoopback": false
     }
   },
