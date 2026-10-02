@@ -332,6 +332,7 @@ export async function mockServer() {
     else if (path.startsWith('/app/rest/projects/id:')) {
       const literal = /\(\$base64:([A-Za-z0-9_-]+)\)/.exec(path)?.[1];
       const id = literal ? Buffer.from(literal, 'base64url').toString() : path.split('id:')[1];
+      if (mode === 'agent-policy-hang' && id === 'Payments_Child') return;
       value = {
         id,
         name: 'Fixture project',
@@ -340,6 +341,7 @@ export async function mockServer() {
       };
       if (mode === 'project-cycle') value.parentProjectId = id;
       if (mode === 'project-wrong-id') value.id = 'Other';
+      if (id === 'Payments_Child') value.parentProjectId = 'Payments';
     } else if (path.startsWith('/app/rest/buildTypes/id:')) {
       if (mode === 'jobs-detail-denied') return error(403, 'Job unavailable');
       if (mode === 'jobs-detail-missing') return error(404, 'Job not found');
@@ -400,6 +402,7 @@ export async function mockServer() {
     else if (path === '/app/rest/buildTypes') value = wire.jobs;
     else if (path === '/app/rest/buildQueue') value = wire.queue;
     else if (path === '/app/rest/agents') value = wire.agents;
+    else if (path.startsWith('/app/rest/agents/id:')) value = wire.agents.agent[0];
     else if (path === '/app/messages')
       value =
         mode === 'log-window'
@@ -576,6 +579,108 @@ export async function mockServer() {
             queuedDate: 'invalid',
           })),
         };
+    }
+    if (
+      path.startsWith('/app/rest/agents') &&
+      (path.includes('/id:') || url.searchParams.get('fields')?.includes('build('))
+    ) {
+      if (mode === 'agent-denied') {
+        res.statusCode = 403;
+        return res.end(JSON.stringify({ errors: [{ message: 'Forbidden fixture scope' }] }));
+      }
+      if (mode === 'agent-unsupported' || mode === 'agent-missing') {
+        res.statusCode = 404;
+        return res.end(JSON.stringify({ errors: [{ message: 'Unavailable fixture capability' }] }));
+      }
+      const agent = structuredClone(wire.agents.agent[0]);
+      const locator = url.searchParams.get('locator') ?? '';
+      const count = Number(/(?:^|,)count:(\d+)/.exec(locator)?.[1] ?? 20);
+      const start = Number(/(?:^|,)start:(\d+)/.exec(locator)?.[1] ?? 0);
+      if (mode === 'agent-idle') agent.build = null;
+      if (mode === 'agent-state-mix') {
+        agent.enabled = false;
+        agent.authorized = false;
+        agent.build = null;
+      }
+      if (mode === 'agent-zero-pool') agent.pool.id = 0;
+      if (mode === 'agent-wrong-pool') agent.pool.id = 2;
+      if (mode === 'agent-wrong-id') agent.id = 8;
+      if (mode === 'agent-malformed-id') agent.id = 0;
+      if (mode === 'agent-unknown') {
+        delete agent.connected;
+        agent.enabled = null;
+        delete agent.authorized;
+        delete agent.pool;
+      }
+      if (mode === 'agent-bad-state') agent.enabled = 'true';
+      if (mode === 'agent-secret') {
+        agent.name = 'fixture-only-token\x1b[31m';
+        agent.pool.name = 'fixture-only-token';
+      }
+      if (mode === 'agent-huge') agent.name = 'x'.repeat(3000000);
+      if (mode === 'agent-oversized') agent.name = '🦊'.repeat(1000);
+      if (
+        [
+          'agent-active',
+          'agent-foreign-active',
+          'agent-conflict-active',
+          'agent-policy-hang',
+        ].includes(mode)
+      ) {
+        agent.build = {
+          id: 482193,
+          buildTypeId: 'Payments_Build',
+          buildType: {
+            id: 'Payments_Build',
+            projectId:
+              mode === 'agent-foreign-active'
+                ? 'Forbidden'
+                : mode === 'agent-policy-hang'
+                  ? 'Payments_Child'
+                  : 'Payments',
+          },
+        };
+        if (mode === 'agent-conflict-active') agent.build.buildType.id = 'Other';
+      }
+      if (path.includes('/id:')) value = agent;
+      else {
+        const nextLocator = locator.replace(
+          /(?:^|,)start:\d+/,
+          (m) => (m.startsWith(',') ? ',' : '') + 'start:' + (start + count),
+        );
+        const nextHref =
+          '/teamcity/app/rest/agents?' +
+          new URLSearchParams({ locator: nextLocator, fields: url.searchParams.get('fields') });
+        value = { count: 1, agent: [agent] };
+        if (
+          mode === 'agent-page' ||
+          mode === 'agent-slow-page' ||
+          mode === 'agent-empty-next' ||
+          mode.startsWith('agent-unsafe')
+        )
+          value.nextHref = nextHref;
+        if (mode === 'agent-empty' || mode === 'agent-empty-next')
+          value = { ...value, count: 0, agent: [] };
+        if (mode === 'agent-unsafe') value.nextHref = 'https://attacker.invalid/app/rest/agents';
+        if (mode === 'agent-unsafe-scope')
+          value.nextHref = nextHref.replace('UGF5bWVudHM', 'Rm9yYmlkZGVu');
+        if (mode === 'agent-unsafe-filter')
+          value.nextHref = nextHref.replace('defaultFilter%3Afalse', 'defaultFilter%3Atrue');
+        if (mode === 'agent-duplicate') value = { count: 2, agent: [agent, agent] };
+        if (mode === 'agent-malformed-page') value.count = 0;
+        if (mode === 'agent-many-unknown')
+          value = {
+            count,
+            agent: Array.from({ length: count }, (_, i) => ({
+              id: i + 1,
+              name: 'Synthetic agent ' + i,
+            })),
+          };
+      }
+    }
+    if (mode === 'agent-slow-page' && path === '/app/rest/agents') {
+      setTimeout(() => res.end(JSON.stringify(value)), 1000);
+      return;
     }
     res.end(JSON.stringify(value));
   });

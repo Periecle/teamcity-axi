@@ -9,7 +9,7 @@
     "version": "1.5.0",
     "binarySha256": "796d88b509e11407afdb73b3cfeda99aff5a417258f5f38ba047dd1f2931ee60"
   },
-  "observedAt": "2026-10-02T15:58:54.296Z",
+  "observedAt": "2026-10-02T16:25:31.457Z",
   "records": {
     "server": {
       "args": [
@@ -958,6 +958,227 @@
       "signal": null,
       "stdout": "HTTP/1.1 200 OK\nX-Request-Id: 716091178017099776\nCache-Control: no-store\nReferrer-Policy: origin-when-cross-origin\nContent-Type: application/json\nContent-Length: 233\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"id\":10,\"buildTypeId\":\"AxiContract_QueueA\",\"state\":\"queued\",\"composite\":false,\"personal\":false,\"buildType\":{\"id\":\"AxiContract_QueueA\",\"name\":\"Synthetic blocked queue fixture A\",\"projectId\":\"AxiContract\"},\"revisions\":{\"revision\":[]}}",
       "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agent-detail": {
+      "args": [
+        "api",
+        "/app/rest/agents/id:1?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876144427008\nContent-Type: application/json\nContent-Length: 138\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\n\n{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"axi-contract-pool-20261002\"}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agent-detail-job": {
+      "args": [
+        "api",
+        "/app/rest/agents/id:1,compatible:(buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA)))?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Length: 138\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876224118784\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Type: application/json\n\n{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"axi-contract-pool-20261002\"}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agent-detail-project": {
+      "args": [
+        "api",
+        "/app/rest/agents/id:1,compatible:(buildType:(project:(id:($base64:QXhpQ29udHJhY3Q))))?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Length: 138\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nCache-Control: no-store\nContent-Type: application/json\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876295421952\n\n{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"axi-contract-pool-20261002\"}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-job": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=compatible%3A%28buildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfRmFpbA%29%29%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nCache-Control: no-store\nContent-Length: 438\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876366725120\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\n\n{\"count\":1,\"nextHref\":\"/app/rest/agents?fields=count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId)))&locator=compatible:(buildType:(id:($base64:QXhpQ29udHJhY3RfRmFpbA))),count:1,defaultFilter:false,lookupLimit:5000,start:1\",\"agent\":[{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"axi-contract-pool-20261002\"}}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-project": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=compatible%3A%28buildType%3A%28project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%29%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Request-Id: 716097876433833984\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 441\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\n\n{\"count\":1,\"nextHref\":\"/app/rest/agents?fields=count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId)))&locator=compatible:(buildType:(project:(id:($base64:QXhpQ29udHJhY3Q)))),count:1,defaultFilter:false,lookupLimit:5000,start:1\",\"agent\":[{\"id\":1,\"name\":\"axi-contract-agent\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"axi-contract-pool-20261002\"}}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-job-next": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=compatible%3A%28buildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfRmFpbA%29%29%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876505137152\nContent-Type: application/json\nContent-Length: 22\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 16:25:31 GMT\n\n{\"count\":0,\"agent\":[]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-project-next": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=compatible%3A%28buildType%3A%28project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%29%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716097876572246016\nContent-Length: 22\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\n\n{\"count\":0,\"agent\":[]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-impossible": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=compatible%3A%28buildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfUXVldWVB%29%29%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nContent-Length: 22\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Request-Id: 716097876643549184\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 16:25:31 GMT\n\n{\"count\":0,\"agent\":[]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-project-denied": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=compatible%3A%28buildType%3A%28project%3A%28id%3A%28%24base64%3AQXhpRGVuaWVk%29%29%29%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 403 Forbidden\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Type: application/json\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876710658048\nContent-Length: 356\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 403 (Forbidden).\",\"additionalMessage\":\"jetbrains.buildServer.serverSide.auth.AccessDeniedException: You do not have enough permissions to access project with internal id: project2.\",\"stackTrace\":null,\"message\":\"You do not have enough permissions to access project with internal id: project2\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agent-detail-missing": {
+      "args": [
+        "api",
+        "/app/rest/agents/id:999999999?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 404 Not Found\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876777766912\nContent-Length: 276\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: No agent can be found by id '999999999'.\",\"stackTrace\":null,\"message\":\"No agent can be found by id '999999999'.\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agent-detail-incompatible": {
+      "args": [
+        "api",
+        "/app/rest/agents/id:1,compatible:(buildType:(id:($base64:QXhpQ29udHJhY3RfUXVldWVB)))?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 404 Not Found\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716097876849070080\nCache-Control: no-store\nContent-Type: application/json\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nContent-Length: 571\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: Found single item by dimensions [$help, $contextItem, id], but that was filtered out using the entire locator 'compatible:(buildType:(id:($base64:QXhpQ29udHJhY3RfUXVldWVB))),count:1,id:1'.\",\"stackTrace\":null,\"message\":\"Found single item by dimensions [$help, $contextItem, id], but that was filtered out using the entire locator 'compatible:(buildType:(id:($base64:QXhpQ29udHJhY3RfUXVldWVB))),count:1,id:1'\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-pool": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=pool%3A%28id%3A1%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 404 Not Found\nContent-Length: 320\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716097876920373248\nDate: Fri, 02 Oct 2026 16:25:31 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: Nothing is found by locator 'count:1,id:1,orphanedPool:false'.\",\"stackTrace\":null,\"message\":\"Nothing is found by locator 'count:1,id:1,orphanedPool:false'.\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "agents-pool-next": {
+      "args": [
+        "api",
+        "/app/rest/agents?locator=pool%3A%28id%3A1%29%2CdefaultFilter%3Afalse%2Ccount%3A1%2Cstart%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cagent%28id%2Cname%2Cconnected%2Cenabled%2Cauthorized%2Cpool%28id%2Cname%29%2Cbuild%28id%2CbuildTypeId%2CbuildType%28id%2CprojectId%29%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 404 Not Found\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716097876987482112\nContent-Type: application/json\nContent-Length: 320\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 16:25:31 GMT\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 404 (Not Found).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.NotFoundException: Nothing is found by locator 'count:1,id:1,orphanedPool:false'.\",\"stackTrace\":null,\"message\":\"Nothing is found by locator 'count:1,id:1,orphanedPool:false'.\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
     }
   },
   "fixture": {
@@ -994,7 +1215,10 @@
     "queuedRunIds": [
       "10",
       "11"
-    ]
+    ],
+    "agentId": "1",
+    "agentPoolId": "1",
+    "agentPoolName": "axi-contract-pool-20261002"
   },
   "limits": {
     "deadlineMs": 10000,

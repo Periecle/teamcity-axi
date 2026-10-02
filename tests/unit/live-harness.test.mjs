@@ -102,3 +102,18 @@ test('live recorder refuses queue ID reuse, scope changes and finished-state sub
     assert.throws(() => verifyLiveCapture(records, contract), /queue identity, scope or lifecycle/);
   }
 });
+test('agent capture guards reject reused identity, changed availability, pool movement and false empty pages', () => {
+  for (const [name, replace] of [
+    ['agent-detail', (value) => ({ ...value, id: 99 })],
+    ['agents-project', (value) => ({ ...value, agent: [{ ...value.agent[0], pool: { id: 99 } }] })],
+    ['agent-detail-job', (value) => ({ ...value, authorized: false })],
+    ['agents-impossible', (value) => ({ ...value, agent: [{ id: 1 }] })],
+  ]) {
+    const records = structuredClone(contract.records);
+    const record = records[name];
+    const split = record.stdout.indexOf('\n\n');
+    const value = JSON.parse(record.stdout.slice(split + 2));
+    record.stdout = record.stdout.slice(0, split + 2) + JSON.stringify(replace(value)) + '\n';
+    assert.throws(() => verifyLiveCapture(records, contract));
+  }
+});

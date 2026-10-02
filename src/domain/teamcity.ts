@@ -56,6 +56,29 @@ export interface QueueQuery {
   scanLimit: number;
 }
 
+export interface Agent {
+  id: string;
+  name: string;
+  connected: boolean | null;
+  enabled: boolean | null;
+  authorized: boolean | null;
+  pool: { id: string; name: string | null } | null;
+  activeRun: { id: string; jobId: string; projectId: string } | null;
+  activeRunState: 'reported' | 'idle' | 'not_reported' | 'unavailable';
+}
+
+export interface AgentScope {
+  jobId?: string;
+  projectId?: string;
+  poolId?: string;
+}
+
+export interface AgentQuery extends AgentScope {
+  count: number;
+  start: number;
+  scanLimit: number;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -190,6 +213,8 @@ export type ReadResult<T> =
 // The first vertical adapter implements this slice. Additional read primitives
 // extend this interface as their recorded contracts and tests are added.
 export interface TeamCityReader {
+  getAgent(ref: AgentScope & { id: string }, budget: Budget): Promise<ReadResult<Agent>>;
+  listAgents(query: AgentQuery, budget: Budget): Promise<ReadResult<EvidencePage<Agent>>>;
   listQueue(query: QueueQuery, budget: Budget): Promise<ReadResult<EvidencePage<QueueItem>>>;
   listJobs(query: JobQuery, budget: Budget): Promise<ReadResult<EvidencePage<Job>>>;
   listChanges(query: RelatedQuery, budget: Budget): Promise<ReadResult<EvidencePage<Change>>>;

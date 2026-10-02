@@ -60,6 +60,8 @@ export function validateResponse(value: Response): void {
     ['job.view', 'job-view'],
     ['job.list', 'job-list'],
     ['queue.list', 'queue-list'],
+    ['agent.list', 'agent-list'],
+    ['agent.view', 'agent-view'],
   ]) {
     if (
       value.command === command &&

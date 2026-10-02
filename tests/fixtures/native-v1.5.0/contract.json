@@ -890,6 +890,88 @@
           "authenticated": true
         }
       ]
+    },
+    "bounded-agents": {
+      "argv": [
+        "api",
+        "/app/rest/agents?locator=pool:(id:1),defaultFilter:false,count:20,start:0,lookupLimit:5000&fields=count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId)))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 130\n\n{\"count\":1,\"agent\":[{\"id\":7,\"name\":\"linux-1\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"Default\"}}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/agents",
+          "query": {
+            "locator": "pool:(id:1),defaultFilter:false,count:20,start:0,lookupLimit:5000",
+            "fields": "count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId)))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "agent-detail": {
+      "argv": [
+        "api",
+        "/app/rest/agents/id:7?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nKeep-Alive: timeout=5\nContent-Length: 108\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\n\n{\"id\":7,\"name\":\"linux-1\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"Default\"}}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/agents/id:7",
+          "query": {
+            "fields": "id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "agent-detail-job": {
+      "argv": [
+        "api",
+        "/app/rest/agents/id:7,compatible:(buildType:(id:($base64:UGF5bWVudHNfQnVpbGQ)))?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 108\n\n{\"id\":7,\"name\":\"linux-1\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"Default\"}}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/agents/id:7,compatible:(buildType:(id:($base64:UGF5bWVudHNfQnVpbGQ)))",
+          "query": {
+            "fields": "id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))"
+          },
+          "authenticated": true
+        }
+      ]
     }
   }
 }

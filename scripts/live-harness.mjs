@@ -220,6 +220,10 @@ export function verifyLiveCapture(records, contract) {
     ['invalid-auth', 'AUTH_REQUIRED'],
     ['bounded-jobs-denied', 'PERMISSION_DENIED'],
     ['queue-project-denied', 'PERMISSION_DENIED'],
+    ['agents-project-denied', 'PERMISSION_DENIED'],
+    ['agents-pool', 'NOT_FOUND'],
+    ['agent-detail-missing', 'NOT_FOUND'],
+    ['agent-detail-incompatible', 'NOT_FOUND'],
   ]) {
     let observed;
     try {
@@ -283,6 +287,39 @@ export function verifyLiveCapture(records, contract) {
     queued.buildType?.projectId !== contract.fixture.projectId
   )
     throw Error('Captured exact queued run differs from the fixture');
+  for (const name of ['agent-detail', 'agent-detail-job', 'agent-detail-project']) {
+    const agent = body(name);
+    if (
+      String(agent.id) !== contract.fixture.agentId ||
+      agent.name !== 'axi-contract-agent' ||
+      String(agent.pool?.id) !== contract.fixture.agentPoolId ||
+      agent.pool?.name !== contract.fixture.agentPoolName ||
+      agent.connected !== true ||
+      agent.enabled !== true ||
+      agent.authorized !== true
+    )
+      throw Error('Captured exact agent identity or availability differs from the fixture');
+  }
+  for (const name of ['agents-project', 'agents-job']) {
+    const page = body(name);
+    if (
+      page.count !== 1 ||
+      page.agent?.length !== 1 ||
+      String(page.agent[0]?.id) !== contract.fixture.agentId ||
+      String(page.agent[0]?.pool?.id) !== contract.fixture.agentPoolId
+    )
+      throw Error('Captured scoped agent identity differs from the fixture');
+  }
+  for (const name of ['agents-project-next', 'agents-job-next', 'agents-impossible']) {
+    const page = body(name);
+    if (
+      page.count !== 0 ||
+      !Array.isArray(page.agent) ||
+      page.agent.length !== 0 ||
+      page.nextHref !== undefined
+    )
+      throw Error('Captured empty bounded agent page differs from the fixture');
+  }
 }
 export function sanitizeLiveStdout(stdout, secrets) {
   const index = stdout.startsWith('HTTP/1.1 ') ? stdout.indexOf('\n\n') : -1;

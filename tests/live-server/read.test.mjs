@@ -698,3 +698,85 @@ test('actual restricted queue reads preserve positive queued IDs, scoped continu
     await f.close();
   }
 });
+test('actual scoped agent reads retain separate availability and unknown activity with exact retrieval and denied pools', async () => {
+  const f = await liveFixture();
+  try {
+    const args = ['agent', 'list', '--project', f.contract.fixture.projectId, '--limit', '1'];
+    const json = await f.wrapper([...args, '--json']);
+    assert.equal(json.code, 0);
+    const first = JSON.parse(json.stdout);
+    validateResponse(first);
+    assert.equal(first.data.agents[0].id, f.contract.fixture.agentId);
+    assert.equal(first.data.agents[0].pool.id, f.contract.fixture.agentPoolId);
+    assert.equal(first.data.agents[0].connected, true);
+    assert.equal(first.data.agents[0].enabled, true);
+    assert.equal(first.data.agents[0].authorized, true);
+    assert.equal(first.data.agents[0].activeRunState, 'not_reported');
+    assert.equal(first.data.agents[0].activeRun, null);
+    assert.equal(first.status, 'partial');
+    assert.equal(first.data.page.total, null);
+    assert.equal(first.data.page.hasMore, true);
+    const toon = decode((await f.wrapper(args)).stdout);
+    assert.deepEqual(toon.data.agents, first.data.agents);
+    for (const hint of first.next) parse(hint.argv.slice(1));
+    const continued = JSON.parse(
+      (await f.wrapper([...first.next[0].argv.slice(1), '--json'])).stdout,
+    );
+    assert.equal(continued.data.selection.position, 1);
+    assert.deepEqual(continued.data.agents, []);
+    assert.equal(continued.data.page.hasMore, null);
+    for (const flags of [['--json'], []]) {
+      const exact = await f.wrapper([
+        'agent',
+        'view',
+        f.contract.fixture.agentId,
+        '--job',
+        f.contract.fixture.jobId,
+        ...flags,
+      ]);
+      assert.equal(exact.code, 0);
+      const value = flags.length ? JSON.parse(exact.stdout) : decode(exact.stdout);
+      validateResponse(value);
+      assert.deepEqual(value.data.agent, first.data.agents[0]);
+      assert.equal(value.context.project, f.contract.fixture.projectId);
+    }
+    const job = JSON.parse(
+      (await f.wrapper(['agent', 'list', '--job', f.contract.fixture.jobId, '--json'])).stdout,
+    );
+    assert.deepEqual(job.data.agents, first.data.agents);
+    for (const hint of job.next) parse(hint.argv.slice(1));
+    const detail = await f.wrapper([...job.next[0].argv.slice(1), '--json']);
+    assert.equal(detail.code, 0);
+    assert.equal(JSON.parse(detail.stdout).data.agent.id, f.contract.fixture.agentId);
+    const empty = await f.wrapper([
+      'agent',
+      'list',
+      '--job',
+      f.contract.fixture.queueJobIds[0],
+      '--json',
+      '--require-complete',
+      '--no-hints',
+    ]);
+    assert.equal(empty.code, 1);
+    const data = JSON.parse(empty.stdout);
+    assert.deepEqual(data.data.agents, []);
+    assert.equal(data.data.page.total, null);
+    assert.equal(data.data.page.hasMore, null);
+    assert.equal(data.next, undefined);
+    for (const [argv, code] of [
+      [['agent', 'list', '--project', 'AxiDenied'], 'PERMISSION_DENIED'],
+      [['agent', 'list', '--pool', f.contract.fixture.agentPoolId], 'NOT_FOUND'],
+      [['agent', 'view', '999999999'], 'NOT_FOUND'],
+      [
+        ['agent', 'view', f.contract.fixture.agentId, '--job', f.contract.fixture.queueJobIds[0]],
+        'NOT_FOUND',
+      ],
+    ]) {
+      const r = await f.wrapper([...argv, '--json']);
+      assert.equal(r.code, 1);
+      assert.equal(JSON.parse(r.stdout).error.code, code);
+    }
+  } finally {
+    await f.close();
+  }
+});

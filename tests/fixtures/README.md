@@ -23,7 +23,7 @@ The raw operations verify CLI request construction and response transport. They
 do not prove that a real server implements locator/field/continuation semantics.
 No minimum supported server version is inferred from them.
 
-`teamcity-2026.2-native-1.5.0/contract.json` contains 56 captured reads through
+`teamcity-2026.2-native-1.5.0/contract.json` contains 69 captured reads through
 the same released Linux x64 CLI against actual TeamCity 2026.2 build 238924.
 Its projects, builds, tests and user are original synthetic test data. The
 permission inventory proves project viewing without build-run permission;
@@ -98,3 +98,15 @@ native/mock corpus now has 30 observations, including the bounded queue GET.
 Negative executable cases reject malformed identity Unicode/controls, unsafe
 continuations, unsupported reads and oversized input/output without false empty
 success. Broader live state transitions and queue scope certification remain open.
+
+Thirteen additional actual agent observations verify safe exact detail, job/
+project compatibility scopes, continuation, empty bounded pages, impossible-job
+compatibility and foreign-project denial. Exact detail omits defaultFilter because
+the actual server rejects it; pages explicitly disable default filtering. The
+fixture agent belongs to a dedicated pool, but the unchanged project-view reader
+still receives 404 for pool locators. That response remains an error. Omitted
+active-build data remains unknown activity. Positive live pool access, active
+pointers, explicit idle and mixed availability remain gates, with native/mock
+coverage. The native/mock corpus now contains 33 observations. Recorder guards
+bind current agent ID, pool and separate availability states and reject false
+empty pages; replay validates all 69 restricted reads without broader credentials.

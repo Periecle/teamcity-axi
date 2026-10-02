@@ -37,13 +37,13 @@
       "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
-      "scope": "focused restricted-identity contracts, run view/list/problems/tests/log/changes, bounded run tree, source-accounted failure reports and immediate dependency counts, safe exact job views and bounded direct-project job pages, positive scoped queue pages and queued-run detail, verified context and scoped doctor; not release certification",
+      "scope": "focused restricted-identity contracts, run view/list/problems/tests/log/changes, bounded run tree, source-accounted failure reports and immediate dependency counts, safe exact job views and bounded direct-project job pages, positive scoped queue pages and queued-run detail, safe exact agent views and bounded job/project compatibility pages, verified context and scoped doctor; not release certification",
       "contextPath": "/",
       "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
     }
   ],
   "supportStatus": "development-with-focused-live-contracts",
-  "serverContract": "56 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
+  "serverContract": "69 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-queued-with-absent-result-and-denied",
     "boundedRunPages": "live-tested-wrapper-exact-job-and-project-page-cursor-window; unknown exhaustion; positive branch/revision gates open",
@@ -53,7 +53,7 @@
     "structuredLogTail": "live-tested-wrapper-retained-window-and-independent-failure-sources; native overdelivery capped; complete-log coverage not claimed",
     "boundedChangesPages": "live-positive-wrapper-page-cursor-full-messages-files-and-VCS-root-identity; multi-root and hostile branch gates open",
     "scopedQueueRead": "live-positive-project/job/intersection pages, exact queued IDs/provider reason/time, continuation, unknown exhaustion and foreign-project 403; native lifecycle-change/unknown/identity/budget regressions; broader live lifecycle gates pending",
-    "safeAgentRead": "live-positive-unfiltered; project/pool scope verification pending",
+    "safeAgentRead": "live-positive-exact-and-job/project-compatible-pages with count/start/lookupLimit/nextHref and foreign-project 403; separate availability and unreported activity; restricted pool locators return 404; positive live pool/active-run/explicit-idle and mixed availability gates remain open",
     "contextPrefix": "native-mock-tested; live server context prefix pending",
     "restrictedIdentity": "live-permission-inventory and foreign-project-403; no write probes",
     "authenticationFailure": "live-invalid-token-401; actual token expiry pending",

@@ -68,3 +68,15 @@ wait reason, timestamp, project/job scopes and paging. It also reads exact queue
 detail with absent result status. The finished-run inventory remains 1/2/4–9;
 direct-project job inventory additionally contains the two queue jobs. These
 fixture writes are test setup and are absent from product commands.
+
+For agent scope evidence, verify that only the owned `axi-contract-agent` (ID 1)
+is connected, authorized, enabled and idle. Create an otherwise absent dedicated
+pool `axi-contract-pool-20261002`, assign `AxiContract` and move only that owned
+agent into it. Inspect existing objects before repeat setup; never move unrelated
+agents or alter their availability. The current dedicated pool ID is 1. Restricted
+job/project compatibility pages and exact detail remain readable. Pool locators
+still return 404 under the same project-view role, even with explicit project
+scope. Preserve that unavailable contract; do not broaden the test reader's
+permissions to hide it. The fixture omits its active-build field. Original
+unfiltered captures that show Default pool ID zero are historical observations
+from before the owned fixture move, not current pool membership evidence.

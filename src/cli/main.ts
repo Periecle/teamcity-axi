@@ -75,6 +75,8 @@ export async function main(args: readonly string[]): Promise<void> {
                         'job.view',
                         'job.list',
                         'queue.list',
+                        'agent.list',
+                        'agent.view',
                       ].includes(d.name)
                     ? { payload: packagedSchema(d.name.replace('.', '-')) }
                     : {}),
@@ -130,6 +132,8 @@ export async function main(args: readonly string[]): Promise<void> {
           'job.view',
           'job.list',
           'queue.list',
+          'agent.list',
+          'agent.view',
           'context.show',
           'doctor',
         ].includes(command)
@@ -160,6 +164,10 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (command === 'agent.list' || command === 'agent.view') {
+            const { readAgents } = await import('../commands/agents.js');
+
+            output = await readAgents(parsed, context, controller.signal);
           } else if (command === 'queue.list') {
             const { listQueue } = await import('../commands/queue.js');
 

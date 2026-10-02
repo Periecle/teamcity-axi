@@ -23,6 +23,15 @@ import { isUtf8 } from 'node:buffer';
 
 import { jobFields, jobLimitations, jobRequest, normalizeJob, normalizeJobPage } from './jobs.js';
 import { queueRequest, normalizeQueuePage } from './queue.js';
+import {
+  agentFields,
+  agentFilters,
+  agentRequest,
+  normalizeAgent,
+  normalizeAgentPage,
+  validateAgentId,
+} from './agents.js';
+import type { Agent, AgentQuery, AgentScope } from '../domain/teamcity.js';
 
 import {
   normalizeIdentity,
@@ -329,6 +338,43 @@ export class NativeTeamCityReader implements TeamCityReader {
     const request = queueRequest(query);
     const result = await this.metadata('queue.page', request.path, budget, (body) =>
       normalizeQueuePage(body, query, this.serverUrl, this.secrets),
+    );
+
+    result.provenance.projectId = query.projectId ?? null;
+    if (result.state === 'available') result.provenance.limitations = result.value.limitations;
+
+    return result;
+  }
+
+  async getAgent(ref: AgentScope & { id: string }, budget: Budget): Promise<ReadResult<Agent>> {
+    validateAgentId(ref.id);
+    const filters = agentFilters(ref);
+    let limitations: Provenance['limitations'] = [];
+    const result = await this.metadata(
+      'agent.detail',
+      `/app/rest/agents/${[`id:${ref.id}`, ...filters].join(',')}?fields=${agentFields}`,
+      budget,
+      (body) => {
+        const normalized = normalizeAgent(body, ref, this.secrets);
+
+        if (normalized.agent.id !== ref.id)
+          throw new DomainError('CONTEXT_MISMATCH', 'Server returned a different agent');
+        limitations = normalized.limitations;
+
+        return normalized.agent;
+      },
+    );
+
+    result.provenance.projectId = ref.projectId ?? null;
+    result.provenance.limitations = limitations;
+
+    return result;
+  }
+
+  async listAgents(query: AgentQuery, budget: Budget): Promise<ReadResult<EvidencePage<Agent>>> {
+    const request = agentRequest(query);
+    const result = await this.metadata('agents.page', request.path, budget, (body) =>
+      normalizeAgentPage(body, query, this.serverUrl, this.secrets),
     );
 
     result.provenance.projectId = query.projectId ?? null;

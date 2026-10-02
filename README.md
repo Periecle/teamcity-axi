@@ -7,7 +7,7 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
 exact-ID `run view`, bounded `run list`, independent `run problems` and `run tests`,
-bounded `run log` and `run changes`, wrapper-owned `run tree` and source-accounted `run failure`, scoped `job list`, exact `job view` and scoped `queue list`, verified `context show` and scoped `doctor`. Reads use typed
+bounded `run log` and `run changes`, wrapper-owned `run tree` and source-accounted `run failure`, scoped `job list`, exact `job view`, scoped `queue list`, safe `agent list`/`agent view`, verified `context show` and scoped `doctor`. Reads use typed
 validation, scope assertions and query-bound cursors. Other remote services remain
 gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
@@ -32,6 +32,8 @@ node bin/teamcity-axi.mjs run log 482193 --server work --tail 80 --json
 node bin/teamcity-axi.mjs job list --project Payments --server work --json
 node bin/teamcity-axi.mjs job view Payments_Build --server work --json
 node bin/teamcity-axi.mjs queue list --job Payments_Build --server work --json
+node bin/teamcity-axi.mjs agent list --job Payments_Build --server work --json
+node bin/teamcity-axi.mjs agent view 7 --project Payments --server work --json
 npm test
 npm run format
 npm run format:check
@@ -98,6 +100,12 @@ to 20 rows; totals and missing bounded continuation remain unknown. Cursors bind
 the resolved scope and current policy, while offset consistency is best effort.
 Retrieval hints observe exact executions. A queued run without a reported result
 stays unknown with an explicit limitation. See [queue decisions](docs/decisions/0010-scoped-queue.md).
+
+`agent list` requires a pool or validated job/project scope; `agent view` reads an
+exact numeric ID. Connectivity, enablement and authorization stay separate and
+nullable. Safe active-run pointers must pass current project policy. Missing
+activity metadata never establishes idleness, and unavailable pool scopes remain
+errors. Pages preserve unknown totals and exhaustion. See [agent decisions](docs/decisions/0011-safe-agents.md).
 
 `context show` makes no server calls unless `--verify` is supplied. Verification
 reads only selected jobs/projects and the current identity; it reports a safe

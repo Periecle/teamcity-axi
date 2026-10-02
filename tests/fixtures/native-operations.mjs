@@ -125,6 +125,24 @@ export const operations = [
     ),
   ],
   ['log-tail', ['run', 'log', '482193', '--tail', '80', '--json', '--no-input']],
+  [
+    'bounded-agents',
+    api(
+      '/app/rest/agents?locator=pool:(id:1),defaultFilter:false,count:20,start:0,lookupLimit:5000&fields=count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId)))',
+    ),
+  ],
+  [
+    'agent-detail',
+    api(
+      '/app/rest/agents/id:7?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))',
+    ),
+  ],
+  [
+    'agent-detail-job',
+    api(
+      '/app/rest/agents/id:7,compatible:(buildType:(id:($base64:UGF5bWVudHNfQnVpbGQ)))?fields=id,name,connected,enabled,authorized,pool(id,name),build(id,buildTypeId,buildType(id,projectId))',
+    ),
+  ],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];
 export const errorModes = ['denied', 'missing', 'expired', 'malformed', 'html'];

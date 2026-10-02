@@ -253,7 +253,7 @@ export const registry: readonly Descriptor[] = [
     name: 'agent.view',
     summary: 'Read safe exact agent metadata',
     positional: 'id',
-    flags: { ...scope },
+    flags: { ...scope, pool: str('Assert exact agent pool ID') },
   },
 ];
 
