@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "1.0",
+  "command": "run.failure",
+  "status": "partial",
+  "context": {
+    "server": "work",
+    "job": "Payments_Build",
+    "branch": "feature/refund"
+  },
+  "data": {
+    "run": {
+      "id": "482193",
+      "jobId": "Payments_Build",
+      "state": "finished",
+      "result": "failure",
+      "branch": "feature/refund"
+    },
+    "assessment": "failure_observed",
+    "findings": [
+      {
+        "id": "finding:test:482188:9821",
+        "runId": "482188",
+        "kind": "failed_test",
+        "claim": "observation",
+        "summary": "PaymentServiceIT.shouldRefund failed with a connection-refused error",
+        "evidence": [
+          {
+            "id": "ev:1",
+            "sourceRef": "tests:482188",
+            "runId": "482188",
+            "kind": "test",
+            "itemId": "9821",
+            "excerpt": "java.net.ConnectException: Connection refused: postgres:5432",
+            "observedAt": "2026-10-01T15:00:00Z",
+            "retrieve": {
+              "reason": "Read the failed occurrence",
+              "argv": [
+                "teamcity-axi",
+                "run",
+                "tests",
+                "482188",
+                "--test",
+                "9821",
+                "--full",
+                "--server",
+                "work"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "problems:482193",
+        "runId": "482193",
+        "kind": "problems",
+        "state": "complete",
+        "returned": 0,
+        "total": 0,
+        "observedAt": "2026-10-01T15:00:00Z"
+      },
+      {
+        "id": "tests:482193",
+        "runId": "482193",
+        "kind": "tests",
+        "state": "unavailable",
+        "reasonCode": "PERMISSION_DENIED",
+        "observedAt": "2026-10-01T15:00:00Z"
+      },
+      {
+        "id": "problems:482188",
+        "runId": "482188",
+        "kind": "problems",
+        "state": "complete",
+        "returned": 0,
+        "total": 0,
+        "observedAt": "2026-10-01T15:00:00Z"
+      },
+      {
+        "id": "tests:482188",
+        "runId": "482188",
+        "kind": "tests",
+        "state": "complete",
+        "returned": 1,
+        "total": 1,
+        "observedAt": "2026-10-01T15:00:00Z"
+      },
+      {
+        "id": "log:482188",
+        "runId": "482188",
+        "kind": "log",
+        "state": "not_requested"
+      }
+    ],
+    "graph": {
+      "rootRunId": "482193",
+      "complete": true,
+      "nodes": [
+        {
+          "run": {
+            "id": "482193",
+            "jobId": "Payments_Build",
+            "state": "finished",
+            "result": "failure",
+            "branch": "feature/refund"
+          },
+          "expansion": "complete"
+        },
+        {
+          "run": {
+            "id": "482188",
+            "jobId": "Payments_IntegrationTests",
+            "state": "finished",
+            "result": "failure",
+            "branch": "feature/refund"
+          },
+          "expansion": "complete"
+        }
+      ],
+      "edges": [
+        {
+          "fromRunId": "482193",
+          "toRunId": "482188",
+          "kind": "snapshot"
+        }
+      ],
+      "unexpanded": 0
+    }
+  },
+  "meta": {
+    "observedAt": "2026-10-01T15:00:00Z",
+    "complete": false,
+    "truncated": false,
+    "consistency": "best_effort",
+    "limitations": [
+      {
+        "code": "PERMISSION_DENIED",
+        "message": "Test evidence for the primary run could not be read",
+        "runId": "482193",
+        "source": "tests"
+      }
+    ]
+  },
+  "next": [
+    {
+      "reason": "Inspect accessible child log evidence",
+      "argv": [
+        "teamcity-axi",
+        "run",
+        "log",
+        "482188",
+        "--tail",
+        "80",
+        "--server",
+        "work"
+      ]
+    }
+  ]
+}

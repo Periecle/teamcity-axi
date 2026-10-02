@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "command": "run.list",
+  "status": "error",
+  "error": {
+    "code": "USAGE_ERROR",
+    "message": "Unknown flag --stat; use --state for lifecycle or --result for build outcome. See run list --help.",
+    "retryable": false
+  },
+  "meta": {
+    "observedAt": "2026-10-01T15:00:00Z",
+    "complete": false,
+    "truncated": false
+  }
+}

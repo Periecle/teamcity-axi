@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "vcsRoots": [
+    {
+      "server": "work",
+      "remote": "origin",
+      "rootId": "Payments_Git"
+    }
+  ],
+  "defaults": {
+    "requireRevisionMatch": true
+  }
+}

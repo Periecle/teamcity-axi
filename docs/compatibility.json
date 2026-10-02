@@ -1,0 +1,46 @@
+{
+  "wrapperVersion": "0.1.0-dev.1",
+  "nativeVersion": "1.5.0",
+  "sourceRevision": "ac6c1fd83300b2e42df48fcfff365ba03f73bb92",
+  "releasePublishedAt": "2026-09-10T17:41:38Z",
+  "artifacts": [
+    {
+      "archive": "teamcity_1.5.0_darwin_arm64.tar.gz",
+      "archiveSha256": "ec5eecbe78277e688167077b6fc569271046c39f0cbe9df1bf55d07da44447df",
+      "binarySha256": "68f432b184380040aae256b1d6815078a35b445069da560fbc6b3b33194a27b8",
+      "executionTested": false
+    },
+    {
+      "archive": "teamcity_1.5.0_darwin_x86_64.tar.gz",
+      "archiveSha256": "a0354246fb30d22c59b77bbd5ce25a673f39f5a52c3ca0876cb3232226015958",
+      "binarySha256": "de41f253ebc19c739d85d9365391ffc69221987daa836889c07a48a903d6b5fe",
+      "executionTested": false
+    },
+    {
+      "archive": "teamcity_1.5.0_linux_arm64.tar.gz",
+      "archiveSha256": "0d26b7e6f650fafc7d73b797b464b5ab1f0c35001e69245e8296ab6c65d0a979",
+      "binarySha256": "9c2beda1edbebf07a304443af51262e921b75e89b3252673854c923d37f8a83f",
+      "executionTested": false
+    },
+    {
+      "archive": "teamcity_1.5.0_linux_x86_64.tar.gz",
+      "archiveSha256": "73136b2b3176b20ad9719edeca08ba6961864b8e2ffa916f0903390c0fe48c4c",
+      "binarySha256": "796d88b509e11407afdb73b3cfeda99aff5a417258f5f38ba047dd1f2931ee60",
+      "executionTested": true
+    }
+  ],
+  "testedServerVersions": [],
+  "supportStatus": "development-contract-tests-only",
+  "serverContract": "synthetic mock; no live TeamCity certification",
+  "capabilities": {
+    "structuredRunDetail": "mock-tested",
+    "boundedRunPages": "mock-tested-server-pagination-unverified",
+    "independentProblemPages": "mock-tested",
+    "independentTestPages": "mock-tested",
+    "snapshotDependencyPages": "mock-tested",
+    "structuredLogTail": "mock-tested-optional",
+    "boundedChangesPages": "mock-tested",
+    "scopedQueueRead": "mock-tested",
+    "safeAgentRead": "mock-tested"
+  }
+}

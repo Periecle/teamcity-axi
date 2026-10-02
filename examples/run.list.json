@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "command": "run.list",
+  "status": "ok",
+  "context": {
+    "server": "work",
+    "job": "Payments_Build",
+    "branch": "feature/refund"
+  },
+  "data": {
+    "runs": [
+      {
+        "id": "482193",
+        "jobId": "Payments_Build",
+        "state": "finished",
+        "result": "failure",
+        "branch": "feature/refund"
+      }
+    ],
+    "page": {
+      "returned": 1,
+      "total": null,
+      "totalKind": "unknown",
+      "hasMore": true,
+      "cursor": "synthetic-example-not-a-real-cursor"
+    }
+  },
+  "meta": {
+    "observedAt": "2026-10-01T15:00:00Z",
+    "complete": true,
+    "truncated": false,
+    "consistency": "best_effort"
+  }
+}

@@ -1,0 +1,591 @@
+{
+  "nativeVersion": "1.5.0",
+  "binarySha256": "796d88b509e11407afdb73b3cfeda99aff5a417258f5f38ba047dd1f2931ee60",
+  "sourceRevision": "ac6c1fd83300b2e42df48fcfff365ba03f73bb92",
+  "serverKind": "synthetic-mock-not-live-TeamCity",
+  "platform": "linux",
+  "architecture": "x64",
+  "probes": {
+    "version": {
+      "argv": [
+        "--version"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "teamcity version 1.5.0\n",
+      "stderr": "",
+      "requests": []
+    },
+    "help": {
+      "argv": [
+        "api",
+        "--help"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "Make an authenticated HTTP request to the TeamCity REST API.\n\nThe endpoint argument should be the path portion of the URL,\nstarting with /app/rest/. The base URL and authentication\nare handled automatically.\n\nThis command is useful for:\n- Accessing API features not yet supported by the CLI\n- Scripting and automation\n- Debugging and exploration\n\nSee: https://www.jetbrains.com/help/teamcity/rest/teamcity-rest-api-documentation.html\n\nUsage:\n  teamcity api <endpoint> [flags]\n\nExamples:\n  # Get server info\n  teamcity api '/app/rest/server'\n\n  # List projects\n  teamcity api '/app/rest/projects'\n\n  # Create a resource with POST\n  teamcity api '/app/rest/buildQueue' -X POST -f 'buildType=id:MyBuild'\n\n  # Fetch all pages and combine into array\n  teamcity api '/app/rest/builds' --paginate --slurp\n\nFlags:\n  -f, --field stringArray    Add a body field as key=value (builds JSON object)\n  -H, --header stringArray   Add a custom header (can be repeated)\n  -h, --help                 help for api\n  -i, --include              Include response headers in output\n      --input string         Read request body from file (use - for stdin)\n  -X, --method string        HTTP method to use (default \"GET\")\n      --paginate             Make additional requests to fetch all pages\n      --raw                  Output raw response without formatting\n      --silent               Suppress output on success\n      --slurp                Combine paginated results into a JSON array (requires --paginate)\n\nGlobal Flags:\n      --debug      Alias for --verbose\n      --no-color   Disable colored output\n      --no-input   Disable interactive prompts\n  -q, --quiet      Suppress non-essential output\n  -V, --verbose    Show detailed output including debug info\n",
+      "stderr": "",
+      "requests": []
+    }
+  },
+  "records": {
+    "server": {
+      "argv": [
+        "api",
+        "/app/rest/server?fields=version,buildNumber",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 65\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\n\n{\"version\":\"mock-contract\",\"buildNumber\":\"not-a-TeamCity-server\"}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/server",
+          "query": {
+            "fields": "version,buildNumber"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "run-view": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 487\n\n{\"id\":482193,\"buildTypeId\":\"Payments_Build\",\"number\":\"42\",\"state\":\"finished\",\"status\":\"FAILURE\",\"branchName\":\"feature/refund\",\"statusText\":\"Tests failed\",\"personal\":false,\"composite\":false,\"buildType\":{\"id\":\"Payments_Build\",\"name\":\"Build\",\"projectId\":\"Payments\"},\"revisions\":{\"count\":1,\"revision\":[{\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"vcs-root-instance\":{\"id\":\"17\",\"vcs-root-id\":\"Payments_Git\"}}]},\"startDate\":\"20261001T140000+0000\",\"finishDate\":\"20261001T140100+0000\"}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "run-list": {
+      "argv": [
+        "api",
+        "/app/rest/builds?locator=buildType:(id:Payments_Build),count:20,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,state,status,branchName)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 509\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\n\n{\"count\":1,\"build\":[{\"id\":482193,\"buildTypeId\":\"Payments_Build\",\"number\":\"42\",\"state\":\"finished\",\"status\":\"FAILURE\",\"branchName\":\"feature/refund\",\"statusText\":\"Tests failed\",\"personal\":false,\"composite\":false,\"buildType\":{\"id\":\"Payments_Build\",\"name\":\"Build\",\"projectId\":\"Payments\"},\"revisions\":{\"count\":1,\"revision\":[{\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"vcs-root-instance\":{\"id\":\"17\",\"vcs-root-id\":\"Payments_Git\"}}]},\"startDate\":\"20261001T140000+0000\",\"finishDate\":\"20261001T140100+0000\"}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds",
+          "query": {
+            "locator": "buildType:(id:Payments_Build),count:20,lookupLimit:5000",
+            "fields": "count,nextHref,build(id,buildTypeId,state,status,branchName)"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "problems": {
+      "argv": [
+        "api",
+        "/app/rest/problemOccurrences?locator=build:(id:482193),count:20&fields=count,nextHref,problemOccurrence(id,type,identity,details,build(id))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 146\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\n\n{\"count\":1,\"problemOccurrence\":[{\"id\":\"problem-1\",\"type\":\"TC_TESTS_FAILED\",\"identity\":\"tests\",\"details\":\"One test failed\",\"build\":{\"id\":482193}}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/problemOccurrences",
+          "query": {
+            "locator": "build:(id:482193),count:20",
+            "fields": "count,nextHref,problemOccurrence(id,type,identity,details,build(id))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "tests": {
+      "argv": [
+        "api",
+        "/app/rest/testOccurrences?locator=build:(id:482193),count:20&fields=count,nextHref,testOccurrence(id,name,status,muted,ignored,details,build(id),test(id))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Length: 423\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\n\n{\"count\":2,\"failed\":2,\"testOccurrence\":[{\"id\":\"occ-1\",\"name\":\"PaymentServiceIT.shouldRefund\",\"status\":\"FAILURE\",\"duration\":100,\"muted\":false,\"ignored\":false,\"details\":\"Connection refused\",\"build\":{\"id\":482193},\"test\":{\"id\":\"test-1\"}},{\"id\":\"occ-2\",\"name\":\"PaymentServiceIT.shouldRefund\",\"status\":\"FAILURE\",\"duration\":200,\"muted\":true,\"ignored\":false,\"details\":\"Muted failure\",\"build\":{\"id\":482193},\"test\":{\"id\":\"test-2\"}}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/testOccurrences",
+          "query": {
+            "locator": "build:(id:482193),count:20",
+            "fields": "count,nextHref,testOccurrence(id,name,status,muted,ignored,details,build(id),test(id))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "dependencies": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193/snapshot-dependencies?locator=count:20&fields=count,nextHref,build(id,buildTypeId,state,status)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nKeep-Alive: timeout=5\nContent-Length: 537\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\n\n{\"count\":1,\"build\":[{\"id\":482188,\"buildTypeId\":\"Payments_IntegrationTests\",\"number\":\"42\",\"state\":\"finished\",\"status\":\"FAILURE\",\"branchName\":\"feature/refund\",\"statusText\":\"Tests failed\",\"personal\":false,\"composite\":false,\"buildType\":{\"id\":\"Payments_IntegrationTests\",\"name\":\"Integration\",\"projectId\":\"Payments\"},\"revisions\":{\"count\":1,\"revision\":[{\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"vcs-root-instance\":{\"id\":\"17\",\"vcs-root-id\":\"Payments_Git\"}}]},\"startDate\":\"20261001T140000+0000\",\"finishDate\":\"20261001T140100+0000\"}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193/snapshot-dependencies",
+          "query": {
+            "locator": "count:20",
+            "fields": "count,nextHref,build(id,buildTypeId,state,status)"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "changes": {
+      "argv": [
+        "api",
+        "/app/rest/changes?locator=build:(id:482193),count:10&fields=count,nextHref,change(id,version,comment,vcsRootInstance(vcs-root-id))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 190\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\n\n{\"count\":1,\"change\":[{\"id\":\"101\",\"version\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"comment\":\"Fix refund\",\"date\":\"20261001T135900+0000\",\"vcsRootInstance\":{\"vcs-root-id\":\"Payments_Git\"}}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/changes",
+          "query": {
+            "locator": "build:(id:482193),count:10",
+            "fields": "count,nextHref,change(id,version,comment,vcsRootInstance(vcs-root-id))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "jobs": {
+      "argv": [
+        "api",
+        "/app/rest/buildTypes?locator=project:(id:Payments),count:20&fields=count,nextHref,buildType(id,name,projectId,paused)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 102\n\n{\"count\":1,\"buildType\":[{\"id\":\"Payments_Build\",\"name\":\"Build\",\"projectId\":\"Payments\",\"paused\":false}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/buildTypes",
+          "query": {
+            "locator": "project:(id:Payments),count:20",
+            "fields": "count,nextHref,buildType(id,name,projectId,paused)"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "queue": {
+      "argv": [
+        "api",
+        "/app/rest/buildQueue?locator=buildType:(id:Payments_Build),count:20&fields=count,nextHref,build(id,buildTypeId,state,branchName,waitReason)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 157\n\n{\"count\":1,\"build\":[{\"id\":482194,\"buildTypeId\":\"Payments_Build\",\"state\":\"queued\",\"branchName\":\"feature/refund\",\"waitReason\":\"Waiting for compatible agent\"}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/buildQueue",
+          "query": {
+            "locator": "buildType:(id:Payments_Build),count:20",
+            "fields": "count,nextHref,build(id,buildTypeId,state,branchName,waitReason)"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "agents": {
+      "argv": [
+        "api",
+        "/app/rest/agents?locator=pool:(id:1),count:20&fields=count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 130\n\n{\"count\":1,\"agent\":[{\"id\":7,\"name\":\"linux-1\",\"connected\":true,\"enabled\":true,\"authorized\":true,\"pool\":{\"id\":1,\"name\":\"Default\"}}]}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/agents",
+          "query": {
+            "locator": "pool:(id:1),count:20",
+            "fields": "count,nextHref,agent(id,name,connected,enabled,authorized,pool(id,name))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "log-tail": {
+      "argv": [
+        "run",
+        "log",
+        "482193",
+        "--tail",
+        "80",
+        "--json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "{\n  \"run_id\": \"482193\",\n  \"messages\": [\n    {\n      \"id\": 12,\n      \"text\": \"Connection refused\",\n      \"level\": 0,\n      \"status\": 4,\n      \"timestamp\": \"2026-10-01T14:00:01Z\"\n    }\n  ]\n}\n",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/messages",
+          "query": {
+            "buildId": "482193",
+            "expandAll": "true",
+            "messagesCount": "0,-80",
+            "target": "tail"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "failure-summary": {
+      "argv": [
+        "run",
+        "log",
+        "482193",
+        "--failed",
+        "--json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "{\n  \"run_id\": \"482193\",\n  \"number\": \"42\",\n  \"status\": \"FAILURE\",\n  \"web_url\": \"\",\n  \"problems\": [\n    {\n      \"id\": \"problem-1\",\n      \"type\": \"TC_TESTS_FAILED\",\n      \"identity\": \"tests\",\n      \"details\": \"One test failed\"\n    }\n  ],\n  \"failed_tests\": {\n    \"count\": 2,\n    \"failed\": 2,\n    \"testOccurrence\": [\n      {\n        \"id\": \"occ-1\",\n        \"name\": \"PaymentServiceIT.shouldRefund\",\n        \"status\": \"FAILURE\",\n        \"duration\": 100,\n        \"details\": \"Connection refused\",\n        \"build\": {\n          \"id\": 482193\n        }\n      },\n      {\n        \"id\": \"occ-2\",\n        \"name\": \"PaymentServiceIT.shouldRefund\",\n        \"status\": \"FAILURE\",\n        \"duration\": 200,\n        \"details\": \"Muted failure\",\n        \"muted\": true,\n        \"build\": {\n          \"id\": 482193\n        }\n      }\n    ]\n  }\n}\n",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {},
+          "authenticated": true
+        },
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/problemOccurrences",
+          "query": {
+            "locator": "build:(id:482193)",
+            "fields": "count,problemOccurrence(id,type,identity,details)"
+          },
+          "authenticated": true
+        },
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/testOccurrences",
+          "query": {
+            "locator": "build:(id:482193),status:FAILURE,muted:false",
+            "fields": "count,passed,failed,ignored,muted"
+          },
+          "authenticated": true
+        },
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/testOccurrences",
+          "query": {
+            "locator": "build:(id:482193),status:FAILURE,muted:false,count:1000",
+            "fields": "count,nextHref,testOccurrence(id,name,status,duration,details,newFailure,muted,firstFailed(build(id,number)))"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "error-denied": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 403 Forbidden\nKeep-Alive: timeout=5\nContent-Length: 31\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\n\n{\"message\":\"Permission denied\"}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\nError: permission denied: {\"message\":\"Permission denied\"}\n\nTip: Re-authenticate with broader permissions via 'teamcity auth login'\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "error-missing": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 404 Not Found\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 23\n\n{\"message\":\"Not found\"}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\nError: resource not found: {\"message\":\"Not found\"}\n\nTip: Use 'teamcity job list' or 'teamcity run list' to see available resources\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "error-expired": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 401 Unauthorized\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 33\n\n{\"message\":\"Expired credentials\"}",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\nError: authentication failed: invalid or expired credentials: {\"message\":\"Expired credentials\"}\n\nTip: Run 'teamcity auth login' to re-authenticate\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "error-malformed": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 7\n\n{broken",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "error-html": {
+      "argv": [
+        "api",
+        "/app/rest/builds/id:482193?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nDate: Thu, 01 Oct 2026 14:00:00 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nContent-Length: 18\nContent-Type: text/html\n\n<html>Login</html>",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {
+            "fields": "id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "summary-denied": {
+      "argv": [
+        "run",
+        "log",
+        "482193",
+        "--failed",
+        "--json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "{\n  \"run_id\": \"482193\",\n  \"number\": \"42\",\n  \"status\": \"FAILURE\",\n  \"web_url\": \"\",\n  \"problems\": [\n    {\n      \"id\": \"problem-1\",\n      \"type\": \"TC_TESTS_FAILED\",\n      \"identity\": \"tests\",\n      \"details\": \"One test failed\"\n    }\n  ]\n}\n",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/builds/id:482193",
+          "query": {},
+          "authenticated": true
+        },
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/problemOccurrences",
+          "query": {
+            "locator": "build:(id:482193)",
+            "fields": "count,problemOccurrence(id,type,identity,details)"
+          },
+          "authenticated": true
+        },
+        {
+          "method": "GET",
+          "path": "/teamcity/app/rest/testOccurrences",
+          "query": {
+            "locator": "build:(id:482193),status:FAILURE,muted:false",
+            "fields": "count,passed,failed,ignored,muted"
+          },
+          "authenticated": true
+        }
+      ]
+    },
+    "logs-unsupported": {
+      "argv": [
+        "run",
+        "log",
+        "482193",
+        "--tail",
+        "80",
+        "--json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "",
+      "stderr": "! Using insecure HTTP connection. Your authentication token will be transmitted in plaintext.\n! Consider using HTTPS for secure communication.\n{\n  \"error\": {\n    \"code\": \"not_found\",\n    \"message\": \"resource not found: {\\\"message\\\":\\\"Capability not found\\\"}\",\n    \"suggestion\": \"Use 'teamcity job list' or 'teamcity run list' to see available resources\"\n  }\n}\n",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/teamcity/app/messages",
+          "query": {
+            "buildId": "482193",
+            "expandAll": "true",
+            "messagesCount": "0,-80",
+            "target": "tail"
+          },
+          "authenticated": true
+        }
+      ]
+    }
+  }
+}

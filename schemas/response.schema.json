@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:response:1.0",
+  "title": "teamcity-axi base response 1.0",
+  "$comment": "Envelope plus failure specialization. Other command payload schemas remain an implementation release gate.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "command": {
+      "type": "string",
+      "pattern": "^[a-z]+(?:\\.[a-z]+)*$"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "partial",
+        "error"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "server": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "project": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "job": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "maxItems": 100
+        },
+        "branch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vcsRootId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "revisionMatch": {
+          "enum": [
+            "exact",
+            "different",
+            "unverified"
+          ]
+        },
+        "searchScope": {
+          "type": "object",
+          "properties": {
+            "since": {
+              "type": "string"
+            },
+            "until": {
+              "type": "string"
+            },
+            "timestampBasis": {
+              "enum": [
+                "finish",
+                "start",
+                "queue"
+              ]
+            },
+            "scanLimit": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "consistency": {
+              "const": "best_effort"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "server"
+      ],
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object"
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "details": {
+          "type": "object",
+          "maxProperties": 20
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "additionalProperties": false
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Limitation"
+          },
+          "maxItems": 100
+        },
+        "counts": {
+          "type": "object",
+          "properties": {
+            "childProcesses": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "retries": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "graphNodes": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "maxBytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxChildProcesses": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "concurrency": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "consistency": {
+          "enum": [
+            "single_observation",
+            "best_effort",
+            "state_changed"
+          ]
+        }
+      },
+      "required": [
+        "observedAt",
+        "complete",
+        "truncated"
+      ],
+      "additionalProperties": false
+    },
+    "next": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:teamcity-axi:domain:1.0#/$defs/NextAction"
+      },
+      "maxItems": 3
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "command",
+    "status",
+    "meta"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "error"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "error"
+        ],
+        "not": {
+          "required": [
+            "data"
+          ]
+        },
+        "properties": {
+          "meta": {
+            "properties": {
+              "complete": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "required": [
+          "data"
+        ],
+        "not": {
+          "required": [
+            "error"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "partial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta": {
+            "properties": {
+              "complete": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta": {
+            "properties": {
+              "complete": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "run.failure"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "partial"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "context"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "urn:teamcity-axi:failure:1.0"
+          }
+        }
+      }
+    }
+  ]
+}

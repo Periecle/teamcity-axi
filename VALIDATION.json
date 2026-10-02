@@ -1,0 +1,15 @@
+{
+  "validatedSchemas": 5,
+  "validatedExamples": 6,
+  "negativeChecksPassed": 8,
+  "dateTimeFormatsChecked": true,
+  "evidenceReferencesChecked": true,
+  "graphEdgeReferencesChecked": true,
+  "acceptanceScenariosSpecified": 20,
+  "limitations": [
+    "No CLI implementation or live TeamCity integration was executed.",
+    "Gherkin acceptance scenarios are specifications without implemented step bindings.",
+    "TOON rendering must be tested with the pinned reference serializer during implementation.",
+    "Only core envelope/failure/configuration schemas are included; remaining command payload schemas are a release gate."
+  ]
+}

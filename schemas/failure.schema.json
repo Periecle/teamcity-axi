@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:failure:1.0",
+  "title": "teamcity-axi failure data 1.0",
+  "type": "object",
+  "properties": {
+    "run": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Run"
+    },
+    "assessment": {
+      "enum": [
+        "not_failed",
+        "in_progress",
+        "failure_observed",
+        "inconclusive"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Finding"
+      },
+      "maxItems": 100
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:teamcity-axi:domain:1.0#/$defs/SourceCoverage"
+      },
+      "maxItems": 100
+    },
+    "graph": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Graph"
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Change"
+      },
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "run",
+    "assessment",
+    "findings",
+    "sources",
+    "graph"
+  ],
+  "additionalProperties": false
+}

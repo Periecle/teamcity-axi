@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:repository-config:1.0",
+  "title": "Untrusted repository overlay",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "vcsRoots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "server": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "remote": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "rootId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "server",
+          "remote",
+          "rootId"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "requireRevisionMatch": {
+          "const": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion"
+  ],
+  "additionalProperties": false
+}

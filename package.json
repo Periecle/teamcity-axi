@@ -1,0 +1,19 @@
+{
+  "name": "teamcity-axi",
+  "version": "0.1.0-dev.1",
+  "description": "Bounded read-only TeamCity evidence for coding agents",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=24 <25"},
+  "bin": {"teamcity-axi": "bin/teamcity-axi.mjs"},
+  "files": ["bin", "dist", "schemas", "skills", "docs", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
+    "test:real-cli": "node --test tests/real-cli-mock-server/*.test.mjs",
+    "fixtures:record": "node scripts/record-native.mjs",
+    "check": "npm test"
+  },
+  "dependencies": {"@toon-format/toon": "4.1.1", "ajv": "8.20.0", "ajv-formats": "3.0.1", "smol-toml": "1.9.0"},
+  "devDependencies": {"@types/node": "24.19.1", "typescript": "6.0.3"}
+}

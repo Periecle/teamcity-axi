@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "defaultServer": "work",
+  "servers": {
+    "work": {
+      "url": "https://teamcity.example.com/teamcity",
+      "allowedProjects": [
+        "Payments",
+        "Platform"
+      ],
+      "allowHttpLoopback": false
+    }
+  },
+  "readOnly": true,
+  "limits": {
+    "concurrency": 3,
+    "maxBytes": 24576,
+    "maxChildProcesses": 24
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:user-config:1.0",
+  "title": "Trusted user configuration",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "defaultServer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "servers": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 100,
+      "propertyNames": {
+        "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "allowedProjects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 1,
+            "maxItems": 1000,
+            "uniqueItems": true
+          },
+          "allowHttpLoopback": {
+            "type": "boolean"
+          },
+          "forwardHeaderEnvNames": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TEAMCITY_HEADER_[A-Z0-9_]+$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "readOnly": {
+      "const": true
+    },
+    "binaryPath": {
+      "type": "string"
+    },
+    "allowWorkspaceBinary": {
+      "type": "boolean"
+    },
+    "allowConfigSymlinks": {
+      "type": "boolean"
+    },
+    "secretNamePatterns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 128
+      },
+      "maxItems": 50
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "maxBytes": {
+          "type": "integer",
+          "minimum": 2048,
+          "maximum": 262144
+        },
+        "maxChildProcesses": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "servers",
+    "readOnly"
+  ],
+  "additionalProperties": false
+}

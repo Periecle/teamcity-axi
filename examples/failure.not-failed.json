@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "command": "run.failure",
+  "status": "ok",
+  "context": {
+    "server": "work",
+    "job": "Payments_Build",
+    "branch": "main"
+  },
+  "data": {
+    "run": {
+      "id": "482100",
+      "jobId": "Payments_Build",
+      "state": "finished",
+      "result": "success",
+      "branch": "main"
+    },
+    "assessment": "not_failed",
+    "findings": [],
+    "sources": [],
+    "graph": {
+      "rootRunId": "482100",
+      "complete": false,
+      "nodes": [
+        {
+          "run": {
+            "id": "482100",
+            "jobId": "Payments_Build",
+            "state": "finished",
+            "result": "success",
+            "branch": "main"
+          },
+          "expansion": "not_requested"
+        }
+      ],
+      "edges": [],
+      "unexpanded": 1
+    }
+  },
+  "meta": {
+    "observedAt": "2026-10-01T15:00:00Z",
+    "complete": true,
+    "truncated": false
+  }
+}
