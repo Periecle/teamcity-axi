@@ -89,6 +89,25 @@ export const operations = [
       '/app/rest/testOccurrences/build:(id:482193),id:2000000000?fields=id,name,status,duration,muted,ignored,details,build(id),test(id)',
     ),
   ],
+  [
+    'bounded-changes',
+    api(
+      '/app/rest/changes?locator=build:(id:482193),count:1,start:0,lookupLimit:5000&fields=count,nextHref,change(id,version,comment,date,vcsRootInstance(vcs-root-id))',
+    ),
+  ],
+  [
+    'bounded-changes-files',
+    api(
+      '/app/rest/changes?locator=build:(id:482193),count:10,start:0,lookupLimit:5000&fields=count,nextHref,change(id,version,comment,date,vcsRootInstance(vcs-root-id),files(count,file(file,changeType)))',
+    ),
+  ],
+  [
+    'bounded-dependencies',
+    api(
+      '/app/rest/builds?locator=snapshotDependency:(to:(id:482193),recursive:false),defaultFilter:false,count:20,start:0,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)',
+    ),
+  ],
+  ['dependency-count', api('/app/rest/builds/id:482193?fields=id,snapshot-dependencies(count)')],
   ['log-tail', ['run', 'log', '482193', '--tail', '80', '--json', '--no-input']],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];

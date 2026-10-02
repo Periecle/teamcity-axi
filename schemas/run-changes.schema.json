@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:run-changes:1.0",
+  "type": "object",
+  "properties": {
+    "run": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Run"
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "providerReturned": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4999
+        },
+        "scanLimit": {
+          "const": 5000
+        },
+        "consistency": {
+          "const": "best_effort_offset"
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filesRequested": {
+          "type": "boolean"
+        },
+        "meaning": {
+          "const": "changes_associated_with_run"
+        }
+      },
+      "required": [
+        "pageSize",
+        "providerReturned",
+        "position",
+        "scanLimit",
+        "consistency",
+        "runId",
+        "filesRequested",
+        "meaning"
+      ],
+      "additionalProperties": false
+    },
+    "page": {
+      "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Page"
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "vcsRootId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "message": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "files": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          "fileCoverage": {
+            "type": "object",
+            "properties": {
+              "returned": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "providerReturned": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "omitted": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": ["returned", "providerReturned", "omitted"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "version", "vcsRootId", "message"],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    }
+  },
+  "required": ["run", "changes", "selection", "page"],
+  "additionalProperties": false
+}

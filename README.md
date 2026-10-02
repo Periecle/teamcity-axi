@@ -7,7 +7,7 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
 exact-ID `run view`, bounded `run list`, independent `run problems` and `run tests`,
-bounded `run log`, verified `context show` and scoped `doctor`. Reads use typed
+bounded `run log` and `run changes`, verified `context show` and scoped `doctor`. Reads use typed
 validation, scope assertions and query-bound cursors. Other remote services remain
 gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
@@ -59,6 +59,11 @@ matches literal text within the full retained messages before display previews.
 log reads; unavailable sources remain explicit while available siblings survive.
 It does not imply causal attribution or complete-log coverage. `--full` expands
 bounded text previews, subject to the output byte budget and a text ceiling.
+
+`run changes` defaults to ten contextual commits, retaining commit and VCS-root
+identity. Messages show their first line by default; `--full` expands the bounded
+page. File names are fetched only with `--files`, capped at 100 per commit with
+explicit omission counts. Changes are contextual evidence, without causal claims.
 
 `context show` makes no server calls unless `--verify` is supplied. Verification
 reads only selected jobs/projects and the current identity; it reports a safe

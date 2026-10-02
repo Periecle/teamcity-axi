@@ -36,6 +36,13 @@ import {
   problemFields,
   testFields,
 } from './evidence.js';
+import type { Change, RelatedQuery, ScopedRun } from '../domain/teamcity.js';
+import {
+  relatedRequest,
+  normalizeChangePage,
+  normalizeDependencyPage,
+  normalizeDependencyCount,
+} from './related.js';
 
 // Frozen in tests/fixtures/native-operations.mjs and the released-binary capture.
 export const runDetailFields =
@@ -47,6 +54,36 @@ export class NativeTeamCityReader implements TeamCityReader {
     private readonly serverUrl: string,
     private readonly secrets: readonly string[] = [],
   ) {}
+
+  listChanges(query: RelatedQuery, budget: Budget): Promise<ReadResult<EvidencePage<Change>>> {
+    const request = relatedRequest('changes', query);
+
+    return this.metadata('changes.page', request.path, budget, (body) =>
+      normalizeChangePage(body, query, this.serverUrl, this.secrets),
+    );
+  }
+
+  listSnapshotDependencies(
+    query: RelatedQuery,
+    budget: Budget,
+  ): Promise<ReadResult<EvidencePage<ScopedRun>>> {
+    const request = relatedRequest('dependencies', query, runDetailFields);
+
+    return this.metadata('dependencies.page', request.path, budget, (body) =>
+      normalizeDependencyPage(body, query, this.serverUrl, runDetailFields, this.secrets),
+    );
+  }
+
+  getSnapshotDependencyCount(ref: RunRef, budget: Budget): Promise<ReadResult<number>> {
+    const id = identity(ref.id, true);
+
+    return this.metadata(
+      'dependencies.count',
+      `/app/rest/builds/id:${id}?fields=id,snapshot-dependencies(count)`,
+      budget,
+      (body) => normalizeDependencyCount(body, id),
+    );
+  }
 
   async listProblems(
     query: EvidenceQuery,

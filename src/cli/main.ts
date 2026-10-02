@@ -59,7 +59,7 @@ export async function main(args: readonly string[]): Promise<void> {
                 ? { payload: packagedSchema('context-show') }
                 : d.name === 'doctor'
                   ? { payload: packagedSchema('doctor') }
-                  : ['run.problems', 'run.tests', 'run.log'].includes(d.name)
+                  : ['run.problems', 'run.tests', 'run.log', 'run.changes'].includes(d.name)
                     ? { payload: packagedSchema(d.name.replace('.', '-')) }
                     : {}),
       });
@@ -108,6 +108,7 @@ export async function main(args: readonly string[]): Promise<void> {
           'run.problems',
           'run.tests',
           'run.log',
+          'run.changes',
           'context.show',
           'doctor',
         ].includes(command)
@@ -138,6 +139,10 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (command === 'run.changes') {
+            const { readChanges } = await import('../commands/run-changes.js');
+
+            output = await readChanges(parsed, context, controller.signal);
           } else if (['run.problems', 'run.tests', 'run.log'].includes(command)) {
             const { readEvidence } = await import('../commands/run-evidence.js');
 

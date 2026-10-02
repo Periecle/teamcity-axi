@@ -9,6 +9,8 @@ import { decode } from '@toon-format/toon';
 import { mockServer, longCanary } from '../fixtures/mock-server.mjs';
 import { parse } from '../../dist/cli/parser.js';
 import { validateResponse } from '../../dist/output/schema.js';
+import { NativeTeamCityReader } from '../../dist/adapter/reader.js';
+import { ProcessTransport } from '../../dist/transport/process.js';
 async function fixture() {
   const binary = process.env.TEAMCITY_AXI_TEST_BINARY;
   if (!binary) throw Error('A checksum-verified native binary is required; no skips');
@@ -32,6 +34,7 @@ async function fixture() {
   });
   return {
     server,
+    dir,
     call: (args, env = {}) =>
       new Promise((res, rej) => {
         const child = spawn(process.execPath, [resolve('bin/teamcity-axi.mjs'), ...args], {
@@ -268,6 +271,168 @@ test('log filtering searches declared full messages, tail bounds hold, and failu
       f.server.requests.every((r) => r.method === 'GET' && !r.path.includes('downloadBuildLog')),
     );
   } finally {
+    await f.close();
+  }
+});
+
+test('changes preserve mandatory identity, scoped paging, file caps, expansion and source errors', async () => {
+  const f = await fixture();
+  try {
+    const first = await f.call(['run', 'changes', '482193', '--limit', '1', '--json']);
+    assert.equal(first.code, 0);
+    validateResponse(first.value);
+    assert.equal(first.value.data.changes[0].message, 'Synthetic change 0');
+    assert.equal(first.value.data.changes[0].vcsRootId, 'Payments_Git');
+    assert.equal(first.value.data.changes[0].files, undefined);
+    const noHints = await f.call([
+      'run',
+      'changes',
+      '482193',
+      '--limit',
+      '1',
+      '--no-hints',
+      '--json',
+    ]);
+    assert.equal(noHints.value.next, undefined);
+    first.value.next.forEach((a) => parse(a.argv.slice(1)));
+    const full = await f.call([
+      ...first.value.next.find((a) => a.argv.includes('--full')).argv.slice(1),
+      '--json',
+    ]);
+    assert.ok(full.value.data.changes[0].message.includes('\n'));
+    const next = await f.call([
+      ...first.value.next.find((a) => a.argv.includes('--cursor')).argv.slice(1),
+      '--json',
+    ]);
+    assert.notEqual(next.value.data.changes[0].id, first.value.data.changes[0].id);
+    const mismatch = await f.call([
+      'run',
+      'changes',
+      '482193',
+      '--limit',
+      '1',
+      '--files',
+      '--cursor',
+      first.value.data.page.cursor,
+      '--json',
+    ]);
+    assert.equal(mismatch.code, 2);
+    for (const [mode, expected] of [
+      ['changes-denied', 'PERMISSION_DENIED'],
+      ['changes-unsupported', 'NOT_FOUND'],
+      ['changes-huge', 'INPUT_LIMIT_EXCEEDED'],
+      ['changes-wrong-root', 'CONTEXT_MISMATCH'],
+    ]) {
+      f.server.setMode(mode);
+      const r = await f.call(['run', 'changes', '482193', '--json']);
+      assert.equal(r.code, 1, mode);
+      assert.equal(r.value.error.code, expected, mode);
+      assert.equal(r.value.data, undefined);
+    }
+    f.server.setMode('changes-unsafe');
+    const unsafe = await f.call(['run', 'changes', '482193', '--json']);
+    assert.equal(unsafe.code, 0);
+    assert.equal(unsafe.value.status, 'partial');
+    assert.equal(unsafe.value.data.changes.length, 3);
+    assert.equal(unsafe.value.data.page.cursor, null);
+    f.server.setMode('changes-no-root');
+    const roots = await f.call(['run', 'changes', '482193', '--json']);
+    assert.equal(roots.value.data.selection.providerReturned, 3);
+    assert.equal(roots.value.data.changes.length, 2);
+    assert.ok(roots.value.meta.limitations.some((l) => l.code === 'CHANGE_ROOT_UNAVAILABLE'));
+    f.server.setMode('changes-file-limit');
+    const files = await f.call([
+      'run',
+      'changes',
+      '482193',
+      '--files',
+      '--fields',
+      'files',
+      '--json',
+    ]);
+    validateResponse(files.value);
+    assert.equal(files.value.data.changes[0].files.length, 100);
+    assert.equal(files.value.data.changes[0].fileCoverage.omitted, 1);
+    assert.equal(files.value.status, 'partial');
+    assert.ok(files.value.data.changes[0].message);
+    f.server.setMode('changes-secret');
+    const secret = await f.call(['run', 'changes', '482193', '--json'], { APP_TOKEN: longCanary });
+    assert.equal(secret.value.data.changes[0].message, '[REDACTED]');
+    assert.ok(!secret.stdout.includes(longCanary.slice(0, 80)));
+    f.server.setMode('changes-preview');
+    const oversized = await f.call([
+      'run',
+      'changes',
+      '482193',
+      '--full',
+      '--max-bytes',
+      '2048',
+      '--json',
+    ]);
+    assert.equal(oversized.code, 1);
+    assert.equal(oversized.value.error.code, 'INPUT_LIMIT_EXCEEDED');
+    assert.ok(Buffer.byteLength(oversized.stdout) <= 2048);
+    const strict = await f.call(['run', 'changes', '482193', '--require-complete', '--json']);
+    assert.equal(strict.code, 1);
+    assert.equal(strict.value.status, 'partial');
+  } finally {
+    await f.close();
+  }
+});
+
+test('immediate dependency adapters preserve direction, scoped counts and independent failures with the pinned CLI', async () => {
+  const f = await fixture();
+  let transport;
+  try {
+    transport = await ProcessTransport.create({
+      binary: resolve(process.env.TEAMCITY_AXI_TEST_BINARY),
+      serverUrl: f.server.base,
+      env: {
+        PATH: process.env.PATH,
+        HOME: f.dir,
+        XDG_CONFIG_HOME: f.dir,
+        TEAMCITY_URL: f.server.base,
+        TEAMCITY_TOKEN: 'fixture-only-token',
+      },
+      limits: {
+        deadline: Date.now() + 15000,
+        concurrency: 3,
+        maxChildren: 8,
+        stdoutBytes: 2097152,
+        stderrBytes: 65536,
+      },
+    });
+    const reader = new NativeTeamCityReader(transport, f.server.base, ['fixture-only-token']);
+    const query = { runId: '482193', count: 20, start: 0, scanLimit: 5000 };
+    const budget = { deadline: Date.now() + 15000 };
+    const page = await reader.listSnapshotDependencies(query, budget);
+    assert.equal(page.state, 'available');
+    assert.equal(page.value.items[0].run.id, '482188');
+    assert.equal(page.value.items[0].projectId, 'Payments');
+    assert.equal(page.value.hasMore, null);
+    const count = await reader.getSnapshotDependencyCount({ id: '482193' }, budget);
+    assert.equal(count.state, 'available');
+    assert.equal(count.value, 1);
+    for (const [mode, code] of [
+      ['dependencies-denied', 'PERMISSION_DENIED'],
+      ['dependencies-unsupported', 'NOT_FOUND'],
+      ['dependencies-huge', 'INPUT_LIMIT_EXCEEDED'],
+      ['dependencies-malformed', 'UPSTREAM_SCHEMA_MISMATCH'],
+    ]) {
+      f.server.setMode(mode);
+      const unavailable = await reader.listSnapshotDependencies(query, budget);
+      assert.equal(unavailable.state, 'unavailable', mode);
+      assert.equal(unavailable.error.code, code, mode);
+      assert.equal(unavailable.value, undefined);
+    }
+    f.server.setMode('dependency-count-wrong-id');
+    const wrong = await reader.getSnapshotDependencyCount({ id: '482193' }, budget);
+    assert.equal(wrong.state, 'unavailable');
+    assert.equal(wrong.error.code, 'CONTEXT_MISMATCH');
+    assert.equal(transport.childProcesses, 7);
+    assert.ok(f.server.requests.every((r) => r.method === 'GET'));
+  } finally {
+    await transport?.dispose();
     await f.close();
   }
 });

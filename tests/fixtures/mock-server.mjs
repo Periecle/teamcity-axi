@@ -171,6 +171,70 @@ export async function mockServer() {
       return error(403, 'Problem source denied');
     if (mode === 'tests-denied' && path.startsWith('/app/rest/testOccurrences'))
       return error(403, 'Test source denied');
+    if (
+      path === '/app/rest/builds' &&
+      url.searchParams.get('locator')?.includes('snapshotDependency:')
+    ) {
+      if (mode === 'dependencies-denied') return error(403, 'Dependency source denied');
+      if (mode === 'dependencies-unsupported') return error(404, 'Dependency locator unavailable');
+      if (mode === 'dependencies-huge')
+        return res.end(
+          JSON.stringify({ count: 1, build: [{ ...run, statusText: 'x'.repeat(3000000) }] }),
+        );
+      if (mode === 'dependencies-malformed')
+        return res.end(JSON.stringify({ count: 0, build: wire.dependencies.build }));
+    }
+    if (path === '/app/rest/changes' && url.searchParams.get('locator')?.includes('start:')) {
+      if (mode === 'changes-denied') return error(403, 'Change source denied');
+      if (mode === 'changes-unsupported') return error(404, 'Change endpoint unavailable');
+      if (mode === 'changes-huge')
+        return res.end(
+          JSON.stringify({
+            count: 1,
+            change: [{ ...wire.changes.change[0], comment: 'x'.repeat(3000000) }],
+          }),
+        );
+      const locator = url.searchParams.get('locator');
+      const count = Number(/(?:^|,)count:(\d+)/.exec(locator)?.[1] ?? 10);
+      const start = Number(/(?:^|,)start:(\d+)/.exec(locator)?.[1] ?? 0);
+      const includeFiles = url.searchParams.get('fields')?.includes('files(');
+      let changes = [0, 1, 2].map((index) => ({
+        ...wire.changes.change[0],
+        id: String(101 + index),
+        comment: `Synthetic change ${index}\n\nContextual fixture evidence only`,
+        ...(includeFiles
+          ? { files: { count: 1, file: [{ file: 'src/fixture.ts', changeType: 'edited' }] } }
+          : {}),
+      }));
+      if (mode === 'changes-wrong-root')
+        changes[0].vcsRootInstance = { 'vcs-root-id': 'Foreign_Git' };
+      if (mode === 'changes-no-root') changes[0].vcsRootInstance = null;
+      if (mode === 'changes-secret') changes[0].comment = longCanary;
+      if (mode === 'changes-preview') changes[0].comment = '🦊'.repeat(2500) + '\nOther line';
+      if (mode === 'changes-file-limit')
+        changes[0].files = {
+          count: 101,
+          file: Array.from({ length: 101 }, () => ({ file: 'src/fixture.ts' })),
+        };
+      const selected = changes.slice(start, start + count);
+      const nextHref =
+        '/teamcity/app/rest/changes?' +
+        new URLSearchParams({
+          locator: locator.replace(/start:\d+/, `start:${start + count}`),
+          fields: url.searchParams.get('fields'),
+        });
+      return res.end(
+        JSON.stringify({
+          count: selected.length,
+          change: selected,
+          ...(mode === 'changes-unsafe'
+            ? { nextHref: 42 }
+            : start + count < changes.length
+              ? { nextHref }
+              : {}),
+        }),
+      );
+    }
     if (mode === 'evidence-huge' && path.startsWith('/app/rest/problemOccurrences'))
       return res.end(
         JSON.stringify({
@@ -280,6 +344,14 @@ export async function mockServer() {
       value = { id: run.buildTypeId, name: 'Build', projectId: 'Payments', paused: false };
     else if (path.endsWith('/snapshot-dependencies'))
       return error(406, 'This subresource does not provide the supported JSON collection');
+    else if (
+      path === '/app/rest/builds/id:482193' &&
+      url.searchParams.get('fields') === 'id,snapshot-dependencies(count)'
+    )
+      value = {
+        id: mode === 'dependency-count-wrong-id' ? 482100 : 482193,
+        'snapshot-dependencies': { count: 1 },
+      };
     else if (path === '/app/rest/builds/id:482193')
       value =
         mode === 'decorated-secret'

@@ -54,6 +54,7 @@ export function validateResponse(value: Response): void {
     ['run.problems', 'run-problems'],
     ['run.tests', 'run-tests'],
     ['run.log', 'run-log'],
+    ['run.changes', 'run-changes'],
   ]) {
     if (
       value.command === command &&

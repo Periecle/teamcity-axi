@@ -669,6 +669,108 @@
       "signal": null,
       "stdout": "HTTP/1.1 400 Bad Request\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716047444181258240\nCache-Control: no-store\nContent-Length: 715\nDate: Fri, 02 Oct 2026 13:05:07 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 400 (Bad Request).\",\"additionalMessage\":\"jetbrains.buildServer.server.rest.errors.BadRequestException: Unsupported test occurrence locator '($base64:YnVpbGQ6KGlkOjEpLGlkOjIwMDAwMDAwMDA)'. Try one of locator dimensions: \\\"build:XXX,id:XXX\\\", \\\"build:XXX\\\", \\\"test:XXX\\\", \\\"affectedProject:XXX,currentlyFailing:true\\\", \\\"affectedProject:XXX,currentlyMuted:true\\\".\",\"stackTrace\":null,\"message\":\"Unsupported test occurrence locator '($base64:YnVpbGQ6KGlkOjEpLGlkOjIwMDAwMDAwMDA)'. Try one of locator dimensions: \\\"build:XXX,id:XXX\\\", \\\"build:XXX\\\", \\\"test:XXX\\\", \\\"affectedProject:XXX,currentlyFailing:true\\\", \\\"affectedProject:XXX,currentlyMuted:true\\\"\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "vcs-run-detail": {
+      "args": [
+        "api",
+        "/app/rest/builds/id:9?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nDate: Fri, 02 Oct 2026 13:43:06 GMT\nStrict-Transport-Security: max-age=31536000;\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716057004128342016\nCache-Control: no-store\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nContent-Length: 474\n\n{\"id\":9,\"buildTypeId\":\"AxiContract_Vcs\",\"number\":\"3\",\"status\":\"SUCCESS\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Success\",\"buildType\":{\"id\":\"AxiContract_Vcs\",\"name\":\"Synthetic VCS and dependency fixture\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T134245+0000\",\"finishDate\":\"20261002T134255+0000\",\"revisions\":{\"revision\":[{\"version\":\"a976f7f9f8133176f56bda7f57fa6dc40d54f344\",\"vcs-root-instance\":{\"id\":\"2\",\"vcs-root-id\":\"AxiContract_Git\"}}]}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "changes-positive": {
+      "args": [
+        "api",
+        "/app/rest/changes?locator=build:(id:9),count:1,start:0,lookupLimit:5000&fields=count,nextHref,change(id,version,comment,date,vcsRootInstance(vcs-root-id))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716057004216422400\nCache-Control: no-store\nContent-Length: 403\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 13:43:06 GMT\n\n{\"change\":[{\"id\":3,\"version\":\"a976f7f9f8133176f56bda7f57fa6dc40d54f344\",\"date\":\"20261002T134229+0000\",\"comment\":\"Synthetic change 3\\n\\nContextual fixture evidence only\\n\",\"vcsRootInstance\":{\"vcs-root-id\":\"AxiContract_Git\"}}],\"nextHref\":\"/app/rest/changes?fields=count,nextHref,change(id,version,comment,date,vcsRootInstance(vcs-root-id))&locator=build:(id:9),count:1,lookupLimit:5000,start:1\",\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "changes-files-positive": {
+      "args": [
+        "api",
+        "/app/rest/changes?locator=build:(id:9),count:10,start:0,lookupLimit:5000&fields=count,nextHref,change(id,version,comment,date,vcsRootInstance(vcs-root-id),files(count,file(file,changeType)))",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716057004321280000\nContent-Length: 883\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 13:43:06 GMT\n\n{\"change\":[{\"id\":3,\"version\":\"a976f7f9f8133176f56bda7f57fa6dc40d54f344\",\"date\":\"20261002T134229+0000\",\"comment\":\"Synthetic change 3\\n\\nContextual fixture evidence only\\n\",\"files\":{\"count\":1,\"file\":[{\"changeType\":\"edited\",\"file\":\"fixture.txt\"}]},\"vcsRootInstance\":{\"vcs-root-id\":\"AxiContract_Git\"}},{\"id\":2,\"version\":\"e5a8a324ec3e53b17d61986c48f17386f0958220\",\"date\":\"20261002T134229+0000\",\"comment\":\"Synthetic change 2\\n\\nContextual fixture evidence only\\n\",\"files\":{\"count\":1,\"file\":[{\"changeType\":\"edited\",\"file\":\"fixture.txt\"}]},\"vcsRootInstance\":{\"vcs-root-id\":\"AxiContract_Git\"}},{\"id\":1,\"version\":\"7bba587dc495364a3a128ac49c5cb5c82d205cd5\",\"date\":\"20261002T134229+0000\",\"comment\":\"Synthetic change 1\\n\\nContextual fixture evidence only\\n\",\"files\":{\"count\":1,\"file\":[{\"changeType\":\"edited\",\"file\":\"fixture.txt\"}]},\"vcsRootInstance\":{\"vcs-root-id\":\"AxiContract_Git\"}}],\"count\":3}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "dependencies-positive": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=snapshotDependency:(to:(id:9),recursive:false),defaultFilter:false,count:20,start:0,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nTeamcity-Node-Id: MAIN_SERVER\nDate: Fri, 02 Oct 2026 13:43:06 GMT\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716057004409360384\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 364\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\n\n{\"build\":[{\"id\":8,\"buildTypeId\":\"AxiContract_Green\",\"number\":\"4\",\"status\":\"SUCCESS\",\"state\":\"finished\",\"composite\":false,\"personal\":false,\"statusText\":\"Success\",\"buildType\":{\"id\":\"AxiContract_Green\",\"name\":\"AxiContract_Green\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T134234+0000\",\"finishDate\":\"20261002T134245+0000\",\"revisions\":{\"revision\":[]}}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "dependency-count-positive": {
+      "args": [
+        "api",
+        "/app/rest/builds/id:9?fields=id,snapshot-dependencies(count)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716057004480663552\nCache-Control: no-store\nContent-Length: 44\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 13:43:06 GMT\nX-Frame-Options: sameorigin\n\n{\"id\":9,\"snapshot-dependencies\":{\"count\":1}}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "dependency-count-leaf": {
+      "args": [
+        "api",
+        "/app/rest/builds/id:8?fields=id,snapshot-dependencies(count)",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 44\nDate: Fri, 02 Oct 2026 13:43:06 GMT\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716057004547772416\n\n{\"id\":8,\"snapshot-dependencies\":{\"count\":0}}",
+      "stderr": "[Native stderr omitted from public live captures]"
     }
   },
   "fixture": {
@@ -679,7 +781,25 @@
     "deniedRunId": "3",
     "missingRunId": "999999",
     "kind": "original synthetic test builds on actual TeamCity",
-    "greenJobId": "AxiContract_Green"
+    "greenJobId": "AxiContract_Green",
+    "vcsRunId": "9",
+    "vcsJobId": "AxiContract_Vcs",
+    "vcsRootId": "AxiContract_Git",
+    "dependencyRunId": "8",
+    "projectRunIds": [
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "2",
+      "1"
+    ],
+    "projectFailedRunIds": [
+      "5",
+      "1"
+    ]
   },
   "limits": {
     "deadlineMs": 10000,

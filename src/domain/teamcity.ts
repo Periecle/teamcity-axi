@@ -99,6 +99,29 @@ export interface EvidencePage<T> {
   limitations: Limitation[];
 }
 
+export interface RelatedQuery {
+  runId: string;
+  count: number;
+  start: number;
+  scanLimit: number;
+  files?: boolean;
+}
+
+export interface Change {
+  id: string;
+  version: string;
+  vcsRootId: string;
+  message: string;
+  timestamp: string | null;
+  files?: string[];
+  fileCoverage?: { returned: number; providerReturned: number; omitted: number };
+}
+
+export interface ScopedRun {
+  run: Run;
+  projectId: string | null;
+}
+
 export interface RunQuery {
   jobId?: string;
   projectId?: string;
@@ -140,6 +163,12 @@ export type ReadResult<T> =
 // The first vertical adapter implements this slice. Additional read primitives
 // extend this interface as their recorded contracts and tests are added.
 export interface TeamCityReader {
+  listChanges(query: RelatedQuery, budget: Budget): Promise<ReadResult<EvidencePage<Change>>>;
+  listSnapshotDependencies(
+    query: RelatedQuery,
+    budget: Budget,
+  ): Promise<ReadResult<EvidencePage<ScopedRun>>>;
+  getSnapshotDependencyCount(ref: RunRef, budget: Budget): Promise<ReadResult<number>>;
   listProblems(query: EvidenceQuery, budget: Budget): Promise<ReadResult<EvidencePage<Problem>>>;
   listTests(
     query: EvidenceQuery,

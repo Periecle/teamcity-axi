@@ -123,10 +123,10 @@ test('actual bounded run list returns a page then preserves exhaustion uncertain
     validateResponse(project);
     assert.deepEqual(
       project.data.runs.map((v) => v.id),
-      ['2', '1'],
+      f.contract.fixture.projectRunIds,
     );
     assert.equal(project.data.aggregates.scope, 'returnedPage');
-    assert.equal(project.data.aggregates.failure, 1);
+    assert.equal(project.data.aggregates.failure, f.contract.fixture.projectFailedRunIds.length);
     assert.ok(project.data.runs.every((r) => Object.hasOwn(r, 'branch')));
     const precision = await f.wrapper([
       'run',
@@ -346,6 +346,63 @@ test('live bounded logs cap native overdelivery and failure view accounts indepe
     assert.equal(view.data.sources.tests.coverage, 'bounded_page');
     assert.equal(view.data.sources.log.coverage, 'tail_window');
     assert.equal(view.meta.counts.childProcesses, 5);
+  } finally {
+    await f.close();
+  }
+});
+
+test('live changes preserve root identity, message expansion, files and cursor scope', async () => {
+  const f = await liveFixture();
+  try {
+    const id = f.contract.fixture.vcsRunId;
+    const first = JSON.parse(
+      (await f.wrapper(['run', 'changes', id, '--limit', '1', '--json'])).stdout,
+    );
+    validateResponse(first);
+    assert.equal(first.status, 'ok');
+    assert.equal(first.data.changes[0].vcsRootId, f.contract.fixture.vcsRootId);
+    assert.equal(first.data.changes[0].message, 'Synthetic change 3');
+    assert.equal(first.data.changes[0].files, undefined);
+    assert.equal(first.data.page.hasMore, true);
+    first.next.forEach((a) => parse(a.argv.slice(1)));
+    const second = JSON.parse(
+      (
+        await f.wrapper([
+          ...first.next.find((a) => a.argv.includes('--cursor')).argv.slice(1),
+          '--json',
+        ])
+      ).stdout,
+    );
+    assert.notEqual(second.data.changes[0].id, first.data.changes[0].id);
+    const full = JSON.parse(
+      (
+        await f.wrapper([
+          ...first.next.find((a) => a.argv.includes('--full')).argv.slice(1),
+          '--json',
+        ])
+      ).stdout,
+    );
+    assert.ok(full.data.changes[0].message.includes('Contextual fixture evidence only'));
+    const files = decode((await f.wrapper(['run', 'changes', id, '--files'])).stdout);
+    validateResponse(files);
+    assert.equal(files.data.changes.length, 3);
+    assert.deepEqual(files.data.changes[0].files, ['fixture.txt']);
+    assert.equal(files.status, 'partial');
+    const changed = await f.wrapper([
+      'run',
+      'changes',
+      id,
+      '--limit',
+      '1',
+      '--files',
+      '--cursor',
+      first.data.page.cursor,
+      '--json',
+    ]);
+    assert.equal(changed.code, 2);
+    const foreign = await f.wrapper(['run', 'changes', f.contract.fixture.deniedRunId, '--json']);
+    assert.equal(foreign.code, 1);
+    assert.equal(JSON.parse(foreign.stdout).error.code, 'PERMISSION_DENIED');
   } finally {
     await f.close();
   }
