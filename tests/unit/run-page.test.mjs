@@ -101,3 +101,97 @@ test('revision candidates require the requested root identity and exact revision
   );
   assert.deepEqual(mismatch.runs, []);
 });
+
+test('unknown results filter normalized candidates while retaining provider coverage and continuation', () => {
+  const q = { ...query, result: 'unknown' };
+  assert.deepEqual(runFilters(q), runFilters(query));
+  const page = normalizeRunPage(
+    {
+      count: 4,
+      build: [
+        run,
+        { ...run, id: 482194, status: 'FUTURE_RESULT' },
+        { ...run, id: 482195, status: 'SUCCESS', failedToStart: undefined },
+        {
+          ...run,
+          id: 482196,
+          status: 'UNKNOWN',
+          canceledInfo: { timestamp: '20261001T110000+0000' },
+        },
+      ],
+      nextHref: href(20),
+    },
+    q,
+    request,
+    [],
+  );
+  assert.equal(page.providerReturned, 4);
+  assert.deepEqual(
+    page.runs.map((run) => run.id),
+    ['482194', '482195'],
+  );
+  assert.ok(page.runs.every((run) => run.result === 'unknown'));
+  assert.equal(page.hasMore, true);
+  assert.equal(page.position, 20);
+  assert.ok(
+    page.limitations.some(
+      (note) => note.runId === '482195' && note.code === 'OUTCOME_METADATA_UNAVAILABLE',
+    ),
+  );
+  const empty = normalizeRunPage({ count: 1, build: [run], nextHref: href(20) }, q, request, []);
+  assert.equal(empty.runs.length, 0);
+  assert.equal(empty.providerReturned, 1);
+  assert.equal(empty.hasMore, true);
+  assert.throws(
+    () =>
+      normalizeRunPage({ count: 1, build: [{ ...run, branchName: 'Foreign' }] }, q, request, []),
+    (error) => error.code === 'CONTEXT_MISMATCH',
+  );
+});
+
+test('provider millisecond membership survives coarse DTO timestamps while disjoint rows are excluded', () => {
+  const q = {
+    ...query,
+    window: { since: '2026-10-01T11:00:00.000000001Z', until: '2026-10-01T11:00:01.000000001Z' },
+  };
+  const filters = runFilters(q);
+  assert.ok(filters.includes('finishDate:(date:20261001T110000+0000,condition:after)'));
+  assert.ok(filters.includes('finishDate:(date:20261001T110001.001+0000,condition:before)'));
+  const page = normalizeRunPage(
+    {
+      count: 3,
+      build: [
+        { ...run, finishDate: '20261001T110000+0000' },
+        { ...run, id: 482194, finishDate: '20261001T110001+0000' },
+        { ...run, id: 482195, finishDate: '20261001T110002+0000' },
+      ],
+    },
+    q,
+    { ...request, filters },
+    [],
+  );
+  assert.equal(page.providerReturned, 3);
+  assert.deepEqual(
+    page.runs.map((run) => run.id),
+    ['482193', '482194'],
+  );
+});
+
+test('reported-second intervals cannot substitute for the precise provider finish timestamp', () => {
+  const q = {
+    ...query,
+    window: { since: '2026-10-01T11:00:00.568999999Z', until: '2026-10-01T11:00:00.569000001Z' },
+  };
+  const filters = runFilters(q);
+  assert.ok(filters.includes('finishDate:(date:20261001T110000.568+0000,condition:after)'));
+  assert.ok(filters.includes('finishDate:(date:20261001T110000.570+0000,condition:before)'));
+  const result = normalizeRunPage(
+    { count: 1, build: [{ ...run, finishDate: '20261001T110000+0000' }] },
+    q,
+    { ...request, filters },
+    [],
+  );
+  assert.equal(result.runs.length, 1);
+  assert.equal(result.runs[0].finishedAt, '2026-10-01T11:00:00.000Z');
+  assert.ok(!result.limitations.some((note) => note.code === 'FINISH_TIME_OUTSIDE_WINDOW'));
+});

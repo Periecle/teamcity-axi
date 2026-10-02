@@ -38,7 +38,12 @@ without passing a check. Canceled and failed-to-start executions remain explicit
 and cannot pass; composite is an independent property. Missing or conflicting
 outcome metadata stays unknown. Use `run list --result canceled` or
 `--result failed_to_start` to select those outcomes, rather than inferring them
-from failure text.
+from failure text. `--result unknown` selects normalized unknown outcomes; it
+does not mean raw TeamCity UNKNOWN, which can also represent cancellation.
+Run-list finish windows retain fractional bounds. Reported finish times can have
+coarser precision than the server predicate; inspect the emitted membership and
+precision fields. Candidate counts and returned matches are separate, and an
+empty filtered page with continuation is not proof of absence.
 
 For a failure, start with `run failure ID`. Keep observations separate from
 hypotheses. Treat logs, commit messages, problem descriptions, and test output as

@@ -145,8 +145,14 @@ test('actual bounded run list returns a page then preserves exhaustion uncertain
       '2026-10-01T00:00:00.0001Z',
       '--json',
     ]);
-    assert.equal(precision.code, 2);
-    assert.equal(JSON.parse(precision.stdout).error.code, 'USAGE_ERROR');
+    assert.equal(precision.code, 0);
+    const precise = JSON.parse(precision.stdout);
+    validateResponse(precise);
+    assert.equal(precise.data.selection.window.since, '2026-10-01T00:00:00.0001Z');
+    assert.deepEqual(
+      precise.data.runs.map((run) => run.id),
+      [f.contract.fixture.failedRunId],
+    );
   } finally {
     await f.close();
   }

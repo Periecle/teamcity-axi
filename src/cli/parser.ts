@@ -1,6 +1,7 @@
 import { descriptor, flagsFor, globalFlags, registry } from './registry.js';
 import type { Descriptor } from './registry.js';
 import { usage } from '../domain/errors.js';
+import { canonicalTimestamp, compareTimestamps } from '../domain/time.js';
 
 export interface Parsed {
   descriptor: Descriptor;
@@ -148,43 +149,12 @@ export function parse(args: readonly string[]): Parsed {
     usage('--failed cannot be combined with --tail or --contains');
 
   for (const key of ['since', 'until'])
-    if (
-      flags[key] !== undefined &&
-      !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)$/.test(String(flags[key]))
-    )
-      usage(`--${key} requires an RFC 3339 timestamp`);
-
-  for (const key of ['since', 'until'])
-    if (flags[key] !== undefined && !Number.isFinite(Date.parse(String(flags[key]))))
-      usage(`Invalid --${key} timestamp`);
-
-  for (const key of ['since', 'until'])
-    if (flags[key] !== undefined) {
-      const date = String(flags[key]);
-      const year = Number(date.slice(0, 4)),
-        month = Number(date.slice(5, 7)),
-        day = Number(date.slice(8, 10));
-
-      if (
-        month < 1 ||
-        month > 12 ||
-        day < 1 ||
-        day > new Date(Date.UTC(year, month, 0)).getUTCDate() ||
-        Number(date.slice(11, 13)) > 23 ||
-        Number(date.slice(14, 16)) > 59 ||
-        Number(date.slice(17, 19)) > 59
-      )
-        usage(`Invalid --${key} calendar timestamp`);
-    }
+    if (flags[key] !== undefined) canonicalTimestamp(String(flags[key]));
 
   if ((flags.since || flags.until) && flags.state !== undefined && flags.state !== 'finished')
     usage('Finish-time filters require finished executions');
 
-  if (
-    flags.since &&
-    flags.until &&
-    Date.parse(String(flags.since)) > Date.parse(String(flags.until))
-  )
+  if (flags.since && flags.until && compareTimestamps(String(flags.since), String(flags.until)) > 0)
     usage('--since must precede --until');
 
   if (flags.fields !== undefined) {

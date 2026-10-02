@@ -4,21 +4,7 @@ import { object, normalizeRun } from './run.js';
 import { idCondition, branchCondition } from './locator.js';
 import { nextPosition } from './continuation.js';
 import type { ContinuationRequest } from './continuation.js';
-
-function date(value: string): string {
-  if (
-    !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.000Z$/.test(value) ||
-    !Number.isFinite(Date.parse(value)) ||
-    new Date(value).toISOString() !== value
-  )
-    throw new DomainError(
-      'USAGE_ERROR',
-      'Finish-time queries require canonical whole-second timestamps',
-      2,
-    );
-
-  return value.slice(0, 19).replaceAll('-', '').replaceAll(':', '') + '+0000';
-}
+import { compareTimestamps, providerDate } from '../domain/time.js';
 
 export function runFilters(query: RunQuery): string[] {
   if (!query.jobId && !query.projectId)
@@ -55,7 +41,11 @@ export function runFilters(query: RunQuery): string[] {
   }
 
   if (query.result !== undefined) {
-    if (!['success', 'failure', 'error', 'canceled', 'failed_to_start'].includes(query.result))
+    if (
+      !['success', 'failure', 'error', 'canceled', 'failed_to_start', 'unknown'].includes(
+        query.result,
+      )
+    )
       throw new DomainError(
         'DEPENDENCY_UNSUPPORTED',
         'Result filter requires separately verified explicit outcome metadata',
@@ -64,25 +54,26 @@ export function runFilters(query: RunQuery): string[] {
     if (query.result === 'canceled') filters.push('canceled:true', 'failedToStart:false');
     else if (query.result === 'failed_to_start')
       filters.push('canceled:false', 'failedToStart:true');
-    else
+    else if (query.result !== 'unknown')
       filters.push(`status:${query.result.toUpperCase()}`, 'canceled:false', 'failedToStart:false');
   }
 
   if (query.window) {
-    if (
-      query.state !== 'finished' ||
-      Date.parse(query.window.since) > Date.parse(query.window.until)
-    )
+    if (query.state !== 'finished' || compareTimestamps(query.window.since, query.window.until) > 0)
       throw new DomainError(
         'USAGE_ERROR',
         'Finish-time window requires ordered finished-run semantics',
         2,
       );
 
-    filters.push(
-      `finishDate:(date:${date(query.window.since)},condition:after)`,
-      `finishDate:(date:${date(query.window.until)},condition:before)`,
-    );
+    for (const [condition, value] of [
+      ['after', query.window.since],
+      ['before', query.window.until],
+    ] as const) {
+      const date = providerDate(value, condition);
+
+      if (date) filters.push(`finishDate:(date:${date},condition:${condition})`);
+    }
   }
 
   return filters;
@@ -129,7 +120,7 @@ export function normalizeRunPage(
       (query.projectId && projectId !== query.projectId) ||
       (query.branch !== undefined && run.branch !== query.branch) ||
       (query.state && run.state !== query.state) ||
-      (query.result && run.result !== query.result)
+      (query.result && query.result !== 'unknown' && run.result !== query.result)
     )
       throw new DomainError(
         'CONTEXT_MISMATCH',
@@ -140,6 +131,8 @@ export function normalizeRunPage(
       throw new DomainError('POLICY_DENIED', 'Run project is outside the verified trusted scope');
 
     page.limitations.push(...limitations);
+
+    if (query.result === 'unknown' && run.result !== 'unknown') continue;
 
     if (query.window) {
       if (!run.finishedAt) {
@@ -153,12 +146,12 @@ export function normalizeRunPage(
       }
 
       if (
-        Date.parse(run.finishedAt) <= Date.parse(query.window.since) ||
-        Date.parse(run.finishedAt) >= Date.parse(query.window.until)
+        Date.parse(run.finishedAt) + 999 <= Date.parse(query.window.since) ||
+        compareTimestamps(run.finishedAt, query.window.until) >= 0
       ) {
         page.limitations.push({
           code: 'FINISH_TIME_OUTSIDE_WINDOW',
-          message: 'Candidate excluded after finish-time verification',
+          message: 'Reported finish-time interval is disjoint from the requested window',
           source: 'run',
           runId: run.id,
         });

@@ -13,28 +13,7 @@ import type { CursorBinding } from '../adapter/cursor.js';
 import { runFilters } from '../adapter/run-page.js';
 import { knownSecrets } from '../output/sanitize.js';
 import { ProjectPolicy } from '../context/project-policy.js';
-
-function wholeSecond(value: string): string {
-  const fraction = /\.(\d+)(?:Z|[+-]\d\d:\d\d)$/.exec(value)?.[1];
-
-  if (fraction && /[1-9]/.test(fraction))
-    throw new DomainError(
-      'USAGE_ERROR',
-      'Finish-time filters currently require whole-second timestamps',
-      2,
-    );
-
-  const canonical = new Date(value).toISOString();
-
-  if (!canonical.endsWith('.000Z'))
-    throw new DomainError(
-      'USAGE_ERROR',
-      'Finish-time filters currently require whole-second timestamps',
-      2,
-    );
-
-  return canonical;
-}
+import { canonicalTimestamp, shiftTimestamp } from '../domain/time.js';
 
 export async function listRuns(
   parsed: Parsed,
@@ -46,7 +25,10 @@ export async function listRuns(
 
   const result = parsed.flags.result === undefined ? undefined : String(parsed.flags.result);
 
-  if (result && !['success', 'failure', 'error', 'canceled', 'failed_to_start'].includes(result))
+  if (
+    result &&
+    !['success', 'failure', 'error', 'canceled', 'failed_to_start', 'unknown'].includes(result)
+  )
     throw new DomainError(
       'DEPENDENCY_UNSUPPORTED',
       'This outcome filter requires explicit metadata not yet verified by the adapter',
@@ -63,11 +45,11 @@ export async function listRuns(
     cursor = parsed.flags.cursor ? decodeCursor(String(parsed.flags.cursor), now) : undefined;
   const state = String(parsed.flags.state ?? 'finished') as NonNullable<RunQuery['state']>;
   const until = parsed.flags.until
-    ? wholeSecond(String(parsed.flags.until))
+    ? canonicalTimestamp(String(parsed.flags.until))
     : (cursor?.window?.until ?? new Date(Math.floor(now / 1000) * 1000).toISOString());
   const since = parsed.flags.since
-    ? wholeSecond(String(parsed.flags.since))
-    : (cursor?.window?.since ?? new Date(Date.parse(until) - 7 * 86400000).toISOString());
+    ? canonicalTimestamp(String(parsed.flags.since))
+    : (cursor?.window?.since ?? shiftTimestamp(until, -7 * 86400));
   const window = state === 'finished' ? { since, until } : undefined;
   const server = context.config?.servers[context.server!]!;
   const query: RunQuery = {
@@ -151,6 +133,7 @@ export async function listRuns(
         JSON.stringify({
           serverUrl: context.serverUrl,
           filters: runFilters(query),
+          result: query.result ?? null,
           revision: query.revision ?? null,
           vcsRootId: query.vcsRootId ?? null,
           allowedProjects: server?.allowedProjects?.toSorted() ?? null,
@@ -206,18 +189,25 @@ export async function listRuns(
         source: 'run',
       });
 
-    const token =
-      page.position === null || expiresAt <= continuationNow
-        ? null
-        : encodeCursor(
-            {
-              ...binding,
-              version: 1,
-              position: page.position,
-              expiresAt,
-            },
-            continuationNow,
-          );
+    let token: string | null = null;
+
+    if (page.position !== null && expiresAt > continuationNow) {
+      const continuation = {
+        ...binding,
+        version: 1 as const,
+        position: page.position,
+        expiresAt,
+      };
+
+      if (Buffer.from(JSON.stringify(continuation)).toString('base64url').length > 4096)
+        limitations.push({
+          code: 'CURSOR_LIMIT_EXCEEDED',
+          message: 'Exact query bounds exceed the cursor budget; continuation is unavailable',
+          source: 'run',
+        });
+      else token = encodeCursor(continuation, continuationNow);
+    }
+
     const keep = new Set([
       'id',
       'jobId',
@@ -250,6 +240,16 @@ export async function listRuns(
         scanLimit: query.scanLimit,
         consistency: 'best_effort_offset',
         timestampBasis: window ? 'finishTime' : null,
+        ...(window
+          ? {
+              timestampMembership: 'provider',
+              reportedTimestampPrecision: 'second',
+              filterTimestampPrecision: 'millisecond',
+            }
+          : {}),
+        result: query.result ?? null,
+        resultBasis:
+          query.result === 'unknown' ? 'normalized_candidates' : query.result ? 'provider' : null,
         ...(window ? { window: { ...window, bounds: 'exclusive' } } : {}),
       },
       aggregates: {

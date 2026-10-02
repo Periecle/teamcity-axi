@@ -9,10 +9,10 @@ remaining contract, evaluation, and release gates are proved.
 
 | Milestone                | Delivered                                                                                                                                                                                                                                                                                        | Remaining acceptance work                                                                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0: upstream contract     | Native v1.5.0 and immutable source pinned; four Unix checksums; 37 Linux x64 native/mock captures and 95 restricted TeamCity 2026.2 captures; boundary/context/read-only ADRs                                                                                                                    | Broader live multi-root/branch/DAG/queue/agent fixtures, live deployment context prefix, actual expired-token evidence, execution of other claimed platforms |
+| 0: upstream contract     | Native v1.5.0 and immutable source pinned; four Unix checksums; 39 Linux x64 native/mock captures and 109 restricted TeamCity 2026.2 captures; boundary/context/read-only ADRs                                                                                                                   | Broader live multi-root/branch/DAG/queue/agent fixtures, live deployment context prefix, actual expired-token evidence, execution of other claimed platforms |
 | 1: executable boundary   | Strict registry/parser, local help/version/schema, every registered command service, command-specific schemas, equivalent JSON/TOON, bounded/redacted output                                                                                                                                     | Release-wide schema/examples/package audit and remaining flag capability gates                                                                               |
 | 2: context/transport     | Trusted user config, repository binding/root mapping, worktree-aware Git, token-origin binding, neutral child CWD, restricted environment, shared budgets, cancellation/process-group cleanup                                                                                                    | Final adversarial/concurrency acceptance audit across the complete product                                                                                   |
-| 3: vertical reads        | Exact run view, bounded scoped run pages, local/verified context and doctor, reconstructed cursors and scope/policy assertions                                                                                                                                                                   | Unknown-result and fractional-time list contracts and broader positive live branch/revision cases                                                            |
+| 3: vertical reads        | Exact run view, bounded scoped run pages, local/verified context and doctor, reconstructed cursors and scope/policy assertions                                                                                                                                                                   | Broader positive live branch/revision cases and exact exhausted-empty collection proof                                                                       |
 | 4: evidence              | Independent problem/test/change/log/dependency reads and exact occurrence expansion, explicit availability/unknown totals                                                                                                                                                                        | Broader live muted/duplicate/source-denial/retention cases and complete primitive gate audit                                                                 |
 | 5: failure investigation | Bounded DAG/cycle traversal, deterministic evidence references, independent source coverage, reserved final reads, no causal overclaims                                                                                                                                                          | Broader live shared graphs and final investigation acceptance audit                                                                                          |
 | 6: read-only product     | Exact-checkout status, fixed-run watch, safe job/queue/agent reads, versioned portable skill, registry-generated help/examples with CI drift gate                                                                                                                                                | Broader live status/queue/agent lifecycle and multi-worktree scenarios, final product acceptance audit                                                       |
@@ -25,17 +25,17 @@ separate deferred scopes. They are not silently folded into the read-only produc
 
 Current full local checks pass on Node 24.14.0 / Linux x64:
 
-- 121 deterministic unit and executable tests, including formatting and generated
+- 128 deterministic unit and executable tests, including formatting and generated
   help/examples for all eighteen registry descriptors.
-- 50 released-native CLI/mock-server tests, including the evaluation corpus.
-- 15 actual restricted-server tests on TeamCity 2026.2, build 238924.
+- 53 released-native CLI/mock-server tests, including the evaluation corpus.
+- 17 actual restricted-server tests on TeamCity 2026.2, build 238924.
 - No tests skipped. TypeScript compilation, diff validation, and portable skill
   validation pass. Package inspection includes status/watch services and schemas,
   the skill, and generated reference; excludes test/setup scripts and credentials.
-The production-only installed package passes ten smoke checks, including explicit
-canceled, failed-to-start, and composite results through the pinned native CLI.
+  The production-only installed package passes fourteen smoke checks, including precise fractional windows, normalized unknown filtering, and explicit
+  canceled, failed-to-start, and composite results through the pinned native CLI.
 
-Independent evidence/security review found no remaining material status/watch
+Independent evidence/security review found no remaining material run-list or status/watch
 issues after fixes to strict completeness, scoped hints, continuation safety,
 retained source limitations, observed execution context, and explicit outcome
 classification. A full unknown-outcome page retains all rows after repeated
@@ -43,8 +43,8 @@ diagnostics are grouped before schema validation. LSP returned cached
 cross-file types or timed out on some files; current TypeScript compilation is
 the authoritative semantic fallback. Full release certification is still separate.
 
-GitHub CI passed both jobs on the evaluation checkpoint `1fad6ed`
-([run 37030113220](https://github.com/Periecle/teamcity-axi/actions/runs/37030113220)).
+GitHub CI passed both jobs on the outcome checkpoint `3500d1b`
+([run 37035063651](https://github.com/Periecle/teamcity-axi/actions/runs/37035063651)).
 The existing workflow runs the generated-documentation drift gate through
 `npm test`; no workflow authorization expansion is needed.
 
@@ -92,6 +92,12 @@ outcomes; missing or conflicting metadata cannot pass a check. Composite remains
 independent from lifecycle and result. This closes the focused A11 outcome
 contract. See [the decision](decisions/0013-execution-outcomes.md) for captures
 and semantics.
+
+Run list now supports normalized unknown-result filtering and precise fractional
+finish windows. Live evidence revealed hidden milliseconds in the server
+predicate; the adapter preserves exact bounds and declares the coarser reported
+timestamp precision. Cursor overflow retains useful partial rows. See
+[the list decision](decisions/0014-precise-run-list.md).
 
 Close the model-agent evaluation gate, remaining live contracts and mandatory
 acceptance scenarios, then perform the requirement-by-requirement release audit.

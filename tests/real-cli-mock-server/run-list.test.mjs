@@ -34,7 +34,10 @@ async function fixture() {
     }),
     { mode: 0o600 },
   );
-  const call = (flags = []) =>
+  const call = (
+    flags = [],
+    window = { since: '2026-10-01T00:00:00Z', until: '2026-10-02T00:00:00Z' },
+  ) =>
     new Promise((done, reject) => {
       const args = [
         'run',
@@ -43,10 +46,8 @@ async function fixture() {
         'Payments_Build',
         '--branch',
         'feature/refund',
-        '--since',
-        '2026-10-01T00:00:00Z',
-        '--until',
-        '2026-10-02T00:00:00Z',
+        ...(window.since ? ['--since', window.since] : []),
+        ...(window.until ? ['--until', window.until] : []),
         ...flags,
       ];
       const child = spawn(process.execPath, [resolve('bin/teamcity-axi.mjs'), ...args], {
@@ -158,6 +159,124 @@ test('unsafe continuations preserve rows while scope, malformed and denied respo
     const unknown = await f.call(['--json', '--fields', 'number']);
     assert.equal(unknown.value.data.runs[0].result, 'unknown');
     assert.equal(unknown.value.data.runs[0].rawStatus, 'FUTURE_RESULT');
+  } finally {
+    await f.close();
+  }
+});
+
+test('unknown-result pages retain candidate coverage, empty continuation and independent cursor identity', async () => {
+  const f = await fixture();
+  try {
+    f.server.setMode('list-unknown-candidates');
+    for (const flags of [['--json'], []]) {
+      const first = await f.call(['--result', 'unknown', ...flags]);
+      assert.equal(first.code, 0);
+      validateResponse(first.value);
+      assert.equal(first.value.data.selection.result, 'unknown');
+      assert.equal(first.value.data.selection.resultBasis, 'normalized_candidates');
+      assert.equal(first.value.data.selection.providerReturned, 2);
+      assert.deepEqual(
+        first.value.data.runs.map((run) => run.id),
+        ['482194'],
+      );
+      assert.equal(first.value.data.runs[0].rawStatus, 'FUTURE_RESULT');
+      assert.equal(first.value.data.page.hasMore, true);
+      const token = first.value.data.page.cursor;
+      const next = await f.call(['--result', 'unknown', '--cursor', token, ...flags]);
+      assert.equal(next.code, 0);
+      validateResponse(next.value);
+      assert.equal(next.value.data.selection.providerReturned, 2);
+      assert.deepEqual(next.value.data.runs, []);
+      assert.equal(next.value.data.page.hasMore, true);
+      assert.ok(next.value.data.page.cursor);
+      assert.ok(next.value.next[0].argv.includes('unknown'));
+      for (const action of next.value.next) parse(action.argv.slice(1));
+      const crossed = await f.call(['--cursor', token, '--json']);
+      assert.equal(crossed.code, 2);
+      assert.equal(crossed.value.error.code, 'USAGE_ERROR');
+      const ordinary = await f.call(['--json']);
+      const reverse = await f.call([
+        '--result',
+        'unknown',
+        '--cursor',
+        ordinary.value.data.page.cursor,
+        '--json',
+      ]);
+      assert.equal(reverse.code, 2);
+    }
+    const locators = f.server.requests
+      .filter((request) => request.path.endsWith('/app/rest/builds'))
+      .map((request) => request.query.locator);
+    assert.ok(locators.length > 0);
+    assert.ok(locators.every((locator) => !locator.includes('status:UNKNOWN')));
+    assert.ok(f.server.requests.every((request) => request.method === 'GET'));
+  } finally {
+    await f.close();
+  }
+});
+
+test('fractional windows survive provider bounds, exact verification, default lookback and cursor continuation', async () => {
+  const f = await fixture();
+  try {
+    f.server.setMode('list-fractional');
+    const window = {
+      since: '2026-10-01T13:00:00.999999999+02:00',
+      until: '2026-10-01T11:00:01.000000001Z',
+    };
+    const first = await f.call(['--json'], window);
+    assert.equal(first.code, 0);
+    validateResponse(first.value);
+    assert.deepEqual(
+      first.value.data.runs.map((run) => run.id),
+      ['482194'],
+    );
+    assert.equal(first.value.data.selection.window.since, '2026-10-01T11:00:00.999999999Z');
+    assert.equal(first.value.data.selection.window.until, window.until);
+    const cursor = decodeCursor(first.value.data.page.cursor);
+    assert.equal(cursor.window.until, window.until);
+    const next = await f.call(['--cursor', first.value.data.page.cursor, '--json'], {});
+    assert.equal(next.code, 0);
+    assert.deepEqual(next.value.data.selection.window, first.value.data.selection.window);
+    const changed = await f.call(['--cursor', first.value.data.page.cursor, '--json'], {
+      ...window,
+      until: '2026-10-01T11:00:01.000000002Z',
+    });
+    assert.equal(changed.code, 2);
+    const defaultWindow = await f.call(['--json'], { until: window.until });
+    assert.equal(defaultWindow.value.data.selection.window.since, '2026-09-24T11:00:01.000000001Z');
+    const locator = f.server.requests.find((request) => request.path.endsWith('/app/rest/builds'))
+      .query.locator;
+    assert.ok(locator.includes('finishDate:(date:20261001T110001.001+0000,condition:before)'));
+    assert.ok(locator.includes('finishDate:(date:20261001T110000.999+0000,condition:after)'));
+  } finally {
+    await f.close();
+  }
+});
+
+test('long exact bounds preserve useful rows when continuation exceeds its cursor budget', async () => {
+  const f = await fixture();
+  try {
+    f.server.setMode('list-page');
+    const until = '2026-10-02T00:00:00.' + '1'.repeat(2000) + 'Z';
+    for (const flags of [['--json'], [], ['--require-complete', '--json']]) {
+      const result = await f.call([...flags, '--max-bytes', '65536'], { until });
+      validateResponse(result.value);
+      assert.equal(result.code, flags.includes('--require-complete') ? 1 : 0);
+      assert.equal(result.value.status, 'partial');
+      assert.equal(result.value.meta.complete, false);
+      assert.equal(result.value.data.runs.length, 1);
+      assert.equal(result.value.data.selection.window.until, until);
+      assert.equal(
+        result.value.data.selection.window.since,
+        until.replace('2026-10-02', '2026-09-25'),
+      );
+      assert.equal(result.value.data.page.cursor, null);
+      assert.equal(result.value.data.page.hasMore, true);
+      assert.ok(
+        result.value.meta.limitations.some((note) => note.code === 'CURSOR_LIMIT_EXCEEDED'),
+      );
+      assert.equal(result.value.next, undefined);
+    }
   } finally {
     await f.close();
   }

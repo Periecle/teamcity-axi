@@ -2,6 +2,8 @@ import { DomainError } from '../domain/errors.js';
 
 import { isUtf8 } from 'node:buffer';
 
+import { canonicalTimestamp, compareTimestamps } from '../domain/time.js';
+
 export interface CursorBinding {
   command: string;
   server: string;
@@ -76,19 +78,18 @@ function valid(value: unknown, now: number): value is Cursor {
 
     const w = v.window as Record<string, unknown>;
 
-    if (
-      Object.keys(w).length !== 2 ||
-      !['since', 'until'].every(
-        (k) =>
-          typeof w[k] === 'string' &&
-          /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(w[k] as string) &&
-          Number.isFinite(Date.parse(w[k] as string)) &&
-          new Date(w[k] as string).toISOString() === w[k],
+    try {
+      if (
+        Object.keys(w).length !== 2 ||
+        !['since', 'until'].every(
+          (k) => typeof w[k] === 'string' && canonicalTimestamp(w[k]) === w[k],
+        ) ||
+        compareTimestamps(w.since as string, w.until as string) > 0
       )
-    )
+        return false;
+    } catch {
       return false;
-
-    if (Date.parse(w.since as string) > Date.parse(w.until as string)) return false;
+    }
   }
 
   return true;

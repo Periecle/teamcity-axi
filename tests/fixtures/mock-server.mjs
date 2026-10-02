@@ -456,6 +456,52 @@ export async function mockServer() {
       if (mode === 'list-wrong-branch') value.build = [{ ...run, branchName: 'another-branch' }];
       if (mode === 'list-unknown-result') value.build = [{ ...run, status: 'FUTURE_RESULT' }];
       if (mode === 'list-duplicate') value = { build: [run, run], count: 2 };
+      if (mode === 'list-unknown-candidates') {
+        value.build =
+          start === 0
+            ? [run, { ...run, id: 482194, status: 'FUTURE_RESULT' }]
+            : [
+                { ...run, id: 482195, status: 'SUCCESS' },
+                {
+                  ...run,
+                  id: 482196,
+                  status: 'UNKNOWN',
+                  canceledInfo: { timestamp: '20261001T110000+0000' },
+                },
+              ];
+        value.count = value.build.length;
+      }
+      if (mode === 'list-fractional') {
+        value.build = [
+          { ...run, finishDate: '20261001T110000+0000' },
+          { ...run, id: 482194, finishDate: '20261001T110001+0000' },
+        ];
+        // The server predicate sees milliseconds that the response omits.
+        const actualTimes = new Map([
+          [482193, Date.UTC(2026, 9, 1, 11, 0, 0, 500)],
+          [482194, Date.UTC(2026, 9, 1, 11, 0, 1)],
+        ]);
+        for (const match of locator.matchAll(
+          /finishDate:\(date:(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)(?:\.(\d{3}))?\+0000,condition:(before|after)\)/g,
+        )) {
+          const [, year, month, day, hour, minute, second, millisecond, condition] = match;
+          const threshold = Date.UTC(
+            Number(year),
+            Number(month) - 1,
+            Number(day),
+            Number(hour),
+            Number(minute),
+            Number(second),
+            Number(millisecond ?? 0),
+          );
+          value.build = value.build.filter((row) =>
+            condition === 'before'
+              ? actualTimes.get(row.id) < threshold
+              : actualTimes.get(row.id) > threshold,
+          );
+        }
+        value.count = value.build.length;
+      }
     }
     if (
       path === '/app/rest/buildTypes' &&

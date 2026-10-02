@@ -72,3 +72,18 @@ test('cursor binds command/server/filters and reconstructible page position with
       (e) => e.code === 'USAGE_ERROR',
     );
 });
+
+test('fractional window cursors preserve exact precision and reject reversed or noncanonical times', () => {
+  const window = { since: '2026-10-01T00:00:00.000000001Z', until: '2026-10-02T00:00:00.1234Z' };
+  const value = { ...cursor, window };
+  assert.deepEqual(decodeCursor(encodeCursor(value, now), now).window, window);
+  for (const bad of [
+    { since: '2026-10-02T00:00:00.000000002Z', until: '2026-10-02T00:00:00.000000001Z' },
+    { ...window, since: '2026-10-01T02:00:00.000000001+02:00' },
+    { ...window, until: '2026-10-02T00:00:00.123400Z' },
+  ])
+    assert.throws(
+      () => encodeCursor({ ...value, window: bad }, now),
+      (error) => error.code === 'USAGE_ERROR',
+    );
+});

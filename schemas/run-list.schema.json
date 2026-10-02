@@ -19,6 +19,13 @@
         "scanLimit": { "const": 5000 },
         "consistency": { "const": "best_effort_offset" },
         "timestampBasis": { "enum": ["finishTime", null] },
+        "timestampMembership": { "const": "provider" },
+        "reportedTimestampPrecision": { "const": "second" },
+        "filterTimestampPrecision": { "const": "millisecond" },
+        "result": {
+          "enum": ["success", "failure", "error", "canceled", "failed_to_start", "unknown", null]
+        },
+        "resultBasis": { "enum": ["provider", "normalized_candidates", null] },
         "window": {
           "type": "object",
           "properties": {

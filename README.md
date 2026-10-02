@@ -78,7 +78,10 @@ Run list defaults to finished runs in an emitted seven-day finish-time window.
 It keeps page totals unknown and marks missing continuation as partial when
 bounded scan exhaustion cannot be proved. Exact contextual branches can be
 elided from projected rows; all-branch rows retain branch identity. Fractional
-finish-time filters and the unknown-result filter remain explicitly gated.
+RFC 3339 bounds retain their exact precision in windows and cursors. Server
+predicates establish membership at millisecond precision; reported finish
+timestamps remain at their original second precision. `--result unknown` filters
+normalized candidates, retaining provider counts and empty-page continuation.
 `--result canceled` and `--result failed_to_start` use explicit server metadata;
 ordinary success/failure/error filters exclude those exceptional outcomes.
 Missing or conflicting outcome metadata stays unknown. Composite execution is

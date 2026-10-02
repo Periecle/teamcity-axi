@@ -1,5 +1,6 @@
 import { statusRequest } from '../../dist/adapter/status.js';
 import { runDetailFields } from '../../dist/adapter/reader.js';
+import { runFilters } from '../../dist/adapter/run-page.js';
 
 const api = (path) => [
   'api',
@@ -12,6 +13,24 @@ const api = (path) => [
   'Accept: application/json',
   '--no-input',
 ];
+const listPath = (query) =>
+  '/app/rest/builds?' +
+  new URLSearchParams({
+    locator: [
+      ...runFilters({
+        jobId: 'Payments_Build',
+        state: 'finished',
+        count: 20,
+        start: 0,
+        scanLimit: 5000,
+        ...query,
+      }),
+      'count:20',
+      'start:0',
+      'lookupLimit:5000',
+    ].join(','),
+    fields: `count,nextHref,build(${runDetailFields})`,
+  });
 export const operations = [
   ['server', api('/app/rest/server?fields=version,buildNumber')],
   [
@@ -155,6 +174,18 @@ export const operations = [
     ),
   ],
   ['status-outcomes', api(statusRequest({ jobIds: ['Payments_Build'], branch: 'feature/refund' }))],
+  [
+    'run-list-precision',
+    api(
+      listPath({
+        window: {
+          since: '2026-10-01T11:00:00.568999999Z',
+          until: '2026-10-01T11:00:00.569000001Z',
+        },
+      }),
+    ),
+  ],
+  ['run-list-unknown-candidates', api(listPath({ result: 'unknown' }))],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];
 export const errorModes = ['denied', 'missing', 'expired', 'malformed', 'html'];

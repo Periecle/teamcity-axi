@@ -29,6 +29,8 @@ is reported explicitly.
 
 Live root-context reads on TeamCity 2026.2 build 238924 verify encoded job IDs,
 project/all-branch pages, finish-time filters and relative continuation. Positive
-hostile branch names, exact VCS revision matches, other outcomes, sub-second
-time boundaries and live deployment prefixes remain independent gates. Unknown
+hostile branch names, exact VCS revision matches, live deployment prefixes remain independent gates. Explicit outcomes and
+sub-second boundaries are now verified in
+[the outcome](0013-execution-outcomes.md) and
+[precise list](0014-precise-run-list.md) contracts. Unknown
 result diagnostics and branch identity survive public projection.

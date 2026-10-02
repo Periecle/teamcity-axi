@@ -21,7 +21,8 @@ List selectors for ordinary success/failure/error include `canceled:false` and
 `failedToStart:false`. Exceptional selectors use their explicit dimensions.
 Every returned row is verified against the requested normalized result. Cursor
 bindings include the reconstructed selectors. Returned-page aggregates count
-all six public results independently. The unknown-result selector remains gated.
+all six public results independently. The [unknown-result selector](0014-precise-run-list.md) now filters normalized
+candidates with separate provider coverage.
 
 Restricted native/live captures prove ordinary failure/success, queued and
 running states, failed start, cancellation before and after execution starts,
