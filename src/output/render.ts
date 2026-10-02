@@ -35,6 +35,18 @@ export function render(input: Response, format: 'json' | 'toon', maxBytes: numbe
     if (value.context) value.context = Object.fromEntries(Object.entries(value.context).filter(([k])=>['server','project','job','vcsRootId'].includes(k)));
     document = serialize(value, format);
   }
+  if (Buffer.byteLength(document) > maxBytes) {
+    value.error!.message='Output exceeds byte budget';
+    delete value.meta.limitations;
+    document=serialize(value,format);
+  }
+  if (Buffer.byteLength(document) > maxBytes) {
+    // Even asserted scope may exceed the envelope budget (e.g. three Unicode IDs).
+    // Do not alter IDs into different targets. Retain only the trusted destination.
+    if(value.context)value.context={server:value.context.server};
+    document=serialize(value,format);
+  }
+  if(Buffer.byteLength(document)>maxBytes)throw new Error('Output budget cannot hold the minimal envelope');
   validateResponse(value);
   return {document, response: value};
 }

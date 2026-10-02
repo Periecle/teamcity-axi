@@ -6,6 +6,7 @@ import type {Response} from '../domain/response.js';
 export async function main(args: readonly string[]): Promise<void> {
   let format: 'json' | 'toon' = args.includes('--json') || args.some((v,i) => v === '--format=json' || (v === 'json' && args[i-1] === '--format')) ? 'json' : 'toon';
   let command = 'status'; let maxBytes = 6144; let output: Response; let patterns: readonly string[] = [];
+  let safeContext:Record<string,unknown>|undefined;let terminationCode=0;
   try {
     const parsed = parse(args); format = parsed.format; command = parsed.descriptor.name;
     maxBytes = Number(parsed.flags['max-bytes'] ?? (command === 'status' ? 6144 : 16384));
@@ -18,7 +19,7 @@ export async function main(args: readonly string[]): Promise<void> {
       const d = descriptor(parsed.positional!);
       if (!d) throw new DomainError('USAGE_ERROR', 'Unknown schema command', 2);
       const {packagedSchema} = await import('../output/schema.js');
-      output = response(command, {descriptor: d, envelope: packagedSchema('response'), ...(d.name === 'run.failure' ? {payload: packagedSchema('failure')} : {})});
+      output = response(command, {descriptor: d, envelope: packagedSchema('response'), ...(d.name === 'run.failure' ? {payload: packagedSchema('failure')} : d.name==='run.view'?{payload:packagedSchema('run-view')}:{})});
       maxBytes = Number(parsed.flags['max-bytes'] ?? 65536);
     } else {
       const {resolveContext,publicContext} = await import('../context/resolve.js');
@@ -26,6 +27,7 @@ export async function main(args: readonly string[]): Promise<void> {
       patterns = context.config?.secretNamePatterns ?? [];
       maxBytes = Math.min(maxBytes,context.config?.limits?.maxBytes ?? 262144);
       const scope = publicContext(context);
+      if(context.server)safeContext={server:context.server,...(parsed.flags.job?{job:String(parsed.flags.job)}:{}),...(parsed.flags.project?{project:String(parsed.flags.project)}:{})};
       if (command === 'context.show' && !parsed.flags.verify) {
         output = response(command,{scope:scope ?? null,checkout:{head:context.head ?? null,branch:context.branch ?? null,dirty:context.dirty ?? null},sources:context.sources,readOnly:true});
         if (scope) output.context=scope;
@@ -40,6 +42,14 @@ export async function main(args: readonly string[]): Promise<void> {
         const compatibility = JSON.parse(await readFile(new URL('../../docs/compatibility.json',import.meta.url),'utf8'));
         output = response(command,{offline:true,executable:{name:binary.split('/').at(-1),resolved:true,version:'not_probed'},readOnly:true,liveVerified:false,compatibility});
         if (scope) output.context=scope;
+      } else if(command==='run.view') {
+        if(!context.server)throw new DomainError('CONTEXT_REQUIRED','Select a registered trusted server',2);
+        const controller=new AbortController();
+        const interrupt=()=>{terminationCode=130;controller.abort();};const terminate=()=>{terminationCode=143;controller.abort();};
+        process.on('SIGINT',interrupt);process.on('SIGTERM',terminate);
+        try {const {viewRun}=await import('../commands/run-view.js');output=await viewRun(parsed,context,controller.signal);}
+        finally {process.removeListener('SIGINT',interrupt);process.removeListener('SIGTERM',terminate);}
+        if(parsed.flags.debug)process.stderr.write(JSON.stringify({command,childProcesses:output.meta.counts?.childProcesses})+'\n');
       } else {
         if (!context.server) throw new DomainError('CONTEXT_REQUIRED','Select a registered trusted server',2);
         if (command === 'status' && context.jobs.length === 0) throw new DomainError('CONTEXT_REQUIRED','Select a job or repository tracked jobs',2);
@@ -49,8 +59,8 @@ export async function main(args: readonly string[]): Promise<void> {
     }
   } catch (error) {
     const domain = asDomainError(error);
-    output = {schemaVersion:'1.0', command, status:'error', error:domain.publicValue(), meta:{observedAt:new Date().toISOString(),complete:false,truncated:false}};
-    process.exitCode = domain.exitCode;
+    output = {schemaVersion:'1.0', command, status:'error',...(safeContext?{context:safeContext}:{}),error:domain.publicValue(), meta:{observedAt:new Date().toISOString(),complete:false,truncated:false}};
+    process.exitCode = terminationCode||domain.exitCode;
   }
   try {
     const {render} = await import('../output/render.js');

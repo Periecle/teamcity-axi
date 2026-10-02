@@ -39,7 +39,7 @@ test('known secrets and terminal controls are removed before rendering in both f
   assert.equal(sanitizeText('-----BEGIN RSA PRIVATE KEY-----\nprivate body\n-----END RSA PRIVATE KEY-----',[]),'[REDACTED PRIVATE KEY]');
 });
 test('oversized evidence produces one valid bounded error instead of lying about retained evidence', () => {
-  const value = response('run.view',{text:'🦊'.repeat(100000)});
+  const value = response('run.view',{run:{id:'1',jobId:'Build',state:'finished',result:'failure',statusText:'🦊'.repeat(100000)}});
   for (const format of ['json','toon']) {
     const result = render(value,format,2048);
     assert.ok(Buffer.byteLength(result.document) <= 2048);
@@ -47,8 +47,12 @@ test('oversized evidence produces one valid bounded error instead of lying about
     assert.equal(result.response.meta.truncated,true);
     validateResponse(result.response);
   }
-  const scoped = response('run.view',{text:'important'});
+  const scoped = response('run.view',{run:{id:'1',jobId:'Build',state:'finished',result:'failure',statusText:'important'}});
   scoped.context = {server:'work',job:'Payments_Build',branch:'b'.repeat(5000)};
   const bounded = render(scoped,'json',2048).response;
   assert.equal(bounded.context.server,'work'); assert.equal(bounded.context.job,'Payments_Build');
+  scoped.context={server:'a'.repeat(64),job:'日'.repeat(256),project:'日'.repeat(256),branch:'b'.repeat(5000)};
+  for(const format of ['json','toon']){const r=render(scoped,format,2048);assert.ok(Buffer.byteLength(r.document)<=2048);assert.equal(r.response.context.job,scoped.context.job);assert.equal(r.response.context.project,scoped.context.project);validateResponse(r.response);}
+  scoped.context.vcsRootId='日'.repeat(256);
+  for(const format of ['json','toon']){const r=render(scoped,format,2048);assert.ok(Buffer.byteLength(r.document)<=2048);assert.equal(r.response.context.server,scoped.context.server);assert.equal(r.response.status,'error');validateResponse(r.response);}
 });

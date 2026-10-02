@@ -14,11 +14,14 @@ export function knownSecrets(env: NodeJS.ProcessEnv, patterns: readonly string[]
 export function sanitizeText(text: string, secrets: readonly string[]): string {
   // Redact before previews, grouping, hashing or output measurements.
   for (const value of secrets) if (value) text = text.split(value).join('[REDACTED]');
-  return text
+  text = text
     .replace(/\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)/g, '')
     .replace(/\x1b\[[0-?]*[ -/]*[@-~]/g, '')
     .replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g, '')
-    .replace(/[\u202a-\u202e\u2066-\u2069]/g, c => `\\u${c.charCodeAt(0).toString(16).padStart(4,'0')}`)
+    .replace(/[\u202a-\u202e\u2066-\u2069]/g, c => `\\u${c.charCodeAt(0).toString(16).padStart(4,'0')}`);
+  // Removing terminal sequences can join fragments into a known credential.
+  for (const value of secrets) if (value) text = text.split(value).join('[REDACTED]');
+  return text
     .replace(/-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----[\s\S]*?-----END (?:[A-Z]+ )?PRIVATE KEY-----/g, '[REDACTED PRIVATE KEY]')
     .replace(/\b((?:Bearer|Basic)\s+)[^\s"\\,;]+/gi, '$1[REDACTED]')
     .replace(/\b(token|password|secret|api[_-]?key)\s*[:=]\s*[^\s"\\,;]+/gi, '$1=[REDACTED]')

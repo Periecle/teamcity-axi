@@ -5,8 +5,9 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 [SPECIFICATION.md](SPECIFICATION.md) as the normative contract.
 
 The development build implements strict arguments, local context,
-help/schema/version, JSON/TOON output and the restricted process transport.
-Remote services remain gated pending adapter implementation. See
+help/schema/version, JSON/TOON output, the restricted process transport, and
+exact-ID `run view` with typed validation and scope assertions. Other remote
+services remain gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
 
 Requires Node 24 and a separately installed official `teamcity` CLI. The tested
@@ -21,6 +22,7 @@ node bin/teamcity-axi.mjs --version
 node bin/teamcity-axi.mjs --help
 node bin/teamcity-axi.mjs context show --json
 node bin/teamcity-axi.mjs schema run.view --json
+node bin/teamcity-axi.mjs run view 482193 --server work --json
 npm test
 ```
 

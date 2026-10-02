@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
-    "test:real-cli": "node --test tests/real-cli-mock-server/*.test.mjs",
+    "test:real-cli": "npm run build && node --test tests/real-cli-mock-server/*.test.mjs",
     "fixtures:record": "node scripts/record-native.mjs",
     "check": "npm test"
   },

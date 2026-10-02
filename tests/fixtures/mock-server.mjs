@@ -1,5 +1,6 @@
 import {createServer} from 'node:http';
 export const run = {id: 482193, buildTypeId: 'Payments_Build', number: '42', state: 'finished', status: 'FAILURE', branchName: 'feature/refund', statusText: 'Tests failed', personal: false, composite: false, buildType: {id: 'Payments_Build', name: 'Build', projectId: 'Payments'}, revisions: {count: 1, revision: [{version: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'vcs-root-instance': {id: '17', 'vcs-root-id': 'Payments_Git'}}]}, startDate: '20261001T140000+0000', finishDate: '20261001T140100+0000'};
+export const longCanary='fixture-secret-'+ 'q'.repeat(1600);
 export const wire = {
   server: {version: 'mock-contract', buildNumber: 'not-a-TeamCity-server'},
   builds: {count: 1, build: [run]},
@@ -28,13 +29,14 @@ export async function mockServer() {
     if (mode === 'expired') return error(401, 'Expired credentials');
     if (mode === 'malformed') return res.end('{broken');
     if (mode === 'html') {res.setHeader('Content-Type','text/html'); return res.end('<html>Login</html>');}
+    if (mode === 'hang') return;
     const path = url.pathname.slice('/teamcity'.length);
     if (mode === 'summary-denied' && path === '/app/rest/testOccurrences') return error(403,'Cannot read tests');
     if (mode === 'logs-unsupported' && path === '/app/messages') return error(404,'Capability not found');
     let value;
     if (path === '/app/rest/server') value = wire.server;
     else if (path.endsWith('/snapshot-dependencies')) value = wire.dependencies;
-    else if (path === '/app/rest/builds/id:482193') value = run;
+    else if (path === '/app/rest/builds/id:482193') value = mode==='decorated-secret'?{...run,status:longCanary.slice(0,600)+'\x1b[31m'+longCanary.slice(600),statusText:longCanary.slice(0,600)+'\x1b[31m'+longCanary.slice(600)}:mode==='long-secret'?{...run,status:longCanary,statusText:longCanary}:mode==='missing-revisions'?Object.fromEntries(Object.entries(run).filter(([key])=>key!=='revisions')):mode==='wrong-id'?{...run,id:482100,status:'SUCCESS'}:mode==='invalid-identity'?{...run,id:9007199254740992}:mode==='unknown-enum'?{...run,status:'FUTURE_RESULT',state:'new_lifecycle'}:mode==='huge-text'?{...run,statusText:'🦊'.repeat(100000)}:mode==='huge'?{...run,statusText:'x'.repeat(3000000)}:run;
     else if (path === '/app/rest/builds') value = wire.builds;
     else if (path === '/app/rest/problemOccurrences') value = wire.problems;
     else if (path === '/app/rest/testOccurrences') value = wire.tests;
@@ -48,5 +50,5 @@ export async function mockServer() {
   });
   await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
   const base = `http://127.0.0.1:${server.address().port}/teamcity`;
-  return {base, requests, setMode(value) {mode = value;}, close: () => new Promise(resolve => server.close(resolve))};
+  return {base, requests, setMode(value) {mode = value;}, close: () => new Promise(resolve => {server.closeAllConnections();server.close(resolve);})};
 }
