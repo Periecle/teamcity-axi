@@ -1,6 +1,6 @@
 # Command reference
 
-Generated for teamcity-axi 0.1.0-dev.1 from the executable command registry.
+Generated for teamcity-axi 0.1.0 from the executable command registry.
 Run `npm run docs:generate` after changing commands; `npm test` rejects drift.
 
 Use a registered server alias. Example IDs are placeholders, not discovered resources.

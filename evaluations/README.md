@@ -94,5 +94,49 @@ only in the separate HTTP metric. Independently grade answers against the
 oracle for task success, wrong run/job/root identity, completeness mistakes,
 unsupported causal claims, and exposed secrets. Report per-task failures as
 well as medians. A lower median turn count is acceptable only without lower
-task success or any correctness/security regression. This model-agent gate
-has not yet been executed; the scripted report cannot close it.
+task success or any correctness/security regression. The recorded model-agent run and independent grades are linked below; the
+scripted report remains a separate measurement.
+
+## Running the model evaluation
+
+`node scripts/evaluate-agent.mjs` uses a local Codex app-server and one actual
+client-executed shell tool. Requires Linux `bwrap`, Node 24, the checksum-pinned
+native binary, a private local model-auth path, and a production-only runtime.
+The runtime contains only `node_modules/teamcity-axi/{bin,dist,schemas,package.json}`
+and its separately installed production dependencies. Exclude project docs,
+tests, scripts and the evaluation corpus from that filesystem. The portable skill
+is provided in the wrapper prompt; documented selected-field JSON, bounded tails
+and failure diagnostics are provided in the native prompt.
+
+Set `TEAMCITY_AXI_AGENT_RUNTIME`, `TEAMCITY_AXI_AGENT_AUTH_PATH`,
+`TEAMCITY_AXI_TEST_BINARY` and optionally `TEAMCITY_AXI_AGENT_OUTPUT`. Model and
+effort defaults are `gpt-6.1-sol` and `xhigh`; override with
+`TEAMCITY_AXI_AGENT_MODEL` / `TEAMCITY_AXI_AGENT_EFFORT` only for a separately
+recorded comparison. Optional package/checkpoint variables preserve artifact
+provenance. This is trusted local release tooling, excluded from the package and
+public CI. No model-auth material is placed in the shell filesystem or published.
+Temporary client credentials and sessions are deleted on success, setup failure
+and protocol timeout.
+
+Each task gets a fresh thread/config/fixture server, with condition order
+alternating by task. Both conditions may batch or parallelize commands within one
+shell invocation. Unexpected built-in tools invalidate the row. Tool requests,
+results, final answers, provider-reported alias/settings, CLI/runtime/artifact
+provenance, process/HTTP counts and original stdout/stderr token counts are
+recorded. The process logger is auditable instrumentation; independent trace
+review rejects bypass or metric tampering. There is no claim that it is
+tamper-proof. CLI text counts exclude RPC JSON framing, prompts and reasoning;
+provider usage events remain in the trace separately.
+
+Answers must be independently graded before accepting the report. One paired
+sample per task is an exploratory fixed-corpus observation, not a statistical
+performance guarantee or evidence of support for additional server/platform
+combinations. The provider reports a model alias rather than an immutable backend
+weight revision. Canaries, loopback ports and temporary paths are scrubbed only
+after original output metrics are computed.
+
+The [actual model-agent report](results/linux-x64-node24-gpt6.1-sol-agent.json)
+records16 independently graded sessions; both conditions passed all8 tasks.
+See [the measured comparison](../docs/evaluation.md) for every task, total calls
+and per-task regressions. The executed source snapshot is an audit record; use
+the maintained runner, which includes stronger failure cleanup, for new runs.

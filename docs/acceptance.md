@@ -7,10 +7,10 @@ scenario does not certify an additional server or platform. The supported
 execution evidence remains Linux x64, Node 24.14.0, native CLI 1.5.0 and focused
 TeamCity 2026.2 build 238924 contracts.
 
-All 32 mandatory scenario behaviors now have executable coverage. Release
-acceptance remains open: actual model-agent evaluation is unexecuted, and the
-section 15.3 effective-limit diagnostics need completion. This is a scenario
-inventory, not a declaration that the full implementation goal is finished.
+All 32 mandatory scenario behaviors have executable coverage. The isolated
+16-session model evaluation and independent grading are complete. Effective-limit
+diagnostics and the final package/claims audit passed. v0.1.0 acceptance covers
+only the recorded combination and capability limits; see [the release audit](release-audit.md).
 
 | Scenario | Behavior and evidence                                                                                                                                                                                                                                                                                        |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -61,10 +61,10 @@ published file selection. Untested platforms remain marked untested in
 The scripted eight-task benchmark records evidence retention, real process/HTTP
 counts, tokenizer identity, output tokens, latency, canaries, and baseline
 regressions. Its task-success/tool-turn/causal-claim fields remain null. The actual
-model-agent evaluation required by sections 17.1 and 21.10 must still run under
-the [evaluation protocol](../evaluations/README.md). Section 15.3 effective-limit diagnostics now pass deterministic and native checks,
-including renderer-only reductions. The model-agent gate must close before the
-final release-wide requirement, package and claims audit.
+model-agent evaluation required by sections 17.1 and 21.10 now has 16 recorded
+sessions and independent grades under the [evaluation protocol](../evaluations/README.md). Section 15.3 effective-limit diagnostics now pass deterministic and native checks,
+including renderer-only reductions. The final release-wide requirement, package and claims audit passed for the
+recorded support scope.
 
 Additional live hostile branches, multi-root builds, duplicate/muted failures,
 shared graphs, deployment prefixes, expired tokens and positive restricted pool

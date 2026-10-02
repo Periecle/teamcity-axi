@@ -1,8 +1,8 @@
 {
   "name": "teamcity-axi",
-  "version": "0.1.0-dev.1",
+  "version": "0.1.0",
   "description": "Bounded read-only TeamCity evidence for coding agents",
-  "private": true,
+  "private": false,
   "type": "module",
   "engines": {
     "node": ">=24 <25"
@@ -17,7 +17,8 @@
     "skills",
     "docs",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "format": "eslint src --fix && prettier --write src bin scripts tests schemas examples skills evaluations docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
@@ -48,5 +49,6 @@
     "js-tiktoken": "1.0.21",
     "prettier": "3.9.9",
     "typescript": "6.0.3"
-  }
+  },
+  "license": "MIT"
 }

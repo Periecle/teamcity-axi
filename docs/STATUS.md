@@ -1,127 +1,62 @@
 # Product delivery and acceptance
 
-The development product now implements all eighteen registered read-only command
-services: checkout status, exact execution watch and investigation, independent
-run evidence, scoped jobs/queue/agents, context diagnostics, and local schema/help.
-The portable skill and command reference are packaged. This completes the command
-implementation portion of milestone 6; the full project goal remains active until
-remaining contract, evaluation, and release gates are proved.
+The read-only v0.1.0 product is implemented and accepted for the recorded tested
+combination. Milestones 0–7, all 18 registered command services, and all 32 mandatory
+scenario behaviors are complete. Comparison, setup/hooks and mutations remain
+outside this release according to the implementation plan.
 
-| Milestone                | Delivered                                                                                                                                                                                                                                                                                        | Remaining acceptance work                                                                                                                                    |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0: upstream contract     | Native v1.5.0 and immutable source pinned; four Unix checksums; 39 Linux x64 native/mock captures and 118 restricted TeamCity 2026.2 captures; boundary/context/read-only ADRs                                                                                                                   | Broader live multi-root/branch/DAG/queue/agent fixtures, live deployment context prefix, actual expired-token evidence, execution of other claimed platforms |
-| 1: executable boundary   | Strict registry/parser, local help/version/schema, every registered command service, command-specific schemas, equivalent JSON/TOON, bounded/redacted output                                                                                                                                     | Release-wide schema/examples/package audit and remaining flag capability gates                                                                               |
-| 2: context/transport     | Trusted user config, repository binding/root mapping, worktree-aware Git, token-origin binding, neutral child CWD, restricted environment, shared budgets, cancellation/process-group cleanup                                                                                                    | Final release-wide audit; linked-worktree/two-server concurrent native acceptance now covered                                                                |
-| 3: vertical reads        | Exact run view, bounded scoped run pages, local/verified context and doctor, reconstructed cursors and scope/policy assertions                                                                                                                                                                   | Optional broader live branch/revision cases; exact empty scope now verified for the tested server                                                            |
-| 4: evidence              | Independent problem/test/change/log/dependency reads and exact occurrence expansion, explicit availability/unknown totals                                                                                                                                                                        | Broader live muted/duplicate/source-denial/retention cases and complete primitive gate audit                                                                 |
-| 5: failure investigation | Bounded DAG/cycle traversal, deterministic evidence references, independent source coverage, reserved final reads, no causal overclaims                                                                                                                                                          | Broader live shared graphs and final investigation acceptance audit                                                                                          |
-| 6: read-only product     | Exact-checkout status, fixed-run watch, safe job/queue/agent reads, versioned portable skill, registry-generated help/examples with CI drift gate                                                                                                                                                | Optional broader live lifecycle fixtures; final product acceptance audit                                                                                     |
-| 7: evaluation/release    | Eight-task sanitized corpus; actual optimized native selected-field JSON and failure diagnostics; 96 recorded workflow observations; pinned token/latency/process/HTTP/identity/completeness/canary metrics; paired startup timing; package-content check and actual tested compatibility matrix | Isolated model-agent task-success/tool-turn/causal-claim evaluation; release notes and final platform/package/acceptance audit                               |
+The product observes exact checkout status and execution outcomes, investigates
+failures through independent sources and bounded graph traversal, exposes scoped
+jobs/queue/agents, and packages local diagnostics, help, schemas and the portable
+skill. Identity, unknown/partial semantics, restricted read transport, resource
+limits and JSON/TOON validity have executable evidence.
 
-Comparison, harness setup/hooks, and mutation commands remain in the plan's
-separate deferred scopes. They are not silently folded into the read-only product.
+## Executed verification
 
-## Verification
+On Linux x64 / Node 24.14.0 / official TeamCity CLI 1.5.0:
 
-Current full local checks pass on Node 24.14.0 / Linux x64:
+- 133 deterministic tests, including pinned formatter and generated-doc drift gates.
+- 56 released-native mock contracts.
+- 18 restricted live tests on TeamCity 2026.2 build 238924.
+- 21 production-only installed-package smoke checks.
+- 16 actual model-agent sessions, all independently graded successful, with zero
+  identity, completeness, unsupported-cause or secret-exposure errors.
+- No skips. Compiler, schema, portable-skill and diff checks pass.
 
-- 133 deterministic unit and executable tests, including formatting and generated
-  help/examples for all eighteen registry descriptors.
-- 56 released-native CLI/mock-server tests, including the evaluation corpus.
-- 18 actual restricted-server tests on TeamCity 2026.2, build 238924.
-- No tests skipped. TypeScript compilation, diff validation, and portable skill
-  validation pass. Package inspection includes status/watch services and schemas,
-  the skill, and generated reference; excludes test/setup scripts and credentials.
-  The production-only installed package passes eighteen smoke checks, including exact scoped zero, precise fractional windows, normalized unknown filtering, and explicit
-  canceled, failed-to-start, and composite results through the pinned native CLI.
+The [scenario audit](acceptance.md), [release audit](release-audit.md),
+[compatibility matrix](compatibility.json), [changelog](../CHANGELOG.md), and
+[dependency/license inventory](dependencies.md) retain acceptance evidence and
+limits. Independent evidence/security review found no remaining material issue
+in the accepted scope. LSP returned stale data/timeouts for some TypeScript files;
+fresh compilation served as fallback. The .mjs evaluator is unsupported by LSP
+and has syntax plus actual execution/cleanup checks.
 
-Independent evidence/security review found no remaining material run-list or status/watch
-issues after fixes to strict completeness, scoped hints, continuation safety,
-retained source limitations, observed execution context, and explicit outcome
-classification. A full unknown-outcome page retains all rows after repeated
-diagnostics are grouped before schema validation. LSP returned cached
-cross-file types or timed out on some files; current TypeScript compilation is
-the authoritative semantic fallback. Full release certification is still separate. The [scenario audit](acceptance.md) maps all 32 mandatory behaviors to executable evidence and identifies the remaining model-agent gate.
+Exact-head CI passed both jobs at the effective-limit checkpoint `8c0e727`
+([run 37044990473](https://github.com/Periecle/teamcity-axi/actions/runs/37044990473));
+final release CI is checked after pushing its commit. The compiled package ships
+MIT licensing, changelog, schemas, skill and generated reference. It excludes
+test/setup/evaluation tools, wire captures and credentials. Native installation
+is separate; there is no postinstall download, hidden update or telemetry.
 
-GitHub CI passed both jobs on the exhaustion/worktree checkpoint `d988f19`
-([run 37042146866](https://github.com/Periecle/teamcity-axi/actions/runs/37042146866)).
-The existing workflow runs the generated-documentation drift gate through
-`npm test`; no workflow authorization expansion is needed.
+## Measured results and support limits
 
-## Product behavior
+The [scripted benchmark](evaluation.md) preserves required wrapper evidence in
+48/48 observations without canary exposure. Its optimized native baseline is
+smaller and faster. The actual eight-task agent sample passes 8/8 in each
+condition: wrapper median 3 versus native 3.5 tool calls, but totals 30 versus 26 and
+regressions on shared-dependency, exact-green and secret tasks. Output is larger.
+No statistical, token-saving or broad superiority claim is made.
 
-Status reads an exact bounded union of up to five tracked jobs and their twenty
-most recent run candidates. Native/live captures prove queued and finished
-candidates, exact literals, five-job union, filtered-empty branch and unavailable
-job omission. The newest selected-root exact candidate controls the job check;
-newer unknown revision evidence cannot pass, and older green never replaces newer
-exact running/queued/red work. Dirty worktrees, missing roots/jobs, personal runs,
-unverified other roots, and omitted required jobs cannot assert green. Activity
-counts and history coverage remain bounded rather than global.
+Support is limited to the recorded platform/native/server combination and
+capability limits. Other platform binaries are checksum-recorded but unexecuted.
+Logs are retained tails. Unknown provider exhaustion remains unknown; exact
+first-page run-list zero depends on the verified server pagination contract.
+Restricted pool reads remain unavailable, and missing activity never proves
+idleness. Optional broader live fixtures and new platform/server versions need
+separate execution evidence.
 
-Watch polls one frozen execution, emits one final document, and rechecks exact
-identity and policy. It retains the latest verified observation and source notes
-at deadline or after vanished/inaccessible reads. The final context belongs to
-that observed execution. Native tests cover terminal transition, vanished/access
-loss, deadline, both serializers, scoped identity, and SIGINT/SIGTERM. Live tests
-cover ordinary/composite success, red/canceled/failed-to-start terminal assertions, queued deadline retention, and an actual two-poll running-to-canceled transition. Neither status
-nor watch mutates TeamCity.
-
-The [portable skill](../skills/teamcity-axi/SKILL.md) teaches exact checkout versus
-execution checks, untrusted evidence, partial/unknown semantics, and narrowed
-read-only expansion. [Command help/examples](commands.md) are generated from the
-same registry used by parsing; CI rejects drift. Captured wire artifacts remain
-excluded from automatic formatting. Pinned ESLint Stylistic inserts TypeScript
-spacing, including unbraced guards, while pinned Prettier formats layout.
-
-## Evaluation and next delivery
-
-The [recorded evaluation](evaluation.md) retained required evidence in all 48
-wrapper observations, with no canary exposure or response-budget failure.
-The native selected-field baseline is smaller and faster; there is no token or
-latency saving claim. Standalone native failure diagnostics lack required
-availability and graph evidence for this compound rubric. Independent review
-verified projection fairness, schema/exit checks, exact evidence attribution,
-and rejection of false-completeness claims. Model-agent task success, actual
-tool turns, and causal-claim metrics remain null rather than inferred from
-scripted launches. CI enforces the new evidence benchmark in the native suite.
-
-Explicit canceled and failed-to-start outcomes now propagate through view, list,
-status, watch and investigation. Ordinary result selectors exclude exceptional
-outcomes; missing or conflicting metadata cannot pass a check. Composite remains
-independent from lifecycle and result. This closes the focused A11 outcome
-contract. See [the decision](decisions/0013-execution-outcomes.md) for captures
-and semantics.
-
-Run list now supports normalized unknown-result filtering and precise fractional
-finish windows. Live evidence revealed hidden milliseconds in the server
-predicate; the adapter preserves exact bounds and declares the coarser reported
-timestamp precision. Cursor overflow retains useful partial rows. See
-[the list decision](decisions/0014-precise-run-list.md).
-
-Close the actual model-agent evaluation gate, then
-perform the requirement-by-requirement release audit. Optional broader live
-fixtures remain separate from the mandatory scenario evidence.
-Prioritize demonstrated identity/completeness/security defects that affect the
-product, rather than unrelated cleanup.
-
-The temporary localhost sandbox remains available for that work. Its test reader
-has only project-view scope inherited from `AxiContract`, including its owned
-lifecycle child and root, and no inherited All Users roles or build-run
-permission. Positive pool and active/idle/mixed agent
-availability remain unproved under that identity; do not broaden permissions to
-hide unavailable reads. Fixture setup writes belong only to owned test resources
-and are absent from the package. Cleanup of the owned sandbox waits until its
-remaining integration evidence is collected.
-
-Verified server pagination now distinguishes exhausted undersized run pages from
-lookup-capped searches. Exact first-page totals include scoped zero, with no
-discovery hint; later-page or unverified-candidate totals remain unknown. Unknown
-server builds preserve uncertainty. The [exhaustion decision](decisions/0015-verified-run-exhaustion.md) records actual cap and empty-scope evidence. The linked-worktree
-acceptance check uses shared immutable config and distinct server credentials,
-project/job/root/branch/HEAD in simultaneous JSON and TOON invocations.
-
-Effective-limit diagnostics now report actual command ceilings in `--debug` and
-limit-hit responses, including reductions triggered only during final rendering.
-Numeric error details identify the exhausted ceiling and observed amount without
-argv, environment or credentials. See [the decision](decisions/0016-effective-limits.md).
+The owned localhost test server and restricted reader remain available for
+reproducible integration testing. The reader has project-view scope on
+AxiContract, no inherited All Users roles and no build-run permission. Evaluation
+sessions and their temporary model-auth copies are cleaned up; ordinary product
+commands never persist transcripts or credentials.

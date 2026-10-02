@@ -18,9 +18,9 @@ against optimized native workflows, including measured costs and limitations.
 
 Requires Node 24 and a separately installed official `teamcity` CLI. The tested
 native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
-recorded but have not been executed. Focused live contracts and exact run view
+recorded but have not been executed. The read-only command services
 have been tested on TeamCity 2026.2 build 238924 with a restricted test identity;
-the full read-only product is not yet certified.
+v0.1.0 acceptance covers that recorded combination and its stated capability limits.
 The wrapper never downloads native tools during installation.
 Files in `examples/` use synthetic placeholder identities; live test evidence is
 recorded separately in the sanitized fixture corpus.
@@ -149,7 +149,8 @@ reads only selected jobs/projects and the current identity; it reports a safe
 identity fingerprint. `doctor --offline` probes the local executable version
 without HTTP. Online doctor requires a project or job, probes bounded core reads
 and optional structured logs, and reports remaining capabilities as unverified.
-Its current result is partial until the remaining adapters are delivered.
+Its result stays partial for capabilities outside that bounded probe set;
+command implementation does not imply that doctor verified every capability.
 Project-subtree policy follows at most eight observed parent links; unknown or
 cyclic ancestry cannot authorize access.
 
@@ -173,3 +174,6 @@ mismatched. It never silently skips. Read [security](docs/security.md),
 capture, output and deadline limits. Limit-hit responses carry the same numeric
 ceilings, including output reductions that happen during rendering. Normal
 responses stay unchanged.
+
+The project uses the [MIT license](LICENSE). The [dependency inventory](docs/dependencies.md)
+records the exact lockfile versions and declared third-party licenses.

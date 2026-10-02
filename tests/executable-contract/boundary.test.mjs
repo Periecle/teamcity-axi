@@ -29,7 +29,7 @@ test('version and help need no credentials, Git, dependency executable or initia
     for (const flag of ['--version', '-v', '-V']) {
       const result = call([flag], dir);
       assert.equal(result.status, 0);
-      assert.equal(result.stdout, '0.1.0-dev.1\n');
+      assert.equal(result.stdout, '0.1.0\n');
       assert.equal(result.stderr, '');
     }
     for (const args of [

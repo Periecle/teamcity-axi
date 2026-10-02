@@ -1,5 +1,5 @@
 {
-  "wrapperVersion": "0.1.0-dev.1",
+  "wrapperVersion": "0.1.0",
   "nativeVersion": "1.5.0",
   "sourceRevision": "ac6c1fd83300b2e42df48fcfff365ba03f73bb92",
   "releasePublishedAt": "2026-09-10T17:41:38Z",
@@ -37,13 +37,13 @@
       "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
-      "scope": "restricted-identity contracts for all eighteen read-only commands, including exact-clean-checkout status and fixed-run watch; not full release certification",
+      "scope": "accepted read-only v0.1 on the recorded platform/native/server combination; capability limitations below remain explicit",
       "contextPath": "/",
       "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
     }
   ],
-  "supportStatus": "development-with-focused-live-contracts",
-  "serverContract": "118 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
+  "supportStatus": "read-only-v0.1-accepted-for-recorded-tested-combination",
+  "serverContract": "118 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; accepted read-only scope with recorded capability limitations",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-queued-running-canceled-failed-to-start-composite-and-denied; explicit outcome metadata; unknown on omissions/conflicts",
     "boundedRunPages": "live-tested-wrapper-exact-job/project-page-cursor-window; ordinary/canceled/failed-to-start and normalized unknown-result selectors; precise exclusive fractional windows through verified millisecond server predicates despite whole-second DTO timestamps; verified exhausted undersized run pages only for exact observed server label/build; exact first-page totals, later-page/ambiguous totals unknown; cap expansion never followed; broader positive branch/revision gates open",

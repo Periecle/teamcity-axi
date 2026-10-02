@@ -2,7 +2,7 @@
 name: teamcity-axi
 description: Inspect TeamCity CI for the current checkout or investigate a specific build using bounded read-only evidence, exact-revision status, and fixed-run watch.
 metadata:
-  version: 0.1.0-dev.1
+  version: 0.1.0
 ---
 
 # TeamCity evidence
