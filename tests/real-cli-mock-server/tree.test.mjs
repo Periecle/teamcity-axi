@@ -12,7 +12,7 @@ import { treeServer } from '../fixtures/tree-server.mjs';
 import { parse } from '../../dist/cli/parser.js';
 import { validateResponse } from '../../dist/output/schema.js';
 
-async function fixture() {
+async function fixture(command = 'tree') {
   const binary = process.env.TEAMCITY_AXI_TEST_BINARY;
 
   if (!binary) throw Error('A checksum-verified native binary is required; no skips');
@@ -45,9 +45,9 @@ async function fixture() {
   return {
     server,
     configure,
-    call: (flags = []) =>
+    call: (flags = [], commandOverride = command, runIdOverride = '482193') =>
       new Promise((res, rej) => {
-        const args = ['run', 'tree', '482193', ...flags];
+        const args = ['run', commandOverride, runIdOverride, ...flags];
         const child = spawn(process.execPath, [resolve('bin/teamcity-axi.mjs'), ...args], {
           cwd: dir,
           env: {
@@ -243,6 +243,169 @@ test('tree reserves a final non-terminal root observation even when graph discov
     assert.equal(unavailable.value.data.graph.complete, false);
     assert.equal(expansion(unavailable.value, '482193'), 'unavailable');
     assert.equal(unavailable.value.data.graph.unexpanded, 1);
+  } finally {
+    await f.close();
+  }
+});
+
+test('released CLI failure report preserves independent source references, duplicate/muted identities and bounded diagnosis', async () => {
+  const f = await fixture('failure');
+  try {
+    const wire = await f.call(['--json']);
+    assert.equal(wire.code, 0, JSON.stringify(wire.value));
+    validateResponse(wire.value);
+    assert.equal(wire.value.status, 'partial');
+    assert.equal(wire.value.data.assessment, 'failure_observed');
+    assert.deepEqual(wire.value.data.selection.diagnosedRunIds, ['482193', '482190', '482191']);
+    assert.equal(wire.value.data.selection.omittedDiagnosedRuns, 1);
+    assert.ok(wire.value.data.selection.graphReadAttempts <= 10);
+    assert.ok(wire.value.meta.counts.childProcesses <= 24);
+    assert.ok(wire.value.data.findings.some((f) => f.kind === 'dependency_failure'));
+    assert.equal(wire.value.data.findings.filter((f) => f.kind === 'failed_test').length, 12);
+    for (const finding of wire.value.data.findings) {
+      assert.equal(finding.claim, 'observation');
+      for (const evidence of finding.evidence) {
+        parse(evidence.retrieve.argv.slice(1));
+        assert.ok(evidence.retrieve.argv.includes('--project'));
+        assert.ok(
+          wire.value.data.sources.some(
+            (s) =>
+              s.id === evidence.sourceRef &&
+              s.runId === evidence.runId &&
+              ['complete', 'partial'].includes(s.state),
+          ),
+        );
+      }
+    }
+    wire.value.next.forEach((a) => parse(a.argv.slice(1)));
+    const toon = await f.call();
+    assert.equal(toon.code, 0);
+    validateResponse(toon.value);
+    const stableFindings = (findings) =>
+      findings.map((finding) => ({
+        ...finding,
+        evidence: finding.evidence.map(({ observedAt, ...evidence }) => evidence),
+      }));
+    assert.deepEqual(
+      stableFindings(toon.value.data.findings),
+      stableFindings(wire.value.data.findings),
+    );
+    assert.deepEqual(toon.value.data.graph, wire.value.data.graph);
+    assert.ok(Buffer.byteLength(toon.stdout) <= 24576);
+    const strict = await f.call(['--require-complete', '--no-hints', '--json']);
+    assert.equal(strict.code, 1);
+    assert.equal(strict.value.next, undefined);
+    assert.equal(strict.value.status, 'partial');
+    f.server.setMode('success');
+    const success = await f.call(['--json']);
+    assert.equal(success.value.data.assessment, 'not_failed');
+    assert.equal(success.value.status, 'ok');
+    assert.equal(success.value.meta.counts.childProcesses, 2);
+    assert.equal(f.server.requests.length, 1);
+    assert.equal(success.value.data.graph.nodes[0].expansion, 'not_requested');
+    assert.ok(f.server.requests.every((r) => r.method === 'GET'));
+  } finally {
+    await f.close();
+  }
+});
+
+test('released CLI failure source errors, final read, redaction and byte ceilings remain explicit', async () => {
+  const f = await fixture('failure');
+  try {
+    for (const mode of ['sources-denied', 'logs-needed']) {
+      f.server.setMode(mode);
+      const r = await f.call(['--json']);
+      assert.equal(r.code, 0, JSON.stringify(r.value));
+      validateResponse(r.value);
+      assert.equal(r.value.status, 'partial');
+      assert.ok(r.value.data.sources.some((s) => s.state === 'unavailable' && s.returned === null));
+      if (mode === 'sources-denied')
+        assert.ok(r.value.data.findings.some((f) => f.kind === 'failed_test'));
+      if (mode === 'logs-needed')
+        assert.equal(r.value.data.sources.find((s) => s.id === 'log:482193').state, 'unavailable');
+    }
+    await f.configure({ maxChildProcesses: 4 });
+    f.server.setMode('changed');
+    const changed = await f.call(['--json']);
+    assert.equal(changed.code, 0, JSON.stringify(changed.value));
+    assert.equal(changed.value.meta.counts.childProcesses, 4);
+    assert.equal(changed.value.data.run.state, 'finished');
+    assert.equal(changed.value.data.assessment, 'inconclusive');
+    assert.equal(changed.value.data.graph.complete, false);
+    assert.ok(changed.value.data.sources.some((s) => s.state === 'budget_exhausted'));
+    await f.configure();
+    f.server.setMode('secret');
+    const redacted = await f.call(['--max-diagnosed-runs', '1', '--json']);
+    assert.equal(redacted.code, 0, JSON.stringify(redacted.value));
+    assert.ok(!redacted.stdout.includes('fixture-only-token'));
+    assert.ok(redacted.stdout.includes('[REDACTED]'));
+    const limited = await f.call(['--max-bytes', '2048', '--json']);
+    assert.equal(limited.code, 1);
+    assert.equal(limited.value.error.code, 'INPUT_LIMIT_EXCEEDED');
+    assert.ok(Buffer.byteLength(limited.stdout) <= 2048);
+    f.server.setMode('changes-positive');
+    const changes = await f.call(['--max-diagnosed-runs', '1', '--json']);
+    assert.equal(changes.code, 0, JSON.stringify(changes.value));
+    validateResponse(changes.value);
+    assert.equal(changes.value.data.changes.length, 1);
+    assert.equal(changes.value.data.changes[0].vcsRootId, 'Payments_Git');
+    assert.equal(changes.value.data.changes[0].timestamp, '2026-10-01T13:59:00.000Z');
+    assert.equal(changes.value.data.changes[0].message, 'Synthetic contextual change');
+    f.server.setMode('root-denied');
+    const denied = await f.call(['--json']);
+    assert.equal(denied.code, 1);
+    assert.equal(denied.value.data, undefined);
+    assert.equal(denied.value.error.code, 'PERMISSION_DENIED');
+  } finally {
+    await f.close();
+  }
+});
+
+test('released CLI failure preserves Unicode tail retrieval and reduces optional changes before core evidence', async () => {
+  const f = await fixture('failure');
+  try {
+    f.server.setMode('log-unicode');
+    const r = await f.call(['--max-diagnosed-runs', '1', '--json']);
+    assert.equal(r.code, 0, JSON.stringify(r.value));
+    const finding = r.value.data.findings.find((finding) => finding.kind === 'log_signal');
+    assert.ok(finding);
+    const action = finding.evidence[0].retrieve.argv;
+    parse(action.slice(1));
+    const expanded = await f.call([...action.slice(4), '--json'], action[2], action[3]);
+    assert.equal(expanded.code, 0);
+    assert.equal(expanded.value.data.messages.length, 1);
+    assert.equal(
+      expanded.value.data.messages[0].text,
+      '--error=Connection refused ' + 'x'.repeat(52) + '🦊',
+    );
+    assert.deepEqual(r.value.data.sources.find((source) => source.id === 'log:482193').window, {
+      requested: 80,
+      firstMessageId: '12',
+      lastMessageId: '12',
+      omittedProviderMessages: 0,
+    });
+    f.server.setMode('changes-wide');
+    const reduced = await f.call([
+      '--max-diagnosed-runs',
+      '1',
+      '--full',
+      '--max-bytes',
+      '16384',
+      '--json',
+    ]);
+    assert.equal(reduced.code, 0, JSON.stringify(reduced.value));
+    validateResponse(reduced.value);
+    assert.ok(reduced.value.data.findings.length > 0);
+    assert.ok(reduced.value.data.selection.omittedChanges > 0);
+    assert.equal(
+      reduced.value.data.selection.omittedChanges,
+      10 - reduced.value.data.changes.length,
+    );
+    assert.equal(
+      reduced.value.data.sources.find((source) => source.id === 'changes:482193').returned,
+      reduced.value.data.changes.length,
+    );
+    assert.ok(Buffer.byteLength(reduced.stdout) <= 16384);
   } finally {
     await f.close();
   }

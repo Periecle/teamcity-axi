@@ -8,7 +8,7 @@ interface Options {
   root: Run;
   rootProjectId?: string | null;
   reader: Pick<TeamCityReader, 'getSnapshotDependencyCount' | 'listSnapshotDependencies'>;
-  policy: { assert(projectId: string | null): Promise<void> };
+  policy: { assert(projectId: string | null, budget?: Budget): Promise<void> };
   budget: Budget;
   depth: number;
   maxNodes: number;
@@ -18,6 +18,7 @@ interface Options {
 
 interface Node extends GraphNode {
   depth: number;
+  observedAt: string;
   projectId?: string | null;
 }
 
@@ -70,6 +71,7 @@ export async function traverseSnapshotGraph(options: Options) {
     dependencyCount: null,
     observedDependencies: null,
     depth: 0,
+    observedAt: new Date().toISOString(),
     ...(options.rootProjectId !== undefined ? { projectId: options.rootProjectId } : {}),
   };
   const nodes = new Map<string, Node>([[root.run.id, root]]),
@@ -202,7 +204,7 @@ export async function traverseSnapshotGraph(options: Options) {
           node.observedDependencies = observed.size;
 
           try {
-            await options.policy.assert(child.projectId);
+            await options.policy.assert(child.projectId, options.budget);
           } catch (error) {
             failed(node, error);
             continue;
@@ -239,6 +241,7 @@ export async function traverseSnapshotGraph(options: Options) {
               run: child.run,
               projectId: child.projectId,
               depth: node.depth + 1,
+              observedAt: read.provenance.observedAt,
               expansion: 'complete',
               dependencyCount: null,
               observedDependencies: null,
@@ -359,5 +362,15 @@ export async function traverseSnapshotGraph(options: Options) {
 
   const projects = new Map(retained.map((node) => [node.run.id, node.projectId ?? null]));
 
-  return { graph, limitations, depths, projects, graphReadAttempts, omittedTargets: omitted.size };
+  const observations = new Map(retained.map((node) => [node.run.id, node.observedAt]));
+
+  return {
+    graph,
+    limitations,
+    depths,
+    projects,
+    observations,
+    graphReadAttempts,
+    omittedTargets: omitted.size,
+  };
 }

@@ -50,7 +50,7 @@ export function parse(args: readonly string[]): Parsed {
 
     const value = match[2] ?? args[++i];
 
-    if (value === undefined || value.startsWith('--') || value === '')
+    if (value === undefined || (match[2] === undefined && value.startsWith('--')) || value === '')
       usage(`--${name} requires a value`);
 
     if (spec.type === 'string') {

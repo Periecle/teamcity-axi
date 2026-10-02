@@ -42,3 +42,14 @@ test('global flags are accepted before or after commands, IDs remain strings', (
   assert.equal(parse(['run', 'view', '--help']).flags.help, true);
   assert.equal(parse(['--json', '--format', 'json']).format, 'json');
 });
+
+test('explicit inline string values preserve leading option-like literal text', () => {
+  assert.equal(
+    parse(['run', 'log', '1', '--contains=--error=Connection refused']).flags.contains,
+    '--error=Connection refused',
+  );
+  assert.throws(
+    () => parse(['run', 'log', '1', '--contains', '--full']),
+    (error) => error.code === 'USAGE_ERROR',
+  );
+});

@@ -60,6 +60,7 @@ export async function treeServer() {
       if (mode === 'final-unavailable' && detailReads > 1)
         return send({ message: 'Final read denied' }, 403);
       let value = node(id);
+      if (mode === 'success') value.status = 'SUCCESS';
       if (['changed', 'changed-metadata', 'provisional', 'final-unavailable'].includes(mode)) {
         value = { ...value, state: mode === 'changed' && detailReads > 1 ? 'finished' : 'running' };
         if (mode === 'changed' && detailReads > 1) value.status = 'SUCCESS';
@@ -67,6 +68,95 @@ export async function treeServer() {
       }
       return send(value);
     }
+
+    if (path === '/app/rest/problemOccurrences' || path === '/app/rest/testOccurrences') {
+      const id = Number(/build:\(id:(\d+)\)/.exec(url.searchParams.get('locator'))?.[1]);
+      if (!id) return send({ message: 'Missing source identity' }, 400);
+      if (mode === 'sources-denied' && path.endsWith('problemOccurrences'))
+        return send({ message: 'Independent source denied' }, 403);
+      if (mode === 'logs-needed' && path.endsWith('testOccurrences'))
+        return send({ message: 'Independent tests unavailable' }, 404);
+      if (path.endsWith('problemOccurrences'))
+        return send({
+          count: 1,
+          problemOccurrence: [
+            {
+              id: `build:(id:${id}),problem:(id:1)`,
+              build: { id },
+              type: 'SYNTHETIC',
+              identity: 'synthetic',
+              details: ['logs-needed', 'log-unicode'].includes(mode)
+                ? ''
+                : 'Explicit synthetic problem',
+            },
+          ],
+        });
+      if (mode === 'log-unicode') return send({ count: 0, testOccurrence: [] });
+      const muted = url.searchParams.get('locator').includes('muted:true');
+      return send({
+        count: 2,
+        testOccurrence: [1, 2].map((number) => ({
+          id: `build:(id:${id}),id:${muted ? number + 2 : number}`,
+          build: { id },
+          name: 'same name',
+          status: 'FAILURE',
+          muted,
+          ignored: false,
+          duration: 25,
+          details:
+            mode === 'secret' ? 'fixture-only-token' + 'x'.repeat(3000) : 'Connection refused',
+          test: { id: '517450581327024597' },
+        })),
+      });
+    }
+    if (path === '/app/messages') {
+      if (mode === 'logs-needed') return send({ message: 'Log capability unavailable' }, 404);
+      return send({
+        messages: [
+          {
+            id: 12,
+            text:
+              mode === 'log-unicode'
+                ? '--error=Connection refused ' + 'x'.repeat(52) + '🦊'
+                : 'Connection refused',
+            level: 0,
+            status: 4,
+            timestamp: '2026-10-02T00:00:00Z',
+          },
+        ],
+        lastMessageIndex: 12,
+        focusIndex: 12,
+        lastMessageIncluded: true,
+      });
+    }
+    if (path === '/app/rest/changes' && mode === 'changes-wide')
+      return send({
+        count: 10,
+        change: Array.from({ length: 10 }, (_, i) => ({
+          id: String(101 + i),
+          version: 'a'.repeat(40),
+          comment: '🦊'.repeat(1500),
+          date: '20261001T135900+0000',
+          vcsRootInstance: { 'vcs-root-id': 'Payments_Git' },
+        })),
+      });
+    if (path === '/app/rest/changes')
+      return send(
+        mode === 'changes-positive'
+          ? {
+              count: 1,
+              change: [
+                {
+                  id: '101',
+                  version: 'a'.repeat(40),
+                  comment: 'Synthetic contextual change\nFurther detail',
+                  date: '20261001T135900+0000',
+                  vcsRootInstance: { 'vcs-root-id': 'Payments_Git' },
+                },
+              ],
+            }
+          : { count: 0, change: [] },
+      );
 
     if (path === '/app/rest/builds') {
       const locator = url.searchParams.get('locator');

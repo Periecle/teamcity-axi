@@ -1,6 +1,7 @@
 import { encode } from '@toon-format/toon';
 
 import type { Response } from '../domain/response.js';
+import type { FailureReport } from '../domain/failure.js';
 import { sanitize, secretMatchers } from './sanitize.js';
 import { validateResponse } from './schema.js';
 
@@ -86,6 +87,41 @@ export function render(
   delete value.next;
   document = serialize(value, format);
   if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
+
+  if (value.command === 'run.failure' && value.status !== 'error') {
+    const data = value.data as unknown as FailureReport;
+
+    if (data.selection && data.changes?.length) {
+      const source = data.sources.find(
+        (source) => source.kind === 'changes' && source.runId === data.run.id,
+      );
+
+      value.meta.truncated = true;
+      (value.meta.limitations ??= []).push({
+        code: 'OPTIONAL_CHANGES_OMITTED',
+        message: 'Optional contextual changes were reduced to preserve required failure evidence',
+        source: 'changes',
+        runId: data.run.id,
+      });
+
+      do {
+        data.changes.pop();
+        data.selection.omittedChanges++;
+
+        if (source) {
+          source.returned = data.changes.length;
+          source.state = 'partial';
+          source.reasonCode = 'OUTPUT_LIMIT_EXCEEDED';
+        }
+
+        document = serialize(value, format);
+      } while (data.changes.length && Buffer.byteLength(document) > maxBytes);
+
+      validateResponse(value);
+      if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
+    }
+  }
+
   // Never trim arbitrary arrays: evidence references, graphs and page totals would lie.
   // Until command-specific reducers prove their invariants, return an explicit bounded error.
   value = {

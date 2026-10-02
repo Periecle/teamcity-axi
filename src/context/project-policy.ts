@@ -11,11 +11,11 @@ export class ProjectPolicy {
     private readonly budget: Budget,
   ) {}
 
-  project(id: string): Promise<Project> {
+  project(id: string, budget: Budget = this.budget): Promise<Project> {
     let observation = this.projects.get(id);
 
     if (!observation) {
-      observation = this.reader.getProject({ id }, this.budget).then((read) => {
+      observation = this.reader.getProject({ id }, budget).then((read) => {
         if (read.state === 'unavailable') throw read.error;
 
         return read.value;
@@ -26,7 +26,7 @@ export class ProjectPolicy {
     return observation;
   }
 
-  async assert(id: string | null): Promise<void> {
+  async assert(id: string | null, budget: Budget = this.budget): Promise<void> {
     if (!this.roots) return;
     if (!id)
       throw new DomainError('POLICY_DENIED', 'Project identity is unavailable for trusted policy');
@@ -37,7 +37,7 @@ export class ProjectPolicy {
       if (this.roots.includes(current)) return;
       if (seen.has(current)) break;
       seen.add(current);
-      const project = await this.project(current);
+      const project = await this.project(current, budget);
 
       current = project.parentProjectId;
     }

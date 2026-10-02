@@ -119,6 +119,7 @@ export async function main(args: readonly string[]): Promise<void> {
           'run.log',
           'run.changes',
           'run.tree',
+          'run.failure',
           'context.show',
           'doctor',
         ].includes(command)
@@ -149,6 +150,10 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (command === 'run.failure') {
+            const { readFailure } = await import('../commands/run-failure.js');
+
+            output = await readFailure(parsed, context, controller.signal);
           } else if (command === 'run.tree') {
             const { readTree } = await import('../commands/run-tree.js');
 

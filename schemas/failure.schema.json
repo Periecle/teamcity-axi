@@ -22,7 +22,7 @@
       "items": {
         "$ref": "urn:teamcity-axi:domain:1.0#/$defs/SourceCoverage"
       },
-      "maxItems": 100
+      "maxItems": 900
     },
     "graph": {
       "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Graph"
@@ -33,6 +33,70 @@
         "$ref": "urn:teamcity-axi:domain:1.0#/$defs/Change"
       },
       "maxItems": 100
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "maxDiagnosedRuns": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "diagnosedRunIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "maxItems": 10,
+          "uniqueItems": true
+        },
+        "omittedDiagnosedRuns": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "graphReadAttempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "maxGraphReads": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "omittedGraphTargets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "omittedFindings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "consistency": {
+          "const": "best_effort"
+        },
+        "dependencyReferences": {
+          "const": "unavailable"
+        },
+        "omittedChanges": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "maxDiagnosedRuns",
+        "diagnosedRunIds",
+        "omittedDiagnosedRuns",
+        "graphReadAttempts",
+        "maxGraphReads",
+        "omittedGraphTargets",
+        "omittedFindings",
+        "consistency",
+        "dependencyReferences",
+        "omittedChanges"
+      ],
+      "additionalProperties": false
     }
   },
   "required": ["run", "assessment", "findings", "sources", "graph"],

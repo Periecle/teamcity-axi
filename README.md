@@ -7,7 +7,7 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
 exact-ID `run view`, bounded `run list`, independent `run problems` and `run tests`,
-bounded `run log` and `run changes`, wrapper-owned `run tree`, verified `context show` and scoped `doctor`. Reads use typed
+bounded `run log` and `run changes`, wrapper-owned `run tree` and source-accounted `run failure`, verified `context show` and scoped `doctor`. Reads use typed
 validation, scope assertions and query-bound cursors. Other remote services remain
 gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
@@ -72,6 +72,16 @@ call and permission boundaries. Defaults are depth four, 30 nodes, 24 child
 processes, 20 seconds and 24 KiB output. `--depth 0` means root only. Non-terminal
 roots reserve a final observation, with provisional or changed evidence explicit.
 The graph never implies causal attribution. See [graph decisions](docs/decisions/0007-run-graph.md).
+
+`run failure` emits bounded observations with retrievable source evidence. It
+accounts separately for problems, unmuted tests, muted tests, dependency
+expansion and inspected log windows. Source denial retains successful siblings;
+unknown totals never become zero. Successful finished runs skip investigation
+reads. Diagnosis defaults to three runs, graph reads stop at ten, and non-terminal
+roots reserve a final observation. The current live problem/test adapters retain
+unknown exhaustion, so failed-run investigations remain partial. Optional changes
+are reduced before required evidence when stdout is tight. See
+[failure decisions](docs/decisions/0008-failure-investigation.md).
 
 `context show` makes no server calls unless `--verify` is supplied. Verification
 reads only selected jobs/projects and the current identity; it reports a safe

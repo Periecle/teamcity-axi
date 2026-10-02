@@ -472,3 +472,80 @@ test('actual restricted run tree proves immediate direction and scoped leaves wi
     await f.close();
   }
 });
+
+test('actual restricted failure reports preserve run-bound source evidence and success short circuit', async () => {
+  const f = await liveFixture();
+  try {
+    const wire = await f.wrapper(['run', 'failure', f.contract.fixture.failedRunId, '--json']);
+    assert.equal(wire.code, 0);
+    assert.equal(wire.stderr, '');
+    const result = JSON.parse(wire.stdout);
+    validateResponse(result);
+    assert.equal(result.status, 'partial');
+    assert.equal(result.meta.complete, false);
+    assert.equal(result.data.assessment, 'failure_observed');
+    assert.equal(result.data.run.id, f.contract.fixture.failedRunId);
+    assert.ok(result.data.graph.complete);
+    assert.deepEqual(result.data.selection.diagnosedRunIds, [f.contract.fixture.failedRunId]);
+    assert.ok(result.meta.counts.childProcesses <= 24);
+    const test = result.data.findings.find((finding) => finding.kind === 'failed_test');
+    assert.ok(test);
+    assert.equal(test.claim, 'observation');
+    assert.equal(test.evidence[0].itemId, 'build:(id:1),id:2000000000');
+    assert.equal(test.evidence[0].sourceRef, 'tests:1');
+    assert.ok(result.data.sources.find((source) => source.id === 'tests:1').total === null);
+    const muted = result.data.sources.find((source) => source.id === 'tests:1:muted');
+    assert.ok(muted);
+    assert.equal(muted.returned, 0);
+    for (const finding of result.data.findings)
+      for (const evidence of finding.evidence) {
+        parse(evidence.retrieve.argv.slice(1));
+        assert.ok(
+          result.data.sources.some(
+            (source) => source.id === evidence.sourceRef && source.runId === evidence.runId,
+          ),
+        );
+        assert.ok(evidence.retrieve.argv.includes('--project'));
+      }
+    result.next.forEach((action) => parse(action.argv.slice(1)));
+    const toon = decode(
+      (await f.wrapper(['run', 'failure', f.contract.fixture.failedRunId])).stdout,
+    );
+    validateResponse(toon);
+    assert.deepEqual(
+      toon.data.findings.map((finding) => finding.id),
+      result.data.findings.map((finding) => finding.id),
+    );
+    const successWire = await f.wrapper([
+      'run',
+      'failure',
+      f.contract.fixture.greenRunId,
+      '--json',
+    ]);
+    assert.equal(successWire.code, 0);
+    const success = JSON.parse(successWire.stdout);
+    validateResponse(success);
+    assert.equal(success.status, 'ok');
+    assert.equal(success.meta.counts.childProcesses, 2);
+    assert.equal(success.data.assessment, 'not_failed');
+    assert.deepEqual(success.data.findings, []);
+    assert.equal(success.data.graph.nodes[0].expansion, 'not_requested');
+    assert.equal(success.data.graph.complete, false);
+    const strict = await f.wrapper([
+      'run',
+      'failure',
+      f.contract.fixture.failedRunId,
+      '--require-complete',
+      '--no-hints',
+      '--json',
+    ]);
+    assert.equal(strict.code, 1);
+    assert.equal(JSON.parse(strict.stdout).status, 'partial');
+    assert.equal(JSON.parse(strict.stdout).next, undefined);
+    const denied = await f.wrapper(['run', 'failure', f.contract.fixture.deniedRunId, '--json']);
+    assert.equal(denied.code, 1);
+    assert.equal(JSON.parse(denied.stdout).error.code, 'PERMISSION_DENIED');
+  } finally {
+    await f.close();
+  }
+});
