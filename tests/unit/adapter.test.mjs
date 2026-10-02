@@ -84,6 +84,25 @@ test('DTO identity validation tolerates additive fields while refusing unsafe ID
   assert.equal(invalidTime.run.finishedAt, null);
   assert.ok(invalidTime.limitations.some((l) => l.code === 'INVALID_TIMESTAMP'));
 });
+test('recorded queued detail has an unknown result when status is absent; other missing results are rejected', () => {
+  const live = JSON.parse(
+    readFileSync('tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json', 'utf8'),
+  );
+  const dto = parseRaw(captured(live.records['queued-run-detail'])).body;
+  assert.equal(dto.status, undefined);
+  const normalized = normalizeRun(dto, 'http://127.0.0.1:32768');
+  assert.equal(normalized.run.id, '10');
+  assert.equal(normalized.run.state, 'queued');
+  assert.equal(normalized.run.result, 'unknown');
+  assert.equal(normalized.run.rawStatus, null);
+  assert.equal(normalized.projectId, 'AxiContract');
+  assert.ok(normalized.limitations.some((l) => l.code === 'RESULT_UNAVAILABLE'));
+  for (const patch of [{ state: 'running' }, { state: 'finished' }, { status: null }])
+    assert.throws(
+      () => normalizeRun({ ...dto, ...patch }, 'http://127.0.0.1:32768'),
+      (e) => e.code === 'UPSTREAM_SCHEMA_MISMATCH',
+    );
+});
 test('requested exact ID is never replaced by an unrelated green run', async () => {
   const detail = recorded.records['run-view'];
   const transport = {

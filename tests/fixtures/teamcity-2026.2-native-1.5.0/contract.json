@@ -9,7 +9,7 @@
     "version": "1.5.0",
     "binarySha256": "796d88b509e11407afdb73b3cfeda99aff5a417258f5f38ba047dd1f2931ee60"
   },
-  "observedAt": "2026-10-02T12:13:30.662Z",
+  "observedAt": "2026-10-02T15:58:54.296Z",
   "records": {
     "server": {
       "args": [
@@ -839,6 +839,125 @@
       "signal": null,
       "stdout": "HTTP/1.1 403 Forbidden\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nX-Request-Id: 716080486887198720\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 15:16:25 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 356\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 403 (Forbidden).\",\"additionalMessage\":\"jetbrains.buildServer.serverSide.auth.AccessDeniedException: You do not have enough permissions to access project with internal id: project2.\",\"stackTrace\":null,\"message\":\"You do not have enough permissions to access project with internal id: project2\"}]}",
       "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queue-project-positive": {
+      "args": [
+        "api",
+        "/app/rest/buildQueue?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2CbranchName%2CqueuedDate%2CwaitReason%2CbuildType%28id%2CprojectId%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nContent-Length: 482\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nStrict-Transport-Security: max-age=31536000;\nMixed-Content: noupgrade\nX-Request-Id: 716091177618640896\nContent-Type: application/json\n\n{\"nextHref\":\"/app/rest/buildQueue?fields=count,nextHref,build(id,buildTypeId,state,branchName,queuedDate,waitReason,buildType(id,projectId))&locator=count:1,lookupLimit:5000,project:(id:($base64:QXhpQ29udHJhY3Q)),start:1\",\"build\":[{\"id\":10,\"buildTypeId\":\"AxiContract_QueueA\",\"state\":\"queued\",\"buildType\":{\"id\":\"AxiContract_QueueA\",\"projectId\":\"AxiContract\"},\"waitReason\":\"There are no idle compatible agents which can run this build\",\"queuedDate\":\"20261002T154126+0000\"}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queue-project-next": {
+      "args": [
+        "api",
+        "/app/rest/buildQueue?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A1%2Cstart%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2CbranchName%2CqueuedDate%2CwaitReason%2CbuildType%28id%2CprojectId%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nX-Content-Type-Options: nosniff\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716091177685749760\nCache-Control: no-store\nContent-Length: 482\nX-Frame-Options: sameorigin\n\n{\"nextHref\":\"/app/rest/buildQueue?fields=count,nextHref,build(id,buildTypeId,state,branchName,queuedDate,waitReason,buildType(id,projectId))&locator=count:1,lookupLimit:5000,project:(id:($base64:QXhpQ29udHJhY3Q)),start:2\",\"build\":[{\"id\":11,\"buildTypeId\":\"AxiContract_QueueB\",\"state\":\"queued\",\"buildType\":{\"id\":\"AxiContract_QueueB\",\"projectId\":\"AxiContract\"},\"waitReason\":\"There are no idle compatible agents which can run this build\",\"queuedDate\":\"20261002T154126+0000\"}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queue-project-empty": {
+      "args": [
+        "api",
+        "/app/rest/buildQueue?locator=project%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A1%2Cstart%3A4999%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2CbranchName%2CqueuedDate%2CwaitReason%2CbuildType%28id%2CprojectId%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716091177752858624\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 22\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nX-Frame-Options: sameorigin\n\n{\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queue-job-positive": {
+      "args": [
+        "api",
+        "/app/rest/buildQueue?locator=buildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfUXVldWVB%29%29%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2CbranchName%2CqueuedDate%2CwaitReason%2CbuildType%28id%2CprojectId%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 261\nStrict-Transport-Security: max-age=31536000;\nMixed-Content: noupgrade\nX-Request-Id: 716091177819967488\nDate: Fri, 02 Oct 2026 15:58:54 GMT\n\n{\"build\":[{\"id\":10,\"buildTypeId\":\"AxiContract_QueueA\",\"state\":\"queued\",\"buildType\":{\"id\":\"AxiContract_QueueA\",\"projectId\":\"AxiContract\"},\"waitReason\":\"There are no idle compatible agents which can run this build\",\"queuedDate\":\"20261002T154126+0000\"}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queue-intersection": {
+      "args": [
+        "api",
+        "/app/rest/buildQueue?locator=buildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfUXVldWVB%29%29%2Cproject%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2CbranchName%2CqueuedDate%2CwaitReason%2CbuildType%28id%2CprojectId%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Request-Id: 716091177887076352\nCache-Control: no-store\nStrict-Transport-Security: max-age=31536000;\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nContent-Type: application/json\nContent-Length: 261\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\n\n{\"build\":[{\"id\":10,\"buildTypeId\":\"AxiContract_QueueA\",\"state\":\"queued\",\"buildType\":{\"id\":\"AxiContract_QueueA\",\"projectId\":\"AxiContract\"},\"waitReason\":\"There are no idle compatible agents which can run this build\",\"queuedDate\":\"20261002T154126+0000\"}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queue-project-denied": {
+      "args": [
+        "api",
+        "/app/rest/buildQueue?locator=project%3A%28id%3A%28%24base64%3AQXhpRGVuaWVk%29%29%2Ccount%3A1%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2CbranchName%2CqueuedDate%2CwaitReason%2CbuildType%28id%2CprojectId%29%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 1,
+      "signal": null,
+      "stdout": "HTTP/1.1 403 Forbidden\nX-Frame-Options: sameorigin\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nContent-Length: 356\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716091177954185216\nCache-Control: no-store\n\n{\"errors\":[{\"statusText\":\"Responding with error, status code: 403 (Forbidden).\",\"additionalMessage\":\"jetbrains.buildServer.serverSide.auth.AccessDeniedException: You do not have enough permissions to access project with internal id: project2.\",\"stackTrace\":null,\"message\":\"You do not have enough permissions to access project with internal id: project2\"}]}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "queued-run-detail": {
+      "args": [
+        "api",
+        "/app/rest/builds/id:10?fields=id,buildTypeId,number,state,status,branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Request-Id: 716091178017099776\nCache-Control: no-store\nReferrer-Policy: origin-when-cross-origin\nContent-Type: application/json\nContent-Length: 233\nDate: Fri, 02 Oct 2026 15:58:54 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\n\n{\"id\":10,\"buildTypeId\":\"AxiContract_QueueA\",\"state\":\"queued\",\"composite\":false,\"personal\":false,\"buildType\":{\"id\":\"AxiContract_QueueA\",\"name\":\"Synthetic blocked queue fixture A\",\"projectId\":\"AxiContract\"},\"revisions\":{\"revision\":[]}}",
+      "stderr": "[Native stderr omitted from public live captures]"
     }
   },
   "fixture": {
@@ -867,6 +986,14 @@
     "projectFailedRunIds": [
       "5",
       "1"
+    ],
+    "queueJobIds": [
+      "AxiContract_QueueA",
+      "AxiContract_QueueB"
+    ],
+    "queuedRunIds": [
+      "10",
+      "11"
     ]
   },
   "limits": {

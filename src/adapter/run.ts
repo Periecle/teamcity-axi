@@ -23,7 +23,8 @@ export function identity(value: unknown, numeric = false): string {
     typeof value !== 'string' ||
     value.length < 1 ||
     value.length > 256 ||
-    /[\u0000-\u001f\u007f]/.test(value)
+    !value.isWellFormed() ||
+    /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(value)
   )
     invalid('Missing or invalid upstream identity');
   if (numeric && (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))))
@@ -104,7 +105,10 @@ export function normalizeRun(
   if (buildType && identity(buildType.id) !== jobId) invalid('Conflicting run job identities');
   const projectId = buildType?.projectId === undefined ? null : identity(buildType.projectId);
 
-  if (typeof dto.state !== 'string' || typeof dto.status !== 'string')
+  if (
+    typeof dto.state !== 'string' ||
+    (typeof dto.status !== 'string' && !(dto.state === 'queued' && dto.status === undefined))
+  )
     invalid('Run lifecycle and result metadata are required');
   const state = (
     ['queued', 'running', 'finished'].includes(dto.state) ? dto.state : 'unknown'
@@ -114,7 +118,8 @@ export function normalizeRun(
     ['FAILURE', 'failure'],
     ['ERROR', 'error'],
   ]);
-  const result = results.get(dto.status) ?? 'unknown';
+  const result =
+    typeof dto.status === 'string' ? (results.get(dto.status) ?? 'unknown') : 'unknown';
 
   if (state === 'unknown')
     limitations.push({
@@ -125,8 +130,11 @@ export function normalizeRun(
     });
   if (result === 'unknown')
     limitations.push({
-      code: 'UNKNOWN_RESULT',
-      message: 'The upstream result is unknown to this adapter',
+      code: dto.status === undefined ? 'RESULT_UNAVAILABLE' : 'UNKNOWN_RESULT',
+      message:
+        dto.status === undefined
+          ? 'The queued execution has no reported result'
+          : 'The upstream result is unknown to this adapter',
       source: 'run',
       runId: id,
     });
@@ -203,7 +211,10 @@ export function normalizeRun(
     queuedAt,
     webUrl,
     ...(dto.revisions !== undefined ? { revisions } : {}),
-    rawStatus: result === 'unknown' ? sanitizeText(dto.status, secrets).slice(0, 80) : null,
+    rawStatus:
+      result === 'unknown' && typeof dto.status === 'string'
+        ? sanitizeText(dto.status, secrets).slice(0, 80)
+        : null,
   };
   const number = text(dto.number),
     statusText = text(dto.statusText);

@@ -86,3 +86,19 @@ test('live recorder rejects reattributing bounded job pages to another identity 
     assert.throws(() => verifyLiveCapture(records, contract), /job page identity or scope/);
   }
 });
+test('live recorder refuses queue ID reuse, scope changes and finished-state substitution', () => {
+  for (const patch of [
+    { id: 999 },
+    { buildTypeId: 'OtherJob' },
+    { state: 'finished' },
+    { buildType: { id: 'AxiContract_QueueA', projectId: 'Forbidden' } },
+  ]) {
+    const records = structuredClone(contract.records),
+      r = records['queue-project-positive'];
+    const at = r.stdout.indexOf('\n\n'),
+      body = JSON.parse(r.stdout.slice(at + 2));
+    body.build[0] = { ...body.build[0], ...patch };
+    r.stdout = r.stdout.slice(0, at + 2) + JSON.stringify(body);
+    assert.throws(() => verifyLiveCapture(records, contract), /queue identity, scope or lifecycle/);
+  }
+});

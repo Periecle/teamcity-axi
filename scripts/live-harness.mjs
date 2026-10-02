@@ -219,6 +219,7 @@ export function verifyLiveCapture(records, contract) {
     ['missing', 'NOT_FOUND'],
     ['invalid-auth', 'AUTH_REQUIRED'],
     ['bounded-jobs-denied', 'PERMISSION_DENIED'],
+    ['queue-project-denied', 'PERMISSION_DENIED'],
   ]) {
     let observed;
     try {
@@ -253,6 +254,35 @@ export function verifyLiveCapture(records, contract) {
     emptyJobs.nextHref !== undefined
   )
     throw Error('Captured empty job page differs from the fixture');
+  for (const [name, index] of [
+    ['queue-project-positive', 0],
+    ['queue-project-next', 1],
+    ['queue-intersection', 0],
+  ]) {
+    const page = body(name),
+      item = page.build?.[0];
+    if (
+      page.count !== 1 ||
+      page.build.length !== 1 ||
+      String(item?.id) !== contract.fixture.queuedRunIds[index] ||
+      item.buildTypeId !== contract.fixture.queueJobIds[index] ||
+      item.buildType?.id !== item.buildTypeId ||
+      item.buildType?.projectId !== contract.fixture.projectId ||
+      item.state !== 'queued' ||
+      typeof item.waitReason !== 'string' ||
+      !item.waitReason ||
+      typeof item.queuedDate !== 'string'
+    )
+      throw Error('Captured queue identity, scope or lifecycle differs from the fixture');
+  }
+  const queued = body('queued-run-detail');
+  if (
+    String(queued.id) !== contract.fixture.queuedRunIds[0] ||
+    queued.state !== 'queued' ||
+    queued.buildTypeId !== contract.fixture.queueJobIds[0] ||
+    queued.buildType?.projectId !== contract.fixture.projectId
+  )
+    throw Error('Captured exact queued run differs from the fixture');
 }
 export function sanitizeLiveStdout(stdout, secrets) {
   const index = stdout.startsWith('HTTP/1.1 ') ? stdout.indexOf('\n\n') : -1;

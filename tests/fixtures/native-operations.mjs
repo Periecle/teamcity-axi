@@ -118,6 +118,12 @@ export const operations = [
     'job-detail',
     api('/app/rest/buildTypes/id:($base64:UGF5bWVudHNfQnVpbGQ)?fields=id,name,projectId,paused'),
   ],
+  [
+    'bounded-queue',
+    api(
+      '/app/rest/buildQueue?locator=buildType:(id:($base64:UGF5bWVudHNfQnVpbGQ)),project:(id:($base64:UGF5bWVudHM)),count:20,start:0,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,state,branchName,queuedDate,waitReason,buildType(id,projectId))',
+    ),
+  ],
   ['log-tail', ['run', 'log', '482193', '--tail', '80', '--json', '--no-input']],
   ['failure-summary', ['run', 'log', '482193', '--failed', '--json', '--no-input']],
 ];

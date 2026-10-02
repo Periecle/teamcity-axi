@@ -196,7 +196,8 @@
             "job",
             "dependencies",
             "context",
-            "output"
+            "output",
+            "queue"
           ]
         },
         "details": {
@@ -563,6 +564,39 @@
         }
       },
       "required": ["id", "name", "projectId", "paused"],
+      "additionalProperties": false
+    },
+    "QueueItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 30
+        },
+        "jobId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "state": {
+          "enum": ["queued", "running", "finished", "unknown"]
+        },
+        "branch": {
+          "type": ["string", "null"]
+        },
+        "queuedAt": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "waitReason": {
+          "type": ["string", "null"]
+        },
+        "rawState": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "jobId", "state", "branch", "queuedAt", "waitReason"],
       "additionalProperties": false
     }
   }

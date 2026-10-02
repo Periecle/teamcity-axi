@@ -74,6 +74,7 @@ export async function main(args: readonly string[]): Promise<void> {
                         'run.tree',
                         'job.view',
                         'job.list',
+                        'queue.list',
                       ].includes(d.name)
                     ? { payload: packagedSchema(d.name.replace('.', '-')) }
                     : {}),
@@ -128,6 +129,7 @@ export async function main(args: readonly string[]): Promise<void> {
           'run.failure',
           'job.view',
           'job.list',
+          'queue.list',
           'context.show',
           'doctor',
         ].includes(command)
@@ -158,6 +160,10 @@ export async function main(args: readonly string[]): Promise<void> {
             const { listRuns } = await import('../commands/run-list.js');
 
             output = await listRuns(parsed, context, controller.signal);
+          } else if (command === 'queue.list') {
+            const { listQueue } = await import('../commands/queue.js');
+
+            output = await listQueue(parsed, context, controller.signal);
           } else if (command === 'job.view' || command === 'job.list') {
             const { viewJob, listJobs } = await import('../commands/jobs.js');
 

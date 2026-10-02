@@ -55,3 +55,16 @@ Cleanup applies only to this sandbox's owned containers, Git daemon, dedicated
 network and data/log volumes after integration work finishes. It must not remove
 unrelated Docker resources. No administrator bootstrap tools or live credentials
 are bundled in the product package.
+
+For positive queue evidence, create only two new synthetic jobs
+`AxiContract_QueueA` and `AxiContract_QueueB` in the existing allowed project.
+Give each a harmless command-line step and an `equals` agent requirement with
+`property-name=system.agent.name` and an exact fixture-only unavailable name.
+Read back the requirement before enqueueing once with the test administrator.
+Do not disable the shared agent. Inspect existing fixture jobs/executions before
+any repeated setup; never blindly enqueue again. The retained queued executions
+are 10 and 11. The restricted reader observes their queued lifecycle, provider
+wait reason, timestamp, project/job scopes and paging. It also reads exact queued
+detail with absent result status. The finished-run inventory remains 1/2/4–9;
+direct-project job inventory additionally contains the two queue jobs. These
+fixture writes are test setup and are absent from product commands.

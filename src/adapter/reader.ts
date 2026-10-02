@@ -10,6 +10,8 @@ import type {
   RunQuery,
   RunPage,
   JobQuery,
+  QueueItem,
+  QueueQuery,
 } from '../domain/teamcity.js';
 import type { ProcessTransport } from '../transport/process.js';
 import { parseRaw } from './raw.js';
@@ -20,6 +22,7 @@ import { normalizeRunPage, runFilters } from './run-page.js';
 import { isUtf8 } from 'node:buffer';
 
 import { jobFields, jobLimitations, jobRequest, normalizeJob, normalizeJobPage } from './jobs.js';
+import { queueRequest, normalizeQueuePage } from './queue.js';
 
 import {
   normalizeIdentity,
@@ -318,6 +321,18 @@ export class NativeTeamCityReader implements TeamCityReader {
       result.provenance.projectId = result.value.projectId;
       result.provenance.limitations = jobLimitations(result.value);
     }
+
+    return result;
+  }
+
+  async listQueue(query: QueueQuery, budget: Budget): Promise<ReadResult<EvidencePage<QueueItem>>> {
+    const request = queueRequest(query);
+    const result = await this.metadata('queue.page', request.path, budget, (body) =>
+      normalizeQueuePage(body, query, this.serverUrl, this.secrets),
+    );
+
+    result.provenance.projectId = query.projectId ?? null;
+    if (result.state === 'available') result.provenance.limitations = result.value.limitations;
 
     return result;
   }

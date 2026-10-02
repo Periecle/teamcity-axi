@@ -23,7 +23,7 @@ The raw operations verify CLI request construction and response transport. They
 do not prove that a real server implements locator/field/continuation semantics.
 No minimum supported server version is inferred from them.
 
-`teamcity-2026.2-native-1.5.0/contract.json` contains 49 captured reads through
+`teamcity-2026.2-native-1.5.0/contract.json` contains 56 captured reads through
 the same released Linux x64 CLI against actual TeamCity 2026.2 build 238924.
 Its projects, builds, tests and user are original synthetic test data. The
 permission inventory proves project viewing without build-run permission;
@@ -52,8 +52,9 @@ and fixture mutations are separate from the restricted capture identity.
 An invalid synthetic token yields 401; this does not prove actual token expiry.
 The capture includes the rejected dependency subresource and the supported
 immediate-dependency locator separately. Positive change and immediate-dependency captures verify three contextual commits,
-optional files, root-to-prerequisite direction and scoped counts one/zero. Queue
-pages remain empty. Shared-DAG/cycle traversal, multi-root identity, branch escaping,
+optional files, root-to-prerequisite direction and scoped counts one/zero. Positive
+queue pages now preserve exact execution/job/project identity and provider wait
+reasons. Shared-DAG/cycle traversal, multi-root identity, branch escaping,
 live context prefixes and scoped agent/pool behavior remain open gates.
 
 Live tooling is test-only, requires its pinned binary and a private, owned
@@ -87,3 +88,13 @@ accepting repeated captures. The native/mock corpus also records bounded job
 pages and exact job metadata; wrapper tests cover unsafe continuations, local
 cursor rejection, nullable paused state, bounded diagnostics and dash-leading
 retrieval identities. These focused cases do not certify remaining read services.
+
+Seven additional actual queue observations verify project, job and intersected
+scopes, positive continuation, an empty bounded page, foreign-project 403 and exact
+queued-run detail. The recorder binds them to the controlled execution IDs 10/11
+and owning jobs; it rejects moved identities or changed lifecycle. The queued
+detail omits status, which the wrapper preserves as an unknown result. The
+native/mock corpus now has 30 observations, including the bounded queue GET.
+Negative executable cases reject malformed identity Unicode/controls, unsafe
+continuations, unsupported reads and oversized input/output without false empty
+success. Broader live state transitions and queue scope certification remain open.

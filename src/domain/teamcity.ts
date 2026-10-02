@@ -38,6 +38,24 @@ export interface JobQuery {
   scanLimit: number;
 }
 
+export interface QueueItem {
+  id: string;
+  jobId: string;
+  state: Run['state'];
+  branch: string | null;
+  queuedAt: string | null;
+  waitReason: string | null;
+  rawState?: string;
+}
+
+export interface QueueQuery {
+  jobId?: string;
+  projectId?: string;
+  count: number;
+  start: number;
+  scanLimit: number;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -172,6 +190,7 @@ export type ReadResult<T> =
 // The first vertical adapter implements this slice. Additional read primitives
 // extend this interface as their recorded contracts and tests are added.
 export interface TeamCityReader {
+  listQueue(query: QueueQuery, budget: Budget): Promise<ReadResult<EvidencePage<QueueItem>>>;
   listJobs(query: JobQuery, budget: Budget): Promise<ReadResult<EvidencePage<Job>>>;
   listChanges(query: RelatedQuery, budget: Budget): Promise<ReadResult<EvidencePage<Change>>>;
   listSnapshotDependencies(

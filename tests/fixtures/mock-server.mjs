@@ -364,7 +364,10 @@ export async function mockServer() {
         id: mode === 'dependency-count-wrong-id' ? 482100 : 482193,
         'snapshot-dependencies': { count: 1 },
       };
-    else if (path === '/app/rest/builds/id:482193')
+    else if (path === '/app/rest/builds/id:482194') {
+      const { status, ...queued } = run;
+      value = { ...queued, id: 482194, state: 'queued', statusText: 'Queued' };
+    } else if (path === '/app/rest/builds/id:482193')
       value =
         mode === 'decorated-secret'
           ? {
@@ -495,6 +498,82 @@ export async function mockServer() {
             ...job,
             id: `Payments_Job${i}`,
             name: '🦊'.repeat(100),
+          })),
+        };
+    }
+    if (
+      path === '/app/rest/buildQueue' &&
+      url.searchParams.get('fields')?.includes('buildType(id,projectId)')
+    ) {
+      if (mode === 'queue-denied') return error(403, 'Queue source denied');
+      if (mode === 'queue-unsupported') return error(404, 'Queue source unavailable');
+      const locator = url.searchParams.get('locator'),
+        count = Number(/(?:^|,)count:(\d+)/.exec(locator)?.[1] ?? 20),
+        start = Number(/(?:^|,)start:(\d+)/.exec(locator)?.[1] ?? 0);
+      const nextLocator = locator.replace(/(?:^|,)start:\d+/, (m) =>
+        m.startsWith(',') ? `,start:${start + count}` : `start:${start + count}`,
+      );
+      const nextHref =
+        '/teamcity/app/rest/buildQueue?' +
+        new URLSearchParams({ locator: nextLocator, fields: url.searchParams.get('fields') });
+      const build = {
+        ...wire.queue.build[0],
+        queuedDate: '20261001T140000+0000',
+        buildType: { id: 'Payments_Build', projectId: 'Payments' },
+      };
+      value = { count: 1, build: [build] };
+      if (
+        mode === 'queue-page' ||
+        mode === 'queue-empty-next' ||
+        mode.startsWith('queue-unsafe') ||
+        mode === 'queue-escalating'
+      )
+        value.nextHref = nextHref;
+      if (mode === 'queue-empty' || mode === 'queue-empty-next') {
+        value.count = 0;
+        value.build = [];
+      }
+      if (mode === 'queue-unsafe') value.nextHref = 'https://attacker.invalid/app/rest/buildQueue';
+      if (mode === 'queue-unsafe-scope')
+        value.nextHref = nextHref.replace('UGF5bWVudHM', 'Rm9yYmlkZGVu');
+      if (mode === 'queue-escalating')
+        value.nextHref = nextHref.replace('lookupLimit%3A5000', 'lookupLimit%3A10000');
+      if (mode === 'queue-foreign') build.buildType.projectId = 'Forbidden';
+      if (mode === 'queue-wrong-job') {
+        build.buildTypeId = 'Other';
+        build.buildType.id = 'Other';
+      }
+      if (mode === 'queue-conflict') build.buildType.id = 'Other';
+      for (const [name, invalid] of [
+        ['queue-surrogate-id', 'bad\ud800job'],
+        ['queue-control-id', 'bad\u0085job'],
+        ['queue-bidi-id', 'bad\u202ejob'],
+      ])
+        if (mode === name) {
+          build.buildTypeId = invalid;
+          build.buildType.id = invalid;
+        }
+      if (mode === 'queue-duplicate') value = { count: 2, build: [build, build] };
+      if (mode === 'queue-malformed') value.count = 0;
+      if (mode === 'queue-unknown') build.state = 'future-state';
+      if (mode === 'queue-running') build.state = 'running';
+      if (mode === 'queue-finished') build.state = 'finished';
+      if (mode === 'queue-no-reason') delete build.waitReason;
+      if (mode === 'queue-secret') {
+        build.branchName = 'fixture-only-token';
+        build.waitReason = 'fixture-only-token\x1b[31m';
+      }
+      if (mode === 'queue-bad-date') build.queuedDate = '20260230T140000+0000';
+      if (mode === 'queue-huge') build.waitReason = 'x'.repeat(3000000);
+      if (mode === 'queue-oversized') build.waitReason = '🦊'.repeat(1000);
+      if (mode === 'queue-many-unknown')
+        value = {
+          count,
+          build: Array.from({ length: count }, (_, i) => ({
+            ...build,
+            id: 482194 + i,
+            state: 'future-state',
+            queuedDate: 'invalid',
           })),
         };
     }
