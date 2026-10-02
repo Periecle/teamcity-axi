@@ -68,7 +68,7 @@ test('pinned CLI confirms the live server and restricted permission inventory wi
     await f.close();
   }
 });
-test('actual bounded run list returns a page then preserves exhaustion uncertainty on continuation', async () => {
+test('actual bounded run list returns a page then proves exhausted continuation without inventing a total', async () => {
   const f = await liveFixture();
   try {
     const args = [
@@ -102,8 +102,8 @@ test('actual bounded run list returns a page then preserves exhaustion uncertain
     const second = JSON.parse((await f.wrapper([...first.next[0].argv.slice(1), '--json'])).stdout);
     validateResponse(second);
     assert.deepEqual(second.data.runs, []);
-    assert.equal(second.status, 'partial');
-    assert.equal(second.data.page.hasMore, null);
+    assert.equal(second.status, 'ok');
+    assert.equal(second.data.page.hasMore, false);
     assert.equal(second.data.page.total, null);
     const changed = await f.wrapper([
       ...args,

@@ -134,10 +134,15 @@ export const wire = {
     lastMessageIncluded: true,
   },
 };
-export async function mockServer() {
+export async function mockServer({
+  token = 'fixture-only-token',
+  projectId = 'Payments',
+  vcsRootId = 'Payments_Git',
+} = {}) {
   const requests = [];
   let mode = 'ok';
   let statusRevision = run.revisions.revision[0].version;
+  let statusBranch = run.branchName;
   let watchReads = 0;
   const server = createServer((req, res) => {
     const url = new URL(req.url, 'http://localhost');
@@ -145,7 +150,7 @@ export async function mockServer() {
       method: req.method,
       path: url.pathname,
       query: Object.fromEntries(url.searchParams),
-      authenticated: req.headers.authorization === 'Bearer fixture-only-token',
+      authenticated: req.headers.authorization === `Bearer ${token}`,
     });
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Date', 'Thu, 01 Oct 2026 14:00:00 GMT');
@@ -330,8 +335,12 @@ export async function mockServer() {
       );
     }
     let value;
-    if (path === '/app/rest/server') value = wire.server;
-    else if (path === '/app/rest/users/current') value = { id: 2, username: 'fixture-reader' };
+    if (path === '/app/rest/server') {
+      if (mode === 'list-exhaustion-probe-denied') return error(403, 'Server metadata unavailable');
+      value = mode.startsWith('list-verified')
+        ? { version: '2026.2 (build 238924)', buildNumber: '238924' }
+        : wire.server;
+    } else if (path === '/app/rest/users/current') value = { id: 2, username: 'fixture-reader' };
     else if (path.startsWith('/app/rest/projects/id:')) {
       const literal = /\(\$base64:([A-Za-z0-9_-]+)\)/.exec(path)?.[1];
       const id = literal ? Buffer.from(literal, 'base64url').toString() : path.split('id:')[1];
@@ -453,6 +462,21 @@ export async function mockServer() {
       if (mode === 'list-unsafe') value.nextHref = 'https://attacker.invalid/app/rest/builds';
       if (mode === 'list-escalating')
         value.nextHref = nextHref.replace('lookupLimit%3A5000', 'lookupLimit%3A10000');
+      if (
+        ['list-verified-empty', 'list-unverified-empty', 'list-exhaustion-probe-denied'].includes(
+          mode,
+        )
+      )
+        value = { build: [], count: 0 };
+      if (mode === 'list-verified-cap-empty')
+        value = {
+          build: [],
+          count: 0,
+          nextHref: nextHref.replace('lookupLimit%3A5000', 'lookupLimit%3A10000'),
+        };
+      if (mode === 'list-verified-malformed-next') value = { build: [], count: 0, nextHref: null };
+      if (mode === 'list-verified-missing-revision')
+        value = { build: [{ ...run, revisions: undefined }], count: 1 };
       if (mode === 'list-wrong-branch') value.build = [{ ...run, branchName: 'another-branch' }];
       if (mode === 'list-unknown-result') value.build = [{ ...run, status: 'FUTURE_RESULT' }];
       if (mode === 'list-duplicate') value = { build: [run, run], count: 2 };
@@ -515,7 +539,7 @@ export async function mockServer() {
         buildType: ids.map((id, index) => ({
           id,
           name: id,
-          projectId: 'Payments',
+          projectId,
           paused: false,
           builds: {
             count: 1,
@@ -524,7 +548,8 @@ export async function mockServer() {
                 ...run,
                 id: run.id + index,
                 buildTypeId: id,
-                buildType: { id, projectId: 'Payments' },
+                buildType: { id, projectId },
+                branchName: statusBranch,
                 status: 'SUCCESS',
               },
             ],
@@ -538,7 +563,7 @@ export async function mockServer() {
           revision: [
             {
               version: statusRevision,
-              'vcs-root-instance': { id: '17', 'vcs-root-id': 'Payments_Git' },
+              'vcs-root-instance': { id: '17', 'vcs-root-id': vcsRootId },
             },
           ],
         };
@@ -895,6 +920,9 @@ export async function mockServer() {
     },
     setStatusRevision(value) {
       statusRevision = value;
+    },
+    setStatusBranch(value) {
+      statusBranch = value;
     },
     close: () =>
       new Promise((resolve) => {

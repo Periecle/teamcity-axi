@@ -224,12 +224,16 @@ export async function listRuns(
         ),
       ),
     );
+    const exactTotal =
+      query.start === 0 &&
+      page.hasMore === false &&
+      limitations.every((note) => note.code === 'BEST_EFFORT_PAGINATION');
     const output = response('run.list', {
       runs,
       page: {
         returned: runs.length,
-        total: null,
-        totalKind: 'unknown',
+        total: exactTotal ? runs.length : null,
+        totalKind: exactTotal ? 'exact' : 'unknown',
         hasMore: page.hasMore,
         cursor: token,
       },
@@ -239,6 +243,12 @@ export async function listRuns(
         position: query.start,
         scanLimit: query.scanLimit,
         consistency: 'best_effort_offset',
+        exhaustionBasis:
+          page.hasMore === false
+            ? 'verified_server_pagination'
+            : page.hasMore === true
+              ? 'provider_continuation'
+              : 'unverified',
         timestampBasis: window ? 'finishTime' : null,
         ...(window
           ? {
@@ -266,7 +276,11 @@ export async function listRuns(
         : {
             emptyReason: page.hasMore
               ? 'No matches in this page; bounded continuation remains'
-              : 'No rows returned; bounded search exhaustion is unverified',
+              : page.hasMore === false
+                ? exactTotal
+                  ? 'No matching runs in the exhausted query scope'
+                  : 'No retained matches in this page; the query total remains unknown'
+                : 'No rows returned; bounded search exhaustion is unverified',
           }),
     });
 

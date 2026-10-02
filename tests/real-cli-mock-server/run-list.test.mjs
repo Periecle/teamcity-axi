@@ -115,7 +115,82 @@ test('released CLI list preserves one page, mandatory identities, typed continua
     assert.equal(empty.value.data.page.returned, 0);
     assert.equal(empty.value.data.page.hasMore, true);
     assert.ok(empty.value.data.page.cursor);
+    assert.equal(first.value.data.selection.consistency, 'best_effort_offset');
+    assert.equal(empty.value.data.selection.consistency, 'best_effort_offset');
+    assert.equal(empty.value.data.page.total, null);
     assert.ok(f.server.requests.every((r) => r.method === 'GET' && r.authenticated));
+  } finally {
+    await f.close();
+  }
+});
+test('verified exhausted empty lists return exact scoped zero; capped and unverified emptiness stay partial', async () => {
+  const f = await fixture();
+  try {
+    for (const flags of [['--json'], []]) {
+      f.server.setMode('list-verified-empty');
+      const result = await f.call([...flags, '--require-complete']);
+      assert.equal(result.code, 0);
+      validateResponse(result.value);
+      assert.equal(result.value.status, 'ok');
+      assert.equal(result.value.meta.complete, true);
+      assert.deepEqual(result.value.data.runs, []);
+      assert.deepEqual(result.value.data.page, {
+        returned: 0,
+        total: 0,
+        totalKind: 'exact',
+        hasMore: false,
+        cursor: null,
+      });
+      assert.equal(result.value.data.selection.exhaustionBasis, 'verified_server_pagination');
+      assert.equal(result.value.context.job, 'Payments_Build');
+      assert.equal(result.value.context.project, 'Payments');
+      assert.equal(result.value.next, undefined);
+      for (const mode of [
+        'list-unverified-empty',
+        'list-exhaustion-probe-denied',
+        'list-verified-cap-empty',
+        'list-verified-malformed-next',
+      ]) {
+        f.server.setMode(mode);
+        const uncertain = await f.call([...flags, '--require-complete']);
+        assert.equal(uncertain.code, 1);
+        validateResponse(uncertain.value);
+        assert.equal(uncertain.value.status, 'partial');
+        assert.equal(uncertain.value.data.page.total, null);
+        assert.equal(uncertain.value.data.page.totalKind, 'unknown');
+        assert.equal(uncertain.value.data.page.hasMore, null);
+        assert.equal(uncertain.value.data.selection.exhaustionBasis, 'unverified');
+      }
+    }
+    f.server.setMode('list-page');
+    const first = await f.call(['--json']);
+    f.server.setMode('list-verified-empty');
+    const last = await f.call(['--json', '--cursor', first.value.data.page.cursor]);
+    assert.equal(last.value.data.page.hasMore, false);
+    assert.equal(last.value.data.page.total, null);
+    assert.equal(last.value.data.page.totalKind, 'unknown');
+    assert.ok(last.value.data.emptyReason.includes('this page'));
+    assert.ok(!last.value.data.emptyReason.includes('exhausted query scope'));
+    f.server.setMode('list-verified-missing-revision');
+    const missing = await f.call([
+      '--json',
+      '--revision',
+      'a'.repeat(40),
+      '--vcs-root',
+      'Payments_Git',
+      '--require-complete',
+    ]);
+    assert.equal(missing.code, 1);
+    assert.equal(missing.value.data.selection.providerReturned, 1);
+    assert.deepEqual(missing.value.data.runs, []);
+    assert.equal(missing.value.data.page.hasMore, false);
+    assert.equal(missing.value.data.page.total, null);
+    assert.ok(missing.value.meta.limitations.some((note) => note.code === 'REVISION_UNVERIFIED'));
+    assert.ok(missing.value.data.emptyReason.includes('this page'));
+    assert.ok(!missing.value.data.emptyReason.includes('exhausted query scope'));
+    assert.ok(
+      f.server.requests.every((request) => request.method === 'GET' && request.authenticated),
+    );
   } finally {
     await f.close();
   }

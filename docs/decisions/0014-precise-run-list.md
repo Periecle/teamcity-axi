@@ -52,6 +52,5 @@ to make a cursor fit or converts this acquisition into a late usage error.
 Evidence: 39 native/mock captures and 109 restricted TeamCity 2026.2 captures,
 plus deterministic precision/cursor/page tests and released-native/live CLI
 checks in both serializers. Historical wire observations are preserved.
-Missing nextHref under lookupLimit still does not prove collection exhaustion:
-exact global zero for a genuinely exhausted empty collection remains a separate
-acceptance gate. See [official locator documentation](https://www.jetbrains.com/help/teamcity/rest/get-build-details.html).
+At this checkpoint, missing nextHref under lookupLimit still did not prove
+collection exhaustion. The subsequent [verified exhaustion contract](0015-verified-run-exhaustion.md) closes that acceptance gate for the exact tested server build. See [official locator documentation](https://www.jetbrains.com/help/teamcity/rest/get-build-details.html).

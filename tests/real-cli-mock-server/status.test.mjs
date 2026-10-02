@@ -330,6 +330,159 @@ test('concurrent separate checkouts preserve their own revisions with invocation
   }
 });
 
+test('linked worktrees use independent servers and origin-bound tokens concurrently without config writes', async () => {
+  const a = await fixture();
+  const token = 'second-server-fixture-token';
+  const b = await mockServer({ token, projectId: 'Accounts', vcsRootId: 'Accounts_Git' });
+  const second = join(a.dir, 'second-worktree');
+  try {
+    a.git('worktree', 'add', '-b', 'feature/other', second);
+    const git = (...args) =>
+      execFileSync('git', args, {
+        cwd: second,
+        env: {
+          PATH: process.env.PATH,
+          HOME: a.dir,
+          GIT_CONFIG_GLOBAL: '/dev/null',
+          GIT_CONFIG_NOSYSTEM: '1',
+        },
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      }).trim();
+    await writeFile(
+      join(second, 'teamcity.toml'),
+      `[[server]]\nurl = "${b.base}"\nproject = "Accounts"\njob = "Accounts_Build"\n`,
+    );
+    await writeFile(
+      join(second, '.teamcity-axi.json'),
+      JSON.stringify({
+        schemaVersion: '1.0',
+        vcsRoots: [{ server: 'other', remote: 'origin', rootId: 'Accounts_Git' }],
+      }),
+    );
+    git('add', '.');
+    git(
+      '-c',
+      'user.name=Fixture',
+      '-c',
+      'user.email=fixture@example.invalid',
+      '-c',
+      'commit.gpgsign=false',
+      '-c',
+      'core.hooksPath=/dev/null',
+      'commit',
+      '-m',
+      'Second linked worktree binding',
+    );
+    const head = git('rev-parse', 'HEAD');
+    assert.notEqual(head, a.head);
+    assert.ok((await readFile(join(second, '.git'), 'utf8')).startsWith('gitdir:'));
+    b.setStatusRevision(head);
+    b.setStatusBranch('feature/other');
+    b.setMode('status-red');
+    a.config.servers.other = {
+      url: b.base,
+      allowHttpLoopback: true,
+      allowedProjects: ['Accounts'],
+    };
+    await writeFile(a.configPath, JSON.stringify(a.config), { mode: 0o600 });
+    const originalConfig = await readFile(a.configPath);
+    const call = (json) =>
+      new Promise((done, reject) => {
+        const child = spawn(
+          process.execPath,
+          [resolve('bin/teamcity-axi.mjs'), 'status', '--check', ...(json ? ['--json'] : [])],
+          {
+            cwd: second,
+            env: {
+              PATH: process.env.PATH,
+              HOME: a.dir,
+              XDG_CONFIG_HOME: a.dir,
+              GIT_CONFIG_GLOBAL: '/dev/null',
+              GIT_CONFIG_NOSYSTEM: '1',
+              TEAMCITY_URL: b.base,
+              TEAMCITY_TOKEN: token,
+            },
+            stdio: ['ignore', 'pipe', 'pipe'],
+            timeout: 15000,
+          },
+        );
+        const out = [],
+          err = [];
+        child.stdout.on('data', (chunk) => out.push(chunk));
+        child.stderr.on('data', (chunk) => err.push(chunk));
+        child.on('error', reject);
+        child.on('close', (code, signal) => {
+          const stdout = Buffer.concat(out).toString();
+          done({
+            code,
+            signal,
+            stdout,
+            stderr: Buffer.concat(err).toString(),
+            value: json ? JSON.parse(stdout) : decode(stdout),
+          });
+        });
+      });
+    for (const json of [true, false]) {
+      const [first, other] = await Promise.all([
+        a.call(['status', '--check', ...(json ? ['--json'] : [])]),
+        call(json),
+      ]);
+      assert.equal(first.code, 0);
+      assert.equal(other.code, 1);
+      for (const [result, alias, project, jobId, rootId, branch, revision, assessment] of [
+        [
+          first,
+          'work',
+          'Payments',
+          'Payments_Build',
+          'Payments_Git',
+          'feature/refund',
+          a.head,
+          'passed',
+        ],
+        [
+          other,
+          'other',
+          'Accounts',
+          'Accounts_Build',
+          'Accounts_Git',
+          'feature/other',
+          head,
+          'failed',
+        ],
+      ]) {
+        validateResponse(result.value);
+        assert.equal(result.stderr, '');
+        assert.equal(result.value.context.server, alias);
+        assert.equal(result.value.context.project, project);
+        assert.equal(result.value.data.jobs[0].jobId, jobId);
+        assert.equal(result.value.data.checkout.vcsRootId, rootId);
+        assert.equal(result.value.data.jobs[0].run.revisions[0].vcsRootId, rootId);
+        assert.equal(result.value.data.checkout.branch, branch);
+        assert.equal(result.value.data.checkout.head, revision);
+        assert.equal(result.value.data.jobs[0].run.revisions[0].revision, revision);
+        assert.equal(result.value.data.assessment, assessment);
+        assert.equal(result.value.meta.counts.childProcesses, 2);
+        assert.equal(result.value.meta.limits.concurrency, 2);
+        assert.ok(!result.stdout.includes(token));
+      }
+    }
+    assert.deepEqual(await readFile(a.configPath), originalConfig);
+    assert.equal(a.git('status', '--porcelain'), '');
+    assert.equal(git('status', '--porcelain'), '');
+    for (const server of [a.server, b]) {
+      assert.equal(server.requests.length, 2);
+      assert.ok(
+        server.requests.every((request) => request.method === 'GET' && request.authenticated),
+      );
+    }
+  } finally {
+    await b.close();
+    await a.close();
+  }
+});
+
 test('checkout checks distinguish exceptional and composite outcomes without false green', async () => {
   const f = await fixture();
   try {

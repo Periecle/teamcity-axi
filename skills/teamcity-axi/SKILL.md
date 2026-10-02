@@ -70,3 +70,9 @@ flags, and safe expansion commands. Use `schema COMMAND --json` for the packaged
 payload contract. Read [compatibility](../../docs/compatibility.json) before
 claiming support: recorded mocks, live evidence, and full release certification
 are distinct.
+
+Run-list exact totals require a verified exhausted first page without unresolved
+candidate limitations. The tested server contract can report scoped exact zero
+and omit discovery hints. Later-page totals, unknown server builds and failed
+verification remain unknown. Lookup-cap continuations never authorize a larger
+scan. Offset pages retain best-effort consistency, including when rows change.

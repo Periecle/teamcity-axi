@@ -75,8 +75,10 @@ requires a terminal success for that execution. Use status to assert the local
 checkout; use `--require-complete` to reject incomplete observations.
 
 Run list defaults to finished runs in an emitted seven-day finish-time window.
-It keeps page totals unknown and marks missing continuation as partial when
-bounded scan exhaustion cannot be proved. Exact contextual branches can be
+The verified server combination can prove undersized-page exhaustion and report
+exact first-page totals, including scoped zero. Other server builds, unresolved
+candidate membership and later-page totals retain uncertainty. Lookup-cap
+continuations never increase the configured scan budget. Exact contextual branches can be
 elided from projected rows; all-branch rows retain branch identity. Fractional
 RFC 3339 bounds retain their exact precision in windows and cursors. Server
 predicates establish membership at millisecond precision; reported finish

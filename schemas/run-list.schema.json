@@ -18,6 +18,9 @@
         "position": { "type": "integer", "minimum": 0, "maximum": 4999 },
         "scanLimit": { "const": 5000 },
         "consistency": { "const": "best_effort_offset" },
+        "exhaustionBasis": {
+          "enum": ["verified_server_pagination", "provider_continuation", "unverified"]
+        },
         "timestampBasis": { "enum": ["finishTime", null] },
         "timestampMembership": { "const": "provider" },
         "reportedTimestampPrecision": { "const": "second" },

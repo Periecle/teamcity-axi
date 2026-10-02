@@ -1859,6 +1859,159 @@
       "signal": null,
       "stdout": "HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 22\nDate: Fri, 02 Oct 2026 18:58:14 GMT\nX-Frame-Options: sameorigin\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716136311349579776\nCache-Control: no-store\n\n{\"build\":[],\"count\":0}",
       "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "project-empty-cap-one": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2Cproject%3A%28id%3AAxiContract%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Cstatus%3AFAILURE%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A1&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2Cstatus%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716144337284501504\nCache-Control: no-store\nContent-Length: 244\nDate: Fri, 02 Oct 2026 19:30:08 GMT\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nContent-Type: application/json\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status)&locator=branch:(default:any),count:20,defaultFilter:false,lookupLimit:2,project:(id:AxiContract),start:0,state:finished,status:FAILURE\",\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "project-positive-cap-one": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2Cproject%3A%28id%3AAxiContract%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Cstatus%3ASUCCESS%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A1&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2Cstatus%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716144337364193280\nContent-Length: 322\nDate: Fri, 02 Oct 2026 19:30:08 GMT\nX-Frame-Options: sameorigin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status)&locator=branch:(default:any),count:20,defaultFilter:false,lookupLimit:2,project:(id:AxiContract),start:1,state:finished,status:SUCCESS\",\"build\":[{\"id\":9,\"buildTypeId\":\"AxiContract_Vcs\",\"status\":\"SUCCESS\",\"state\":\"finished\"}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "job-empty-cap-one": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2CbuildType%3A%28id%3AAxiContract_Fail%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Cstatus%3ASUCCESS%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A1&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2Cstatus%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nCache-Control: no-store\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Length: 22\nDate: Fri, 02 Oct 2026 19:30:08 GMT\nX-Frame-Options: sameorigin\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716144337435496448\n\n{\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "job-positive-cap-one": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2CbuildType%3A%28id%3AAxiContract_Fail%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A1&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2Cstatus%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 315\nStrict-Transport-Security: max-age=31536000;\nMixed-Content: noupgrade\nX-Request-Id: 716144337502605312\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 19:30:08 GMT\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,state,status)&locator=branch:(default:any),buildType:(id:AxiContract_Fail),count:20,defaultFilter:false,lookupLimit:2,start:1,state:finished\",\"build\":[{\"id\":1,\"buildTypeId\":\"AxiContract_Fail\",\"status\":\"FAILURE\",\"state\":\"finished\"}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "job-empty-exhausted": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2CbuildType%3A%28id%3AAxiContract_QueueA%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cstate%2Cstatus%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nDate: Fri, 02 Oct 2026 19:30:08 GMT\nX-Frame-Options: sameorigin\nX-Xss-Protection: 1; mode=block\nMixed-Content: noupgrade\nX-Request-Id: 716144337569714176\nContent-Type: application/json\nContent-Length: 22\n\n{\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "exhaustion-cap-positive": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2Cproject%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A1&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CfailedToStart%2CcanceledInfo%28timestamp%29%2CbranchName%2CstatusText%2Cpersonal%2Ccomposite%2CbuildType%28id%2Cname%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%2CstartDate%2CfinishDate%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nX-Request-Id: 716144337901064192\nX-Frame-Options: sameorigin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Type: application/json\nContent-Length: 938\nDate: Fri, 02 Oct 2026 19:30:08 GMT\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)&locator=branch:(default:any),count:20,defaultFilter:false,lookupLimit:2,project:(id:($base64:QXhpQ29udHJhY3Q)),start:1,state:finished\",\"build\":[{\"id\":9,\"buildTypeId\":\"AxiContract_Vcs\",\"number\":\"3\",\"status\":\"SUCCESS\",\"state\":\"finished\",\"composite\":false,\"failedToStart\":false,\"personal\":false,\"statusText\":\"Success\",\"buildType\":{\"id\":\"AxiContract_Vcs\",\"name\":\"Synthetic VCS and dependency fixture\",\"projectId\":\"AxiContract\"},\"startDate\":\"20261002T134245+0000\",\"finishDate\":\"20261002T134255+0000\",\"revisions\":{\"revision\":[{\"version\":\"a976f7f9f8133176f56bda7f57fa6dc40d54f344\",\"vcs-root-instance\":{\"id\":\"2\",\"vcs-root-id\":\"AxiContract_Git\"}}]}}],\"count\":1}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "exhaustion-cap-empty": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2Cproject%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2Cstatus%3AFAILURE%2Ccanceled%3Afalse%2CfailedToStart%3Afalse%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A1&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CfailedToStart%2CcanceledInfo%28timestamp%29%2CbranchName%2CstatusText%2Cpersonal%2Ccomposite%2CbuildType%28id%2Cname%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%2CstartDate%2CfinishDate%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nContent-Type: application/json\nStrict-Transport-Security: max-age=31536000;\nTeamcity-Node-Id: MAIN_SERVER\nX-Request-Id: 716144337984950272\nCache-Control: no-store\nContent-Length: 492\nDate: Fri, 02 Oct 2026 19:30:08 GMT\n\n{\"nextHref\":\"/app/rest/builds?fields=count,nextHref,build(id,buildTypeId,number,state,status,failedToStart,canceledInfo(timestamp),branchName,statusText,personal,composite,buildType(id,name,projectId),revisions(revision(version,vcs-root-instance(id,vcs-root-id))),startDate,finishDate)&locator=branch:(default:any),canceled:false,count:20,defaultFilter:false,failedToStart:false,lookupLimit:2,project:(id:($base64:QXhpQ29udHJhY3Q)),start:0,state:finished,status:FAILURE\",\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "exhaustion-empty-finished-job": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2CbuildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfUXVldWVB%29%29%2Cproject%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2CfinishDate%3A%28date%3A20261001T000000%2B0000%2Ccondition%3Aafter%29%2CfinishDate%3A%28date%3A20261003T000000%2B0000%2Ccondition%3Abefore%29%2Ccount%3A20%2Cstart%3A0%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CfailedToStart%2CcanceledInfo%28timestamp%29%2CbranchName%2CstatusText%2Cpersonal%2Ccomposite%2CbuildType%28id%2Cname%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%2CstartDate%2CfinishDate%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Xss-Protection: 1; mode=block\nX-Request-Id: 716144338056253440\nContent-Type: application/json\nDate: Fri, 02 Oct 2026 19:30:08 GMT\nX-Frame-Options: sameorigin\nX-Content-Type-Options: nosniff\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 22\nStrict-Transport-Security: max-age=31536000;\n\n{\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
+    },
+    "exhaustion-last-page": {
+      "args": [
+        "api",
+        "/app/rest/builds?locator=defaultFilter%3Afalse%2CbuildType%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3RfRmFpbA%29%29%2Cproject%3A%28id%3A%28%24base64%3AQXhpQ29udHJhY3Q%29%29%2Cbranch%3A%28default%3Aany%29%2Cstate%3Afinished%2CfinishDate%3A%28date%3A20261001T000000%2B0000%2Ccondition%3Aafter%29%2CfinishDate%3A%28date%3A20261003T000000%2B0000%2Ccondition%3Abefore%29%2Ccount%3A20%2Cstart%3A1%2ClookupLimit%3A5000&fields=count%2CnextHref%2Cbuild%28id%2CbuildTypeId%2Cnumber%2Cstate%2Cstatus%2CfailedToStart%2CcanceledInfo%28timestamp%29%2CbranchName%2CstatusText%2Cpersonal%2Ccomposite%2CbuildType%28id%2Cname%2CprojectId%29%2Crevisions%28revision%28version%2Cvcs-root-instance%28id%2Cvcs-root-id%29%29%29%2CstartDate%2CfinishDate%29",
+        "-X",
+        "GET",
+        "--include",
+        "--raw",
+        "-H",
+        "Accept: application/json",
+        "--no-input"
+      ],
+      "code": 0,
+      "signal": null,
+      "stdout": "HTTP/1.1 200 OK\nX-Frame-Options: sameorigin\nTeamcity-Node-Id: MAIN_SERVER\nCache-Control: no-store\nContent-Length: 22\nDate: Fri, 02 Oct 2026 19:30:08 GMT\nStrict-Transport-Security: max-age=31536000;\nX-Content-Type-Options: nosniff\nX-Xss-Protection: 1; mode=block\nReferrer-Policy: origin-when-cross-origin\nMixed-Content: noupgrade\nX-Request-Id: 716144338131750912\nContent-Type: application/json\n\n{\"build\":[],\"count\":0}",
+      "stderr": "[Native stderr omitted from public live captures]"
     }
   },
   "fixture": {
@@ -1935,6 +2088,12 @@
       "lowerExclusive": "2026-10-02T11:33:14.568999999Z",
       "upperExclusive": "2026-10-02T11:33:14.569000001Z",
       "afterExact": "2026-10-02T11:33:14.570Z"
+    },
+    "exhaustion": {
+      "emptyFinishedJobId": "AxiContract_QueueA",
+      "since": "2026-10-01T00:00:00.000Z",
+      "until": "2026-10-03T00:00:00.000Z",
+      "restSourceRevision": "fc730e618ccd4b57dbbaf03425bb79a9580d19d2"
     }
   },
   "limits": {

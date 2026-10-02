@@ -459,6 +459,29 @@ export class NativeTeamCityReader implements TeamCityReader {
         this.secrets,
       );
 
+      if (
+        page.providerReturned < query.count &&
+        page.limitations.some((note) => note.code === 'SCAN_COVERAGE_UNKNOWN')
+      ) {
+        const server = await this.getServer(budget);
+
+        if (server.state === 'unavailable' && server.error.code === 'INTERRUPTED')
+          throw server.error;
+
+        // This exact server contract signals lookup-cap truncation through
+        // nextHref even for empty pages. Other versions retain uncertainty.
+        if (
+          server.state === 'available' &&
+          server.value.version === '2026.2 (build 238924)' &&
+          server.value.buildNumber === '238924'
+        ) {
+          page.hasMore = false;
+          page.limitations = page.limitations.filter(
+            (note) => note.code !== 'SCAN_COVERAGE_UNKNOWN',
+          );
+        }
+      }
+
       provenance.observedAt = new Date().toISOString();
       provenance.limitations = page.limitations;
 

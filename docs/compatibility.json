@@ -43,10 +43,10 @@
     }
   ],
   "supportStatus": "development-with-focused-live-contracts",
-  "serverContract": "109 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
+  "serverContract": "118 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-queued-running-canceled-failed-to-start-composite-and-denied; explicit outcome metadata; unknown on omissions/conflicts",
-    "boundedRunPages": "live-tested-wrapper-exact-job/project-page-cursor-window; ordinary/canceled/failed-to-start and normalized unknown-result selectors; precise exclusive fractional windows through verified millisecond server predicates despite whole-second DTO timestamps; unknown exhaustion; broader positive branch/revision gates open",
+    "boundedRunPages": "live-tested-wrapper-exact-job/project-page-cursor-window; ordinary/canceled/failed-to-start and normalized unknown-result selectors; precise exclusive fractional windows through verified millisecond server predicates despite whole-second DTO timestamps; verified exhausted undersized run pages only for exact observed server label/build; exact first-page totals, later-page/ambiguous totals unknown; cap expansion never followed; broader positive branch/revision gates open",
     "independentProblemPages": "live-tested-wrapper-bounded-page-cursor-and-exact-occurrence",
     "independentTestPages": "live-tested-wrapper-page-unmuted-failure-and-exact-occurrence; positive muted/duplicate live fixtures pending",
     "snapshotDependencyPages": "live-positive root-to-prerequisite direction via snapshotDependency-to-recursive-false; exact scoped counts include zero prerequisites; bounded graph service verified with native DAG/cycle mocks and actual two-node graph",

@@ -34,3 +34,7 @@ sub-second boundaries are now verified in
 [the outcome](0013-execution-outcomes.md) and
 [precise list](0014-precise-run-list.md) contracts. Unknown
 result diagnostics and branch identity survive public projection.
+
+The later [verified exhaustion contract](0015-verified-run-exhaustion.md) adds a
+narrow exact-server proof for undersized run pages. Other versions and collection
+contracts retain the uncertainty described here.
