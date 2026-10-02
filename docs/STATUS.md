@@ -26,10 +26,18 @@ including the 19 native wire observations and end-to-end run view. No skipped
 tests. Independent review identified and drove fixes for credential previews,
 control-sequence reconstruction, missing revision metadata, safe timestamps,
 assertion-preserving hints, and Unicode byte budgets. Foundation GitHub CI passed
-both jobs on `b92ac0a`; this slice must pass CI after its push.
+both jobs on `82796e5` (run
+https://github.com/Periecle/teamcity-axi/actions/runs/36987081574).
+
+Run-list preparation adds literal locator encoding, continuation reconstruction
+and expiring query-bound cursors with three focused adversarial tests and
+independent review. The consuming list service and live round-trip evidence are
+still open; passing helpers alone do not satisfy that milestone.
 
 Next: deliver bounded run list and verified context/doctor from recorded
 contracts. The user has no existing TeamCity sandbox. A temporary official
-2026.2 server image is being prepared on localhost to establish controlled live
-evidence; it is not yet configured or certified. Keep live support unverified
-until the server version/build, restricted identity and endpoint evidence exist.
+2026.2 server (build 238924) is running on localhost with dedicated test volumes
+and a resource-bounded official build agent. The user approved its local test
+licence. Synthetic projects exist; restricted identity and live endpoint fixtures
+are being configured. This setup is not certified. Keep live support unverified
+until the restricted identity and endpoint evidence exist.
