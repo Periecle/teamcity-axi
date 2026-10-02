@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:doctor:1.0",
+  "type": "object",
+  "properties": {
+    "offline": {
+      "type": "boolean"
+    },
+    "executable": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "resolved": {
+          "const": true
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "versionStatus": {
+          "enum": ["recorded", "unverified_version"]
+        }
+      },
+      "required": ["name", "resolved", "version", "versionStatus"],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "registered": {
+          "type": "boolean"
+        }
+      },
+      "required": ["registered"],
+      "additionalProperties": false
+    },
+    "server": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "buildNumber": {
+              "type": "string",
+              "maxLength": 256
+            }
+          },
+          "required": ["version", "buildNumber"],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": ["authenticated", "not_checked"]
+        },
+        "identityFingerprint": {
+          "type": ["string", "null"],
+          "pattern": "^sha256:[a-f0-9]{32}$"
+        }
+      },
+      "required": ["state", "identityFingerprint"],
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "properties": {
+        "readOnly": {
+          "const": true
+        },
+        "state": {
+          "enum": ["not_checked", "verified", "not_configured"]
+        }
+      },
+      "required": ["readOnly", "state"],
+      "additionalProperties": false
+    },
+    "liveCertified": {
+      "const": false
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "formats": {
+          "const": ["json", "toon"]
+        },
+        "schemaVersion": {
+          "const": "1.0"
+        }
+      },
+      "required": ["formats", "schemaVersion"],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "enum": [
+              "structuredRunDetail",
+              "boundedRunPages",
+              "independentProblemPages",
+              "independentTestPages",
+              "snapshotDependencyPages",
+              "structuredLogTail",
+              "boundedChangesPages",
+              "scopedQueueRead",
+              "safeAgentRead"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "state": {
+            "enum": ["available", "unavailable", "not_probed"]
+          },
+          "errorCode": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "runId": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "required": ["name", "required", "state"],
+        "additionalProperties": false
+      },
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "maxChildProcesses": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "stdoutCaptureBytes": {
+          "const": 2097152
+        },
+        "stderrCaptureBytes": {
+          "const": 65536
+        },
+        "maxBytes": {
+          "type": "integer",
+          "minimum": 2048,
+          "maximum": 262144
+        },
+        "remainingMs": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "concurrency",
+        "maxChildProcesses",
+        "stdoutCaptureBytes",
+        "stderrCaptureBytes",
+        "maxBytes",
+        "remainingMs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "offline",
+    "executable",
+    "target",
+    "server",
+    "authentication",
+    "policy",
+    "liveCertified",
+    "output",
+    "capabilities",
+    "limits"
+  ],
+  "additionalProperties": false
+}

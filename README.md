@@ -6,8 +6,8 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 
 The development build implements strict arguments, local context,
 help/schema/version, JSON/TOON output, the restricted process transport, and
-exact-ID `run view` and bounded `run list` with typed validation, scope assertions
-and query-bound cursors. Other remote
+exact-ID `run view`, bounded `run list`, verified `context show` and scoped
+`doctor` with typed validation, scope assertions and query-bound cursors. Other remote
 services remain gated pending adapter implementation. See
 [implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
 
@@ -31,8 +31,9 @@ npm run format
 npm run format:check
 ```
 
-Code uses pinned Prettier with two-space indentation, semicolons, single quotes,
-trailing commas and LF endings. `npm test` checks formatting before compiling
+Code uses pinned ESLint Stylistic and Prettier. ESLint adds blank lines between
+import groups, definitions, methods, control blocks and returns. Prettier applies
+two-space indentation, semicolons, single quotes, trailing commas and LF endings. `npm test` checks formatting before compiling
 and running tests, so the same rules are enforced in CI. Captured wire artifacts
 are excluded from automatic rewriting.
 
@@ -42,6 +43,15 @@ bounded scan exhaustion cannot be proved. Exact contextual branches can be
 elided from projected rows; all-branch rows retain branch identity. Fractional
 finish-time filters and canceled/failed-to-start/unknown outcome filters remain
 explicitly gated while their contracts are verified.
+
+`context show` makes no server calls unless `--verify` is supplied. Verification
+reads only selected jobs/projects and the current identity; it reports a safe
+identity fingerprint. `doctor --offline` probes the local executable version
+without HTTP. Online doctor requires a project or job, probes bounded core reads
+and optional structured logs, and reports remaining capabilities as unverified.
+Its current result is partial until the remaining adapters are delivered.
+Project-subtree policy follows at most eight observed parent links; unknown or
+cyclic ancestry cannot authorize access.
 
 Trusted configuration is `${XDG_CONFIG_HOME:-~/.config}/teamcity-axi/config.json`.
 Use [the schema](schemas/user-config.schema.json) and

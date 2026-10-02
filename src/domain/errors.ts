@@ -9,6 +9,7 @@ export class DomainError extends Error {
     super(message);
     this.name = 'DomainError';
   }
+
   publicValue() {
     return {
       code: this.code,
@@ -18,9 +19,11 @@ export class DomainError extends Error {
     };
   }
 }
+
 export function usage(message: string, details?: Record<string, unknown>): never {
   throw new DomainError('USAGE_ERROR', message, 2, false, details);
 }
+
 export function asDomainError(error: unknown): DomainError {
   return error instanceof DomainError
     ? error

@@ -4,6 +4,7 @@ import { object, normalizeRun } from './run.js';
 import { idCondition, branchCondition } from './locator.js';
 import { nextPosition } from './continuation.js';
 import type { ContinuationRequest } from './continuation.js';
+
 function date(value: string): string {
   if (
     !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.000Z$/.test(value) ||
@@ -15,8 +16,10 @@ function date(value: string): string {
       'Finish-time queries require canonical whole-second timestamps',
       2,
     );
+
   return value.slice(0, 19).replaceAll('-', '').replaceAll(':', '') + '+0000';
 }
+
 export function runFilters(query: RunQuery): string[] {
   if (!query.jobId && !query.projectId)
     throw new DomainError('CONTEXT_REQUIRED', 'Run list requires a job or project', 2);
@@ -40,11 +43,13 @@ export function runFilters(query: RunQuery): string[] {
     ...(query.projectId ? [`project:${idCondition(query.projectId)}`] : []),
     query.branch === undefined ? 'branch:(default:any)' : `branch:${branchCondition(query.branch)}`,
   ];
+
   if (query.state !== undefined) {
     if (!['queued', 'running', 'finished'].includes(query.state))
       throw new DomainError('USAGE_ERROR', 'Invalid lifecycle filter', 2);
     filters.push(`state:${query.state}`);
   }
+
   if (query.result !== undefined) {
     if (!['success', 'failure', 'error'].includes(query.result))
       throw new DomainError(
@@ -53,6 +58,7 @@ export function runFilters(query: RunQuery): string[] {
       );
     filters.push(`status:${query.result.toUpperCase()}`);
   }
+
   if (query.window) {
     if (
       query.state !== 'finished' ||
@@ -68,8 +74,10 @@ export function runFilters(query: RunQuery): string[] {
       `finishDate:(date:${date(query.window.until)},condition:before)`,
     );
   }
+
   return filters;
 }
+
 export function normalizeRunPage(
   input: unknown,
   query: RunQuery,
@@ -77,6 +85,7 @@ export function normalizeRunPage(
   secrets: readonly string[],
 ): RunPage {
   const dto = object(input);
+
   if (
     !Array.isArray(dto.build) ||
     dto.build.length > query.count ||
@@ -92,8 +101,10 @@ export function normalizeRunPage(
     limitations: [],
   };
   const ids = new Set<string>();
+
   for (const value of dto.build) {
     const { run, projectId, limitations } = normalizeRun(value, request.serverUrl, secrets);
+
     if (ids.has(run.id))
       throw new DomainError(
         'UPSTREAM_SCHEMA_MISMATCH',
@@ -114,6 +125,7 @@ export function normalizeRunPage(
     if (query.allowedProjects && (!projectId || !query.allowedProjects.includes(projectId)))
       throw new DomainError('POLICY_DENIED', 'Run project is outside the verified trusted scope');
     page.limitations.push(...limitations);
+
     if (query.window) {
       if (!run.finishedAt) {
         page.limitations.push({
@@ -124,6 +136,7 @@ export function normalizeRunPage(
         });
         continue;
       }
+
       if (
         Date.parse(run.finishedAt) <= Date.parse(query.window.since) ||
         Date.parse(run.finishedAt) >= Date.parse(query.window.until)
@@ -137,8 +150,10 @@ export function normalizeRunPage(
         continue;
       }
     }
+
     if (query.revision) {
       const roots = run.revisions?.filter((r) => r.vcsRootId === query.vcsRootId);
+
       if (!roots?.length) {
         page.limitations.push({
           code: 'REVISION_UNVERIFIED',
@@ -148,10 +163,13 @@ export function normalizeRunPage(
         });
         continue;
       }
+
       if (roots.some((r) => r.revision !== query.revision)) continue;
     }
+
     page.runs.push(run);
   }
+
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string' || !dto.nextHref) throw new Error();
@@ -170,5 +188,6 @@ export function normalizeRunPage(
       message: 'No continuation was supplied; bounded scan exhaustion is unverified',
       source: 'run',
     });
+
   return page;
 }

@@ -166,9 +166,22 @@ export async function mockServer() {
       return error(403, 'Cannot read tests');
     if (mode === 'logs-unsupported' && path === '/app/messages')
       return error(404, 'Capability not found');
+    if (mode === 'logs-hang' && path === '/app/messages') return;
     let value;
     if (path === '/app/rest/server') value = wire.server;
-    else if (path.startsWith('/app/rest/buildTypes/id:'))
+    else if (path === '/app/rest/users/current') value = { id: 2, username: 'fixture-reader' };
+    else if (path.startsWith('/app/rest/projects/id:')) {
+      const literal = /\(\$base64:([A-Za-z0-9_-]+)\)/.exec(path)?.[1];
+      const id = literal ? Buffer.from(literal, 'base64url').toString() : path.split('id:')[1];
+      value = {
+        id,
+        name: 'Fixture project',
+        archived: false,
+        ...(id === '_Root' ? {} : { parentProjectId: '_Root' }),
+      };
+      if (mode === 'project-cycle') value.parentProjectId = id;
+      if (mode === 'project-wrong-id') value.id = 'Other';
+    } else if (path.startsWith('/app/rest/buildTypes/id:'))
       value = { id: run.buildTypeId, name: 'Build', projectId: 'Payments', paused: false };
     else if (path.endsWith('/snapshot-dependencies'))
       return error(406, 'This subresource does not provide the supported JSON collection');

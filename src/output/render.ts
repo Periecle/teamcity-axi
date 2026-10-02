@@ -1,14 +1,18 @@
 import { encode } from '@toon-format/toon';
+
 import type { Response } from '../domain/response.js';
 import { sanitize, secretMatchers } from './sanitize.js';
 import { validateResponse } from './schema.js';
+
 function serialize(value: Response, format: 'json' | 'toon') {
   return (format === 'json' ? JSON.stringify(value) : encode(value)) + '\n';
 }
+
 export interface Rendered {
   document: string;
   response: Response;
 }
+
 export function render(
   input: Response,
   format: 'json' | 'toon',
@@ -68,6 +72,7 @@ export function render(
     keys,
     secretMatchers(patterns),
   ) as Response;
+
   // Public constants and wrapper-generated timestamps do not carry credential data.
   // A coincidental short secret matching them must not break the protocol itself.
   value.schemaVersion = input.schemaVersion;
@@ -76,6 +81,7 @@ export function render(
   value.meta.observedAt = input.meta.observedAt;
   validateResponse(value);
   let document = serialize(value, format);
+
   if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
   delete value.next;
   document = serialize(value, format);
@@ -108,6 +114,7 @@ export function render(
   };
   validateResponse(value);
   document = serialize(value, format);
+
   if (Buffer.byteLength(document) > maxBytes) {
     // Keep the trusted destination and asserted IDs while omitting verbose branch data.
     if (value.context)
@@ -118,19 +125,23 @@ export function render(
       );
     document = serialize(value, format);
   }
+
   if (Buffer.byteLength(document) > maxBytes) {
     value.error!.message = 'Output exceeds byte budget';
     delete value.meta.limitations;
     document = serialize(value, format);
   }
+
   if (Buffer.byteLength(document) > maxBytes) {
     // Even asserted scope may exceed the envelope budget (e.g. three Unicode IDs).
     // Do not alter IDs into different targets. Retain only the trusted destination.
     if (value.context) value.context = { server: value.context.server };
     document = serialize(value, format);
   }
+
   if (Buffer.byteLength(document) > maxBytes)
     throw new Error('Output budget cannot hold the minimal envelope');
   validateResponse(value);
+
   return { document, response: value };
 }

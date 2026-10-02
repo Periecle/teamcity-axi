@@ -20,8 +20,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "format": "prettier --write src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json .github",
-    "format:check": "prettier --check src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json .github",
+    "format": "eslint src --fix && prettier --write src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
+    "format:check": "eslint src --max-warnings 0 && prettier --check src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
     "pretest": "npm run format:check",
     "build": "tsc",
     "test": "npm run build && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
@@ -38,7 +38,10 @@
     "smol-toml": "1.9.0"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "24.19.1",
+    "@typescript-eslint/parser": "8.71.0",
+    "eslint": "10.11.0",
     "prettier": "3.9.9",
     "typescript": "6.0.3"
   }

@@ -1,5 +1,6 @@
 import type { DomainError } from './errors.js';
 import type { Limitation } from './response.js';
+
 export interface Run {
   id: string;
   jobId: string;
@@ -18,15 +19,41 @@ export interface Run {
   revisions?: { vcsRootId: string; revision: string }[];
   rawStatus?: string | null;
 }
+
 export interface RunRef {
   id: string;
 }
+
 export interface Job {
   id: string;
   name: string;
   projectId: string;
   paused: boolean | null;
 }
+
+export interface Project {
+  id: string;
+  name: string;
+  parentProjectId: string | null;
+  archived: boolean | null;
+}
+
+export interface ServerInfo {
+  version: string;
+  buildNumber: string;
+}
+
+export interface AuthenticatedIdentity {
+  fingerprint: string;
+}
+
+export interface LogTail {
+  runId: string;
+  messages: { id: string; text: string; level: number; status: number }[];
+  providerReturned: number;
+  truncated: boolean;
+}
+
 export interface RunQuery {
   jobId?: string;
   projectId?: string;
@@ -41,6 +68,7 @@ export interface RunQuery {
   scanLimit: number;
   allowedProjects?: readonly string[];
 }
+
 export interface RunPage {
   runs: Run[];
   providerReturned: number;
@@ -48,21 +76,29 @@ export interface RunPage {
   hasMore: boolean | null;
   limitations: Limitation[];
 }
+
 export interface Budget {
   deadline: number;
 }
+
 export interface Provenance {
   observedAt: string;
   operation: string;
   projectId: string | null;
   limitations: Limitation[];
 }
+
 export type ReadResult<T> =
   | { state: 'available'; value: T; provenance: Provenance }
   | { state: 'unavailable'; error: DomainError; provenance: Provenance };
+
 // The first vertical adapter implements this slice. Additional read primitives
 // extend this interface as their recorded contracts and tests are added.
 export interface TeamCityReader {
+  getServer(budget: Budget): Promise<ReadResult<ServerInfo>>;
+  getIdentity(budget: Budget): Promise<ReadResult<AuthenticatedIdentity>>;
+  getProject(ref: { id: string }, budget: Budget): Promise<ReadResult<Project>>;
+  getLogTail(ref: RunRef, tail: number, budget: Budget): Promise<ReadResult<LogTail>>;
   getRun(ref: RunRef, budget: Budget): Promise<ReadResult<Run>>;
   getJob(ref: { id: string }, budget: Budget): Promise<ReadResult<Job>>;
   listRuns(query: RunQuery, budget: Budget): Promise<ReadResult<RunPage>>;

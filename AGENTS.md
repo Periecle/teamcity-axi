@@ -17,6 +17,8 @@ Use independent review of security/evidence handling as required by the plan.
 Do not sign commits. The user authorizes pushes to `Periecle/teamcity-axi`.
 
 Keep source, tests, scripts, schemas and configuration readable with the pinned
-Prettier formatter: run `npm run format` after edits and `npm run format:check`
-before handoff. `npm test` enforces the formatting gate in CI. Preserve captured
+ESLint Stylistic spacing rules and Prettier formatter: run `npm run format`
+after edits and `npm run format:check` before handoff. ESLint inserts blank lines between import groups, top-level
+definitions, class methods, control blocks and returns; Prettier handles layout.
+`npm test` enforces the formatting gate in CI. Preserve captured
 wire artifacts; `.prettierignore` excludes them from automatic rewriting.

@@ -132,6 +132,10 @@ test('unallowlisted, traversing and forged adapter operations never launch child
       '/app/rest/builds/id:123/..?fields=id',
       '/app/rest/builds/%ZZ',
       '/app/rest/users',
+      '/app/rest/users/current/tokens?fields=id,username',
+      '/app/rest/users/current?fields=password',
+      '/app/rest/users/current?fields=id,username&fields=password',
+      '/app/rest/users/id:1?fields=id,username',
       '/app/rest/builds?unexpected=1',
       '/app/rest/builds#fragment',
     ]) {

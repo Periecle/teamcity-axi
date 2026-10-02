@@ -5,6 +5,7 @@ export interface Flag {
   min?: number;
   max?: number;
 }
+
 export interface Descriptor {
   name: string;
   summary: string;
@@ -12,24 +13,29 @@ export interface Descriptor {
   flags: Record<string, Flag>;
   fields?: readonly string[];
 }
+
 const bool = (description: string): Flag => ({ type: 'boolean', description });
+
 const str = (description: string, choices?: readonly string[]): Flag => ({
   type: 'string',
   description,
   ...(choices ? { choices } : {}),
 });
+
 const int = (description: string, min: number, max: number): Flag => ({
   type: 'integer',
   description,
   min,
   max,
 });
+
 const dur = (description: string, min: number, max: number): Flag => ({
   type: 'duration',
   description,
   min,
   max,
 });
+
 export const globalFlags: Record<string, Flag> = {
   help: bool('Show local command help'),
   version: bool('Show application version'),
@@ -43,28 +49,35 @@ export const globalFlags: Record<string, Flag> = {
   'no-hints': bool('Omit optional read suggestions'),
   debug: bool('Redacted metadata on stderr'),
 };
+
 const scope = { project: str('Exact project ID'), job: str('Exact job ID') };
+
 const branch = {
   branch: str('Logical branch or @this'),
   'literal-branch': str('Literal logical branch'),
   'all-branches': bool('Include all logical branches'),
 };
+
 const revision = {
   revision: str('Commit identity or @head'),
   'vcs-root': str('Exact VCS root ID'),
 };
+
 const page = {
   limit: int('Maximum requested rows', 1, 100),
   cursor: str('Opaque bounded continuation'),
 };
+
 const projection = {
   fields: str('Comma separated public fields'),
   full: bool('Expand text previews within budgets'),
 };
+
 const graph = {
   depth: int('Maximum snapshot traversal depth', 0, 12),
   'max-nodes': int('Maximum unique executions', 1, 200),
 };
+
 const runFields = [
   'id',
   'jobId',
@@ -82,6 +95,7 @@ const runFields = [
   'webUrl',
   'revisions',
 ];
+
 export const registry: readonly Descriptor[] = [
   {
     name: 'status',
@@ -242,15 +256,19 @@ export const registry: readonly Descriptor[] = [
     flags: { ...scope },
   },
 ];
+
 export function descriptor(name: string): Descriptor | undefined {
   return registry.find((d) => d.name === name);
 }
+
 export function flagsFor(d: Descriptor) {
   return { ...globalFlags, ...d.flags };
 }
+
 export function help(d?: Descriptor): string {
   if (!d)
     return `teamcity-axi <command> [arguments] [flags]\nRead-only TeamCity observations.\n\n${registry.map((c) => `  ${c.name.replaceAll('.', ' ')}  ${c.summary}`).join('\n')}\n\nUse <command> --help for valid flags. Default output: TOON.\n`;
+
   return `teamcity-axi ${d.name.replaceAll('.', ' ')}${d.positional ? ` <${d.positional}>` : ''}\n${d.summary}\n\n${Object.entries(
     flagsFor(d),
   )

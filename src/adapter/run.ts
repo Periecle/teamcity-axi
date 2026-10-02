@@ -2,18 +2,23 @@ import { DomainError } from '../domain/errors.js';
 import type { Run } from '../domain/teamcity.js';
 import type { Limitation } from '../domain/response.js';
 import { sanitizeText } from '../output/sanitize.js';
+
 function invalid(message = 'Run detail does not match the supported DTO contract'): never {
   throw new DomainError('UPSTREAM_SCHEMA_MISMATCH', message);
 }
+
 export function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) invalid();
+
   return value as Record<string, unknown>;
 }
+
 export function identity(value: unknown, numeric = false): string {
   if (typeof value === 'number') {
     if (!Number.isSafeInteger(value) || value <= 0) invalid('Unsafe upstream numeric identity');
     value = String(value);
   }
+
   if (
     typeof value !== 'string' ||
     value.length < 1 ||
@@ -23,22 +28,29 @@ export function identity(value: unknown, numeric = false): string {
     invalid('Missing or invalid upstream identity');
   if (numeric && (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))))
     invalid('Unsafe upstream run identity');
+
   return value;
 }
+
 function text(value: unknown): string | undefined {
   if (value === undefined) return undefined;
   if (typeof value !== 'string') invalid();
+
   return value;
 }
+
 function boolean(value: unknown): boolean | null {
   if (value === undefined || value === null) return null;
   if (typeof value !== 'boolean') invalid();
+
   return value;
 }
+
 export function timestamp(value: unknown, field: string, limitations: Limitation[]): string | null {
   if (value === undefined || value === null || value === '') return null;
   if (typeof value !== 'string') invalid();
   const m = /^(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)([+-])(\d\d)(\d\d)$/.exec(value);
+
   if (m) {
     const [, y, month, day, hour, minute, second, sign, zh, zm] = m;
     const valid =
@@ -52,6 +64,7 @@ export function timestamp(value: unknown, field: string, limitations: Limitation
       Number(second) < 60 &&
       Number(zh) <= 23 &&
       Number(zm) < 60;
+
     if (valid) {
       const epoch =
         Date.UTC(
@@ -63,16 +76,20 @@ export function timestamp(value: unknown, field: string, limitations: Limitation
           Number(second),
         ) -
         (sign === '-' ? -1 : 1) * (Number(zh) * 60 + Number(zm)) * 60000;
+
       return new Date(epoch).toISOString();
     }
   }
+
   limitations.push({
     code: 'INVALID_TIMESTAMP',
     message: `The server supplied an invalid ${field} timestamp`,
     source: 'run',
   });
+
   return null;
 }
+
 export function normalizeRun(
   input: unknown,
   serverUrl: string,
@@ -83,8 +100,10 @@ export function normalizeRun(
   const id = identity(dto.id, true);
   const jobId = identity(dto.buildTypeId);
   const buildType = dto.buildType === undefined ? undefined : object(dto.buildType);
+
   if (buildType && identity(buildType.id) !== jobId) invalid('Conflicting run job identities');
   const projectId = buildType?.projectId === undefined ? null : identity(buildType.projectId);
+
   if (typeof dto.state !== 'string' || typeof dto.status !== 'string')
     invalid('Run lifecycle and result metadata are required');
   const state = (
@@ -96,6 +115,7 @@ export function normalizeRun(
     ['ERROR', 'error'],
   ]);
   const result = results.get(dto.status) ?? 'unknown';
+
   if (state === 'unknown')
     limitations.push({
       code: 'UNKNOWN_LIFECYCLE',
@@ -111,13 +131,17 @@ export function normalizeRun(
       runId: id,
     });
   const revisions: NonNullable<Run['revisions']> = [];
+
   if (dto.revisions !== undefined) {
     const collection = object(dto.revisions);
+
     if (!Array.isArray(collection.revision) || collection.revision.length > 100)
       invalid('Invalid revision collection');
+
     for (const value of collection.revision) {
       const revision = object(value);
       const root = object(revision['vcs-root-instance']);
+
       revisions.push({
         vcsRootId: identity(root['vcs-root-id']),
         revision: identity(revision.version),
@@ -134,11 +158,14 @@ export function normalizeRun(
     finishedAt = timestamp(dto.finishDate, 'finish', limitations),
     queuedAt = timestamp(dto.queuedDate, 'queue', limitations);
   let webUrl: string | null = null;
+
   if (dto.webUrl !== undefined) {
     const value = text(dto.webUrl)!;
+
     try {
       const url = new URL(value);
       const base = new URL(serverUrl);
+
       if (
         url.origin === base.origin &&
         !url.username &&
@@ -162,6 +189,7 @@ export function normalizeRun(
       });
     }
   }
+
   const run: Run = {
     id,
     jobId,
@@ -179,10 +207,13 @@ export function normalizeRun(
   };
   const number = text(dto.number),
     statusText = text(dto.statusText);
+
   if (number !== undefined) run.number = sanitizeText(number, secrets);
   if (statusText !== undefined) run.statusText = sanitizeText(statusText, secrets);
+
   if (startedAt && finishedAt) {
     const duration = Date.parse(finishedAt) - Date.parse(startedAt);
+
     if (duration >= 0) run.durationMs = duration;
     else
       limitations.push({
@@ -192,5 +223,6 @@ export function normalizeRun(
         runId: id,
       });
   }
+
   return { run, projectId, limitations };
 }

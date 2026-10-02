@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+
 import { DomainError } from '../domain/errors.js';
 import { response } from '../domain/response.js';
 import type { Response } from '../domain/response.js';
@@ -11,8 +12,11 @@ import { decodeCursor, assertCursor, encodeCursor } from '../adapter/cursor.js';
 import type { CursorBinding } from '../adapter/cursor.js';
 import { runFilters } from '../adapter/run-page.js';
 import { knownSecrets } from '../output/sanitize.js';
+import { ProjectPolicy } from '../context/project-policy.js';
+
 function wholeSecond(value: string): string {
   const fraction = /\.(\d+)(?:Z|[+-]\d\d:\d\d)$/.exec(value)?.[1];
+
   if (fraction && /[1-9]/.test(fraction))
     throw new DomainError(
       'USAGE_ERROR',
@@ -20,14 +24,17 @@ function wholeSecond(value: string): string {
       2,
     );
   const canonical = new Date(value).toISOString();
+
   if (!canonical.endsWith('.000Z'))
     throw new DomainError(
       'USAGE_ERROR',
       'Finish-time filters currently require whole-second timestamps',
       2,
     );
+
   return canonical;
 }
+
 export async function listRuns(
   parsed: Parsed,
   context: ExecutionContext,
@@ -36,6 +43,7 @@ export async function listRuns(
   if (!context.job && !context.project)
     throw new DomainError('CONTEXT_REQUIRED', 'Select a job or project for run list', 2);
   const result = parsed.flags.result === undefined ? undefined : String(parsed.flags.result);
+
   if (result && !['success', 'failure', 'error'].includes(result))
     throw new DomainError(
       'DEPENDENCY_UNSUPPORTED',
@@ -73,6 +81,7 @@ export async function listRuns(
     scanLimit: 5000,
     ...(server?.allowedProjects ? { allowedProjects: server.allowedProjects } : {}),
   };
+
   // Reject invalid typed selectors before launching a native child.
   runFilters(query);
   const binary = await resolveBinary(
@@ -94,11 +103,13 @@ export async function listRuns(
       stderrBytes: 65536,
     },
   });
+
   try {
     const version = await transport.execute({ kind: 'version' }),
       matched = /^teamcity version ([a-zA-Z0-9.+-]{1,80})\r?\n$/.exec(
         version.stdout.toString('utf8'),
       );
+
     if (version.exitCode !== 0 || !matched)
       throw new DomainError(
         'DEPENDENCY_UNSUPPORTED',
@@ -109,15 +120,24 @@ export async function listRuns(
       context.serverUrl!,
       knownSecrets(process.env, context.config?.secretNamePatterns, server?.forwardHeaderEnvNames),
     );
+    const policy = new ProjectPolicy(reader, server?.allowedProjects, {
+      deadline: context.deadline,
+    });
+
     if (query.jobId) {
       const job = await reader.getJob({ id: query.jobId }, { deadline: context.deadline });
+
       if (job.state === 'unavailable') throw job.error;
       if (query.projectId && query.projectId !== job.value.projectId)
         throw new DomainError('CONTEXT_MISMATCH', 'Selected job belongs to another project');
-      if (server?.allowedProjects && !server.allowedProjects.includes(job.value.projectId))
-        throw new DomainError('POLICY_DENIED', 'Job project is outside the verified trusted scope');
+      await policy.assert(job.value.projectId);
       query.projectId = job.value.projectId;
+    } else {
+      await policy.project(query.projectId!);
+      await policy.assert(query.projectId!);
     }
+
+    if (server?.allowedProjects) query.allowedProjects = [query.projectId!];
     const filterHash = createHash('sha256')
       .update(
         JSON.stringify({
@@ -137,8 +157,10 @@ export async function listRuns(
       count: query.count,
       ...(window ? { window } : {}),
     };
+
     if (cursor) assertCursor(cursor, binding);
     const read = await reader.listRuns(query, { deadline: context.deadline });
+
     if (read.state === 'unavailable') throw read.error;
     const page = read.value,
       limitations = [
@@ -149,6 +171,7 @@ export async function listRuns(
           source: 'run' as const,
         },
       ];
+
     if (matched[1] !== '1.5.0')
       limitations.push({
         code: 'UNVERIFIED_VERSION',
@@ -163,6 +186,7 @@ export async function listRuns(
       });
     const expiresAt = cursor?.expiresAt ?? now + 1800000;
     const continuationNow = Date.now();
+
     if (page.position !== null && expiresAt <= continuationNow)
       limitations.push({
         code: 'CURSOR_EXPIRED',
@@ -229,6 +253,7 @@ export async function listRuns(
               : 'No rows returned; bounded search exhaustion is unverified',
           }),
     });
+
     output.context = {
       server: context.server!,
       ...(query.projectId ? { project: query.projectId } : {}),
@@ -239,6 +264,7 @@ export async function listRuns(
     output.meta.observedAt = read.provenance.observedAt;
     output.meta.counts = { childProcesses: transport.childProcesses };
     output.meta.limitations = limitations;
+
     if (
       limitations.some(
         (l) =>
@@ -253,6 +279,7 @@ export async function listRuns(
       output.status = 'partial';
       output.meta.complete = false;
     }
+
     if (token && !parsed.flags['no-hints'])
       output.next = [
         {
@@ -283,6 +310,7 @@ export async function listRuns(
         },
       ];
     if (parsed.flags['require-complete'] && output.status === 'partial') process.exitCode = 1;
+
     return output;
   } finally {
     await transport.dispose();

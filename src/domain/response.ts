@@ -4,6 +4,7 @@ export interface Limitation {
   runId?: string;
   source?: string;
 }
+
 export interface Response {
   schemaVersion: '1.0';
   command: string;
@@ -21,6 +22,7 @@ export interface Response {
   };
   next?: { reason: string; argv: string[] }[];
 }
+
 export function response(command: string, data: Record<string, unknown>): Response {
   return {
     schemaVersion: '1.0',

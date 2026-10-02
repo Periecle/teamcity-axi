@@ -185,3 +185,65 @@ test('actual wrapper returns exact failed observation and preserves denied, miss
     await f.close();
   }
 });
+
+test('live context verification and doctor preserve restricted scope and optional log limits', async () => {
+  const f = await liveFixture();
+  try {
+    const local = JSON.parse(
+      (await f.wrapper(['context', 'show', '--job', f.contract.fixture.jobId, '--json'])).stdout,
+    );
+    validateResponse(local);
+    assert.equal(local.data.verification.requested, false);
+    const verified = await f.wrapper([
+      'context',
+      'show',
+      '--verify',
+      '--job',
+      f.contract.fixture.jobId,
+      '--json',
+    ]);
+    assert.equal(verified.code, 0);
+    const context = JSON.parse(verified.stdout);
+    validateResponse(context);
+    assert.equal(context.data.verification.authentication, 'authenticated');
+    assert.equal(context.data.verification.project.id, f.contract.fixture.projectId);
+    assert.equal(context.data.verification.policy, 'verified');
+    assert.match(context.data.verification.identityFingerprint, /^sha256:[a-f0-9]{32}$/);
+    const offline = JSON.parse((await f.wrapper(['doctor', '--offline', '--json'])).stdout);
+    validateResponse(offline);
+    assert.equal(offline.meta.counts.childProcesses, 1);
+    assert.equal(offline.data.authentication.state, 'not_checked');
+    const diagnosed = await f.wrapper(['doctor', '--job', f.contract.fixture.jobId, '--json']);
+    assert.equal(diagnosed.code, 0);
+    const doctor = JSON.parse(diagnosed.stdout);
+    validateResponse(doctor);
+    assert.equal(doctor.status, 'partial');
+    assert.equal(doctor.data.server.buildNumber, '238924');
+    assert.equal(doctor.data.liveCertified, false);
+    for (const name of ['structuredRunDetail', 'boundedRunPages', 'structuredLogTail'])
+      assert.equal(doctor.data.capabilities.find((c) => c.name === name).state, 'available');
+    // Broaden only the local client policy, while keeping the server identity restricted.
+    // The observed AxiContract parent is _Root: no ID-prefix inference is involved.
+    const { readFile, writeFile } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    const path = join(f.dir, 'teamcity-axi', 'config.json');
+    const config = JSON.parse(await readFile(path, 'utf8'));
+    config.servers.sandbox.allowedProjects = ['_Root'];
+    await writeFile(path, JSON.stringify(config), { mode: 0o600 });
+    const subtree = await f.wrapper(['run', 'view', f.contract.fixture.failedRunId, '--json']);
+    assert.equal(subtree.code, 0);
+    assert.equal(JSON.parse(subtree.stdout).data.run.id, f.contract.fixture.failedRunId);
+    const policyContext = await f.wrapper([
+      'context',
+      'show',
+      '--verify',
+      '--project',
+      f.contract.fixture.projectId,
+      '--json',
+    ]);
+    assert.equal(policyContext.code, 0);
+    assert.equal(JSON.parse(policyContext.stdout).data.verification.policy, 'verified');
+  } finally {
+    await f.close();
+  }
+});

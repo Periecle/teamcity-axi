@@ -1,5 +1,7 @@
 import { DomainError } from '../domain/errors.js';
+
 import { isUtf8 } from 'node:buffer';
+
 export interface CursorBinding {
   command: string;
   server: string;
@@ -7,11 +9,13 @@ export interface CursorBinding {
   count: number;
   window?: { since: string; until: string };
 }
+
 export interface Cursor extends CursorBinding {
   version: 1;
   position: number;
   expiresAt: number;
 }
+
 function invalid(): never {
   throw new DomainError(
     'USAGE_ERROR',
@@ -19,9 +23,11 @@ function invalid(): never {
     2,
   );
 }
+
 function valid(value: unknown, now: number): value is Cursor {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   const v = value as Record<string, unknown>;
+
   if (
     Object.keys(v).some(
       (k) =>
@@ -61,9 +67,11 @@ function valid(value: unknown, now: number): value is Cursor {
     Number(v.expiresAt) > now + 1800000
   )
     return false;
+
   if (v.window !== undefined) {
     if (!v.window || typeof v.window !== 'object' || Array.isArray(v.window)) return false;
     const w = v.window as Record<string, unknown>;
+
     if (
       Object.keys(w).length !== 2 ||
       !['since', 'until'].every(
@@ -77,27 +85,37 @@ function valid(value: unknown, now: number): value is Cursor {
       return false;
     if (Date.parse(w.since as string) > Date.parse(w.until as string)) return false;
   }
+
   return true;
 }
+
 export function encodeCursor(value: Cursor, now = Date.now()): string {
   if (!valid(value, now)) return invalid();
   const encoded = Buffer.from(JSON.stringify(value), 'utf8').toString('base64url');
+
   if (Buffer.byteLength(encoded) > 4096) return invalid();
+
   return encoded;
 }
+
 export function decodeCursor(token: string, now = Date.now()): Cursor {
   if (Buffer.byteLength(token) > 4096 || !/^[A-Za-z0-9_-]+$/.test(token)) return invalid();
   const bytes = Buffer.from(token, 'base64url');
+
   if (!isUtf8(bytes) || bytes.toString('base64url') !== token) return invalid();
   let value: unknown;
+
   try {
     value = JSON.parse(bytes.toString('utf8'));
   } catch {
     return invalid();
   }
+
   if (!valid(value, now)) return invalid();
+
   return value;
 }
+
 export function assertCursor(cursor: Cursor, binding: CursorBinding): void {
   if (
     cursor.command !== binding.command ||

@@ -37,25 +37,26 @@
       "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
-      "scope": "focused restricted-identity raw contracts, exact run view and bounded run list; not release certification",
+      "scope": "focused restricted-identity contracts, exact run view, bounded run list, verified context and scoped doctor; not release certification",
       "contextPath": "/",
       "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
     }
   ],
   "supportStatus": "development-with-focused-live-contracts",
-  "serverContract": "26 captured restricted-identity reads on a synthetic fixture project in actual TeamCity 2026.2; no full release certification",
+  "serverContract": "31 captured restricted-identity reads on a synthetic fixture project in actual TeamCity 2026.2; no full release certification",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-and-denied",
     "boundedRunPages": "live-tested-wrapper-exact-job-and-project-page-cursor-window; unknown exhaustion; positive branch/revision gates open",
     "independentProblemPages": "live-positive; primitive service pending",
     "independentTestPages": "live-positive; muted and duplicate fixture expansion pending",
     "snapshotDependencyPages": "live-empty-via-snapshotDependency-to-recursive-false; positive graph direction pending",
-    "structuredLogTail": "live-optional; --tail 20 returned 21 entries; wrapper enforcement pending",
+    "structuredLogTail": "live-optional; native overdelivery capped by typed adapter; public primitive service pending",
     "boundedChangesPages": "live-empty; positive VCS fixture pending",
     "scopedQueueRead": "live-empty; positive queue fixture pending",
     "safeAgentRead": "live-positive-unfiltered; project/pool scope verification pending",
     "contextPrefix": "native-mock-tested; live server context prefix pending",
     "restrictedIdentity": "live-permission-inventory and foreign-project-403; no write probes",
-    "authenticationFailure": "live-invalid-token-401; actual token expiry pending"
+    "authenticationFailure": "live-invalid-token-401; actual token expiry pending",
+    "projectPolicy": "live-exact-project and observed parent ancestry; max-eight links, no prefix inference"
   }
 }

@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:teamcity-axi:context-show:1.0",
+  "type": "object",
+  "properties": {
+    "scope": {
+      "anyOf": [
+        {
+          "$ref": "urn:teamcity-axi:response:1.0#/properties/context"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "checkout": {
+      "type": "object",
+      "properties": {
+        "head": {
+          "type": ["string", "null"],
+          "maxLength": 256
+        },
+        "branch": {
+          "type": ["string", "null"],
+          "maxLength": 4096
+        },
+        "dirty": {
+          "type": ["boolean", "null"]
+        }
+      },
+      "required": ["head", "branch", "dirty"],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 80
+      }
+    },
+    "readOnly": {
+      "const": true
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "requested": {
+          "type": "boolean"
+        },
+        "authentication": {
+          "enum": ["not_checked", "authenticated"]
+        },
+        "identityFingerprint": {
+          "type": ["string", "null"],
+          "pattern": "^sha256:[a-f0-9]{32}$"
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 256
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "projectId": {
+                "type": "string",
+                "maxLength": 256
+              },
+              "paused": {
+                "type": ["boolean", "null"]
+              }
+            },
+            "required": ["id", "name", "projectId", "paused"],
+            "additionalProperties": false
+          },
+          "maxItems": 5
+        },
+        "project": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "parentProjectId": {
+                  "type": ["string", "null"],
+                  "maxLength": 256
+                },
+                "archived": {
+                  "type": ["boolean", "null"]
+                }
+              },
+              "required": ["id", "name", "parentProjectId", "archived"],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "policy": {
+          "enum": ["not_checked", "verified", "not_configured"]
+        },
+        "nativeVersion": {
+          "type": ["string", "null"],
+          "maxLength": 80
+        }
+      },
+      "required": [
+        "requested",
+        "authentication",
+        "identityFingerprint",
+        "jobs",
+        "project",
+        "policy",
+        "nativeVersion"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": ["scope", "checkout", "sources", "readOnly", "verification"],
+  "additionalProperties": false
+}
