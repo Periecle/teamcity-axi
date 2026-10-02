@@ -51,6 +51,8 @@ export function validateResponse(value: Response): void {
     throw new DomainError('INTERNAL_ERROR', 'Run list violated its payload contract');
 
   for (const [command, schema] of [
+    ['status', 'status'],
+    ['run.watch', 'run-watch'],
     ['context.show', 'context-show'],
     ['doctor', 'doctor'],
     ['run.problems', 'run-problems'],

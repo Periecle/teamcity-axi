@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "command": "status",
+  "status": "ok",
+  "context": {
+    "server": "work",
+    "project": "Payments",
+    "job": "Payments_Build",
+    "jobs": ["Payments_Build"],
+    "branch": "feature/refund",
+    "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "vcsRootId": "Payments_Git"
+  },
+  "data": {
+    "mode": "configured",
+    "checkout": {
+      "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "branch": "feature/refund",
+      "dirty": false,
+      "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "vcsRootId": "Payments_Git"
+    },
+    "assessment": "passed",
+    "check": { "requested": true, "passed": true },
+    "jobs": [
+      {
+        "jobId": "Payments_Build",
+        "required": true,
+        "availability": "available",
+        "match": "exact",
+        "assessment": "passed",
+        "run": {
+          "id": "482193",
+          "jobId": "Payments_Build",
+          "state": "finished",
+          "result": "success",
+          "branch": "feature/refund",
+          "revisions": [
+            { "vcsRootId": "Payments_Git", "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }
+          ]
+        },
+        "activity": { "queued": 0, "running": 0, "scope": "returnedCandidates" },
+        "candidateCount": 1,
+        "limitationCodes": []
+      }
+    ],
+    "coverage": {
+      "requiredJobs": 1,
+      "displayedJobs": 1,
+      "observedJobs": 1,
+      "complete": true,
+      "candidateLimitPerJob": 20,
+      "scanLimit": 5000,
+      "ordering": "newest_run_id",
+      "historyComplete": false,
+      "consistency": "best_effort"
+    },
+    "failedRunIds": []
+  },
+  "meta": {
+    "observedAt": "2026-10-01T14:00:00Z",
+    "complete": true,
+    "truncated": false,
+    "counts": { "childProcesses": 2 },
+    "limits": { "maxBytes": 6144, "maxChildProcesses": 6, "concurrency": 2 }
+  }
+}

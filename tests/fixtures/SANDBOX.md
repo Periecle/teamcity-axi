@@ -80,3 +80,13 @@ scope. Preserve that unavailable contract; do not broaden the test reader's
 permissions to hide it. The fixture omits its active-build field. Original
 unfiltered captures that show Default pool ID zero are historical observations
 from before the owned fixture move, not current pool membership evidence.
+
+Exact-checkout status tests require `TEAMCITY_AXI_LIVE_CHECKOUT` to point at the
+owned Git fixture whose HEAD was built by `AxiContract_Vcs`. The test clones that
+local repository into its invocation-owned directory, verifies clean exact-head
+status, and makes a disposable untracked file only in the copy to prove the dirty
+assertion. The original fixture checkout is not modified. Missing checkout input
+is a test failure, not a skip. Status captures cover the exact bulk projection,
+five required job IDs, queued candidates, encoded literal-branch filtering, and
+missing/denied job omission under the unchanged project-view identity. Watch uses
+the existing exact run-detail contract and never starts or cancels a build.

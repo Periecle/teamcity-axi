@@ -27,9 +27,11 @@ export async function main(args: readonly string[]): Promise<void> {
       parsed.flags['max-bytes'] ??
         (command === 'status'
           ? 6144
-          : ['run.tree', 'run.failure'].includes(command)
-            ? 24576
-            : 16384),
+          : command === 'run.watch'
+            ? 8192
+            : ['run.tree', 'run.failure'].includes(command)
+              ? 24576
+              : 16384),
     );
 
     if (parsed.flags.help) {
@@ -57,30 +59,33 @@ export async function main(args: readonly string[]): Promise<void> {
       output = response(command, {
         descriptor: d,
         envelope: packagedSchema('response'),
-        ...(d.name === 'run.failure'
-          ? { payload: packagedSchema('failure') }
-          : d.name === 'run.view'
-            ? { payload: packagedSchema('run-view') }
-            : d.name === 'run.list'
-              ? { payload: packagedSchema('run-list') }
-              : d.name === 'context.show'
-                ? { payload: packagedSchema('context-show') }
-                : d.name === 'doctor'
-                  ? { payload: packagedSchema('doctor') }
-                  : [
-                        'run.problems',
-                        'run.tests',
-                        'run.log',
-                        'run.changes',
-                        'run.tree',
-                        'job.view',
-                        'job.list',
-                        'queue.list',
-                        'agent.list',
-                        'agent.view',
-                      ].includes(d.name)
-                    ? { payload: packagedSchema(d.name.replace('.', '-')) }
-                    : {}),
+        ...(d.name === 'status'
+          ? { payload: packagedSchema('status') }
+          : d.name === 'run.failure'
+            ? { payload: packagedSchema('failure') }
+            : d.name === 'run.view'
+              ? { payload: packagedSchema('run-view') }
+              : d.name === 'run.list'
+                ? { payload: packagedSchema('run-list') }
+                : d.name === 'context.show'
+                  ? { payload: packagedSchema('context-show') }
+                  : d.name === 'doctor'
+                    ? { payload: packagedSchema('doctor') }
+                    : [
+                          'run.problems',
+                          'run.tests',
+                          'run.log',
+                          'run.changes',
+                          'run.tree',
+                          'run.watch',
+                          'job.view',
+                          'job.list',
+                          'queue.list',
+                          'agent.list',
+                          'agent.view',
+                        ].includes(d.name)
+                      ? { payload: packagedSchema(d.name.replace('.', '-')) }
+                      : {}),
       });
       maxBytes = Number(parsed.flags['max-bytes'] ?? 65536);
     } else {
@@ -118,12 +123,16 @@ export async function main(args: readonly string[]): Promise<void> {
 
         if (scope) output.context = scope;
 
+        if (parsed.flags.check) process.exitCode = 1;
+
         if (!parsed.flags['no-hints'])
           output.next = [
             { reason: 'Inspect local context', argv: ['teamcity-axi', 'context', 'show'] },
           ];
       } else if (
         [
+          'status',
+          'run.watch',
           'run.view',
           'run.list',
           'run.problems',
@@ -160,7 +169,21 @@ export async function main(args: readonly string[]): Promise<void> {
         process.on('SIGTERM', terminate);
 
         try {
-          if (command === 'run.view') {
+          if (command === 'status') {
+            const { readStatus } = await import('../commands/status.js');
+
+            output = await readStatus(parsed, context, controller.signal);
+
+            if (parsed.flags.check && !(output.data?.check as { passed: boolean }).passed)
+              process.exitCode = 1;
+          } else if (command === 'run.watch') {
+            const { watchRun } = await import('../commands/run-watch.js');
+
+            output = await watchRun(parsed, context, controller.signal);
+
+            if (parsed.flags.check && !(output.data?.check as { passed: boolean }).passed)
+              process.exitCode = 1;
+          } else if (command === 'run.view') {
             const { viewRun } = await import('../commands/run-view.js');
 
             output = await viewRun(parsed, context, controller.signal);
@@ -209,6 +232,9 @@ export async function main(args: readonly string[]): Promise<void> {
           process.removeListener('SIGINT', interrupt);
           process.removeListener('SIGTERM', terminate);
         }
+
+        if (parsed.flags['require-complete'] && !output.meta.complete)
+          process.exitCode = terminationCode || 1;
 
         if (parsed.flags.debug)
           process.stderr.write(

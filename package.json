@@ -20,11 +20,13 @@
     "LICENSE"
   ],
   "scripts": {
-    "format": "eslint src --fix && prettier --write src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
-    "format:check": "eslint src --max-warnings 0 && prettier --check src bin scripts tests schemas examples package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
+    "format": "eslint src --fix && prettier --write src bin scripts tests schemas examples skills docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
+    "format:check": "eslint src --max-warnings 0 && prettier --check src bin scripts tests schemas examples skills docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
     "pretest": "npm run format:check",
     "build": "tsc",
-    "test": "npm run build && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
+    "test": "npm run build && node scripts/generate-docs.mjs --check && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
+    "docs:generate": "npm run build && node scripts/generate-docs.mjs",
+    "docs:check": "node scripts/generate-docs.mjs --check",
     "test:real-cli": "npm run build && node --test tests/real-cli-mock-server/*.test.mjs",
     "fixtures:record": "node scripts/record-native.mjs",
     "fixtures:record-live": "node scripts/record-live.mjs",

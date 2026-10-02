@@ -279,9 +279,11 @@ export async function resolveContext(
       parsed.flags.timeout ??
         (parsed.descriptor.name === 'status'
           ? 5000
-          : ['run.tree', 'run.failure'].includes(parsed.descriptor.name)
-            ? 20000
-            : 10000),
+          : parsed.descriptor.name === 'run.watch'
+            ? 120000
+            : ['run.tree', 'run.failure'].includes(parsed.descriptor.name)
+              ? 20000
+              : 10000),
     );
 
   const within = async <T>(operation: Promise<T>): Promise<T> => {

@@ -193,6 +193,16 @@ export interface RunPage {
   limitations: Limitation[];
 }
 
+export interface StatusQuery {
+  jobIds: readonly string[];
+  branch?: string;
+}
+
+export interface JobSnapshot {
+  job: Job;
+  page: RunPage;
+}
+
 export interface Budget {
   deadline: number;
   // Optional absolute invocation launch ceiling, leaving reserved capacity unused.
@@ -213,6 +223,7 @@ export type ReadResult<T> =
 // The first vertical adapter implements this slice. Additional read primitives
 // extend this interface as their recorded contracts and tests are added.
 export interface TeamCityReader {
+  readStatus(query: StatusQuery, budget: Budget): Promise<ReadResult<JobSnapshot[]>>;
   getAgent(ref: AgentScope & { id: string }, budget: Budget): Promise<ReadResult<Agent>>;
   listAgents(query: AgentQuery, budget: Budget): Promise<ReadResult<EvidencePage<Agent>>>;
   listQueue(query: QueueQuery, budget: Budget): Promise<ReadResult<EvidencePage<QueueItem>>>;

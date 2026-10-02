@@ -37,13 +37,13 @@
       "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
-      "scope": "focused restricted-identity contracts, run view/list/problems/tests/log/changes, bounded run tree, source-accounted failure reports and immediate dependency counts, safe exact job views and bounded direct-project job pages, positive scoped queue pages and queued-run detail, safe exact agent views and bounded job/project compatibility pages, verified context and scoped doctor; not release certification",
+      "scope": "restricted-identity contracts for all eighteen read-only commands, including exact-clean-checkout status and fixed-run watch; not full release certification",
       "contextPath": "/",
       "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
     }
   ],
   "supportStatus": "development-with-focused-live-contracts",
-  "serverContract": "69 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
+  "serverContract": "74 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; no full release certification",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-queued-with-absent-result-and-denied",
     "boundedRunPages": "live-tested-wrapper-exact-job-and-project-page-cursor-window; unknown exhaustion; positive branch/revision gates open",
@@ -59,6 +59,9 @@
     "authenticationFailure": "live-invalid-token-401; actual token expiry pending",
     "projectPolicy": "live-exact-project and observed parent ancestry; max-eight links, no prefix inference",
     "failureInvestigation": "focused live failed-root coverage and success short circuit; native DAG/cycle/muted/source-denial/budget/redaction/Unicode fixtures; live broader graph/outcome fixtures and explicit dependency references pending; exhaustion unknown",
-    "scopedJobRead": "live-tested-exact-job-safe-fields-and-direct-project-page; count/start/lookupLimit/nextHref, unknown exhaustion and foreign-project 403; broader live policy and paused-state fixtures pending"
+    "scopedJobRead": "live-tested-exact-job-safe-fields-and-direct-project-page; count/start/lookupLimit/nextHref, unknown exhaustion and foreign-project 403; broader live policy and paused-state fixtures pending",
+    "exactCheckoutStatus": "live-positive clean Git HEAD/root completed-success assertion, dirty/stale/missing/unmatched-root failures, five-job bulk snapshots and encoded branch-filtered empty pages; native multi-root/newer unknown/personal/concurrent checkout/budget regressions; broader live branch/multi-root gates pending",
+    "fixedRunWatch": "live-positive exact green/red terminal observation and queued deadline retention; native running-to-finished, vanished/inaccessible retention, SIGINT/SIGTERM, byte/identity/provenance regressions; broader live lifecycle transition gates pending",
+    "portableSkill": "versioned read-only portable SKILL.md and registry-generated help/examples; drift checked by npm test"
   }
 }

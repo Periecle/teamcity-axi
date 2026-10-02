@@ -136,6 +136,8 @@ export const wire = {
 export async function mockServer() {
   const requests = [];
   let mode = 'ok';
+  let statusRevision = run.revisions.revision[0].version;
+  let watchReads = 0;
   const server = createServer((req, res) => {
     const url = new URL(req.url, 'http://localhost');
     requests.push({
@@ -454,6 +456,111 @@ export async function mockServer() {
       if (mode === 'list-unknown-result') value.build = [{ ...run, status: 'FUTURE_RESULT' }];
       if (mode === 'list-duplicate') value = { build: [run, run], count: 2 };
     }
+    if (
+      path === '/app/rest/buildTypes' &&
+      url.searchParams.get('fields')?.includes('builds($locator:')
+    ) {
+      const ids = [
+        ...url.searchParams.get('locator').matchAll(/item:\(id:\(\$base64:([^)]*)\)\)/g),
+      ].map((match) => Buffer.from(match[1], 'base64url').toString());
+      value = {
+        count: ids.length,
+        buildType: ids.map((id, index) => ({
+          id,
+          name: id,
+          projectId: 'Payments',
+          paused: false,
+          builds: {
+            count: 1,
+            build: [
+              {
+                ...run,
+                id: run.id + index,
+                buildTypeId: id,
+                buildType: { id, projectId: 'Payments' },
+                status: 'SUCCESS',
+              },
+            ],
+          },
+        })),
+      };
+      const first = value.buildType[0];
+      const selected = first.builds.build[0];
+      for (const job of value.buildType)
+        job.builds.build[0].revisions = {
+          revision: [
+            {
+              version: statusRevision,
+              'vcs-root-instance': { id: '17', 'vcs-root-id': 'Payments_Git' },
+            },
+          ],
+        };
+      if (mode === 'status-red') selected.status = 'FAILURE';
+      if (mode === 'status-stale')
+        selected.revisions = {
+          revision: [
+            {
+              version: 'b'.repeat(40),
+              'vcs-root-instance': { id: '17', 'vcs-root-id': 'Payments_Git' },
+            },
+          ],
+        };
+      if (mode === 'status-unknown') delete selected.revisions;
+      if (mode === 'status-personal') selected.personal = true;
+      if (mode === 'status-newer-unknown') {
+        first.builds.build.unshift({
+          ...selected,
+          id: selected.id + 100,
+          revisions: { revision: [] },
+        });
+        first.builds.count++;
+      }
+      if (mode === 'status-running' || mode === 'status-queued')
+        selected.state = mode.slice('status-'.length);
+      if (mode === 'status-queued') delete selected.status;
+      if (mode === 'status-multi-root')
+        selected.revisions = {
+          revision: [
+            ...selected.revisions.revision,
+            {
+              version: 'c'.repeat(40),
+              'vcs-root-instance': { id: '18', 'vcs-root-id': 'Other_Git' },
+            },
+          ],
+        };
+      if (mode === 'status-missing-job') {
+        value.buildType.pop();
+        value.count--;
+      }
+      if (mode === 'status-foreign') {
+        first.projectId = 'Forbidden';
+        selected.buildType.projectId = 'Forbidden';
+      }
+      if (mode === 'status-wrong-run') selected.buildTypeId = 'Foreign_Job';
+      if (mode === 'status-unsafe-continuation')
+        first.builds.nextHref = 'https://attacker.invalid/steal';
+      if (mode === 'status-huge')
+        selected.revisions = {
+          revision: Array.from({ length: 100 }, (_, index) => ({
+            version: 'v'.repeat(256),
+            'vcs-root-instance': { id: String(index + 1), 'vcs-root-id': 'r'.repeat(245) + index },
+          })),
+        };
+    }
+    if (path === '/app/rest/builds/id:482193' && mode.startsWith('watch-')) {
+      watchReads++;
+      if (watchReads > 1 && mode === 'watch-vanish') return error(404, 'Execution removed');
+      if (watchReads > 1 && mode === 'watch-inaccessible')
+        return error(403, 'Execution no longer visible');
+      value = { ...run, state: 'running', status: 'SUCCESS' };
+      if (mode === 'watch-missing-revisions') delete value.revisions;
+      if (mode === 'watch-success' || (mode === 'watch-transition' && watchReads > 1))
+        value.state = 'finished';
+      if (mode === 'watch-queued') {
+        value.state = 'queued';
+        delete value.status;
+      }
+    }
     if (path === '/app/rest/buildTypes' && mode.startsWith('jobs-')) {
       if (mode === 'jobs-denied') return error(403, 'Job page unavailable');
       if (mode === 'jobs-unsupported') return error(404, 'Job collection unavailable');
@@ -691,6 +798,10 @@ export async function mockServer() {
     requests,
     setMode(value) {
       mode = value;
+      watchReads = 0;
+    },
+    setStatusRevision(value) {
+      statusRevision = value;
     },
     close: () =>
       new Promise((resolve) => {

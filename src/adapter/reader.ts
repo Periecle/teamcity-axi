@@ -23,6 +23,8 @@ import { isUtf8 } from 'node:buffer';
 
 import { jobFields, jobLimitations, jobRequest, normalizeJob, normalizeJobPage } from './jobs.js';
 import { queueRequest, normalizeQueuePage } from './queue.js';
+import { normalizeStatus, statusRequest } from './status.js';
+import type { JobSnapshot, StatusQuery } from '../domain/teamcity.js';
 import {
   agentFields,
   agentFilters,
@@ -338,6 +340,12 @@ export class NativeTeamCityReader implements TeamCityReader {
     }
 
     return result;
+  }
+
+  async readStatus(query: StatusQuery, budget: Budget): Promise<ReadResult<JobSnapshot[]>> {
+    return this.metadata('status.snapshot', statusRequest(query), budget, (body) =>
+      normalizeStatus(body, query, this.serverUrl, this.secrets),
+    );
   }
 
   async listQueue(query: QueueQuery, budget: Budget): Promise<ReadResult<EvidencePage<QueueItem>>> {

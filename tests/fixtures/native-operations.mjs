@@ -1,3 +1,5 @@
+import { statusRequest } from '../../dist/adapter/status.js';
+
 const api = (path) => [
   'api',
   path,
@@ -23,6 +25,7 @@ export const operations = [
       '/app/rest/builds?locator=buildType:(id:Payments_Build),count:20,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,state,status,branchName)',
     ),
   ],
+  ['status-snapshot', api(statusRequest({ jobIds: ['Payments_Build'], branch: 'feature/refund' }))],
   [
     'problems',
     api(

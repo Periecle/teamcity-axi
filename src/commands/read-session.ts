@@ -7,7 +7,7 @@ import { knownSecrets } from '../output/sanitize.js';
 export async function openReadSession(
   context: ExecutionContext,
   signal: AbortSignal,
-  profile: 'simple' | 'graph' = 'simple',
+  profile: 'simple' | 'graph' | 'status' | 'watch' = 'simple',
 ) {
   const binary = await resolveBinary(
     context.config?.binaryPath,
@@ -16,7 +16,7 @@ export async function openReadSession(
   );
   const server = context.config?.servers[context.server!];
   const maxChildProcesses = Math.min(
-    profile === 'graph' ? 24 : 8,
+    profile === 'watch' ? 32 : profile === 'graph' ? 24 : profile === 'status' ? 6 : 8,
     context.config?.limits?.maxChildProcesses ?? 256,
   );
   const transport = await ProcessTransport.create({
@@ -27,9 +27,12 @@ export async function openReadSession(
     ...(server?.forwardHeaderEnvNames ? { headerNames: server.forwardHeaderEnvNames } : {}),
     limits: {
       deadline: context.deadline,
-      concurrency: Math.min(3, context.config?.limits?.concurrency ?? 3),
+      concurrency: Math.min(
+        profile === 'watch' ? 1 : profile === 'status' ? 2 : 3,
+        context.config?.limits?.concurrency ?? 3,
+      ),
       maxChildren: maxChildProcesses,
-      stdoutBytes: 2097152,
+      stdoutBytes: profile === 'status' || profile === 'watch' ? 1048576 : 2097152,
       stderrBytes: 65536,
     },
   });

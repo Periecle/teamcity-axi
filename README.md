@@ -4,13 +4,15 @@ A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), with
 [SPECIFICATION.md](SPECIFICATION.md) as the normative contract.
 
-The development build implements strict arguments, local context,
-help/schema/version, JSON/TOON output, the restricted process transport, and
-exact-ID `run view`, bounded `run list`, independent `run problems` and `run tests`,
-bounded `run log` and `run changes`, wrapper-owned `run tree` and source-accounted `run failure`, scoped `job list`, exact `job view`, scoped `queue list`, safe `agent list`/`agent view`, verified `context show` and scoped `doctor`. Reads use typed
-validation, scope assertions and query-bound cursors. Other remote services remain
-gated pending adapter implementation. See
-[implementation status](docs/STATUS.md) and [compatibility](docs/compatibility.json).
+Observe the current checkout with `status`, investigate an exact execution with
+`run failure`, or wait for its outcome with `run watch`. The read-only command
+surface also includes exact run/job/agent views, bounded run/job/queue/agent
+inventories, independent problems/tests/logs/changes/dependency reads, and local
+or verified context diagnostics. JSON and TOON carry the same logical values;
+typed validation, scope assertions, and query-bound cursors preserve identity.
+See the [generated command reference](docs/commands.md),
+[portable agent skill](skills/teamcity-axi/SKILL.md),
+[implementation status](docs/STATUS.md), and [compatibility](docs/compatibility.json).
 
 Requires Node 24 and a separately installed official `teamcity` CLI. The tested
 native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
@@ -18,6 +20,8 @@ recorded but have not been executed. Focused live contracts and exact run view
 have been tested on TeamCity 2026.2 build 238924 with a restricted test identity;
 the full read-only product is not yet certified.
 The wrapper never downloads native tools during installation.
+Files in `examples/` use synthetic placeholder identities; live test evidence is
+recorded separately in the sanitized fixture corpus.
 
 ```sh
 npm ci --ignore-scripts
@@ -26,6 +30,8 @@ node bin/teamcity-axi.mjs --version
 node bin/teamcity-axi.mjs --help
 node bin/teamcity-axi.mjs context show --json
 node bin/teamcity-axi.mjs schema run.view --json
+node bin/teamcity-axi.mjs status --job Payments_Build --server work --vcs-root Payments_Git --check --json
+node bin/teamcity-axi.mjs run watch 482193 --server work --check --json
 node bin/teamcity-axi.mjs run view 482193 --server work --json
 node bin/teamcity-axi.mjs run tests 482193 --server work --failed --json
 node bin/teamcity-axi.mjs run log 482193 --server work --tail 80 --json
@@ -37,6 +43,7 @@ node bin/teamcity-axi.mjs agent view 7 --project Payments --server work --json
 npm test
 npm run format
 npm run format:check
+npm run docs:generate
 ```
 
 Code uses pinned ESLint Stylistic and Prettier. ESLint adds blank lines between
@@ -45,6 +52,25 @@ guards) and returns. Prettier applies
 two-space indentation, semicolons, single quotes, trailing commas and LF endings. `npm test` checks formatting before compiling
 and running tests, so the same rules are enforced in CI. Captured wire artifacts
 are excluded from automatic rewriting.
+
+`status` reads at most five required tracked jobs and displays one relevant run
+per job. Each bounded candidate window includes queued, running, and finished
+executions. The newest exact selected-root candidate determines the job's check;
+an older green cannot replace a newer exact queued, running, or red run. Newer
+unknown revision coverage remains unverified. `--check` requires every tracked
+job to have an exact completed successful non-personal run, plus a verified clean
+Git HEAD. Dirty worktrees, missing jobs/roots, omitted required jobs, and other
+unverified roots cannot pass. Ordinary red observation exits zero. Status history
+and activity counts describe only the returned candidates, not a server-wide
+inventory. With no binding, the no-argument home view stays local and unconfigured.
+
+`run watch ID` polls one frozen execution and emits one final document. Its
+default deadline is 120 seconds, interval ten seconds (minimum five), child
+ceiling 32, concurrency one, and stdout budget 8 KiB. A deadline retains the last
+verified queued/running observation as partial. Vanished and inaccessible runs
+remain distinct; stopping the watcher never cancels TeamCity work. `--check`
+requires a terminal success for that execution. Use status to assert the local
+checkout; use `--require-complete` to reject incomplete observations.
 
 Run list defaults to finished runs in an emitted seven-day finish-time window.
 It keeps page totals unknown and marks missing continuation as partial when

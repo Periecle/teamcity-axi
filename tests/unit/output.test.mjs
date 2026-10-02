@@ -6,6 +6,8 @@ import { response } from '../../dist/domain/response.js';
 import { render } from '../../dist/output/render.js';
 import { sanitizeText, knownSecrets, secretMatchers } from '../../dist/output/sanitize.js';
 import { validateResponse, validateConfig } from '../../dist/output/schema.js';
+// Serializer-only fixtures use the local schema command's generic envelope;
+// domain payload examples separately validate their actual command contracts.
 test('explicitly forwarded header values are redacted longest first regardless of environment name', () => {
   const secrets = knownSecrets(
     { APP_TOKEN: 'short-canary', TEAMCITY_HEADER_X_CUSTOM: 'prefix-short-canary-suffix' },
@@ -14,7 +16,7 @@ test('explicitly forwarded header values are redacted longest first regardless o
   );
   assert.equal(sanitizeText('prefix-short-canary-suffix', secrets), '[REDACTED]');
   assert.equal(
-    render(response('status', { branch: 'prefix-short-canary-suffix' }), 'json', 16384, secrets)
+    render(response('schema', { branch: 'prefix-short-canary-suffix' }), 'json', 16384, secrets)
       .response.data.branch,
     '[REDACTED]',
   );
@@ -32,7 +34,7 @@ test('all supplied response examples validate and JSON/TOON preserve logical val
       JSON.parse(render(value, 'json', 262144).document),
     );
   }
-  const value = response('status', {
+  const value = response('schema', {
     strings: ['123', '001', 'true', 'null'],
     unicode: 'ą日本語🦊',
     nested: [
@@ -47,7 +49,7 @@ test('all supplied response examples validate and JSON/TOON preserve logical val
 test('trusted safe name patterns redact environment values and untrusted fields', () => {
   const secrets = knownSecrets({ COMPANY_CREDENTIAL: 'pattern-canary' }, ['^COMPANY_CREDENTIAL$']);
   assert.deepEqual(secrets, ['pattern-canary']);
-  const value = response('status', {
+  const value = response('schema', {
     branch: 'pattern-canary',
     message: 'protected-name-canary',
     COMPANY_CREDENTIAL: 'unknown-private-value',
@@ -63,7 +65,7 @@ test('trusted safe name patterns redact environment values and untrusted fields'
   assert.throws(() => secretMatchers(['.*.*.*']));
 });
 test('known secrets and terminal controls are removed before rendering in both formats', () => {
-  const value = response('status', {
+  const value = response('schema', {
     text: '\x1b[31mcanary-secret\x1b[0m\u202eevil',
     password: 'unknown',
     message: 'Bearer abc123',
