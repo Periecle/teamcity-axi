@@ -17,12 +17,15 @@ export async function main(args: readonly string[]): Promise<void> {
   let safeContext: Record<string, unknown> | undefined;
   let additionalSecretNames: readonly string[] = [];
   let terminationCode = 0;
+  let debugRequested = false;
+  let effectiveLimits: Response['meta']['limits'];
 
   try {
     const parsed = parse(args);
 
     format = parsed.format;
     command = parsed.descriptor.name;
+    debugRequested = !!parsed.flags.debug;
     maxBytes = Number(
       parsed.flags['max-bytes'] ??
         (command === 'status'
@@ -97,6 +100,9 @@ export async function main(args: readonly string[]): Promise<void> {
         ? (context.config?.servers[context.server]?.forwardHeaderEnvNames ?? [])
         : [];
       maxBytes = Math.min(maxBytes, context.config?.limits?.maxBytes ?? 262144);
+      const { readLimits, readProfile, publicLimits } = await import('../transport/limits.js');
+
+      effectiveLimits = publicLimits(readLimits(context, readProfile(command)), maxBytes);
       const scope = publicContext(context);
 
       if (context.server)
@@ -235,11 +241,6 @@ export async function main(args: readonly string[]): Promise<void> {
 
         if (parsed.flags['require-complete'] && !output.meta.complete)
           process.exitCode = terminationCode || 1;
-
-        if (parsed.flags.debug)
-          process.stderr.write(
-            JSON.stringify({ command, childProcesses: output.meta.counts?.childProcesses }) + '\n',
-          );
       } else {
         if (!context.server)
           throw new DomainError('CONTEXT_REQUIRED', 'Select a registered trusted server', 2);
@@ -268,6 +269,15 @@ export async function main(args: readonly string[]): Promise<void> {
     process.exitCode = terminationCode || domain.exitCode;
   }
 
+  const limitHit =
+    output.meta.truncated ||
+    [output.error?.code, ...(output.meta.limitations?.map((note) => note.code) ?? [])].some(
+      (code) => code !== undefined && /LIMIT|BUDGET|DEADLINE/.test(code),
+    );
+
+  if (effectiveLimits && (debugRequested || limitHit))
+    output.meta.limits = { ...output.meta.limits, ...effectiveLimits };
+
   try {
     const { render } = await import('../output/render.js');
     const { knownSecrets } = await import('../output/sanitize.js');
@@ -277,9 +287,19 @@ export async function main(args: readonly string[]): Promise<void> {
       maxBytes,
       knownSecrets(process.env, patterns, additionalSecretNames),
       patterns,
+      effectiveLimits,
     );
 
     if (result.response.status === 'error' && !process.exitCode) process.exitCode = 1;
+
+    if (debugRequested)
+      process.stderr.write(
+        JSON.stringify({
+          command,
+          childProcesses: result.response.meta.counts?.childProcesses,
+          limits: result.response.meta.limits ?? effectiveLimits ?? { maxBytes },
+        }) + '\n',
+      );
 
     process.stdout.write(result.document);
   } catch {

@@ -15,12 +15,12 @@ scrubbed canaries/paths.
 
 | Workflow                   | Evidence checks passed | Median output tokens | Median wall time | Median native processes | Calls exposing canary |
 | -------------------------- | ---------------------- | -------------------: | ---------------: | ----------------------: | --------------------: |
-| wrapper-toon               | 24/24                  |                 2994 |         306.4 ms |                     6.5 |                     0 |
-| wrapper-json               | 24/24                  |                 2694 |         312.7 ms |                     6.5 |                     0 |
-| native-selected-json       | 21/24                  |               1007.5 |          67.5 ms |                     5.5 |                     6 |
-| native-failure-diagnostics | 0/24                   |                  238 |          17.7 ms |                       1 |                     3 |
+| wrapper-toon               | 24/24                  |                 3023 |         303.4 ms |                     6.5 |                     0 |
+| wrapper-json               | 24/24                  |                 2717 |         305.1 ms |                     6.5 |                     0 |
+| native-selected-json       | 21/24                  |               1007.5 |          69.0 ms |                     5.5 |                     6 |
+| native-failure-diagnostics | 0/24                   |                  238 |          17.6 ms |                       1 |                     3 |
 
-Version startup added a median 4.9 ms over bare Node in nine paired samples; the probes made zero HTTP requests.
+Version startup added a median 6.2 ms over bare Node in nine paired samples; the probes made zero HTTP requests.
 
 The wrapper retained every required task fact, remained within its configured
 24 KiB response limit, and exposed no secret canary. Native selected-field JSON

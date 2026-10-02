@@ -168,3 +168,8 @@ TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity npm run test:real-cli
 This suite requires the verified release binary and fails if it is absent or
 mismatched. It never silently skips. Read [security](docs/security.md),
 [fixture provenance](tests/fixtures/README.md) and [sources](SOURCES.md).
+
+`--debug` writes one JSON diagnostic to stderr with actual child, concurrency,
+capture, output and deadline limits. Limit-hit responses carry the same numeric
+ceilings, including output reductions that happen during rendering. Normal
+responses stay unchanged.

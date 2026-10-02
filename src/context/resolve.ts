@@ -141,7 +141,10 @@ async function git(
   };
 
   if (Date.now() >= deadline)
-    throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+    throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true, {
+      limit: 'deadline',
+      ceiling: deadline,
+    });
 
   try {
     return (
@@ -155,7 +158,10 @@ async function git(
     ).stdout.trim();
   } catch {
     if (Date.now() >= deadline)
-      throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+      throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true, {
+        limit: 'deadline',
+        ceiling: deadline,
+      });
 
     return undefined;
   }
@@ -290,7 +296,10 @@ export async function resolveContext(
     const remaining = deadline - Date.now();
 
     if (remaining <= 0)
-      throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+      throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true, {
+        limit: 'deadline',
+        ceiling: deadline,
+      });
 
     let timer: NodeJS.Timeout | undefined;
 
@@ -300,7 +309,12 @@ export async function resolveContext(
         new Promise<never>((_, reject) => {
           timer = setTimeout(
             () =>
-              reject(new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true)),
+              reject(
+                new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true, {
+                  limit: 'deadline',
+                  ceiling: deadline,
+                }),
+              ),
             remaining,
           );
         }),
@@ -555,7 +569,10 @@ export async function resolveContext(
           : [];
 
   if (Date.now() >= deadline)
-    throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+    throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true, {
+      limit: 'deadline',
+      ceiling: deadline,
+    });
 
   return freeze({
     deadline,

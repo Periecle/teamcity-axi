@@ -169,7 +169,9 @@ test('shared child launch and concurrency bounds govern overlapping reads', asyn
     assert.equal(results.filter((r) => r.status === 'fulfilled').length, 3);
     assert.equal(f.transport.childProcesses, 3);
     assert.ok(Date.now() - start >= 300);
-    assert.equal(results.find((r) => r.status === 'rejected').reason.code, 'INPUT_LIMIT_EXCEEDED');
+    const error = results.find((r) => r.status === 'rejected').reason;
+    assert.equal(error.code, 'INPUT_LIMIT_EXCEEDED');
+    assert.deepEqual(error.details, { limit: 'maxChildProcesses', ceiling: 3, observed: 3 });
   } finally {
     await f.dispose();
   }
@@ -217,7 +219,11 @@ test('oversized stdout and stderr are rejected, nonzero status remains distinct 
     for (const mode of ['huge', 'huge-stderr'])
       await assert.rejects(
         f.transport.execute({ kind: 'api', path: `/app/rest/builds?fields=${mode}` }),
-        (e) => e.code === 'INPUT_LIMIT_EXCEEDED',
+        (e) =>
+          e.code === 'INPUT_LIMIT_EXCEEDED' &&
+          e.details.limit === (mode === 'huge' ? 'stdoutCaptureBytes' : 'stderrCaptureBytes') &&
+          e.details.ceiling === (mode === 'huge' ? 2097152 : 65536) &&
+          e.details.observed > e.details.ceiling,
       );
     const result = await f.transport.execute({
       kind: 'api',
@@ -246,7 +252,10 @@ test('deadline cleans up a process group including a descendant ignoring SIGTERM
   try {
     await assert.rejects(
       f.transport.execute({ kind: 'api', path: '/app/rest/builds?fields=grandchild' }),
-      (e) => e.code === 'DEADLINE_EXCEEDED',
+      (e) =>
+        e.code === 'DEADLINE_EXCEEDED' &&
+        e.details.limit === 'deadline' &&
+        e.details.observed >= e.details.ceiling,
     );
     const pid = Number(await readFile(pidFile, 'utf8'));
     // An exited Linux descendant can briefly remain an init-owned zombie; it cannot run.

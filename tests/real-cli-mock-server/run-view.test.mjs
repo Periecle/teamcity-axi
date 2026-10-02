@@ -156,6 +156,10 @@ test('preview expansion is bounded and next actions parse; SIGINT/deadline remai
     assert.equal(full.code, 1);
     assert.ok(Buffer.byteLength(full.stdout) <= 2048);
     assert.equal(full.value.context.server, 'work');
+    assert.equal(full.value.error.details.ceiling, 2048);
+    assert.equal(full.value.meta.limits.maxBytes, 2048);
+    assert.equal(full.value.meta.limits.maxChildProcesses, 8);
+    assert.equal(full.value.meta.limits.stdoutCaptureBytes, 2097152);
     f.server.setMode('hang');
     const timeout = await f.call(['--timeout', '200ms', '--json']);
     assert.equal(timeout.code, 1);
@@ -298,6 +302,68 @@ test('a full unknown-outcome page retains all rows within the public diagnostic 
           note.message.includes('100 distinct executions affected'),
         ),
       );
+    }
+  } finally {
+    await f.close();
+  }
+});
+
+test('debug and limit-hit responses expose actual tighter ceilings without credentials in both serializers', async () => {
+  const f = await fixture();
+  try {
+    f.config.limits = { maxBytes: 4096, maxChildProcesses: 4, concurrency: 1 };
+    const configPath = join(f.dir, 'teamcity-axi', 'config.json');
+    await writeFile(configPath, JSON.stringify(f.config), { mode: 0o600 });
+    for (const flags of [['--json'], []]) {
+      const result = await f.call([
+        ...flags,
+        '--debug',
+        '--max-bytes',
+        '32768',
+        '--timeout',
+        '1000ms',
+      ]);
+      assert.equal(result.code, 0);
+      validateResponse(result.value);
+      const debug = JSON.parse(result.stderr);
+      const limits = result.value.meta.limits;
+      assert.deepEqual(debug.limits, limits);
+      assert.equal(debug.command, 'run.view');
+      assert.equal(debug.childProcesses, 2);
+      assert.equal(limits.maxBytes, 4096);
+      assert.equal(limits.maxChildProcesses, 4);
+      assert.equal(limits.concurrency, 1);
+      assert.equal(limits.stdoutCaptureBytes, 2097152);
+      assert.equal(limits.stderrCaptureBytes, 65536);
+      assert.ok(limits.deadline >= Date.now() && limits.deadline <= Date.now() + 1000);
+      assert.ok(!result.stderr.includes('fixture-only-token'));
+      assert.ok(!result.stderr.includes(longCanary));
+      f.config.limits.maxChildProcesses = 1;
+      await writeFile(configPath, JSON.stringify(f.config), { mode: 0o600 });
+      const blocked = await f.call([...flags, '--debug']);
+      assert.equal(blocked.code, 1);
+      validateResponse(blocked.value);
+      assert.equal(blocked.value.error.code, 'INPUT_LIMIT_EXCEEDED');
+      assert.deepEqual(blocked.value.error.details, {
+        limit: 'maxChildProcesses',
+        ceiling: 1,
+        observed: 1,
+      });
+      assert.equal(blocked.value.meta.limits.maxChildProcesses, 1);
+      assert.deepEqual(JSON.parse(blocked.stderr).limits, blocked.value.meta.limits);
+      f.config.limits.maxChildProcesses = 4;
+      await writeFile(configPath, JSON.stringify(f.config), { mode: 0o600 });
+      f.server.setMode('huge');
+      const capture = await f.call(flags);
+      assert.equal(capture.code, 1);
+      validateResponse(capture.value);
+      assert.equal(capture.stderr, '');
+      assert.equal(capture.value.error.details.limit, 'stdoutCaptureBytes');
+      assert.equal(capture.value.error.details.ceiling, 2097152);
+      assert.ok(capture.value.error.details.observed > 2097152);
+      assert.equal(capture.value.meta.limits.stdoutCaptureBytes, 2097152);
+      assert.ok(Buffer.byteLength(capture.stdout) <= 4096);
+      f.server.setMode('ok');
     }
   } finally {
     await f.close();

@@ -6,6 +6,7 @@ import type { Job, TeamCityReader } from '../domain/teamcity.js';
 import { publicContext } from '../context/resolve.js';
 import type { ExecutionContext } from '../context/resolve.js';
 import { ProjectPolicy } from '../context/project-policy.js';
+import { readLimits } from '../transport/limits.js';
 import { ProcessTransport, resolveBinary } from '../transport/process.js';
 import { NativeTeamCityReader } from '../adapter/reader.js';
 import { knownSecrets } from '../output/sanitize.js';
@@ -128,13 +129,7 @@ export async function diagnose(
     context.config?.allowWorkspaceBinary,
   );
   const server = context.server ? context.config?.servers[context.server] : undefined;
-  const limits = {
-    deadline: context.deadline,
-    concurrency: Math.min(3, context.config?.limits?.concurrency ?? 3),
-    maxChildren: Math.min(8, context.config?.limits?.maxChildProcesses ?? 8),
-    stdoutBytes: 2097152,
-    stderrBytes: 65536,
-  };
+  const limits = readLimits(context);
   const transport = await ProcessTransport.create({
     binary,
     serverUrl: context.serverUrl ?? 'https://offline.invalid',

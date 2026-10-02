@@ -20,6 +20,7 @@ export function render(
   maxBytes: number,
   secrets: readonly string[] = [],
   patterns: readonly string[] = [],
+  effectiveLimits?: Response['meta']['limits'],
 ): Rendered {
   const keys = new Set([
     'schemaVersion',
@@ -65,6 +66,11 @@ export function render(
     'source',
     'limit',
     'observed',
+    'ceiling',
+    'concurrency',
+    'deadline',
+    'stdoutCaptureBytes',
+    'stderrCaptureBytes',
   ]);
   let value = sanitize(
     structuredClone(input),
@@ -115,6 +121,8 @@ export function render(
   let document = serialize(value, format);
 
   if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
+
+  if (effectiveLimits) value.meta.limits = { ...value.meta.limits, ...effectiveLimits, maxBytes };
 
   delete value.next;
   document = serialize(value, format);
@@ -168,11 +176,14 @@ export function render(
       message:
         'Required output exceeds the byte budget. Narrow the query or increase --max-bytes within the configured ceiling.',
       retryable: false,
+      details: { limit: 'maxBytes', ceiling: maxBytes, observed: Buffer.byteLength(document) },
     },
     meta: {
       observedAt: input.meta.observedAt,
       complete: false,
       truncated: true,
+      ...(input.meta.counts ? { counts: input.meta.counts } : {}),
+      ...(value.meta.limits ? { limits: { ...value.meta.limits, maxBytes } } : {}),
       limitations: [
         {
           code: 'OUTPUT_LIMIT_EXCEEDED',

@@ -107,6 +107,9 @@ test('oversized evidence produces one valid bounded error instead of lying about
     assert.equal(result.response.status, 'error');
     assert.equal(result.response.meta.complete, false);
     assert.equal(result.response.meta.truncated, true);
+    assert.equal(result.response.error.details.limit, 'maxBytes');
+    assert.equal(result.response.error.details.ceiling, 2048);
+    assert.ok(result.response.error.details.observed > 2048);
     validateResponse(result.response);
   }
   const scoped = response('run.view', {
@@ -174,5 +177,60 @@ test('large pages and graphs retain unknown outcomes without exceeding the diagn
       );
       assert.ok(output.meta.limitations.some((note) => note.code === 'SCAN_COVERAGE_UNKNOWN'));
     }
+  }
+});
+
+test('renderer introduces actual limit metadata only when byte reduction begins, including removed hints', () => {
+  const value = response('run.view', {
+    run: { id: '1', jobId: 'Build', state: 'finished', result: 'failure' },
+  });
+  const limits = {
+    maxBytes: 4096,
+    maxChildProcesses: 4,
+    concurrency: 1,
+    deadline: Date.now() + 10000,
+    stdoutCaptureBytes: 2097152,
+    stderrCaptureBytes: 65536,
+  };
+  for (const format of ['json', 'toon']) {
+    const clean = render(value, format, 2048, [], [], limits);
+    assert.equal(clean.response.meta.limits, undefined);
+    assert.deepEqual(clean.response, value);
+    const hints = {
+      ...value,
+      next: [
+        {
+          reason: 'Optional read',
+          argv: [
+            'teamcity-axi',
+            'run',
+            'list',
+            '--job',
+            'Build',
+            '--literal-branch',
+            'x'.repeat(3000),
+          ],
+        },
+      ],
+    };
+    const reduced = render(hints, format, 2048, [], [], limits);
+    assert.equal(reduced.response.status, 'ok');
+    assert.equal(reduced.response.next, undefined);
+    assert.deepEqual(reduced.response.meta.limits, { ...limits, maxBytes: 2048 });
+    assert.ok(Buffer.byteLength(reduced.document) <= 2048);
+    const oversized = response('run.view', {
+      run: {
+        id: '1',
+        jobId: 'Build',
+        state: 'finished',
+        result: 'failure',
+        statusText: 'x'.repeat(100000),
+      },
+    });
+    const error = render(oversized, format, 2048, [], [], limits);
+    assert.equal(error.response.status, 'error');
+    assert.deepEqual(error.response.meta.limits, { ...limits, maxBytes: 2048 });
+    assert.equal(error.response.error.details.ceiling, 2048);
+    assert.ok(Buffer.byteLength(error.document) <= 2048);
   }
 });

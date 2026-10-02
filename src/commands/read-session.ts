@@ -2,6 +2,7 @@ import { DomainError } from '../domain/errors.js';
 import type { ExecutionContext } from '../context/resolve.js';
 import { ProcessTransport, resolveBinary } from '../transport/process.js';
 import { NativeTeamCityReader } from '../adapter/reader.js';
+import { readLimits } from '../transport/limits.js';
 import { knownSecrets } from '../output/sanitize.js';
 
 export async function openReadSession(
@@ -15,26 +16,15 @@ export async function openReadSession(
     context.config?.allowWorkspaceBinary,
   );
   const server = context.config?.servers[context.server!];
-  const maxChildProcesses = Math.min(
-    profile === 'watch' ? 32 : profile === 'graph' ? 24 : profile === 'status' ? 6 : 8,
-    context.config?.limits?.maxChildProcesses ?? 256,
-  );
+  const limits = readLimits(context, profile);
+  const maxChildProcesses = limits.maxChildren;
   const transport = await ProcessTransport.create({
     binary,
     serverUrl: context.serverUrl!,
     env: process.env,
     signal,
     ...(server?.forwardHeaderEnvNames ? { headerNames: server.forwardHeaderEnvNames } : {}),
-    limits: {
-      deadline: context.deadline,
-      concurrency: Math.min(
-        profile === 'watch' ? 1 : profile === 'status' ? 2 : 3,
-        context.config?.limits?.concurrency ?? 3,
-      ),
-      maxChildren: maxChildProcesses,
-      stdoutBytes: profile === 'status' || profile === 'watch' ? 1048576 : 2097152,
-      stderrBytes: 65536,
-    },
+    limits,
   });
 
   try {

@@ -166,6 +166,20 @@
             "concurrency": {
               "type": "integer",
               "minimum": 0
+            },
+            "deadline": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "stdoutCaptureBytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2097152
+            },
+            "stderrCaptureBytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65536
             }
           },
           "required": [],

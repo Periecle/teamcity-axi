@@ -6,6 +6,7 @@ import type { Response } from '../domain/response.js';
 import type { RunQuery } from '../domain/teamcity.js';
 import type { Parsed } from '../cli/parser.js';
 import type { ExecutionContext } from '../context/resolve.js';
+import { readLimits } from '../transport/limits.js';
 import { ProcessTransport, resolveBinary } from '../transport/process.js';
 import { NativeTeamCityReader } from '../adapter/reader.js';
 import { decodeCursor, assertCursor, encodeCursor } from '../adapter/cursor.js';
@@ -81,13 +82,7 @@ export async function listRuns(
     env: process.env,
     signal,
     ...(server?.forwardHeaderEnvNames ? { headerNames: server.forwardHeaderEnvNames } : {}),
-    limits: {
-      deadline: context.deadline,
-      concurrency: Math.min(3, context.config?.limits?.concurrency ?? 3),
-      maxChildren: Math.min(8, context.config?.limits?.maxChildProcesses ?? 8),
-      stdoutBytes: 2097152,
-      stderrBytes: 65536,
-    },
+    limits: readLimits(context),
   });
 
   try {

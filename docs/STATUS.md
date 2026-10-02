@@ -25,14 +25,14 @@ separate deferred scopes. They are not silently folded into the read-only produc
 
 Current full local checks pass on Node 24.14.0 / Linux x64:
 
-- 131 deterministic unit and executable tests, including formatting and generated
+- 133 deterministic unit and executable tests, including formatting and generated
   help/examples for all eighteen registry descriptors.
-- 55 released-native CLI/mock-server tests, including the evaluation corpus.
+- 56 released-native CLI/mock-server tests, including the evaluation corpus.
 - 18 actual restricted-server tests on TeamCity 2026.2, build 238924.
 - No tests skipped. TypeScript compilation, diff validation, and portable skill
   validation pass. Package inspection includes status/watch services and schemas,
   the skill, and generated reference; excludes test/setup scripts and credentials.
-  The production-only installed package passes sixteen smoke checks, including exact scoped zero, precise fractional windows, normalized unknown filtering, and explicit
+  The production-only installed package passes eighteen smoke checks, including exact scoped zero, precise fractional windows, normalized unknown filtering, and explicit
   canceled, failed-to-start, and composite results through the pinned native CLI.
 
 Independent evidence/security review found no remaining material run-list or status/watch
@@ -41,10 +41,10 @@ retained source limitations, observed execution context, and explicit outcome
 classification. A full unknown-outcome page retains all rows after repeated
 diagnostics are grouped before schema validation. LSP returned cached
 cross-file types or timed out on some files; current TypeScript compilation is
-the authoritative semantic fallback. Full release certification is still separate. The [scenario audit](acceptance.md) maps all 32 mandatory behaviors to executable evidence and identifies the remaining effective-limit and model-agent gates.
+the authoritative semantic fallback. Full release certification is still separate. The [scenario audit](acceptance.md) maps all 32 mandatory behaviors to executable evidence and identifies the remaining model-agent gate.
 
-GitHub CI passed both jobs on the precise-list checkpoint `ea11575`
-([run 37039122819](https://github.com/Periecle/teamcity-axi/actions/runs/37039122819)).
+GitHub CI passed both jobs on the exhaustion/worktree checkpoint `d988f19`
+([run 37042146866](https://github.com/Periecle/teamcity-axi/actions/runs/37042146866)).
 The existing workflow runs the generated-documentation drift gate through
 `npm test`; no workflow authorization expansion is needed.
 
@@ -99,7 +99,7 @@ predicate; the adapter preserves exact bounds and declares the coarser reported
 timestamp precision. Cursor overflow retains useful partial rows. See
 [the list decision](decisions/0014-precise-run-list.md).
 
-Close effective-limit diagnostics and the actual model-agent evaluation gate, then
+Close the actual model-agent evaluation gate, then
 perform the requirement-by-requirement release audit. Optional broader live
 fixtures remain separate from the mandatory scenario evidence.
 Prioritize demonstrated identity/completeness/security defects that affect the
@@ -120,3 +120,8 @@ discovery hint; later-page or unverified-candidate totals remain unknown. Unknow
 server builds preserve uncertainty. The [exhaustion decision](decisions/0015-verified-run-exhaustion.md) records actual cap and empty-scope evidence. The linked-worktree
 acceptance check uses shared immutable config and distinct server credentials,
 project/job/root/branch/HEAD in simultaneous JSON and TOON invocations.
+
+Effective-limit diagnostics now report actual command ceilings in `--debug` and
+limit-hit responses, including reductions triggered only during final rendering.
+Numeric error details identify the exhausted ceiling and observed amount without
+argv, environment or credentials. See [the decision](decisions/0016-effective-limits.md).

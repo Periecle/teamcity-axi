@@ -18,7 +18,14 @@ export interface Response {
     truncated: boolean;
     limitations?: Limitation[];
     counts?: { childProcesses: number };
-    limits?: { maxBytes: number; maxChildProcesses: number; concurrency: number };
+    limits?: {
+      maxBytes: number;
+      maxChildProcesses: number;
+      concurrency: number;
+      deadline?: number;
+      stdoutCaptureBytes?: number;
+      stderrCaptureBytes?: number;
+    };
     omitted?: Record<string, number>;
   };
   next?: { reason: string; argv: string[] }[];

@@ -299,12 +299,34 @@ export class ProcessTransport {
     return this.launches;
   }
 
+  private limitError(
+    code: string,
+    message: string,
+    limit: string,
+    ceiling: number,
+    observed?: number,
+    retryable = false,
+  ): DomainError {
+    return new DomainError(code, message, 1, retryable, {
+      limit,
+      ceiling,
+      ...(observed === undefined ? {} : { observed }),
+    });
+  }
+
   private check() {
     if (this.disposed || this.options.signal?.aborted)
       throw new DomainError('INTERRUPTED', 'Invocation interrupted');
 
     if (Date.now() >= this.options.limits.deadline)
-      throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+      throw this.limitError(
+        'DEADLINE_EXCEEDED',
+        'Overall deadline exceeded',
+        'deadline',
+        this.options.limits.deadline,
+        Date.now(),
+        true,
+      );
   }
 
   private async acquire(maxChildProcesses?: number): Promise<void> {
@@ -316,13 +338,22 @@ export class ProcessTransport {
     }
 
     if (maxChildProcesses !== undefined && this.launches >= maxChildProcesses)
-      throw new DomainError(
+      throw this.limitError(
         'CALL_LIMIT_EXCEEDED',
         'Reserved child launch capacity cannot be consumed',
+        'maxChildProcesses',
+        maxChildProcesses,
+        this.launches,
       );
 
     if (this.launches >= this.options.limits.maxChildren)
-      throw new DomainError('INPUT_LIMIT_EXCEEDED', 'Child launch budget exhausted');
+      throw this.limitError(
+        'INPUT_LIMIT_EXCEEDED',
+        'Child launch budget exhausted',
+        'maxChildProcesses',
+        this.options.limits.maxChildren,
+        this.launches,
+      );
 
     this.active++;
     this.launches++;
@@ -379,7 +410,17 @@ export class ProcessTransport {
 
         const onAbort = () => stop(new DomainError('INTERRUPTED', 'Invocation interrupted'));
         const timer = setTimeout(
-          () => stop(new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true)),
+          () =>
+            stop(
+              this.limitError(
+                'DEADLINE_EXCEEDED',
+                'Overall deadline exceeded',
+                'deadline',
+                this.options.limits.deadline,
+                Date.now(),
+                true,
+              ),
+            ),
           Math.max(1, this.options.limits.deadline - Date.now()),
         );
 
@@ -391,7 +432,15 @@ export class ProcessTransport {
           outBytes += chunk.length;
 
           if (outBytes > this.options.limits.stdoutBytes)
-            stop(new DomainError('INPUT_LIMIT_EXCEEDED', 'Child stdout capture limit exceeded'));
+            stop(
+              this.limitError(
+                'INPUT_LIMIT_EXCEEDED',
+                'Child stdout capture limit exceeded',
+                'stdoutCaptureBytes',
+                this.options.limits.stdoutBytes,
+                outBytes,
+              ),
+            );
 
           if (!failure) stdout.push(chunk);
         });
@@ -399,7 +448,15 @@ export class ProcessTransport {
           errBytes += chunk.length;
 
           if (errBytes > this.options.limits.stderrBytes)
-            stop(new DomainError('INPUT_LIMIT_EXCEEDED', 'Child stderr capture limit exceeded'));
+            stop(
+              this.limitError(
+                'INPUT_LIMIT_EXCEEDED',
+                'Child stderr capture limit exceeded',
+                'stderrCaptureBytes',
+                this.options.limits.stderrBytes,
+                errBytes,
+              ),
+            );
 
           if (!failure) stderr.push(chunk);
         });

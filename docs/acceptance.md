@@ -62,9 +62,8 @@ The scripted eight-task benchmark records evidence retention, real process/HTTP
 counts, tokenizer identity, output tokens, latency, canaries, and baseline
 regressions. Its task-success/tool-turn/causal-claim fields remain null. The actual
 model-agent evaluation required by sections 17.1 and 21.10 must still run under
-the [evaluation protocol](../evaluations/README.md). Section 15.3 also requires
-effective limits in debug output and limit-hit responses; the current product
-only exposes them in some successful responses. Both gaps must close before the
+the [evaluation protocol](../evaluations/README.md). Section 15.3 effective-limit diagnostics now pass deterministic and native checks,
+including renderer-only reductions. The model-agent gate must close before the
 final release-wide requirement, package and claims audit.
 
 Additional live hostile branches, multi-root builds, duplicate/muted failures,
