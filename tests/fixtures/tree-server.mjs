@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 
 import { run } from './mock-server.mjs';
+import { selectFields } from './field-projection.mjs';
 
 const rootId = 482193;
 const node = (id) => ({
@@ -14,7 +15,10 @@ const node = (id) => ({
   },
 });
 
-export async function treeServer() {
+export async function treeServer({
+  secretCanary = 'fixture-only-token',
+  respectFields = false,
+} = {}) {
   let mode = 'dag';
   let detailReads = 0;
   const requests = [];
@@ -27,7 +31,13 @@ export async function treeServer() {
 
     const send = (value, status = 200) => {
       res.statusCode = status;
-      res.end(JSON.stringify(value));
+      res.end(
+        JSON.stringify(
+          respectFields && status < 400
+            ? selectFields(value, url.searchParams.get('fields'))
+            : value,
+        ),
+      );
     };
 
     if (req.method !== 'GET') return send({ message: 'Read only' }, 405);
@@ -103,8 +113,7 @@ export async function treeServer() {
           muted,
           ignored: false,
           duration: 25,
-          details:
-            mode === 'secret' ? 'fixture-only-token' + 'x'.repeat(3000) : 'Connection refused',
+          details: mode === 'secret' ? secretCanary + 'x'.repeat(3000) : 'Connection refused',
           test: { id: '517450581327024597' },
         })),
       });

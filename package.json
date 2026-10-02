@@ -20,8 +20,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "format": "eslint src --fix && prettier --write src bin scripts tests schemas examples skills docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
-    "format:check": "eslint src --max-warnings 0 && prettier --check src bin scripts tests schemas examples skills docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
+    "format": "eslint src --fix && prettier --write src bin scripts tests schemas examples skills evaluations docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
+    "format:check": "eslint src --max-warnings 0 && prettier --check src bin scripts tests schemas examples skills evaluations docs/commands.md package.json tsconfig.json .prettierrc.json eslint.config.mjs .github",
     "pretest": "npm run format:check",
     "build": "tsc",
     "test": "npm run build && node scripts/generate-docs.mjs --check && node --test tests/unit/*.test.mjs tests/executable-contract/*.test.mjs",
@@ -31,6 +31,7 @@
     "fixtures:record": "node scripts/record-native.mjs",
     "fixtures:record-live": "node scripts/record-live.mjs",
     "test:live": "npm run build && node --test tests/live-server/*.test.mjs",
+    "evaluate": "npm run build && node scripts/evaluate.mjs",
     "check": "npm test"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "@types/node": "24.19.1",
     "@typescript-eslint/parser": "8.71.0",
     "eslint": "10.11.0",
+    "js-tiktoken": "1.0.21",
     "prettier": "3.9.9",
     "typescript": "6.0.3"
   }

@@ -13,6 +13,8 @@ typed validation, scope assertions, and query-bound cursors preserve identity.
 See the [generated command reference](docs/commands.md),
 [portable agent skill](skills/teamcity-axi/SKILL.md),
 [implementation status](docs/STATUS.md), and [compatibility](docs/compatibility.json).
+The [recorded evaluation](docs/evaluation.md) compares investigation evidence
+against optimized native workflows, including measured costs and limitations.
 
 Requires Node 24 and a separately installed official `teamcity` CLI. The tested
 native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
