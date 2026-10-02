@@ -5,7 +5,7 @@ export const operations = [
   ['run-list', api('/app/rest/builds?locator=buildType:(id:Payments_Build),count:20,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,state,status,branchName)')],
   ['problems', api('/app/rest/problemOccurrences?locator=build:(id:482193),count:20&fields=count,nextHref,problemOccurrence(id,type,identity,details,build(id))')],
   ['tests', api('/app/rest/testOccurrences?locator=build:(id:482193),count:20&fields=count,nextHref,testOccurrence(id,name,status,muted,ignored,details,build(id),test(id))')],
-  ['dependencies', api('/app/rest/builds/id:482193/snapshot-dependencies?locator=count:20&fields=count,nextHref,build(id,buildTypeId,state,status)')],
+  ['dependencies', api('/app/rest/builds?locator=snapshotDependency:(to:(id:482193),recursive:false),defaultFilter:false,count:20,lookupLimit:5000&fields=count,nextHref,build(id,buildTypeId,state,status)')],
   ['changes', api('/app/rest/changes?locator=build:(id:482193),count:10&fields=count,nextHref,change(id,version,comment,vcsRootInstance(vcs-root-id))')],
   ['jobs', api('/app/rest/buildTypes?locator=project:(id:Payments),count:20&fields=count,nextHref,buildType(id,name,projectId,paused)')],
   ['queue', api('/app/rest/buildQueue?locator=buildType:(id:Payments_Build),count:20&fields=count,nextHref,build(id,buildTypeId,state,branchName,waitReason)')],

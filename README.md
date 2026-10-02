@@ -12,7 +12,9 @@ services remain gated pending adapter implementation. See
 
 Requires Node 24 and a separately installed official `teamcity` CLI. The tested
 native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
-recorded but have not been executed. No live server is currently certified.
+recorded but have not been executed. Focused live contracts and exact run view
+have been tested on TeamCity 2026.2 build 238924 with a restricted test identity;
+the full read-only product is not yet certified.
 The wrapper never downloads native tools during installation.
 
 ```sh

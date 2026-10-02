@@ -35,9 +35,9 @@ export async function mockServer() {
     if (mode === 'logs-unsupported' && path === '/app/messages') return error(404,'Capability not found');
     let value;
     if (path === '/app/rest/server') value = wire.server;
-    else if (path.endsWith('/snapshot-dependencies')) value = wire.dependencies;
+    else if (path.endsWith('/snapshot-dependencies')) return error(406,'This subresource does not provide the supported JSON collection');
     else if (path === '/app/rest/builds/id:482193') value = mode==='decorated-secret'?{...run,status:longCanary.slice(0,600)+'\x1b[31m'+longCanary.slice(600),statusText:longCanary.slice(0,600)+'\x1b[31m'+longCanary.slice(600)}:mode==='long-secret'?{...run,status:longCanary,statusText:longCanary}:mode==='missing-revisions'?Object.fromEntries(Object.entries(run).filter(([key])=>key!=='revisions')):mode==='wrong-id'?{...run,id:482100,status:'SUCCESS'}:mode==='invalid-identity'?{...run,id:9007199254740992}:mode==='unknown-enum'?{...run,status:'FUTURE_RESULT',state:'new_lifecycle'}:mode==='huge-text'?{...run,statusText:'🦊'.repeat(100000)}:mode==='huge'?{...run,statusText:'x'.repeat(3000000)}:run;
-    else if (path === '/app/rest/builds') value = wire.builds;
+    else if (path === '/app/rest/builds') value = url.searchParams.get('locator')?.includes('snapshotDependency:')?wire.dependencies:wire.builds;
     else if (path === '/app/rest/problemOccurrences') value = wire.problems;
     else if (path === '/app/rest/testOccurrences') value = wire.tests;
     else if (path === '/app/rest/changes') value = wire.changes;
