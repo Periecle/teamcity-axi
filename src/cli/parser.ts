@@ -15,6 +15,7 @@ const aliases: Record<string, string> = { h: 'help', v: 'version', V: 'version' 
 export function parse(args: readonly string[]): Parsed {
   if (args.length > 100 || args.some((a) => Buffer.byteLength(a) > 4096))
     usage('Arguments exceed the input limit');
+
   const words: string[] = [];
   const flags: Parsed['flags'] = {};
   const known = Object.assign({}, globalFlags, ...registry.map((d) => d.flags));
@@ -36,14 +37,17 @@ export function parse(args: readonly string[]): Parsed {
     const match = /^(?:--([a-z][a-z-]*)(?:=(.*))?|-([hvV]))$/s.exec(arg);
 
     if (!match) usage('Invalid option syntax');
+
     const name = match[1] ?? aliases[match[3]!]!;
     const spec = known[name];
 
     if (!spec) usage('Unknown flag', { validFlags: Object.keys(known) });
+
     if (Object.hasOwn(flags, name)) usage(`Duplicate singleton flag --${name}`);
 
     if (spec.type === 'boolean') {
       if (match[2] !== undefined) usage(`--${name} takes no value`);
+
       flags[name] = true;
       continue;
     }
@@ -56,6 +60,7 @@ export function parse(args: readonly string[]): Parsed {
     if (spec.type === 'string') {
       if (spec.choices && !spec.choices.includes(value))
         usage(`Invalid --${name} value`, { choices: spec.choices });
+
       flags[name] = value;
     } else {
       const m = (spec.type === 'duration' ? /^(\d+)(ms|s|m)$/ : /^(\d+)$/).exec(value);
@@ -64,10 +69,12 @@ export function parse(args: readonly string[]): Parsed {
         usage(
           `Invalid --${name}; expected ${spec.type === 'duration' ? 'duration with ms, s or m suffix' : 'integer'}`,
         );
+
       const n = Number(m[1]) * (m[2] === 's' ? 1000 : m[2] === 'm' ? 60000 : 1);
 
       if (!Number.isSafeInteger(n) || n < spec.min! || n > spec.max!)
         usage(`--${name} is outside its allowed range`, { min: spec.min, max: spec.max });
+
       flags[name] = n;
     }
   }
@@ -79,19 +86,24 @@ export function parse(args: readonly string[]): Parsed {
     const sub = words.shift();
 
     if (!sub) usage(`Missing ${name} subcommand`);
+
     name += `.${sub}`;
   }
 
   const d = descriptor(name);
 
   if (!d) usage('Unknown command', { commands: registry.map((c) => c.name) });
+
   for (const flag of Object.keys(flags))
     if (!Object.hasOwn(flagsFor(d), flag))
       usage(`--${flag} is not valid for ${name}`, { validFlags: Object.keys(flagsFor(d)) });
+
   const isHelp = flags.help === true;
 
   if (words.length > (d.positional ? 1 : 0)) usage('Unexpected positional arguments');
+
   if (d.positional && words.length === 0 && !isHelp) usage(`Missing ${d.positional}`);
+
   const positional = words[0];
 
   if (
@@ -100,9 +112,12 @@ export function parse(args: readonly string[]): Parsed {
     (!/^[1-9]\d*$/.test(positional) || !Number.isSafeInteger(Number(positional)))
   )
     usage('Run ID must be a positive safe integer');
+
   if (positional !== undefined && /[\u0000-\u001f\u007f]/u.test(positional))
     usage('Control characters are not valid identifiers');
+
   if (flags.version) usage('Version must be requested as a standalone invocation');
+
   if (flags.json && flags.format !== undefined && flags.format !== 'json')
     usage('Conflicting --json and --format');
 
@@ -113,26 +128,32 @@ export function parse(args: readonly string[]): Parsed {
 
   exclusive(['branch', 'literal-branch', 'all-branches']);
   exclusive(['failed', 'muted']);
+
   if (flags['include-muted'] && !flags.failed) usage('--include-muted requires --failed');
+
   if (
     flags.test &&
     ['failed', 'muted', 'include-muted', 'limit', 'cursor'].some((n) => flags[n] !== undefined)
   )
     usage('--test cannot be combined with filters or pagination');
+
   if (flags.problem && ['limit', 'cursor'].some((n) => flags[n] !== undefined))
     usage('--problem cannot be combined with pagination');
+
   if (
     name === 'run.log' &&
     flags.failed &&
     (flags.tail !== undefined || flags.contains !== undefined)
   )
     usage('--failed cannot be combined with --tail or --contains');
+
   for (const key of ['since', 'until'])
     if (
       flags[key] !== undefined &&
       !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)$/.test(String(flags[key]))
     )
       usage(`--${key} requires an RFC 3339 timestamp`);
+
   for (const key of ['since', 'until'])
     if (flags[key] !== undefined && !Number.isFinite(Date.parse(String(flags[key]))))
       usage(`Invalid --${key} timestamp`);
@@ -158,6 +179,7 @@ export function parse(args: readonly string[]): Parsed {
 
   if ((flags.since || flags.until) && flags.state !== undefined && flags.state !== 'finished')
     usage('Finish-time filters require finished executions');
+
   if (
     flags.since &&
     flags.until &&

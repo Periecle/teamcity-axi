@@ -60,6 +60,7 @@ export function jobRequest(query: JobQuery) {
     query.scanLimit > 5000
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded job query', 2);
+
   const resource = 'buildTypes';
   const filters = [`project:(id:${literal(projectId)})`];
   const fields = `count,nextHref,buildType(${jobFields})`;
@@ -96,6 +97,7 @@ export function normalizeJobPage(
     dto.count !== dto.buildType.length
   )
     invalid();
+
   const ids = new Set<string>();
   const limitations: Limitation[] = [];
   const items = dto.buildType.map((value) => {
@@ -103,8 +105,11 @@ export function normalizeJobPage(
 
     if (job.projectId !== query.projectId)
       throw new DomainError('CONTEXT_MISMATCH', 'Job page contains another project');
+
     if (ids.has(job.id)) invalid();
+
     ids.add(job.id);
+
     if (job.paused === null && !limitations.some((l) => l.code === 'JOB_PAUSED_UNAVAILABLE'))
       limitations.push(...jobLimitations(job));
 
@@ -116,6 +121,7 @@ export function normalizeJobPage(
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string' || !dto.nextHref) invalid();
+
       position = nextPosition(dto.nextHref, { ...jobRequest(query), ...query, serverUrl });
       hasMore = true;
     } catch {

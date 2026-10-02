@@ -35,12 +35,14 @@ export function packagedSchema(name: string): Record<string, unknown> {
 export function validateResponse(value: Response): void {
   if (!ajv.validate('urn:teamcity-axi:response:1.0', value))
     throw new DomainError('INTERNAL_ERROR', 'Normalized output violated its public contract');
+
   if (
     value.command === 'run.view' &&
     value.status !== 'error' &&
     !ajv.validate('urn:teamcity-axi:run-view:1.0', value.data)
   )
     throw new DomainError('INTERNAL_ERROR', 'Run view violated its payload contract');
+
   if (
     value.command === 'run.list' &&
     value.status !== 'error' &&

@@ -31,6 +31,7 @@ export function relatedRequest(
     query.scanLimit > 5000
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded related-evidence query', 2);
+
   const resource = kind === 'changes' ? 'changes' : 'builds';
   const filters =
     kind === 'changes'
@@ -72,6 +73,7 @@ function continuation(
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string' || !dto.nextHref) invalid();
+
       position = nextPosition(dto.nextHref, { ...request, ...query, serverUrl });
       hasMore = true;
     } catch {
@@ -124,8 +126,11 @@ export function normalizeChangePage(
       id = identity(change.id, true);
 
     if (ids.has(id)) invalid();
+
     ids.add(id);
+
     if (typeof change.comment !== 'string') invalid();
+
     const version = identity(change.version);
 
     if (change.vcsRootInstance === null || change.vcsRootInstance === undefined) {
@@ -170,15 +175,18 @@ export function normalizeChangePage(
           files.count !== entries.length
         )
           invalid();
+
         const names: string[] = [];
 
         for (const value of entries.slice(0, 100)) {
           const file = object(value);
 
           if (typeof file.file !== 'string' || !file.file || file.file.length > 4096) invalid();
+
           const name = sanitizeText(file.file, secrets);
 
           if (Array.from(name).length > 4096) invalid();
+
           names.push(name);
         }
 
@@ -188,6 +196,7 @@ export function normalizeChangePage(
           providerReturned: entries.length,
           omitted: entries.length - names.length,
         };
+
         if (entries.length > 100)
           limitations.push({
             code: 'CHANGE_FILE_LIMIT',
@@ -231,6 +240,7 @@ export function normalizeDependencyPage(
     const normalized = normalizeRun(value, serverUrl, secrets);
 
     if (ids.has(normalized.run.id)) invalid();
+
     ids.add(normalized.run.id);
     limitations.push(
       ...normalized.limitations.map((limitation) => ({
@@ -262,6 +272,7 @@ export function normalizeDependencyCount(value: unknown, runId: string): number 
 
   if (identity(dto.id, true) !== runId)
     throw new DomainError('CONTEXT_MISMATCH', 'Dependency count belongs to another execution');
+
   const count = object(dto['snapshot-dependencies']).count;
 
   if (!Number.isSafeInteger(count) || Number(count) < 0) invalid();

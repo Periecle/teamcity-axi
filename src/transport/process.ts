@@ -134,6 +134,7 @@ export function childEnvironment(
         'AUTH_CONTEXT_MISMATCH',
         'Inherited token is not bound to the frozen trusted server',
       );
+
     env.TEAMCITY_TOKEN = options.env.TEAMCITY_TOKEN;
   }
 
@@ -143,11 +144,13 @@ export function childEnvironment(
       /(?:AUTHORIZATION|HOST|COOKIE|PROXY_AUTHORIZATION|CONNECTION|TRANSFER_ENCODING)/.test(name)
     )
       throw new DomainError('POLICY_DENIED', 'Unsafe custom header environment name');
+
     const value = options.env[name];
 
     if (value !== undefined) {
       if (/[\r\n\u0000]/.test(value))
         throw new DomainError('POLICY_DENIED', 'Invalid custom header value');
+
       env[name] = value;
     }
   }
@@ -198,6 +201,7 @@ function argv(operation: Operation): string[] {
     rawPath.split('/').some((p) => p === '.' || p === '..')
   )
     throw new DomainError('POLICY_DENIED', 'Unsafe adapter path');
+
   let url: URL;
 
   try {
@@ -220,6 +224,7 @@ function argv(operation: Operation): string[] {
       'POLICY_DENIED',
       'Resource or query is outside the read-only adapter surface',
     );
+
   let decoded: string;
 
   try {
@@ -283,6 +288,7 @@ export class ProcessTransport {
       limits.stderrBytes > 65536
     )
       throw new DomainError('INTERNAL_ERROR', 'Invalid process limits');
+
     // Validate the environment before creating invocation-owned filesystem state.
     childEnvironment(options);
 
@@ -296,6 +302,7 @@ export class ProcessTransport {
   private check() {
     if (this.disposed || this.options.signal?.aborted)
       throw new DomainError('INTERRUPTED', 'Invocation interrupted');
+
     if (Date.now() >= this.options.limits.deadline)
       throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
   }
@@ -313,8 +320,10 @@ export class ProcessTransport {
         'CALL_LIMIT_EXCEEDED',
         'Reserved child launch capacity cannot be consumed',
       );
+
     if (this.launches >= this.options.limits.maxChildren)
       throw new DomainError('INPUT_LIMIT_EXCEEDED', 'Child launch budget exhausted');
+
     this.active++;
     this.launches++;
   }
@@ -333,6 +342,7 @@ export class ProcessTransport {
       (!Number.isInteger(maxChildProcesses) || maxChildProcesses < 0 || maxChildProcesses > 256)
     )
       throw new DomainError('INTERNAL_ERROR', 'Invalid reserved launch ceiling');
+
     const args = argv(operation);
 
     await this.acquire(maxChildProcesses);
@@ -348,6 +358,7 @@ export class ProcessTransport {
         });
 
         if (child.pid) this.children.add(child.pid);
+
         const stdout: Buffer[] = [],
           stderr: Buffer[] = [];
         let outBytes = 0,
@@ -357,6 +368,7 @@ export class ProcessTransport {
 
         const stop = (error: DomainError) => {
           if (failure) return;
+
           failure = error;
 
           if (child.pid) {
@@ -372,17 +384,23 @@ export class ProcessTransport {
         );
 
         this.options.signal?.addEventListener('abort', onAbort, { once: true });
+
         if (this.options.signal?.aborted) onAbort();
+
         child.stdout.on('data', (chunk: Buffer) => {
           outBytes += chunk.length;
+
           if (outBytes > this.options.limits.stdoutBytes)
             stop(new DomainError('INPUT_LIMIT_EXCEEDED', 'Child stdout capture limit exceeded'));
+
           if (!failure) stdout.push(chunk);
         });
         child.stderr.on('data', (chunk: Buffer) => {
           errBytes += chunk.length;
+
           if (errBytes > this.options.limits.stderrBytes)
             stop(new DomainError('INPUT_LIMIT_EXCEEDED', 'Child stderr capture limit exceeded'));
+
           if (!failure) stderr.push(chunk);
         });
         child.on('error', () => {
@@ -393,7 +411,9 @@ export class ProcessTransport {
         });
         child.on('close', (exitCode, signal) => {
           clearTimeout(timer);
+
           if (killTimer) clearTimeout(killTimer);
+
           this.options.signal?.removeEventListener('abort', onAbort);
 
           if (child.pid) {
@@ -413,15 +433,20 @@ export class ProcessTransport {
       });
     } finally {
       this.active--;
+
       for (const wake of this.waiting.splice(0)) wake();
     }
   }
 
   async dispose(): Promise<void> {
     this.disposed = true;
+
     for (const pid of this.children) this.kill(pid, 'SIGKILL');
+
     for (const wake of this.waiting.splice(0)) wake();
+
     while (this.active > 0) await new Promise<void>((resolve) => this.waiting.push(resolve));
+
     await rm(this.cwd, { recursive: true, force: true });
   }
 }

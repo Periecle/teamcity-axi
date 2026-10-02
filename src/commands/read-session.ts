@@ -45,6 +45,7 @@ export async function openReadSession(
         'DEPENDENCY_UNSUPPORTED',
         'Native executable has an unsupported version response',
       );
+
     const reader = new NativeTeamCityReader(
       transport,
       context.serverUrl!,

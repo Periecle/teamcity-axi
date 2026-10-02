@@ -16,6 +16,7 @@ export function object(value: unknown): Record<string, unknown> {
 export function identity(value: unknown, numeric = false): string {
   if (typeof value === 'number') {
     if (!Number.isSafeInteger(value) || value <= 0) invalid('Unsafe upstream numeric identity');
+
     value = String(value);
   }
 
@@ -27,6 +28,7 @@ export function identity(value: unknown, numeric = false): string {
     /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(value)
   )
     invalid('Missing or invalid upstream identity');
+
   if (numeric && (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))))
     invalid('Unsafe upstream run identity');
 
@@ -35,6 +37,7 @@ export function identity(value: unknown, numeric = false): string {
 
 function text(value: unknown): string | undefined {
   if (value === undefined) return undefined;
+
   if (typeof value !== 'string') invalid();
 
   return value;
@@ -42,6 +45,7 @@ function text(value: unknown): string | undefined {
 
 function boolean(value: unknown): boolean | null {
   if (value === undefined || value === null) return null;
+
   if (typeof value !== 'boolean') invalid();
 
   return value;
@@ -49,7 +53,9 @@ function boolean(value: unknown): boolean | null {
 
 export function timestamp(value: unknown, field: string, limitations: Limitation[]): string | null {
   if (value === undefined || value === null || value === '') return null;
+
   if (typeof value !== 'string') invalid();
+
   const m = /^(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)([+-])(\d\d)(\d\d)$/.exec(value);
 
   if (m) {
@@ -103,6 +109,7 @@ export function normalizeRun(
   const buildType = dto.buildType === undefined ? undefined : object(dto.buildType);
 
   if (buildType && identity(buildType.id) !== jobId) invalid('Conflicting run job identities');
+
   const projectId = buildType?.projectId === undefined ? null : identity(buildType.projectId);
 
   if (
@@ -110,6 +117,7 @@ export function normalizeRun(
     (typeof dto.status !== 'string' && !(dto.state === 'queued' && dto.status === undefined))
   )
     invalid('Run lifecycle and result metadata are required');
+
   const state = (
     ['queued', 'running', 'finished'].includes(dto.state) ? dto.state : 'unknown'
   ) as Run['state'];
@@ -128,6 +136,7 @@ export function normalizeRun(
       source: 'run',
       runId: id,
     });
+
   if (result === 'unknown')
     limitations.push({
       code: dto.status === undefined ? 'RESULT_UNAVAILABLE' : 'UNKNOWN_RESULT',
@@ -138,6 +147,7 @@ export function normalizeRun(
       source: 'run',
       runId: id,
     });
+
   const revisions: NonNullable<Run['revisions']> = [];
 
   if (dto.revisions !== undefined) {
@@ -162,6 +172,7 @@ export function normalizeRun(
       source: 'run',
       runId: id,
     });
+
   const startedAt = timestamp(dto.startDate, 'start', limitations),
     finishedAt = timestamp(dto.finishDate, 'finish', limitations),
     queuedAt = timestamp(dto.queuedDate, 'queue', limitations);
@@ -220,6 +231,7 @@ export function normalizeRun(
     statusText = text(dto.statusText);
 
   if (number !== undefined) run.number = sanitizeText(number, secrets);
+
   if (statusText !== undefined) run.statusText = sanitizeText(statusText, secrets);
 
   if (startedAt && finishedAt) {

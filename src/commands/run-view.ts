@@ -45,6 +45,7 @@ export async function viewRun(
         'DEPENDENCY_UNSUPPORTED',
         'Native executable has an unsupported version response',
       );
+
     const reader = new NativeTeamCityReader(
       transport,
       context.serverUrl!,
@@ -53,10 +54,13 @@ export async function viewRun(
     const read = await reader.getRun({ id: parsed.positional! }, { deadline: context.deadline });
 
     if (read.state === 'unavailable') throw read.error;
+
     if (parsed.flags.job !== undefined && read.value.jobId !== parsed.flags.job)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to a different job');
+
     if (parsed.flags.project !== undefined && read.provenance.projectId !== parsed.flags.project)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to a different project');
+
     const policy = new ProjectPolicy(reader, server?.allowedProjects, {
       deadline: context.deadline,
     });
@@ -117,6 +121,7 @@ export async function viewRun(
     }
 
     output.data = { run };
+
     if (limitations.length) output.meta.limitations = limitations;
 
     if (
@@ -129,6 +134,7 @@ export async function viewRun(
     }
 
     if (parsed.flags['no-hints']) delete output.next;
+
     if (parsed.flags['require-complete'] && output.status === 'partial') process.exitCode = 1;
 
     return output;

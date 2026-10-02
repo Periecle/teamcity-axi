@@ -72,14 +72,17 @@ async function verifiedScope(
       'INPUT_LIMIT_EXCEEDED',
       'Context verification allows at most five selected jobs',
     );
+
   const jobs: Job[] = [];
 
   for (const id of jobIds) {
     const read = await reader.getJob({ id }, { deadline: context.deadline });
 
     if (read.state === 'unavailable') throw read.error;
+
     if (context.project && read.value.projectId !== context.project)
       throw new DomainError('CONTEXT_MISMATCH', 'Selected job belongs to a different project');
+
     await policy.assert(read.value.projectId);
     jobs.push({ ...read.value, name: Array.from(read.value.name).slice(0, 200).join('') });
   }
@@ -88,6 +91,7 @@ async function verifiedScope(
   const project = projectId ? await policy.project(projectId) : null;
 
   if (projectId) await policy.assert(projectId);
+
   const identity = await reader.getIdentity({ deadline: context.deadline });
 
   if (identity.state === 'unavailable') throw identity.error;
@@ -104,6 +108,7 @@ export async function diagnose(
 
   if (!offline && !context.server)
     throw new DomainError('CONTEXT_REQUIRED', 'Select a registered trusted server', 2);
+
   if (
     !offline &&
     parsed.descriptor.name === 'doctor' &&
@@ -116,6 +121,7 @@ export async function diagnose(
       'Online doctor requires a selected project or job for bounded probes',
       2,
     );
+
   const binary = await resolveBinary(
     context.config?.binaryPath,
     context.repositoryRoot,
@@ -155,6 +161,7 @@ export async function diagnose(
         'DEPENDENCY_UNSUPPORTED',
         'Native executable has an unsupported version response',
       );
+
     const version = matched[1]!;
     const reader = new NativeTeamCityReader(
       transport,
@@ -212,6 +219,7 @@ export async function diagnose(
         const read = await reader.getServer({ deadline: context.deadline });
 
         if (read.state === 'unavailable') throw read.error;
+
         serverInfo = read.value;
         const jobId = scope!.jobs[0]?.id,
           projectId = jobId ? scope!.jobs[0]!.projectId : scope!.project!.id;
@@ -228,6 +236,7 @@ export async function diagnose(
         );
 
         if (page.state === 'unavailable') throw page.error;
+
         set('boundedRunPages', { state: 'available' });
         const sample = page.value.runs[0];
 
@@ -235,14 +244,17 @@ export async function diagnose(
           const detail = await reader.getRun({ id: sample.id }, { deadline: context.deadline });
 
           if (detail.state === 'unavailable') throw detail.error;
+
           if (detail.value.jobId !== sample.jobId || detail.provenance.projectId !== projectId)
             throw new DomainError('CONTEXT_MISMATCH', 'Capability probe changed execution scope');
+
           await policy.assert(detail.provenance.projectId);
           set('structuredRunDetail', { state: 'available', runId: sample.id });
           const log = await reader.getLogTail({ id: sample.id }, 1, { deadline: context.deadline });
 
           if (log.state === 'unavailable') {
             if (log.error.code === 'INTERRUPTED') throw log.error;
+
             set('structuredLogTail', {
               state: 'unavailable',
               errorCode: log.error.code,
@@ -328,12 +340,14 @@ export async function diagnose(
     }
 
     output.meta.counts = { childProcesses: transport.childProcesses };
+
     if (version !== '1.5.0')
       (output.meta.limitations ??= []).push({
         code: 'UNVERIFIED_VERSION',
         message: 'Native version has not been release-certified',
         source: 'context',
       });
+
     if (parsed.flags['require-complete'] && output.status === 'partial') process.exitCode = 1;
 
     return output;

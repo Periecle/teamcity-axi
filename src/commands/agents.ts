@@ -57,6 +57,7 @@ export async function readAgents(
   });
 
   if (cursor && (!query.jobId || query.projectId)) assertCursor(cursor, binding());
+
   if (
     cursor &&
     (cursor.command !== 'agent.list' ||
@@ -64,6 +65,7 @@ export async function readAgents(
       cursor.count !== query.count)
   )
     throw new DomainError('USAGE_ERROR', 'Cursor belongs to another agent query', 2);
+
   const session = await openReadSession(context, signal);
 
   try {
@@ -74,8 +76,10 @@ export async function readAgents(
       const job = await session.reader.getJob({ id: query.jobId }, budget);
 
       if (job.state === 'unavailable') throw job.error;
+
       if (query.projectId && query.projectId !== job.value.projectId)
         throw new DomainError('CONTEXT_MISMATCH', 'Selected agent job belongs to another project');
+
       query.projectId = job.value.projectId;
       await policy.assert(query.projectId);
     } else if (query.projectId) {
@@ -84,11 +88,13 @@ export async function readAgents(
     }
 
     if (cursor) assertCursor(cursor, binding());
+
     const read = list
       ? await session.reader.listAgents(query, budget)
       : await session.reader.getAgent({ ...scope(), id: parsed.positional! }, budget);
 
     if (read.state === 'unavailable') throw read.error;
+
     const limitations = [...read.provenance.limitations];
 
     const note = (code: string, message: string) => {
@@ -106,6 +112,7 @@ export async function readAgents(
         await policy.assert(agent.activeRun.projectId);
       } catch (error) {
         if (error instanceof DomainError && error.code === 'INTERRUPTED') throw error;
+
         agent.activeRun = null;
         agent.activeRunState = 'unavailable';
         note(
@@ -117,6 +124,7 @@ export async function readAgents(
 
     if (session.nativeVersion !== '1.5.0')
       note('UNVERIFIED_VERSION', 'Native version has not been release-certified');
+
     let token: string | null = null;
 
     if (page) {

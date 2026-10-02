@@ -8,6 +8,7 @@ import type { Limitation } from '../domain/response.js';
 
 function logTimestamp(value: unknown, limitations: Limitation[]): string | null {
   if (typeof value !== 'string') invalid();
+
   const matched = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)(\.\d{1,3})?(Z|[+-]\d\d:?\d\d)$/.exec(
     value,
   );
@@ -62,7 +63,9 @@ export function normalizeProject(
 
   if (id !== expectedId)
     throw new DomainError('CONTEXT_MISMATCH', 'Server returned a different project');
+
   if (dto.archived !== undefined && typeof dto.archived !== 'boolean') invalid();
+
   // The recorded root omits its parent; omission on any other project is unknown ancestry.
   const parentProjectId =
     dto.parentProjectId === undefined && id === '_Root' ? null : identity(dto.parentProjectId);
@@ -112,7 +115,9 @@ export function normalizeLogTail(
 
   if (identity(dto.run_id, true) !== expectedId)
     throw new DomainError('CONTEXT_MISMATCH', 'Log belongs to another execution');
+
   if (!Array.isArray(dto.messages) || dto.messages.length > 1001) invalid();
+
   const seen = new Set<string>();
   const limitations: Limitation[] = [];
   let previousId = -1;
@@ -127,9 +132,11 @@ export function normalizeLogTail(
       !Number.isSafeInteger(m.status)
     )
       invalid();
+
     const id = String(m.id);
 
     if (seen.has(id) || Number(m.id) <= previousId) invalid();
+
     previousId = Number(m.id);
     seen.add(id);
     const text = sanitizeText(m.text, secrets);

@@ -41,6 +41,7 @@ export function knownSecrets(
 export function sanitizeText(text: string, secrets: readonly string[]): string {
   // Redact before previews, grouping, hashing or output measurements.
   for (const value of secrets) if (value) text = text.split(value).join('[REDACTED]');
+
   text = text
     .replace(/\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)/g, '')
     .replace(/\x1b\[[0-?]*[ -/]*[@-~]/g, '')
@@ -50,6 +51,7 @@ export function sanitizeText(text: string, secrets: readonly string[]): string {
       (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`,
     )
     .replace(/[\ud800-\udfff]/gu, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
+
   // Removing terminal sequences can join fragments into a known credential.
   for (const value of secrets) if (value) text = text.split(value).join('[REDACTED]');
 
@@ -72,7 +74,9 @@ export function sanitize(
   path: readonly string[] = [],
 ): unknown {
   if (depth > 30) return '[INPUT_DEPTH_LIMIT]';
+
   if (typeof value === 'string') return sanitizeText(value, secrets);
+
   if (Array.isArray(value))
     return value.map((v) => sanitize(v, secrets, depth + 1, protectedKeys, matchers, path));
 

@@ -26,6 +26,7 @@ function invalid(): never {
 
 function valid(value: unknown, now: number): value is Cursor {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+
   const v = value as Record<string, unknown>;
 
   if (
@@ -44,6 +45,7 @@ function valid(value: unknown, now: number): value is Cursor {
     )
   )
     return false;
+
   if (
     v.version !== 1 ||
     typeof v.command !== 'string' ||
@@ -55,6 +57,7 @@ function valid(value: unknown, now: number): value is Cursor {
     !/^[a-f0-9]{64}$/.test(v.filterHash)
   )
     return false;
+
   if (
     !Number.isInteger(v.count) ||
     Number(v.count) < 1 ||
@@ -70,6 +73,7 @@ function valid(value: unknown, now: number): value is Cursor {
 
   if (v.window !== undefined) {
     if (!v.window || typeof v.window !== 'object' || Array.isArray(v.window)) return false;
+
     const w = v.window as Record<string, unknown>;
 
     if (
@@ -83,6 +87,7 @@ function valid(value: unknown, now: number): value is Cursor {
       )
     )
       return false;
+
     if (Date.parse(w.since as string) > Date.parse(w.until as string)) return false;
   }
 
@@ -91,6 +96,7 @@ function valid(value: unknown, now: number): value is Cursor {
 
 export function encodeCursor(value: Cursor, now = Date.now()): string {
   if (!valid(value, now)) return invalid();
+
   const encoded = Buffer.from(JSON.stringify(value), 'utf8').toString('base64url');
 
   if (Buffer.byteLength(encoded) > 4096) return invalid();
@@ -100,9 +106,11 @@ export function encodeCursor(value: Cursor, now = Date.now()): string {
 
 export function decodeCursor(token: string, now = Date.now()): Cursor {
   if (Buffer.byteLength(token) > 4096 || !/^[A-Za-z0-9_-]+$/.test(token)) return invalid();
+
   const bytes = Buffer.from(token, 'base64url');
 
   if (!isUtf8(bytes) || bytes.toString('base64url') !== token) return invalid();
+
   let value: unknown;
 
   try {

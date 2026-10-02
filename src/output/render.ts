@@ -84,8 +84,10 @@ export function render(
   let document = serialize(value, format);
 
   if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
+
   delete value.next;
   document = serialize(value, format);
+
   if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
 
   if (value.command === 'run.failure' && value.status !== 'error') {
@@ -118,6 +120,7 @@ export function render(
       } while (data.changes.length && Buffer.byteLength(document) > maxBytes);
 
       validateResponse(value);
+
       if (Buffer.byteLength(document) <= maxBytes) return { document, response: value };
     }
   }
@@ -159,6 +162,7 @@ export function render(
           ['server', 'project', 'job', 'vcsRootId'].includes(k),
         ),
       );
+
     document = serialize(value, format);
   }
 
@@ -172,11 +176,13 @@ export function render(
     // Even asserted scope may exceed the envelope budget (e.g. three Unicode IDs).
     // Do not alter IDs into different targets. Retain only the trusted destination.
     if (value.context) value.context = { server: value.context.server };
+
     document = serialize(value, format);
   }
 
   if (Buffer.byteLength(document) > maxBytes)
     throw new Error('Output budget cannot hold the minimal envelope');
+
   validateResponse(value);
 
   return { document, response: value };

@@ -100,6 +100,7 @@ async function boundedRead(path: string, trusted = false): Promise<string | unde
     const metadata = await file.stat();
 
     if (!metadata.isFile()) failure('Configuration must be a regular file');
+
     if (
       trusted &&
       process.platform !== 'win32' &&
@@ -109,10 +110,12 @@ async function boundedRead(path: string, trusted = false): Promise<string | unde
         'POLICY_DENIED',
         'Trusted configuration must be owned by the current user and not writable by other users',
       );
+
     const buffer = Buffer.alloc(65537);
     const { bytesRead } = await file.read(buffer, 0, buffer.length, 0);
 
     if (bytesRead > 65536) failure('Configuration exceeds the 64 KiB input limit');
+
     const data = buffer.subarray(0, bytesRead);
 
     if (!isUtf8(data)) failure('Configuration must be UTF-8');
@@ -161,6 +164,7 @@ async function git(
 function freeze<T>(value: T): T {
   if (value && typeof value === 'object') {
     for (const child of Object.values(value)) freeze(child);
+
     Object.freeze(value);
   }
 
@@ -174,6 +178,7 @@ function nativeBindings(value: unknown): Binding[] {
     (value.server !== undefined && !Array.isArray(value.server))
   )
     failure('Invalid native repository binding');
+
   const bindings = value.server ?? [];
 
   if ((bindings as unknown[]).length > 100) failure('Too many native server bindings');
@@ -187,6 +192,7 @@ function nativeBindings(value: unknown): Binding[] {
       Object.keys(b).some((k) => !['url', 'project', 'job', 'jobs', 'paths'].includes(k))
     )
       failure('Invalid native server binding');
+
     const scopes: unknown[] = [b];
 
     if (b.paths !== undefined) {
@@ -199,11 +205,13 @@ function nativeBindings(value: unknown): Binding[] {
           /[\\\u0000-\u001f]/.test(path)
         )
           failure('Invalid native binding path');
+
         if (
           !object(scope) ||
           Object.keys(scope).some((k) => !['project', 'job', 'jobs'].includes(k))
         )
           failure('Invalid path scope');
+
         scopes.push(scope);
       }
     }
@@ -249,6 +257,7 @@ async function safeRepositoryFile(
     resolved = await realpath(path);
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') return undefined;
+
     failure('Cannot resolve repository configuration');
   }
 
@@ -280,6 +289,7 @@ export async function resolveContext(
 
     if (remaining <= 0)
       throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+
     let timer: NodeJS.Timeout | undefined;
 
     try {
@@ -302,9 +312,11 @@ export async function resolveContext(
 
   try {
     cwd = await within(realpath(String(parsed.flags.cwd ?? process.cwd())));
+
     if (!(await within(stat(cwd))).isDirectory()) failure('--cwd is not a directory');
   } catch (e) {
     if (e instanceof DomainError && e.code === 'DEADLINE_EXCEEDED') throw e;
+
     failure('Cannot resolve --cwd');
   }
 
@@ -373,9 +385,11 @@ export async function resolveContext(
       }
 
       if (dir === repositoryRoot) break;
+
       const parent = dirname(dir);
 
       if (parent === dir) break;
+
       dir = parent;
     }
 
@@ -411,18 +425,21 @@ export async function resolveContext(
       'Trusted aliases must not register the same canonical server URL',
       2,
     );
+
   const explicit = parsed.flags.server ?? env.TEAMCITY_AXI_SERVER;
   let selected: (typeof registered)[number] | undefined;
 
   if (explicit !== undefined) {
     selected = registered.find((s) => s.alias === explicit);
     sources.server = parsed.flags.server ? 'flag' : 'TEAMCITY_AXI_SERVER';
+
     if (!selected) throw new DomainError('UNTRUSTED_SERVER', 'Server alias is not registered');
   } else if (env.TEAMCITY_URL) {
     const inherited = canonicalUrl(env.TEAMCITY_URL, true);
 
     selected = registered.find((s) => s.url === inherited);
     sources.server = 'TEAMCITY_URL';
+
     if (!selected)
       throw new DomainError('UNTRUSTED_SERVER', 'Inherited server URL is not registered');
   } else if (bindings.length) {
@@ -432,15 +449,18 @@ export async function resolveContext(
         'Repository has multiple applicable servers; select --server',
         2,
       );
+
     const bound = canonicalUrl(bindings[0]!.url, true);
 
     selected = registered.find((s) => s.url === bound);
     sources.server = 'repository';
+
     if (!selected)
       throw new DomainError('UNTRUSTED_SERVER', 'Repository selects an unregistered server');
   } else if (config?.defaultServer) {
     selected = registered.find((s) => s.alias === config.defaultServer);
     sources.server = 'default';
+
     if (!selected) failure('defaultServer is not registered');
   }
 
@@ -455,6 +475,7 @@ export async function resolveContext(
       'AUTH_CONTEXT_MISMATCH',
       'Inherited token is not bound to the selected server',
     );
+
   const matched = selected
     ? bindings.filter((b) => canonicalUrl(b.url, true) === selected!.url)
     : [];
@@ -465,6 +486,7 @@ export async function resolveContext(
       'Duplicate repository bindings for the selected server',
       2,
     );
+
   const binding = matched[0];
   const project =
     parsed.flags.project !== undefined ? String(parsed.flags.project) : binding?.project;
@@ -472,8 +494,11 @@ export async function resolveContext(
 
   if ((project !== undefined && !id(project)) || (job !== undefined && !id(job)))
     failure('Invalid project/job identity');
+
   if (project) sources.project = parsed.flags.project ? 'flag' : 'repository';
+
   if (job) sources.job = parsed.flags.job ? 'flag' : 'repository';
+
   let branch = parsed.flags['all-branches']
     ? undefined
     : parsed.flags['literal-branch'] !== undefined
@@ -485,15 +510,18 @@ export async function resolveContext(
   if (parsed.flags['literal-branch'] === undefined && branch === '@this') {
     if (!branchRef)
       throw new DomainError('CONTEXT_REQUIRED', 'No current logical branch is available', 2);
+
     branch = branchRef;
   }
 
   if (branch !== undefined)
     sources.branch = parsed.flags.branch || parsed.flags['literal-branch'] ? 'flag' : 'git';
+
   let revision = parsed.flags.revision !== undefined ? String(parsed.flags.revision) : head;
 
   if (revision === '@head') {
     if (!head) throw new DomainError('CONTEXT_REQUIRED', 'No committed Git HEAD is available', 2);
+
     revision = head;
   }
 
@@ -512,7 +540,9 @@ export async function resolveContext(
   }
 
   if (vcsRootId !== undefined && !id(vcsRootId)) failure('Invalid VCS root identity');
+
   if (revision !== undefined && !id(revision)) failure('Invalid revision identity');
+
   const jobs =
     parsed.flags.job !== undefined
       ? [job!]

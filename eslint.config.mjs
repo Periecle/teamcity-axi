@@ -2,6 +2,7 @@ import stylistic from '@stylistic/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
 const declarations = ['const', 'let', 'var'];
+const controlStatements = ['if', 'for', 'while', 'do', 'switch', 'try'];
 const topLevelDefinition = { selector: 'Program > :not(ImportDeclaration)' };
 const builtInImport = { selector: 'ImportDeclaration[source.value=/^node:/]' };
 const otherImport = { selector: 'ImportDeclaration:not([source.value=/^node:/])' };
@@ -29,6 +30,8 @@ export default [
         { blankLine: 'always', prev: '*', next: ['return', 'throw'] },
         { blankLine: 'always', prev: 'block-like', next: '*' },
         { blankLine: 'always', prev: '*', next: 'block-like' },
+        { blankLine: 'always', prev: controlStatements, next: '*' },
+        { blankLine: 'always', prev: '*', next: controlStatements },
         { blankLine: 'always', prev: topLevelDefinition, next: topLevelDefinition },
         { blankLine: 'any', prev: 'function-overload', next: ['function', 'function-overload'] },
       ],

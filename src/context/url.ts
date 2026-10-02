@@ -19,6 +19,7 @@ export function canonicalUrl(input: string, allowHttpLoopback = false): string {
     input.split(/[/?#]/).some((p) => p === '.' || p === '..')
   )
     throw new DomainError('USAGE_ERROR', 'Unsafe server URL', 2);
+
   const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
 
   if (url.protocol !== 'https:' && !(allowHttpLoopback && loopback && url.protocol === 'http:'))

@@ -35,6 +35,7 @@ function cycles(nodes: GraphNode[], edges: GraphEdge[], rootId: string): GraphEd
 
   function visit(id: string) {
     if (visited.has(id)) return;
+
     visited.add(id);
     path.add(id);
 
@@ -47,6 +48,7 @@ function cycles(nodes: GraphNode[], edges: GraphEdge[], rootId: string): GraphEd
   }
 
   visit(rootId);
+
   for (const node of nodes) visit(node.run.id);
 
   return result;
@@ -65,6 +67,7 @@ export async function traverseSnapshotGraph(options: Options) {
     options.maxGraphReads > 24
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded graph request', 2);
+
   const root: Node = {
     run: options.root,
     expansion: 'complete',
@@ -101,7 +104,9 @@ export async function traverseSnapshotGraph(options: Options) {
     const shared = ['depth_limit', 'node_limit', 'call_limit'].includes(expansion);
 
     if (shared && sharedLimits.has(code)) return;
+
     if (shared) sharedLimits.add(code);
+
     limitations.push({
       code,
       message,
@@ -114,6 +119,7 @@ export async function traverseSnapshotGraph(options: Options) {
     const domain = asDomainError(error);
 
     if (domain.code === 'INTERRUPTED') throw domain;
+
     const expansion = ['POLICY_DENIED', 'PERMISSION_DENIED'].includes(domain.code)
       ? 'permission_denied'
       : ['CALL_LIMIT_EXCEEDED', 'DEADLINE_EXCEEDED'].includes(domain.code)
@@ -131,8 +137,10 @@ export async function traverseSnapshotGraph(options: Options) {
   function spend() {
     if (Date.now() >= options.budget.deadline)
       throw new DomainError('DEADLINE_EXCEEDED', 'Shared graph deadline exhausted');
+
     if (graphReadAttempts >= options.maxGraphReads || options.canRead?.() === false)
       throw new DomainError('CALL_LIMIT_EXCEEDED', 'Shared graph read capacity exhausted');
+
     graphReadAttempts++;
   }
 
@@ -158,6 +166,7 @@ export async function traverseSnapshotGraph(options: Options) {
 
       if (count.state === 'unavailable') {
         failed(node, count.error);
+
         if (['CALL_LIMIT_EXCEEDED', 'DEADLINE_EXCEEDED'].includes(count.error.code)) continue;
       } else {
         node.dependencyCount = count.value;
@@ -302,6 +311,7 @@ export async function traverseSnapshotGraph(options: Options) {
               'DEPENDENCY_COUNT_MISMATCH',
               'Dependency pages conflict with the independently observed count',
             );
+
           break;
         }
 
@@ -318,6 +328,7 @@ export async function traverseSnapshotGraph(options: Options) {
               'DEPENDENCY_COUNT_UNAVAILABLE',
               'Observed rows do not establish complete expansion without a scoped count',
             );
+
           break;
         }
 
@@ -350,6 +361,7 @@ export async function traverseSnapshotGraph(options: Options) {
       source: 'dependencies',
       runId: root.run.id,
     });
+
   const unexpanded = publicNodes.filter((n) => n.expansion !== 'complete').length;
   const graph: Graph = {
     rootRunId: root.run.id,

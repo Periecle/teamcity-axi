@@ -19,6 +19,7 @@ export async function listQueue(
 ): Promise<Response> {
   if (!context.job && !context.project)
     throw new DomainError('CONTEXT_REQUIRED', 'Select a job or project for queue list', 2);
+
   const now = Date.now();
   const cursor = parsed.flags.cursor ? decodeCursor(String(parsed.flags.cursor), now) : undefined;
   const query: QueueQuery = {
@@ -48,6 +49,7 @@ export async function listQueue(
 
   // A job-only cursor binds its observed owning project after the exact job read.
   if (cursor && query.projectId) assertCursor(cursor, binding());
+
   if (
     cursor &&
     (cursor.command !== 'queue.list' ||
@@ -55,6 +57,7 @@ export async function listQueue(
       cursor.count !== query.count)
   )
     throw new DomainError('USAGE_ERROR', 'Cursor belongs to another queue query', 2);
+
   const session = await openReadSession(context, signal);
 
   try {
@@ -65,8 +68,10 @@ export async function listQueue(
       const job = await session.reader.getJob({ id: query.jobId }, budget);
 
       if (job.state === 'unavailable') throw job.error;
+
       if (query.projectId && job.value.projectId !== query.projectId)
         throw new DomainError('CONTEXT_MISMATCH', 'Selected queue job belongs to another project');
+
       query.projectId = job.value.projectId;
       await policy.assert(query.projectId);
     } else {
@@ -77,9 +82,11 @@ export async function listQueue(
     const bound = binding();
 
     if (cursor) assertCursor(cursor, bound);
+
     const read = await session.reader.listQueue(query, budget);
 
     if (read.state === 'unavailable') throw read.error;
+
     const page = read.value;
     const limitations = [
       ...page.limitations,
@@ -96,6 +103,7 @@ export async function listQueue(
         message: 'Native version has not been release-certified',
         source: 'context',
       });
+
     const expiresAt = cursor?.expiresAt ?? now + 1800000,
       continuationNow = Date.now();
 
@@ -105,6 +113,7 @@ export async function listQueue(
         message: 'The query cursor expired during acquisition; continuation is unavailable',
         source: 'queue',
       });
+
     const token =
       page.position === null || expiresAt <= continuationNow
         ? null

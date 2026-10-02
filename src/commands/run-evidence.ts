@@ -39,6 +39,7 @@ function preview<T extends Problem | TestOccurrence>(item: T, full: boolean, out
   const value = item[field as keyof T];
 
   if (typeof value !== 'string' || Array.from(value).length <= limit) return item;
+
   output.meta.truncated = true;
 
   if (full) {
@@ -57,6 +58,7 @@ function preview<T extends Problem | TestOccurrence>(item: T, full: boolean, out
 
 function projection(test: TestOccurrence, fields: string | undefined): TestOccurrence {
   if (!fields) return test;
+
   const keep = new Set([
     'id',
     'runId',
@@ -131,6 +133,7 @@ export async function readEvidence(
   const selected = parsed.flags.problem ?? parsed.flags.test;
 
   if (selected !== undefined) occurrenceLocator(kind, String(selected), runId);
+
   const cursor = parsed.flags.cursor ? decodeCursor(String(parsed.flags.cursor), now) : undefined;
   const query: EvidenceQuery = {
     runId,
@@ -148,6 +151,7 @@ export async function readEvidence(
   };
 
   if (command !== 'run.log') evidenceRequest(kind, query);
+
   const session = await openReadSession(context, signal);
 
   try {
@@ -155,10 +159,13 @@ export async function readEvidence(
       read = await session.reader.getRun({ id: runId }, budget);
 
     if (read.state === 'unavailable') throw read.error;
+
     if (parsed.flags.job !== undefined && read.value.jobId !== parsed.flags.job)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another job');
+
     if (parsed.flags.project !== undefined && read.provenance.projectId !== parsed.flags.project)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another project');
+
     const policy = new ProjectPolicy(
       session.reader,
       context.config?.servers[context.server!]?.allowedProjects,
@@ -198,6 +205,7 @@ export async function readEvidence(
 
         if (results.some((r) => r.state === 'unavailable' && r.error.code === 'INTERRUPTED'))
           throw new DomainError('INTERRUPTED', 'Invocation interrupted');
+
         const [problems, tests, log] = results;
 
         providerTruncated = log.state === 'available' && log.value.truncated;
@@ -334,6 +342,7 @@ export async function readEvidence(
       };
 
       if (cursor) assertCursor(cursor, binding);
+
       let items: (Problem | TestOccurrence)[],
         page: EvidencePage<Problem | TestOccurrence> | undefined;
 
@@ -344,6 +353,7 @@ export async function readEvidence(
             : await session.reader.getTest({ runId, id: String(selected) }, budget);
 
         if (detail.state === 'unavailable') throw detail.error;
+
         output.meta.limitations.push(...detail.provenance.limitations);
         items = [detail.value];
       } else {
@@ -353,6 +363,7 @@ export async function readEvidence(
             : await session.reader.listTests(query, budget);
 
         if (readPage.state === 'unavailable') throw readPage.error;
+
         page = readPage.value;
         items = page.items;
         output.meta.limitations.push(...page.limitations);
@@ -375,6 +386,7 @@ export async function readEvidence(
           source: kind,
           runId,
         });
+
       const projected = items.map((item) =>
         kind === 'tests'
           ? projection(
@@ -422,6 +434,7 @@ export async function readEvidence(
         },
       };
       output.next = [];
+
       if (token)
         output.next.push({
           reason: 'Read the next bounded occurrence page',
@@ -442,6 +455,7 @@ export async function readEvidence(
             ...(parsed.flags.full ? ['--full'] : []),
           ],
         });
+
       if (previewTarget && !parsed.flags.full)
         output.next.push({
           reason: 'Expand an exact occurrence',
@@ -456,6 +470,7 @@ export async function readEvidence(
             '--full',
           ],
         });
+
       if (!output.next.length) delete output.next;
     }
 
@@ -476,9 +491,12 @@ export async function readEvidence(
     }
 
     if (!output.meta.limitations.length) delete output.meta.limitations;
+
     output.meta.counts = { childProcesses: session.transport.childProcesses };
     output.meta.observedAt = new Date().toISOString();
+
     if (parsed.flags['no-hints']) delete output.next;
+
     if (parsed.flags['require-complete'] && output.status === 'partial') process.exitCode = 1;
 
     return output;

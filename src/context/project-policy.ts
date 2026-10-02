@@ -28,14 +28,18 @@ export class ProjectPolicy {
 
   async assert(id: string | null, budget: Budget = this.budget): Promise<void> {
     if (!this.roots) return;
+
     if (!id)
       throw new DomainError('POLICY_DENIED', 'Project identity is unavailable for trusted policy');
+
     const seen = new Set<string>();
     let current: string | null = id;
 
     for (let depth = 0; current !== null && depth < 8; depth++) {
       if (this.roots.includes(current)) return;
+
       if (seen.has(current)) break;
+
       seen.add(current);
       const project = await this.project(current, budget);
 

@@ -16,10 +16,13 @@ export async function readFailure(parsed: Parsed, context: ExecutionContext, sig
     const primary = await session.reader.getRun({ id: runId }, budget);
 
     if (primary.state === 'unavailable') throw primary.error;
+
     if (parsed.flags.job !== undefined && primary.value.jobId !== parsed.flags.job)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another job');
+
     if (parsed.flags.project !== undefined && primary.provenance.projectId !== parsed.flags.project)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another project');
+
     const policy = new ProjectPolicy(
       session.reader,
       context.config?.servers[context.server!]?.allowedProjects,
@@ -71,7 +74,9 @@ export async function readFailure(parsed: Parsed, context: ExecutionContext, sig
       maxChildProcesses: session.maxChildProcesses,
       concurrency: Math.min(3, context.config?.limits?.concurrency ?? 3),
     };
+
     if (!investigation.complete) output.status = 'partial';
+
     if (session.nativeVersion !== '1.5.0')
       output.meta.limitations.push({
         code: 'UNVERIFIED_VERSION',
@@ -115,6 +120,7 @@ export async function readFailure(parsed: Parsed, context: ExecutionContext, sig
             ]
           : []),
       ];
+
       if (!output.next.length) delete output.next;
     }
 

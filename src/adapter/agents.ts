@@ -33,6 +33,7 @@ export function agentFilters(scope: AgentScope): string[] {
         /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(value))
     )
       throw new DomainError('USAGE_ERROR', 'Invalid agent scope identity', 2);
+
   if (scope.poolId !== undefined) validateAgentId(scope.poolId, true);
 
   return [
@@ -50,6 +51,7 @@ export function agentRequest(query: AgentQuery) {
 
   if (!query.jobId && !query.projectId && query.poolId === undefined)
     throw new DomainError('CONTEXT_REQUIRED', 'Agent list requires a pool, job or project', 2);
+
   if (
     !Number.isInteger(query.count) ||
     query.count < 1 ||
@@ -62,6 +64,7 @@ export function agentRequest(query: AgentQuery) {
     query.scanLimit > 5000
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded agent query', 2);
+
   const resource = 'agents';
   const fields = `count,nextHref,agent(${agentFields})`;
 
@@ -115,18 +118,23 @@ export function normalizeAgent(
 
     if (typeof value.id === 'number' && (!Number.isSafeInteger(value.id) || value.id < 0))
       invalid();
+
     const poolId = identity(typeof value.id === 'number' ? String(value.id) : value.id);
 
     if (!/^(0|[1-9]\d*)$/.test(poolId) || !Number.isSafeInteger(Number(poolId))) invalid();
+
     if (value.name !== undefined && value.name !== null && typeof value.name !== 'string')
       invalid();
+
     pool = {
       id: poolId,
       name: typeof value.name === 'string' ? sanitizeText(value.name, secrets) : null,
     };
   } else note('AGENT_POOL_UNAVAILABLE', 'The agent pool was not reported');
+
   if (scope.poolId !== undefined && pool?.id !== scope.poolId)
     throw new DomainError('CONTEXT_MISMATCH', 'Agent belongs to another selected pool');
+
   let activeRun: Agent['activeRun'] = null;
   let activeRunState: Agent['activeRunState'] = 'not_reported';
 
@@ -137,6 +145,7 @@ export function normalizeAgent(
     const type = object(build.buildType);
 
     if (identity(type.id) !== jobId) invalid();
+
     activeRun = { id: identity(build.id, true), jobId, projectId: identity(type.projectId) };
     activeRunState = 'reported';
 
@@ -181,6 +190,7 @@ export function normalizeAgentPage(
     dto.count !== dto.agent.length
   )
     invalid();
+
   const ids = new Set<string>();
   const limitations: Limitation[] = [];
 
@@ -192,6 +202,7 @@ export function normalizeAgentPage(
     const { agent, limitations: notes } = normalizeAgent(value, query, secrets);
 
     if (ids.has(agent.id)) invalid();
+
     ids.add(agent.id);
     notes.forEach(note);
 
@@ -202,6 +213,7 @@ export function normalizeAgentPage(
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string') invalid();
+
       position = nextPosition(dto.nextHref, { ...agentRequest(query), ...query, serverUrl });
     } catch {
       note({

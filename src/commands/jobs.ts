@@ -25,6 +25,7 @@ function finish(
       message: 'Native version has not been release-certified',
       source: 'context',
     });
+
   output.meta.counts = { childProcesses: session.transport.childProcesses };
   output.meta.limits = {
     maxBytes: Math.min(
@@ -45,6 +46,7 @@ function finish(
   }
 
   if (parsed.flags['no-hints']) delete output.next;
+
   if (parsed.flags['require-complete'] && !output.meta.complete) process.exitCode = 1;
 
   return output;
@@ -59,6 +61,7 @@ export async function viewJob(
 
   if (!id || id.length > 256)
     throw new DomainError('USAGE_ERROR', 'Job ID exceeds its identity bound', 2);
+
   literal(id);
   const session = await openReadSession(context, signal);
 
@@ -67,8 +70,10 @@ export async function viewJob(
     const read = await session.reader.getJob({ id }, budget);
 
     if (read.state === 'unavailable') throw read.error;
+
     if (parsed.flags.project !== undefined && read.value.projectId !== parsed.flags.project)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested job belongs to another project');
+
     const policy = new ProjectPolicy(
       session.reader,
       context.config?.servers[context.server!]?.allowedProjects,
@@ -110,6 +115,7 @@ export async function listJobs(
 ): Promise<Response> {
   if (!context.project)
     throw new DomainError('CONTEXT_REQUIRED', 'Select an exact project for job list', 2);
+
   const now = Date.now();
   const cursor = parsed.flags.cursor ? decodeCursor(String(parsed.flags.cursor), now) : undefined;
   const query: JobQuery = {
@@ -136,6 +142,7 @@ export async function listJobs(
   };
 
   if (cursor) assertCursor(cursor, binding);
+
   const session = await openReadSession(context, signal);
 
   try {
@@ -147,6 +154,7 @@ export async function listJobs(
     const read = await session.reader.listJobs(query, budget);
 
     if (read.state === 'unavailable') throw read.error;
+
     const page = read.value;
     const limitations = [
       ...page.limitations,
@@ -165,6 +173,7 @@ export async function listJobs(
         message: 'The query cursor expired during acquisition; continuation is unavailable',
         source: 'job',
       });
+
     const token =
       page.position === null || expiresAt <= continuationNow
         ? null
@@ -202,6 +211,7 @@ export async function listJobs(
     output.context = { server: context.server!, project: query.projectId };
     output.meta.observedAt = read.provenance.observedAt;
     output.meta.limitations = limitations;
+
     if (token)
       output.next = [
         {

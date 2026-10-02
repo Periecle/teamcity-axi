@@ -18,10 +18,13 @@ export async function readTree(parsed: Parsed, context: ExecutionContext, signal
       read = await session.reader.getRun({ id: runId }, primaryBudget);
 
     if (read.state === 'unavailable') throw read.error;
+
     if (parsed.flags.job !== undefined && read.value.jobId !== parsed.flags.job)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another job');
+
     if (parsed.flags.project !== undefined && read.provenance.projectId !== parsed.flags.project)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another project');
+
     const reserve = read.value.state !== 'finished' ? 1 : 0;
     const budget = {
       deadline: context.deadline,
@@ -65,6 +68,7 @@ export async function readTree(parsed: Parsed, context: ExecutionContext, signal
 
       if (final.state === 'unavailable') {
         if (final.error.code === 'INTERRUPTED') throw final.error;
+
         const root = traversal.graph.nodes.find((n) => n.run.id === runId)!;
 
         root.expansion = 'unavailable';
@@ -87,6 +91,7 @@ export async function readTree(parsed: Parsed, context: ExecutionContext, signal
             'CONTEXT_MISMATCH',
             'Final observation changed the frozen execution scope',
           );
+
         primary = final.value;
         output.context.branch = primary.branch ?? null;
         output.meta.limitations.push(...final.provenance.limitations);
@@ -125,6 +130,7 @@ export async function readTree(parsed: Parsed, context: ExecutionContext, signal
         message: 'Native version has not been release-certified',
         source: 'context',
       });
+
     output.data = {
       run: graphRun(primary),
       graph: traversal.graph,

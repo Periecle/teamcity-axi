@@ -28,10 +28,13 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
       read = await session.reader.getRun({ id: runId }, budget);
 
     if (read.state === 'unavailable') throw read.error;
+
     if (parsed.flags.job !== undefined && parsed.flags.job !== read.value.jobId)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another job');
+
     if (parsed.flags.project !== undefined && parsed.flags.project !== read.provenance.projectId)
       throw new DomainError('CONTEXT_MISMATCH', 'Requested run belongs to another project');
+
     const allowedProjects = context.config?.servers[context.server!]?.allowedProjects;
 
     await new ProjectPolicy(session.reader, allowedProjects, budget).assert(
@@ -57,9 +60,11 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
     };
 
     if (cursor) assertCursor(cursor, binding);
+
     const page = await session.reader.listChanges(query, budget);
 
     if (page.state === 'unavailable') throw page.error;
+
     const output = response('run.changes', {});
 
     output.context = {
@@ -86,6 +91,7 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
           'CONTEXT_MISMATCH',
           'Change belongs to a VCS root absent from the selected run',
         );
+
       const fullText = Array.from(change.message);
       const limit = parsed.flags.full ? 32768 : 200;
       const display = parsed.flags.full
@@ -96,6 +102,7 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
       if (message !== change.message) {
         output.meta.truncated = true;
         previewed = true;
+
         if (parsed.flags.full)
           output.meta.limitations!.push({
             code: 'TEXT_HARD_LIMIT',
@@ -130,6 +137,7 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
         source: 'changes',
         runId,
       });
+
     output.data = {
       run: {
         id: read.value.id,
@@ -174,6 +182,7 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
     ];
 
     output.next = [];
+
     if (token)
       output.next.push({
         reason: 'Read the next bounded change page',
@@ -189,6 +198,7 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
           ...(parsed.flags.full ? ['--full'] : []),
         ],
       });
+
     if (previewed && !parsed.flags.full)
       output.next.push({
         reason: 'Expand messages in this bounded change page',
@@ -203,7 +213,9 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
           '--full',
         ],
       });
+
     if (!output.next.length) delete output.next;
+
     if (session.nativeVersion !== '1.5.0')
       output.meta.limitations.push({
         code: 'UNVERIFIED_VERSION',
@@ -221,7 +233,9 @@ export async function readChanges(parsed: Parsed, context: ExecutionContext, sig
     }
 
     output.meta.counts = { childProcesses: session.transport.childProcesses };
+
     if (parsed.flags['no-hints']) delete output.next;
+
     if (parsed.flags['require-complete'] && output.status === 'partial') process.exitCode = 1;
 
     return output;

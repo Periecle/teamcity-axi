@@ -51,6 +51,7 @@ export async function main(args: readonly string[]): Promise<void> {
       const d = descriptor(parsed.positional!);
 
       if (!d) throw new DomainError('USAGE_ERROR', 'Unknown schema command', 2);
+
       const { packagedSchema } = await import('../output/schema.js');
 
       output = response(command, {
@@ -114,7 +115,9 @@ export async function main(args: readonly string[]): Promise<void> {
           },
           message: 'Configure a trusted server and repository binding to observe this checkout',
         });
+
         if (scope) output.context = scope;
+
         if (!parsed.flags['no-hints'])
           output.next = [
             { reason: 'Inspect local context', argv: ['teamcity-axi', 'context', 'show'] },
@@ -140,6 +143,7 @@ export async function main(args: readonly string[]): Promise<void> {
       ) {
         if (!context.server && !(command === 'doctor' && parsed.flags.offline))
           throw new DomainError('CONTEXT_REQUIRED', 'Select a registered trusted server', 2);
+
         const controller = new AbortController();
 
         const interrupt = () => {
@@ -213,6 +217,7 @@ export async function main(args: readonly string[]): Promise<void> {
       } else {
         if (!context.server)
           throw new DomainError('CONTEXT_REQUIRED', 'Select a registered trusted server', 2);
+
         if (command === 'status' && context.jobs.length === 0)
           throw new DomainError('CONTEXT_REQUIRED', 'Select a job or repository tracked jobs', 2);
 
@@ -249,6 +254,7 @@ export async function main(args: readonly string[]): Promise<void> {
     );
 
     if (result.response.status === 'error' && !process.exitCode) process.exitCode = 1;
+
     process.stdout.write(result.document);
   } catch {
     // A contract violation must not expose source data or stack traces on stderr.

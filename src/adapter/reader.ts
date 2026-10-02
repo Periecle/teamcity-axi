@@ -183,6 +183,7 @@ export class NativeTeamCityReader implements TeamCityReader {
     try {
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+
       const captured = await this.transport.execute(
         { kind: 'api', path },
         budget.maxChildProcesses,
@@ -242,6 +243,7 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+
       const captured = await this.transport.execute(
         { kind: 'log', runId: id, tail },
         budget.maxChildProcesses,
@@ -252,8 +254,10 @@ export class NativeTeamCityReader implements TeamCityReader {
           'UPSTREAM_FAILURE',
           'Structured log capability could not be verified',
         );
+
       if (!isUtf8(captured.stdout))
         throw new DomainError('UPSTREAM_SCHEMA_MISMATCH', 'Invalid structured log encoding');
+
       let dto: unknown;
 
       try {
@@ -286,6 +290,7 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+
       const captured = await this.transport.execute(
         {
           kind: 'api',
@@ -300,6 +305,7 @@ export class NativeTeamCityReader implements TeamCityReader {
           'CONTEXT_MISMATCH',
           'Server returned a different execution than the requested ID',
         );
+
       provenance.observedAt = new Date().toISOString();
       provenance.projectId = normalized.projectId;
       provenance.limitations = normalized.limitations;
@@ -341,6 +347,7 @@ export class NativeTeamCityReader implements TeamCityReader {
     );
 
     result.provenance.projectId = query.projectId ?? null;
+
     if (result.state === 'available') result.provenance.limitations = result.value.limitations;
 
     return result;
@@ -359,6 +366,7 @@ export class NativeTeamCityReader implements TeamCityReader {
 
         if (normalized.agent.id !== ref.id)
           throw new DomainError('CONTEXT_MISMATCH', 'Server returned a different agent');
+
         limitations = normalized.limitations;
 
         return normalized.agent;
@@ -378,6 +386,7 @@ export class NativeTeamCityReader implements TeamCityReader {
     );
 
     result.provenance.projectId = query.projectId ?? null;
+
     if (result.state === 'available') result.provenance.limitations = result.value.limitations;
 
     return result;
@@ -390,6 +399,7 @@ export class NativeTeamCityReader implements TeamCityReader {
     );
 
     result.provenance.projectId = query.projectId;
+
     if (result.state === 'available') result.provenance.limitations = result.value.limitations;
 
     return result;
@@ -409,6 +419,7 @@ export class NativeTeamCityReader implements TeamCityReader {
 
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Overall deadline exceeded', 1, true);
+
       const captured = await this.transport.execute(
         {
           kind: 'api',

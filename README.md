@@ -40,7 +40,8 @@ npm run format:check
 ```
 
 Code uses pinned ESLint Stylistic and Prettier. ESLint adds blank lines between
-import groups, definitions, methods, control blocks and returns. Prettier applies
+import groups, definitions, methods, control statements (including single-line
+guards) and returns. Prettier applies
 two-space indentation, semicolons, single quotes, trailing commas and LF endings. `npm test` checks formatting before compiling
 and running tests, so the same rules are enforced in CI. Captured wire artifacts
 are excluded from automatic rewriting.

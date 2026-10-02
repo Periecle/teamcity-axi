@@ -33,6 +33,7 @@ export function occurrenceLocator(kind: EvidenceKind, id: string, runId: string)
       'Use an exact supported occurrence ID, not a test definition or raw locator',
       2,
     );
+
   if (matched[1] !== runId)
     throw new DomainError('CONTEXT_MISMATCH', 'Occurrence ID belongs to a different execution');
 
@@ -53,6 +54,7 @@ function occurrence(value: unknown, kind: EvidenceKind, runId: string): Record<s
     occurrenceLocator(kind, id, runId);
   } catch (error) {
     if (error instanceof DomainError && error.code === 'CONTEXT_MISMATCH') throw error;
+
     invalid('Unsupported upstream occurrence identity');
   }
 
@@ -61,6 +63,7 @@ function occurrence(value: unknown, kind: EvidenceKind, runId: string): Record<s
 
 function text(value: unknown, required = true): string | undefined {
   if (value === undefined && !required) return undefined;
+
   if (typeof value !== 'string') invalid();
 
   return value;
@@ -68,6 +71,7 @@ function text(value: unknown, required = true): string | undefined {
 
 function flag(value: unknown): boolean | null {
   if (value === undefined || value === null) return null;
+
   if (typeof value !== 'boolean') invalid();
 
   return value;
@@ -108,6 +112,7 @@ export function normalizeTest(
     (!Number.isSafeInteger(dto.duration) || Number(dto.duration) < 0)
   )
     invalid();
+
   const result =
     ignored === true || status === 'IGNORED'
       ? 'ignored'
@@ -124,6 +129,7 @@ export function normalizeTest(
       source: 'tests',
       runId,
     });
+
   if (muted === null || ignored === null)
     limitations.push({
       code: 'TEST_FLAGS_UNAVAILABLE',
@@ -131,6 +137,7 @@ export function normalizeTest(
       source: 'tests',
       runId,
     });
+
   const details = text(dto.details, false);
 
   return {
@@ -164,8 +171,10 @@ export function evidenceRequest(kind: EvidenceKind, query: EvidenceQuery) {
     query.scanLimit > 5000
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded evidence query', 2);
+
   if (kind === 'problems' && (query.failed !== undefined || query.muted !== undefined))
     throw new DomainError('USAGE_ERROR', 'Problem pages do not support test filters', 2);
+
   const filters = [
     `build:(id:${runId})`,
     ...(query.failed ? ['status:FAILURE'] : []),
@@ -215,6 +224,7 @@ export function normalizeEvidencePage(
     dto.count !== rows.length
   )
     invalid('Invalid bounded occurrence collection');
+
   const request = evidenceRequest(kind, query),
     limitations: Limitation[] = [],
     ids = new Set<string>();
@@ -227,6 +237,7 @@ export function normalizeEvidencePage(
         : normalizeTest(row, query.runId, secrets, limitations);
 
     if (ids.has(item.id)) invalid('Duplicate occurrence ID in one page');
+
     ids.add(item.id);
 
     if (kind === 'tests') {
@@ -237,6 +248,7 @@ export function normalizeEvidencePage(
         (query.muted !== undefined && test.muted !== null && test.muted !== query.muted)
       )
         throw new DomainError('CONTEXT_MISMATCH', 'Test page does not match declared filters');
+
       if (query.muted !== undefined && test.muted === null) continue;
     }
 
@@ -249,6 +261,7 @@ export function normalizeEvidencePage(
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string') invalid();
+
       position = nextPosition(dto.nextHref, {
         ...request,
         serverUrl,

@@ -16,6 +16,7 @@ function invalid(): never {
 export function queueRequest(query: QueueQuery) {
   if (!query.jobId && !query.projectId)
     throw new DomainError('CONTEXT_REQUIRED', 'Queue list requires a job or project', 2);
+
   for (const id of [query.jobId, query.projectId])
     if (
       id !== undefined &&
@@ -26,6 +27,7 @@ export function queueRequest(query: QueueQuery) {
         /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(id))
     )
       throw new DomainError('USAGE_ERROR', 'Invalid queue scope identity', 2);
+
   if (
     !Number.isInteger(query.count) ||
     query.count < 1 ||
@@ -38,6 +40,7 @@ export function queueRequest(query: QueueQuery) {
     query.scanLimit > 5000
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded queue query', 2);
+
   const resource = 'buildQueue';
   const filters = [
     ...(query.jobId ? [`buildType:${idCondition(query.jobId)}`] : []),
@@ -77,6 +80,7 @@ export function normalizeQueuePage(
     dto.count !== dto.build.length
   )
     invalid();
+
   const ids = new Set<string>(),
     limitations: Limitation[] = [];
 
@@ -93,6 +97,7 @@ export function normalizeQueuePage(
       projectId = identity(buildType.projectId);
 
     if (identity(buildType.id) !== jobId) invalid();
+
     if (
       (query.jobId && jobId !== query.jobId) ||
       (query.projectId && projectId !== query.projectId)
@@ -101,8 +106,11 @@ export function normalizeQueuePage(
         'CONTEXT_MISMATCH',
         'Queued execution belongs to another selected scope',
       );
+
     if (ids.has(id)) invalid();
+
     ids.add(id);
+
     if (
       typeof build.state !== 'string' ||
       (build.branchName !== undefined &&
@@ -113,6 +121,7 @@ export function normalizeQueuePage(
         typeof build.waitReason !== 'string')
     )
       invalid();
+
     const knownState = ['queued', 'running', 'finished'].includes(build.state);
     const state: QueueItem['state'] = knownState ? (build.state as QueueItem['state']) : 'unknown';
 
@@ -122,6 +131,7 @@ export function normalizeQueuePage(
         'QUEUE_STATE_CHANGED',
         'An observed queue item is no longer queued; this page is provisional',
       );
+
     const times: Limitation[] = [];
     const queuedAt = timestamp(build.queuedDate, 'queued', times);
 
@@ -146,6 +156,7 @@ export function normalizeQueuePage(
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string' || !dto.nextHref) invalid();
+
       position = nextPosition(dto.nextHref, { ...queueRequest(query), ...query, serverUrl });
       hasMore = true;
     } catch {

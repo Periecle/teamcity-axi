@@ -23,6 +23,7 @@ function date(value: string): string {
 export function runFilters(query: RunQuery): string[] {
   if (!query.jobId && !query.projectId)
     throw new DomainError('CONTEXT_REQUIRED', 'Run list requires a job or project', 2);
+
   if (
     !Number.isInteger(query.count) ||
     query.count < 1 ||
@@ -35,8 +36,10 @@ export function runFilters(query: RunQuery): string[] {
     query.start >= query.scanLimit
   )
     throw new DomainError('USAGE_ERROR', 'Invalid bounded page request', 2);
+
   if (query.revision && !query.vcsRootId)
     throw new DomainError('CONTEXT_REQUIRED', 'Exact revision filtering requires a VCS root', 2);
+
   const filters = [
     'defaultFilter:false',
     ...(query.jobId ? [`buildType:${idCondition(query.jobId)}`] : []),
@@ -47,6 +50,7 @@ export function runFilters(query: RunQuery): string[] {
   if (query.state !== undefined) {
     if (!['queued', 'running', 'finished'].includes(query.state))
       throw new DomainError('USAGE_ERROR', 'Invalid lifecycle filter', 2);
+
     filters.push(`state:${query.state}`);
   }
 
@@ -56,6 +60,7 @@ export function runFilters(query: RunQuery): string[] {
         'DEPENDENCY_UNSUPPORTED',
         'Result filter requires separately verified explicit outcome metadata',
       );
+
     filters.push(`status:${query.result.toUpperCase()}`);
   }
 
@@ -69,6 +74,7 @@ export function runFilters(query: RunQuery): string[] {
         'Finish-time window requires ordered finished-run semantics',
         2,
       );
+
     filters.push(
       `finishDate:(date:${date(query.window.since)},condition:after)`,
       `finishDate:(date:${date(query.window.until)},condition:before)`,
@@ -93,6 +99,7 @@ export function normalizeRunPage(
     dto.count !== dto.build.length
   )
     throw new DomainError('UPSTREAM_SCHEMA_MISMATCH', 'Invalid bounded run collection');
+
   const page: RunPage = {
     runs: [],
     providerReturned: dto.build.length,
@@ -110,7 +117,9 @@ export function normalizeRunPage(
         'UPSTREAM_SCHEMA_MISMATCH',
         'Provider repeated an execution in one page',
       );
+
     ids.add(run.id);
+
     if (
       (query.jobId && run.jobId !== query.jobId) ||
       (query.projectId && projectId !== query.projectId) ||
@@ -122,8 +131,10 @@ export function normalizeRunPage(
         'CONTEXT_MISMATCH',
         'Provider returned an execution outside the declared list scope',
       );
+
     if (query.allowedProjects && (!projectId || !query.allowedProjects.includes(projectId)))
       throw new DomainError('POLICY_DENIED', 'Run project is outside the verified trusted scope');
+
     page.limitations.push(...limitations);
 
     if (query.window) {
@@ -173,6 +184,7 @@ export function normalizeRunPage(
   if (dto.nextHref !== undefined) {
     try {
       if (typeof dto.nextHref !== 'string' || !dto.nextHref) throw new Error();
+
       page.position = nextPosition(dto.nextHref, request);
       page.hasMore = true;
     } catch {

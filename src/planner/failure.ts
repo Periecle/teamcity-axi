@@ -75,6 +75,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
     options.maxDiagnosedRuns > 10
   )
     throw new DomainError('USAGE_ERROR', 'Invalid diagnosis bound', 2);
+
   const initial = options.primary.value;
   const rootId = initial.id;
   const reserve = initial.state !== 'finished' ? 1 : 0;
@@ -215,6 +216,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
     const safeSummary = Array.from(sanitizeText(summary, options.secrets));
 
     if (safeSummary.length > 1200) truncated = true;
+
     findings.push({
       id: `finding:${run.id}:${hash}`,
       runId: run.id,
@@ -232,11 +234,14 @@ export async function investigateFailure(options: Options): Promise<Investigatio
     try {
       if (Date.now() >= budget.deadline)
         throw new DomainError('DEADLINE_EXCEEDED', 'Shared investigation deadline exhausted');
+
       if (options.childProcesses() >= budget.maxChildProcesses!)
         throw new DomainError('CALL_LIMIT_EXCEEDED', 'Reserved evidence capacity exhausted');
+
       const read = await operation();
 
       if (read.state === 'unavailable') throw read.error;
+
       source.observedAt = read.provenance.observedAt;
       source.state = 'complete';
       delete source.reasonCode;
@@ -246,11 +251,13 @@ export async function investigateFailure(options: Options): Promise<Investigatio
       const domain = asDomainError(error);
 
       if (domain.code === 'INTERRUPTED') throw domain;
+
       source.state = ['CALL_LIMIT_EXCEEDED', 'DEADLINE_EXCEEDED'].includes(domain.code)
         ? 'budget_exhausted'
         : 'unavailable';
       source.reasonCode = domain.code;
       source.observedAt = new Date().toISOString();
+
       if (source.required)
         limitations.push({
           code: domain.code,
@@ -268,13 +275,16 @@ export async function investigateFailure(options: Options): Promise<Investigatio
     read: Extract<ReadResult<EvidencePage<T>>, { state: 'available' }> | undefined,
   ) {
     if (!read) return;
+
     source.returned = read.value.items.length;
     source.providerReturned = read.value.providerReturned;
     source.total = null;
     source.state =
       read.value.hasMore === false && read.value.limitations.length === 0 ? 'complete' : 'partial';
+
     if (source.state === 'partial')
       source.reasonCode = read.value.limitations[0]?.code ?? 'BOUNDED_PAGE';
+
     limitations.push(
       ...read.value.limitations
         .filter((l) => source.required || l.code !== 'SCAN_COVERAGE_UNKNOWN')
@@ -337,11 +347,14 @@ export async function investigateFailure(options: Options): Promise<Investigatio
     graphReadAttempts = traversal.graphReadAttempts;
     omittedGraphTargets = traversal.omittedTargets;
     limitations.push(...traversal.limitations);
+
     for (const [id, project] of traversal.projects) projects.set(id, project);
+
     const selection = selectDiagnosedRuns(graph, traversal.depths, options.maxDiagnosedRuns);
 
     omittedDiagnosedRuns = selection.omitted;
     diagnosedRunIds = selection.selected.map((node) => node.run.id);
+
     if (omittedDiagnosedRuns)
       limitations.push({
         code: 'DIAGNOSIS_LIMIT',
@@ -365,6 +378,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
               ? 'unavailable'
               : 'partial';
       source.observedAt = new Date().toISOString();
+
       if (source.state === 'complete') delete source.reasonCode;
       else
         source.reasonCode =
@@ -396,6 +410,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
         source.total = 1;
         source.observedAt = traversal.observations.get(run.id)!;
         delete source.reasonCode;
+
         if (failed(run))
           finding(
             run,
@@ -430,6 +445,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
       ]);
 
       if (run.id !== rootId) page(problemsSource, problems);
+
       page(testsSource, tests);
       const scope = scopedArgs(run, projects.get(run.id));
 
@@ -496,6 +512,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
           limitations.push(
             ...log.value.limitations.map((l) => ({ ...l, source: 'log', runId: run.id })),
           );
+
           for (const message of log.value.messages.filter((m) =>
             /connection refused|timeout|exception|\berror\b/i.test(m.text),
           ))
@@ -518,9 +535,11 @@ export async function investigateFailure(options: Options): Promise<Investigatio
                 '--full',
               ],
             );
+
           if (log.value.truncated) truncated = true;
         }
       } else logSource.reasonCode = 'DIRECT_EVIDENCE_AVAILABLE';
+
       diagnosed.push(run);
     }
 
@@ -577,6 +596,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
           changes.value.items.some((item) => item.message.split(/\r?\n/, 1)[0] !== item.message)
         )
           truncated = true;
+
         // Optional context is retained only after all required diagnosed sources.
         optionalChanges = changes.value.items.map((item) => ({
           id: item.id,
@@ -603,6 +623,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
       const domain = asDomainError(error);
 
       if (domain.code === 'INTERRUPTED') throw domain;
+
       final = { state: 'unavailable', error: domain, provenance: options.primary.provenance };
     }
 
@@ -610,6 +631,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
 
     if (final.state === 'unavailable') {
       if (final.error.code === 'INTERRUPTED') throw final.error;
+
       source.state = 'unavailable';
       source.reasonCode = final.error.code;
       finalFailed = true;
@@ -629,6 +651,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
           'CONTEXT_MISMATCH',
           'Final observation changed the frozen execution scope',
         );
+
       source.state = 'complete';
       source.returned = 1;
       source.total = 1;
@@ -636,6 +659,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
       primary = final.value;
       changed = !sameGraphObservation(initial, primary);
       limitations.push(...final.provenance.limitations);
+
       if (changed)
         limitations.push({
           code: 'ROOT_STATE_CHANGED',
@@ -666,6 +690,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
       source: 'run',
       runId: rootId,
     });
+
   let assessment: Investigation['data']['assessment'] = notFailed
     ? 'not_failed'
     : primary.state === 'queued' || primary.state === 'running'
@@ -676,6 +701,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
 
   if (changed && primary.state === 'finished' && primary.result === 'success')
     assessment = 'inconclusive';
+
   const complete =
     (notFailed || graph.complete) &&
     !omittedDiagnosedRuns &&
@@ -694,6 +720,7 @@ export async function investigateFailure(options: Options): Promise<Investigatio
       a.kind.localeCompare(b.kind) ||
       a.id.localeCompare(b.id),
   );
+
   if (findings.length > 100)
     limitations.push({
       code: 'FINDING_LIMIT',

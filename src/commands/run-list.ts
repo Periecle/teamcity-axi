@@ -23,6 +23,7 @@ function wholeSecond(value: string): string {
       'Finish-time filters currently require whole-second timestamps',
       2,
     );
+
   const canonical = new Date(value).toISOString();
 
   if (!canonical.endsWith('.000Z'))
@@ -42,6 +43,7 @@ export async function listRuns(
 ): Promise<Response> {
   if (!context.job && !context.project)
     throw new DomainError('CONTEXT_REQUIRED', 'Select a job or project for run list', 2);
+
   const result = parsed.flags.result === undefined ? undefined : String(parsed.flags.result);
 
   if (result && !['success', 'failure', 'error'].includes(result))
@@ -49,12 +51,14 @@ export async function listRuns(
       'DEPENDENCY_UNSUPPORTED',
       'This outcome filter requires explicit metadata not yet verified by the adapter',
     );
+
   if (parsed.flags.revision && !context.vcsRootId)
     throw new DomainError(
       'CONTEXT_REQUIRED',
       'Revision filtering requires an exact VCS root or unambiguous repository mapping',
       2,
     );
+
   const now = Date.now(),
     cursor = parsed.flags.cursor ? decodeCursor(String(parsed.flags.cursor), now) : undefined;
   const state = String(parsed.flags.state ?? 'finished') as NonNullable<RunQuery['state']>;
@@ -115,6 +119,7 @@ export async function listRuns(
         'DEPENDENCY_UNSUPPORTED',
         'Native executable has an unsupported version response',
       );
+
     const reader = new NativeTeamCityReader(
       transport,
       context.serverUrl!,
@@ -128,8 +133,10 @@ export async function listRuns(
       const job = await reader.getJob({ id: query.jobId }, { deadline: context.deadline });
 
       if (job.state === 'unavailable') throw job.error;
+
       if (query.projectId && query.projectId !== job.value.projectId)
         throw new DomainError('CONTEXT_MISMATCH', 'Selected job belongs to another project');
+
       await policy.assert(job.value.projectId);
       query.projectId = job.value.projectId;
     } else {
@@ -138,6 +145,7 @@ export async function listRuns(
     }
 
     if (server?.allowedProjects) query.allowedProjects = [query.projectId!];
+
     const filterHash = createHash('sha256')
       .update(
         JSON.stringify({
@@ -159,9 +167,11 @@ export async function listRuns(
     };
 
     if (cursor) assertCursor(cursor, binding);
+
     const read = await reader.listRuns(query, { deadline: context.deadline });
 
     if (read.state === 'unavailable') throw read.error;
+
     const page = read.value,
       limitations = [
         ...page.limitations,
@@ -178,12 +188,14 @@ export async function listRuns(
         message: 'Native version has not been release-certified',
         source: 'context',
       });
+
     if (parsed.flags.revision && context.dirty)
       limitations.push({
         code: 'DIRTY_WORKTREE',
         message: 'Remote revision matches do not cover uncommitted local changes',
         source: 'context',
       });
+
     const expiresAt = cursor?.expiresAt ?? now + 1800000;
     const continuationNow = Date.now();
 
@@ -193,6 +205,7 @@ export async function listRuns(
         message: 'The query cursor expired during acquisition; continuation is unavailable',
         source: 'run',
       });
+
     const token =
       page.position === null || expiresAt <= continuationNow
         ? null
@@ -309,6 +322,7 @@ export async function listRuns(
           ],
         },
       ];
+
     if (parsed.flags['require-complete'] && output.status === 'partial') process.exitCode = 1;
 
     return output;

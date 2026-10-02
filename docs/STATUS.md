@@ -53,7 +53,8 @@ No skipped tests.
 
 Pinned Prettier 3.9.9 formats source, tests, scripts, schemas and configuration.
 Pinned ESLint Stylistic 5.10.0 automatically adds and enforces TypeScript blank
-lines between import groups, definitions, methods, control blocks and returns.
+lines between import groups, definitions, methods, control statements (including
+single-line guards) and returns.
 The npm pretest formatting gate runs in existing CI. Independent review drove
 fixes for all-branch projection, original sub-millisecond precision, unknown
 outcome diagnostics and privacy/provenance in the live recorder. Explicitly
