@@ -165,13 +165,15 @@ func ReadFailure(ctx context.Context, parsed Parsed, ec ExecutionContext) (Respo
 		output.Status = "partial"
 	}
 	if !parsed.Bool("no-hints") {
-		findings := Objects(data["findings"])
-		if len(findings) > 0 {
-			evidence := Objects(findings[0]["evidence"])
-			if len(evidence) > 0 {
-				if hint := Obj(evidence[0]["retrieve"]); hint != nil {
-					output.Next = append(output.Next, hint)
+		for _, finding := range Objects(data["findings"]) {
+			for _, evidence := range Objects(finding["evidence"]) {
+				if Bool(Obj(result["truncatedEvidence"]), Str(evidence, "id")) {
+					output.Next = append(output.Next, Obj(evidence["retrieve"]))
+					break
 				}
+			}
+			if len(output.Next) > 0 {
+				break
 			}
 		}
 		projects := Obj(result["projects"])

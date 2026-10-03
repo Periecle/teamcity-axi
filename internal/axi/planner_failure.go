@@ -127,6 +127,7 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 		return reader.Read(ctx, request, readBudget)
 	}
 	sources, findings := []Object{}, []Object{}
+	truncatedEvidence := Object{}
 	limitations := append([]Limitation{}, primaryRead.Provenance.Limitations...)
 	var limitsMu sync.Mutex
 	appendLimitations := func(notes ...Limitation) {
@@ -193,19 +194,24 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 		_ = encoder.Encode(components)
 		hashBytes := sha256.Sum256(bytes.TrimSuffix(fingerprint.Bytes(), []byte{'\n'}))
 		hash := hex.EncodeToString(hashBytes[:])
-		evidenceKind, reason := "run", "Read the exact supporting evidence"
+		evidenceKind, reason := "run", "Read full supporting detail only if the retained excerpt is insufficient"
 		switch kind {
 		case "build_problem":
 			evidenceKind = "problem"
 		case "failed_test":
 			evidenceKind = "test"
 		case "log_signal":
-			evidenceKind, reason = "log", "Reinspect the declared source tail window"
+			evidenceKind, reason = "log", "Reinspect the declared tail only if the retained signal needs context"
 		}
 		safeSummary, cut := boundedText(SanitizeText(summary, options.Secrets), 1200)
 		truncated = truncated || cut
 		id := Str(run, "id")
-		reference := Object{"id": "ev:" + id + ":" + hash, "sourceRef": source["id"], "runId": id, "kind": evidenceKind, "itemId": itemID, "excerpt": excerpt(safeText, Str(source, "kind"), id), "observedAt": source["observedAt"], "retrieve": Object{"reason": reason, "argv": argv}}
+		preview := excerpt(safeText, Str(source, "kind"), id)
+		reference := Object{"id": "ev:" + id + ":" + hash, "sourceRef": source["id"], "runId": id, "kind": evidenceKind, "itemId": itemID, "excerpt": preview, "observedAt": source["observedAt"], "retrieve": Object{"reason": reason, "argv": argv}}
+		if len([]rune(preview)) < len([]rune(SanitizeText(safeText, options.Secrets))) {
+			truncatedEvidence[Str(reference, "id")] = true
+			Obj(reference["retrieve"])["reason"] = "Read truncated supporting evidence"
+		}
 		findings = append(findings, Object{"id": "finding:" + id + ":" + hash, "runId": id, "kind": kind, "claim": "observation", "summary": safeSummary, "evidence": []Object{reference}})
 	}
 	collect := func(source Object, request ReadRequest) (*ReadResult, error) {
@@ -591,7 +597,7 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 	if optionalChanges != nil {
 		data["changes"] = optionalChanges
 	}
-	return Object{"data": data, "limitations": limitations, "complete": complete && omittedFindings == 0, "truncated": truncated || omittedFindings != 0, "projects": projects}, nil
+	return Object{"data": data, "limitations": limitations, "complete": complete && omittedFindings == 0, "truncated": truncated || omittedFindings != 0, "projects": projects, "truncatedEvidence": truncatedEvidence}, nil
 }
 
 type plannerCountingReader struct {

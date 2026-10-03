@@ -381,6 +381,44 @@ func TestCommandGraphFinishedRootAndFailureAssessment(t *testing.T) {
 	}
 }
 
+func TestCommandFailureHintsOnlyExpandTruncatedRetainedEvidence(t *testing.T) {
+	f, ec := commandFixture(t)
+	problemID, testID := "build:(id:482193),problem:(id:1)", "build:(id:482193),id:1"
+	problem := Object{"id": problemID, "runId": "482193", "type": "SYNTHETIC", "description": "Explicit failure"}
+	test := Object{"id": testID, "runId": "482193", "name": "check", "result": "failure", "muted": false, "ignored": false, "details": "Retained detail"}
+	f.responses["problems.page"] = commandAvailable(Object{"items": []Object{problem}, "providerReturned": 1, "position": nil, "hasMore": nil, "limitations": []Limitation{}})
+	f.responses["tests.page"] = commandAvailable(Object{"items": []Object{test}, "providerReturned": 1, "position": nil, "hasMore": nil, "limitations": []Limitation{}})
+	parsed := commandParsed("run.failure", Object{"depth": 0, "max-diagnosed-runs": 1})
+	output, err := ReadFailure(context.Background(), parsed, ec)
+	if err != nil || len(output.Next) != 0 || len(Objects(output.Data["findings"])) != 2 {
+		t.Fatalf("retained evidence prompted a redundant read: %#v, %v", output, err)
+	}
+	for _, finding := range Objects(output.Data["findings"]) {
+		if len(Strings(Obj(Objects(finding["evidence"])[0]["retrieve"])["argv"])) == 0 {
+			t.Fatal("optional exact retrieval was removed from retained evidence")
+		}
+	}
+	test["name"] = strings.Repeat("n", 1500)
+	output, err = ReadFailure(context.Background(), parsed, ec)
+	if err != nil || !Bool(output.Meta, "truncated") || len(output.Next) != 0 {
+		t.Fatalf("bounded summary prompted expansion of an intact excerpt: %#v, %v", output, err)
+	}
+	test["details"] = strings.Repeat("x", 3000)
+	output, err = ReadFailure(context.Background(), parsed, ec)
+	if err != nil || !Bool(output.Meta, "truncated") || len(output.Next) != 1 {
+		t.Fatalf("truncated detail lost its recovery read: %#v, %v", output, err)
+	}
+	argv := Strings(output.Next[0]["argv"])
+	if _, err := Parse(argv[1:]); err != nil || !containsString(argv, testID) || containsString(argv, problemID) {
+		t.Fatalf("recovery read selected the first finding instead of truncated evidence: %v, %v", argv, err)
+	}
+	parsed.Flags["no-hints"] = true
+	output, err = ReadFailure(context.Background(), parsed, ec)
+	if err != nil || len(output.Next) != 0 || len(Objects(output.Data["findings"])) != 2 {
+		t.Fatalf("no-hints changed retained evidence: %#v, %v", output, err)
+	}
+}
+
 func TestCommandTreeReservesFinalObservationAndPreservesChangedState(t *testing.T) {
 	f, ec := commandFixture(t)
 	running := commandAvailable(Object{"id": "482193", "jobId": "Payments_Build", "state": "running", "result": "unknown"})

@@ -17,6 +17,36 @@ consumer needs it; both formats preserve the same normalized identities and
 limitations. Ordinary native operations and authentication management use the
 official `teamcity` CLI directly.
 
+When the task supplies the server, project, job and exact execution, start with
+the appropriate scoped read. Substitute those identities in these command forms:
+
+```sh
+teamcity-axi run failure RUN_ID --server SERVER --project PROJECT --job JOB
+teamcity-axi run view RUN_ID --server SERVER --project PROJECT --job JOB
+```
+
+Use `run failure` for independent failure sources and dependency investigations;
+use `run view` for lifecycle/result questions. Bound a root-only investigation
+with `--depth 0 --max-diagnosed-runs 1`. For a dependency task, use its requested
+`--depth` and `--max-diagnosed-runs` bounds; the defaults are four and three.
+These command forms are sufficient to start without a help or schema read.
+
+In a failure report, `findings[].evidence[].itemId` is the observed provider item
+identity, including compound test/problem occurrence IDs. Keep distinct IDs even
+when display names match. `sourceRef` links each item to `sources[].id`; muted
+tests have a separate `tests:RUN_ID:muted` source and an explicit muted summary.
+Inspect `sources[].state`, `returned`, `total`, and `reasonCode` before making
+coverage claims. Unknown totals and partial pages stay unknown. Graph nodes,
+edges, cycles and unexpanded boundaries are already included in the same read.
+
+Answer from the retained findings, graph and coverage when they satisfy the task.
+An evidence `retrieve.argv` is an optional full-detail read, not a required
+verification step. Do not reread an investigation or expand every item to confirm
+facts already present. Expand only missing task-critical detail or a truncated
+excerpt, preserving exact scope. To inspect a schema when needed, use a dotted
+command name, for example `teamcity-axi schema run.failure`; `schema run failure`
+is not valid.
+
 Resolve scope with `context show` when it is unclear. Servers must be registered
 in the user's trusted configuration. Repository `teamcity.toml` selects a binding
 and tracked jobs; `.teamcity-axi.json` can map a Git remote to a TeamCity VCS-root

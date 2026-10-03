@@ -1,5 +1,14 @@
 # Go implementation status
 
+Post-release performance work compiles only requested schemas and limits promoted
+detail hints to truncated retained excerpts. The portable skill now documents
+concrete first-read commands and the report's item/source fields. Required source
+acquisition, scope, unknown/partial states and exact retrieval actions remain
+unchanged. Focused and full race checks pass 165 deterministic tests; the pinned
+native suite passes. Fresh scripted and model comparisons plus restored live
+checks are in progress. The published v0.1.0 tag and assets remain unchanged;
+the release evidence below describes that immutable checkpoint.
+
 All eighteen accepted read-only services and the recorder, documentation,
 evaluation and package tooling are implemented in Go. The worktree contains no
 JS/TS source files, Node modules or Node configuration. TOON is the default; JSON is

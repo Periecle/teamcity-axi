@@ -172,6 +172,8 @@ var schemaOnce sync.Once
 var schemaErr error
 var compiledSchemas map[string]*jsonschema.Schema
 var schemaValues map[string]Object
+var schemaCompiler *jsonschema.Compiler
+var schemaMu sync.Mutex
 
 func loadSchemas() {
 	compiledSchemas = map[string]*jsonschema.Schema{}
@@ -202,14 +204,7 @@ func loadSchemas() {
 			return
 		}
 	}
-	for name, s := range schemaValues {
-		compiled, err := c.Compile(Str(s, "$id"))
-		if err != nil {
-			schemaErr = err
-			return
-		}
-		compiledSchemas[name] = compiled
-	}
+	schemaCompiler = c
 }
 func PackagedSchema(name string) (Object, error) {
 	schemaOnce.Do(loadSchemas)
@@ -228,10 +223,24 @@ func validateSchema(name string, v any) error {
 	if schemaErr != nil {
 		return schemaErr
 	}
-	s, ok := compiledSchemas[name]
+	source, ok := schemaValues[name]
 	if !ok {
 		return fmt.Errorf("unknown schema %s", name)
 	}
+	// A CLI invocation only needs its configuration, envelope and payload contracts.
+	// Compilation is serialized because the compiler also caches referenced schemas.
+	schemaMu.Lock()
+	s := compiledSchemas[name]
+	if s == nil {
+		var err error
+		s, err = schemaCompiler.Compile(Str(source, "$id"))
+		if err != nil {
+			schemaMu.Unlock()
+			return err
+		}
+		compiledSchemas[name] = s
+	}
+	schemaMu.Unlock()
 	value, err := jsonValue(v)
 	if err != nil {
 		return err

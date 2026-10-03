@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased performance improvements
+
+- Compile packaged schemas only when their contracts are validated, with a
+  synchronized compiler/cache and unchanged offline validation requirements.
+- Promote full-detail recovery hints only for truncated retained excerpts;
+  preserve every exact, scoped evidence retrieval action.
+- Add concrete first-read commands and output-field guidance to the portable
+  skill so investigations do not need routine help/schema discovery or rereads.
+- Add concurrent fail-closed schema validation and targeted hint regression
+  coverage. New performance measurements remain separate from v0.1.0 evidence.
+
 ## 0.1.0 — 2026-10-03
 
 Reimplements all eighteen accepted read-only commands and development tooling in

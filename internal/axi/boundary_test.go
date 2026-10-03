@@ -186,6 +186,67 @@ func TestOutputExamplesAndTOON(t *testing.T) {
 		t.Fatalf("logical types differ: %#v != %#v", decoded, want)
 	}
 }
+
+func TestConcurrentPackagedSchemaValidationFailsClosed(t *testing.T) {
+	files, err := filepath.Glob("../../examples/*.json")
+	if err != nil || len(files) == 0 {
+		t.Fatal("missing schema validation examples")
+	}
+	var wait sync.WaitGroup
+	start := make(chan struct{})
+	for _, file := range files {
+		bytes, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for worker := 0; worker < 8; worker++ {
+			wait.Add(1)
+			go func(file string, bytes []byte) {
+				defer wait.Done()
+				<-start
+				var value Object
+				if err := json.Unmarshal(bytes, &value); err != nil {
+					t.Error(err)
+					return
+				}
+				name := "response"
+				if strings.Contains(file, "config.json") {
+					name = strings.TrimSuffix(filepath.Base(file), ".json")
+					if err := ValidateConfig(name, value); err != nil {
+						t.Error(err)
+					}
+				} else {
+					var response Response
+					if err := json.Unmarshal(bytes, &response); err != nil {
+						t.Error(err)
+						return
+					}
+					if err := ValidateResponse(response); err != nil {
+						t.Error(err)
+					}
+					response.Status = "unsupported"
+					if ValidateResponse(response) == nil {
+						t.Error("concurrent cached validation admitted an invalid envelope")
+					}
+				}
+				if validateSchema(name, nil) == nil {
+					t.Error("concurrent cached validation admitted a null contract")
+				}
+				schema, err := PackagedSchema(name)
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				delete(schema, "type") // A caller's schema copy cannot change compiled contracts.
+				if validateSchema(name, nil) == nil {
+					t.Error("schema inspection mutated the packaged validation contract")
+				}
+			}(file, bytes)
+		}
+	}
+	close(start)
+	wait.Wait()
+}
 func TestSanitizerContracts(t *testing.T) {
 	secrets := KnownSecrets(map[string]string{"APP_TOKEN": "short-canary", "TEAMCITY_HEADER_X_CUSTOM": "prefix-short-canary-suffix"}, nil, []string{"TEAMCITY_HEADER_X_CUSTOM"})
 	if got := SanitizeText("prefix-short-canary-suffix", secrets); got != "[REDACTED]" {
