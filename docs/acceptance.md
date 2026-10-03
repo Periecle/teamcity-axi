@@ -61,9 +61,14 @@ published file selection. Untested platforms remain marked untested in
 The scripted eight-task benchmark records evidence retention, real process/HTTP
 counts, tokenizer identity, output tokens, latency, canaries, and baseline
 regressions. Its task-success/tool-turn/causal-claim fields remain null. The actual
-model-agent evaluation required by sections 17.1 and 21.10 is rerun and independently graded under the [evaluation protocol](../evaluations/README.md). Section 15.3 effective-limit diagnostics now pass deterministic and native checks,
+model-agent evaluation required by sections 17.1 and 21.10 passes independent
+grading under the [evaluation protocol](../evaluations/README.md): both conditions
+succeed on 8/8 tasks without correctness/security errors. Median calls tie at
+three; the lower-median performance target is unmet, and total/per-task costs
+remain explicit in [the comparison](evaluation.md). Section 15.3 effective-limit diagnostics now pass deterministic and native checks,
 including renderer-only reductions. The final Go verification and claims audit is tracked separately from the historical
-release in docs/STATUS.md.
+unpublished TypeScript checkpoint in [implementation status](STATUS.md) and
+[current release verification](release-verification.json).
 
 Additional live hostile branches, multi-root builds, duplicate/muted failures,
 shared graphs, deployment prefixes, expired tokens and positive restricted pool

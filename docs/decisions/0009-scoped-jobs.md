@@ -42,4 +42,6 @@ not silently removed to fit; an explicit bounded output error is returned.
 No-hints and require-complete flags apply to both commands. Focused unit,
 released-native/mock and restricted live tests verify this slice. Broader live
 policy/topology and paused-state cases, the remaining queue/agent/status/watch
-services, evaluation and release certification remain open.
+services, evaluation and release certification were still open at that original
+implementation checkpoint. Current Go service coverage and remaining
+compatibility limits are tracked in [implementation status](../STATUS.md).

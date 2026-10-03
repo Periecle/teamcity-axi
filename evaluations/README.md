@@ -21,7 +21,7 @@ the runner builds Go from the working tree. The default is three repetitions; `T
 `test-results/evaluation.json`. Each report includes the corpus hash, native
 checksum, runtime/platform, paired startup samples, every command/output/exit,
 and per-task scores. CI runs one repetition in the native contract suite.
-The [Go report](results/linux-x64-go1.27-native1.5.0.json) and
+The [release-binary Go report](results/linux-x64-go1.27-native1.5.0-release.json) and
 [measured comparison](../docs/evaluation.md) retain the results rather than only
 a favorable aggregate.
 
@@ -120,6 +120,27 @@ public CI. No model-auth material is placed in the shell filesystem or published
 Temporary client credentials and sessions are deleted on success, setup failure
 and protocol timeout.
 
+Run credential-backed sessions only with account-use authorization. For example:
+
+```sh
+make build
+axi_runtime=$(mktemp -d)
+install -m 0755 bin/teamcity-axi "$axi_runtime/teamcity-axi"
+TEAMCITY_AXI_AGENT_RUNTIME="$axi_runtime" \
+TEAMCITY_AXI_AGENT_AUTH_PATH=/private/path/auth.json \
+TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity \
+TEAMCITY_AXI_AGENT_OUTPUT=test-results/agent-evaluation.json \
+go run ./cmd/evaluate-agent
+rm -r -- "$axi_runtime"
+```
+
+The runner permits at most 24 shell calls per session, 1 MiB per shell capture,
+64 KiB of client stderr, 2 MiB per protocol document and 64 MiB across the entire
+protocol stream, including ignored notifications. Session deadlines are five
+minutes by default. Capture overflow, unexpected tools and protocol failure
+invalidate the session and terminate its process group. Preserve interrupted
+attempts separately; never silently replace failed observations.
+
 Each task gets a fresh thread/config/fixture server, with condition order
 alternating by task. Both conditions may batch or parallelize commands within one
 shell invocation. Unexpected built-in tools invalidate the row. Tool requests,
@@ -137,9 +158,29 @@ combinations. The provider reports a model alias rather than an immutable backen
 weight revision. Canaries, loopback ports and temporary paths are scrubbed only
 after original output metrics are computed.
 
+The Go [model-agent report](results/linux-x64-go1.27-gpt6.1-sol-agent.json) records
+16 independently graded sessions, backed by the immutable
+[raw execution report](results/linux-x64-go1.27-gpt6.1-sol-agent.raw.json) and
+[independent grading](results/linux-x64-go1.27-gpt6.1-sol-agent.grades.json).
+Both conditions pass 8/8 tasks without correctness/security errors. Median tool
+turns tie at three; the lower-median performance target is not met. Total calls
+are 30 for Go AXI versus 22 for native, with the secret task regressing to nine
+versus three. Shared-dependency and cycle tasks each improve to two versus four.
+
+The [interrupted first attempt](results/linux-x64-go1.27-gpt6.1-sol-agent.aborted.json)
+contains one completed wrapper session. The next session was interrupted after
+independent review found missing aggregate protocol capture bounds. The runner
+was fixed and tested, then all 16 sessions restarted. The interrupted attempt
+is excluded from certified metrics and remains visible for audit.
+
 The historical TypeScript [model-agent report](results/linux-x64-node24-gpt6.1-sol-agent.json)
-records 16 independently graded sessions. It does not certify the Go executable.
-New Go model observations require separate independent grading.
-See [the measured comparison](../docs/evaluation.md) for every task, total calls
-and per-task regressions. The executed source snapshot is an audit record; use
-the maintained Go runner, which includes stronger failure cleanup, for new runs.
+records its separate 16-session comparison. The original Go
+[handoff benchmark](results/linux-x64-go1.27-native1.5.0.json) and both TypeScript
+reports remain unchanged. See [the measured comparison](../docs/evaluation.md)
+for both implementation versions, total calls and per-task regressions. Use the
+maintained Go runner for new observations.
+
+The original Go handoff scripted report contains cumulative HTTP counts; use the
+corrected release report for per-workflow HTTP costs. The maintained native test
+asserts exact counts independently for every corpus task and condition. This
+scripted-counter defect did not affect the fresh-server model sessions.

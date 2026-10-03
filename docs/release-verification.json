@@ -1,92 +1,48 @@
 {
   "schemaVersion": "1.0",
-  "observedAt": "2026-10-03T00:55:47.576117+00:00",
-  "baselineCommit": "be1c494",
-  "scope": "Complete Go reimplementation of18acceptedread-onlyservices and tooling; no Go model-release certification",
-  "goVersion": "go version go1.27.1-X:nodwarf5 linux/amd64",
+  "recordPhase": "Go v0.1.0 local release certification completed; public tag/CI/assets verified separately at publication",
+  "observedAt": "2026-10-03T12:32:44.222250+00:00",
   "platform": "linux/amd64",
-  "sourceSnapshotSha256": "7c29ef2fe85be130405f53d1aea0f8964ccb0abeac794c61ae9dadb8e4768843",
-  "sourceSnapshotFiles": [
-    "Makefile",
+  "goVersion": "go version go1.27.1-X:nodwarf5 linux/amd64",
+  "productSourceCheckpoint": "231815d1b35c2afbef5653de3c1ad1f5acc16c01",
+  "productSourceSnapshotSha256": "900e6350a54fcc8aec85f3b3a60767fd0cb0cd83b25bde278842cf3fdd6fcd07",
+  "productSourceFiles": [
     "assets.go",
-    "cmd/axi-dev/main.go",
-    "cmd/evaluate-agent/main.go",
-    "cmd/evaluate/main.go",
-    "cmd/record-live/main.go",
-    "cmd/record-native/main.go",
     "cmd/teamcity-axi/main.go",
     "go.mod",
     "go.sum",
     "internal/axi/adapter_agents.go",
-    "internal/axi/adapter_collections_test.go",
     "internal/axi/adapter_common.go",
     "internal/axi/adapter_cursor.go",
-    "internal/axi/adapter_date_contract_test.go",
     "internal/axi/adapter_evidence.go",
-    "internal/axi/adapter_evidence_test.go",
     "internal/axi/adapter_json.go",
     "internal/axi/adapter_metadata.go",
-    "internal/axi/adapter_paging_test.go",
-    "internal/axi/adapter_policy_test.go",
     "internal/axi/adapter_raw.go",
-    "internal/axi/adapter_raw_test.go",
     "internal/axi/adapter_reader.go",
     "internal/axi/adapter_related.go",
     "internal/axi/adapter_run.go",
     "internal/axi/adapter_status.go",
-    "internal/axi/adapter_status_test.go",
-    "internal/axi/adapter_test_helpers_test.go",
-    "internal/axi/boundary_test.go",
     "internal/axi/command_collections.go",
     "internal/axi/command_common.go",
     "internal/axi/command_diagnostics.go",
     "internal/axi/command_evidence.go",
     "internal/axi/command_graph.go",
-    "internal/axi/command_realcli_assertions_test.go",
-    "internal/axi/command_realcli_collections_test.go",
-    "internal/axi/command_realcli_evidence_watch_test.go",
-    "internal/axi/command_realcli_fixture_test.go",
-    "internal/axi/command_realcli_graph_test.go",
-    "internal/axi/command_realcli_runs_test.go",
-    "internal/axi/command_realcli_status_test.go",
     "internal/axi/command_run.go",
-    "internal/axi/command_services_test.go",
     "internal/axi/command_watch_status.go",
     "internal/axi/context.go",
-    "internal/axi/context_review_test.go",
-    "internal/axi/context_test.go",
     "internal/axi/context_types.go",
     "internal/axi/docs.go",
-    "internal/axi/docs_test.go",
     "internal/axi/main.go",
     "internal/axi/output.go",
     "internal/axi/parser.go",
     "internal/axi/planner_failure.go",
-    "internal/axi/planner_failure_test.go",
     "internal/axi/planner_graph.go",
-    "internal/axi/planner_graph_test.go",
     "internal/axi/planner_status.go",
-    "internal/axi/planner_status_test.go",
     "internal/axi/registry.json",
     "internal/axi/session.go",
     "internal/axi/time.go",
     "internal/axi/transport.go",
     "internal/axi/types.go",
-    "internal/evaluation/agent.go",
-    "internal/evaluation/agent_test.go",
-    "internal/evaluation/benchmark.go",
-    "internal/evaluation/benchmark_realcli_test.go",
-    "internal/evaluation/metrics.go",
-    "internal/evaluation/metrics_test.go",
-    "internal/evaluation/process.go",
-    "internal/evaluation/rpc.go",
-    "internal/livefixture/harness.go",
-    "internal/livefixture/harness_test.go",
-    "internal/nativefixture/capture.go",
-    "internal/nativefixture/capture_test.go",
-    "internal/nativefixture/operations.json",
-    "internal/testfixture/server.go",
-    "internal/testfixture/tree.go",
     "schemas/agent-list.schema.json",
     "schemas/agent-view.schema.json",
     "schemas/context-show.schema.json",
@@ -108,23 +64,13 @@
     "schemas/run-watch.schema.json",
     "schemas/status.schema.json",
     "schemas/user-config.schema.json",
-    "skills/teamcity-axi/SKILL.md",
-    "tests/distribution/distribution_test.go",
-    "tests/live-server/collections_test.go",
-    "tests/live-server/live_test.go",
-    "tests/live-server/outcomes_watch_test.go",
-    "tests/live-server/run_list_test.go",
-    "tests/live-server/status_test.go",
-    "tests/native-contract/native_test.go"
+    "skills/teamcity-axi/SKILL.md"
   ],
-  "baselineOriginalPassed": {
-    "deterministic": 133,
-    "realcli": 56,
-    "live": 18
-  },
-  "behaviorTraceability": "docs/go-test-parity.json",
-  "units": {
-    "topLevelPasses": 162,
+  "productSourceUnchangedAfterEvaluationBuild": true,
+  "binarySha256": "f4d5e579051f19a9d3031bbadd7c78b7200ab08363d009a211bcf0237548e7f3",
+  "historicalImplementationHandoff": "docs/go-verification.json",
+  "deterministicAndRace": {
+    "topLevelPasses": 163,
     "failedTests": 0,
     "skippedTests": 0,
     "testNames": [
@@ -267,6 +213,7 @@
       "internal/evaluation::TestEvaluationNestedFixtureProjection",
       "internal/evaluation::TestEvaluationPortableReportRedactsBeforeJSONEscaping",
       "internal/evaluation::TestEvaluationProcessCaptureAndCancellation",
+      "internal/evaluation::TestEvaluationRPCAggregateCaptureBoundsIgnoredNotifications",
       "internal/evaluation::TestEvaluationRPCHandshakeToolRoundtripAndFinalEvents",
       "internal/evaluation::TestEvaluationRPCRejectsUnexpectedToolsAndMalformedDocuments",
       "internal/evaluation::TestEvaluationRPCTimeoutUnblocksPendingRequestsAndReapsProcess",
@@ -291,20 +238,10 @@
       "internal/nativefixture::TestFrozenNativeOperations",
       "internal/nativefixture::TestMissingAndMismatchedBinaryFail"
     ],
-    "streamSha256": "9edddcf642d51d1fe009decb3bcd9e36a74a7ac4e6c6f1db6f6ff173aae0e9dc",
-    "noTestPackages": [
-      "github.com/Periecle/teamcity-axi",
-      "github.com/Periecle/teamcity-axi/cmd/axi-dev",
-      "github.com/Periecle/teamcity-axi/cmd/evaluate",
-      "github.com/Periecle/teamcity-axi/cmd/evaluate-agent",
-      "github.com/Periecle/teamcity-axi/cmd/record-live",
-      "github.com/Periecle/teamcity-axi/cmd/record-native",
-      "github.com/Periecle/teamcity-axi/cmd/teamcity-axi",
-      "github.com/Periecle/teamcity-axi/internal/testfixture"
-    ]
+    "streamSha256": "3b391fa46d7c40f446786786c151fcfc257047c329dae7640293c6a29bad81eb"
   },
   "officialBinaryRun": {
-    "topLevelPasses": 218,
+    "topLevelPasses": 219,
     "failedTests": 0,
     "skippedTests": 0,
     "testNames": [
@@ -501,6 +438,7 @@
       "internal/evaluation::TestEvaluationNestedFixtureProjection",
       "internal/evaluation::TestEvaluationPortableReportRedactsBeforeJSONEscaping",
       "internal/evaluation::TestEvaluationProcessCaptureAndCancellation",
+      "internal/evaluation::TestEvaluationRPCAggregateCaptureBoundsIgnoredNotifications",
       "internal/evaluation::TestEvaluationRPCHandshakeToolRoundtripAndFinalEvents",
       "internal/evaluation::TestEvaluationRPCRejectsUnexpectedToolsAndMalformedDocuments",
       "internal/evaluation::TestEvaluationRPCTimeoutUnblocksPendingRequestsAndReapsProcess",
@@ -527,18 +465,66 @@
       "internal/nativefixture::TestMissingAndMismatchedBinaryFail",
       "tests/native-contract::TestReleasedNativeProtocolAndSummaryOmission"
     ],
-    "streamSha256": "ea98a1dd22407619e38b6c2b0f9bf4e836422693d78128231fa45137d5186b0b",
-    "noTestPackages": [
-      "github.com/Periecle/teamcity-axi",
-      "github.com/Periecle/teamcity-axi/cmd/axi-dev",
-      "github.com/Periecle/teamcity-axi/cmd/evaluate",
-      "github.com/Periecle/teamcity-axi/cmd/evaluate-agent",
-      "github.com/Periecle/teamcity-axi/cmd/record-live",
-      "github.com/Periecle/teamcity-axi/cmd/record-native",
-      "github.com/Periecle/teamcity-axi/cmd/teamcity-axi",
-      "github.com/Periecle/teamcity-axi/internal/testfixture"
-    ]
+    "streamSha256": "d326b018b9d8b9f308ec911042d72c456ab5a0107097d2376347995d0ff393dc"
   },
+  "additionalNativeScenarios": [
+    "internal/axi::TestRealCLIAgentCursorBinding",
+    "internal/axi::TestRealCLIAgentFailures",
+    "internal/axi::TestRealCLIAgentPolicyAndLimits",
+    "internal/axi::TestRealCLIAgentPolicyInterrupt",
+    "internal/axi::TestRealCLIAgentStatesAndScopes",
+    "internal/axi::TestRealCLIChangesEvidence",
+    "internal/axi::TestRealCLIContextVerification",
+    "internal/axi::TestRealCLIDependencyAdapters",
+    "internal/axi::TestRealCLIDoctorProbes",
+    "internal/axi::TestRealCLIEffectiveLimits",
+    "internal/axi::TestRealCLIEvidenceFailuresAndUnknown",
+    "internal/axi::TestRealCLIEvidenceIdentityAndPaging",
+    "internal/axi::TestRealCLIExceptionalOutcomes",
+    "internal/axi::TestRealCLIFailureErrorsAndBounds",
+    "internal/axi::TestRealCLIFailureSourcesAndDiagnosis",
+    "internal/axi::TestRealCLIFailureUnicodeAndReduction",
+    "internal/axi::TestRealCLIFractionalWindows",
+    "internal/axi::TestRealCLIJobCursorBinding",
+    "internal/axi::TestRealCLIJobFailures",
+    "internal/axi::TestRealCLIJobMetadataAndPaging",
+    "internal/axi::TestRealCLIJobUnknownAndLimits",
+    "internal/axi::TestRealCLILogWindowAndIndependentSources",
+    "internal/axi::TestRealCLILongWindowCursorBudget",
+    "internal/axi::TestRealCLIQueueCursorBinding",
+    "internal/axi::TestRealCLIQueueFailures",
+    "internal/axi::TestRealCLIQueuePaging",
+    "internal/axi::TestRealCLIQueueUnknownAndLimits",
+    "internal/axi::TestRealCLIRunListExhaustion",
+    "internal/axi::TestRealCLIRunListPaging",
+    "internal/axi::TestRealCLIRunListUnsafeAndFailures",
+    "internal/axi::TestRealCLIRunViewBoundsAndInterrupt",
+    "internal/axi::TestRealCLIRunViewFailures",
+    "internal/axi::TestRealCLIRunViewFormats",
+    "internal/axi::TestRealCLIRunViewRedactionAndMissingRevisions",
+    "internal/axi::TestRealCLIStatusCheckoutBoundaries",
+    "internal/axi::TestRealCLIStatusConcurrentCheckouts",
+    "internal/axi::TestRealCLIStatusErrorsAndUnconfiguredHome",
+    "internal/axi::TestRealCLIStatusExceptionalOutcomes",
+    "internal/axi::TestRealCLIStatusFiveJobs",
+    "internal/axi::TestRealCLIStatusLinkedWorktreeOrigins",
+    "internal/axi::TestRealCLIStatusRedAndActivity",
+    "internal/axi::TestRealCLIStatusStrictAndDashHints",
+    "internal/axi::TestRealCLIStatusUnverifiedCandidates",
+    "internal/axi::TestRealCLITreeBoundaries",
+    "internal/axi::TestRealCLITreeDAGAndCycle",
+    "internal/axi::TestRealCLITreeIndependentFailures",
+    "internal/axi::TestRealCLITreeReservedFinal",
+    "internal/axi::TestRealCLIUnknownOutcomePage",
+    "internal/axi::TestRealCLIUnknownResultCandidates",
+    "internal/axi::TestRealCLIWatchDeadline",
+    "internal/axi::TestRealCLIWatchFinished",
+    "internal/axi::TestRealCLIWatchIdentityFailures",
+    "internal/axi::TestRealCLIWatchInterrupt",
+    "internal/axi::TestRealCLIWatchTransitions",
+    "internal/evaluation::TestRealCLIEvaluationRetainsCriticalEvidenceAndHonestNativeRegressions",
+    "tests/native-contract::TestReleasedNativeProtocolAndSummaryOmission"
+  ],
   "live": {
     "topLevelPasses": 18,
     "failedTests": 0,
@@ -563,33 +549,103 @@
       "tests/live-server::TestLiveUnknownResultQueuedEvidenceAndFinishedCandidateCounts",
       "tests/live-server::TestLiveWatchFixedGreenRedQueuedCheckAndDeadline"
     ],
-    "streamSha256": "3cee3d70a5ddded57b75089d33a86da9d9e9fccf2a750d65432d2af1e880c2c1",
-    "noTestPackages": []
+    "streamSha256": "9bc9f99edd1098ff0b1c2836ea9502629a1b1dadc43494851a4fca9e5b2aefff"
   },
-  "additionalNativeScenarios": 56,
   "commands": {
     "quality": "make check",
-    "deterministic": "go test ./... -json -count=1",
-    "race": "go test -race ./... -count=1",
-    "native": "TEAMCITY_AXI_TEST_BINARY=<verified-native> go test -tags realcli ./... -json -count=1",
-    "live": "TEAMCITY_AXI_TEST_BINARY=<verified-native> TEAMCITY_AXI_LIVE_CREDENTIALS=<private-reader-config> TEAMCITY_AXI_LIVE_CHECKOUT=<owned-fixture-checkout> go test -tags live ./tests/live-server -json -count=1",
-    "package": "make test-package",
-    "benchmark": "TEAMCITY_AXI_TEST_BINARY=<verified-native> TEAMCITY_AXI_EVAL_WRAPPER=<standalone-binary> go run ./cmd/evaluate"
+    "race": "go test -race -json -count=1 ./...",
+    "native": "TEAMCITY_AXI_TEST_BINARY=<verified-native> go test -tags realcli -json -count=1 ./...",
+    "live": "TEAMCITY_AXI_TEST_BINARY=<verified-native> TEAMCITY_AXI_LIVE_CREDENTIALS=<private-reader> TEAMCITY_AXI_LIVE_CHECKOUT=<owned-fixture-checkout> go test -tags live -json -count=1 ./tests/live-server",
+    "package": "make -o build test-package",
+    "scriptedEvaluation": "TEAMCITY_AXI_TEST_BINARY=<verified-native> TEAMCITY_AXI_EVAL_WRAPPER=<evaluated-Go-binary> TEAMCITY_AXI_EVAL_OUTPUT=<new-report> go run ./cmd/evaluate",
+    "modelEvaluation": "TEAMCITY_AXI_TEST_BINARY=<verified-native> TEAMCITY_AXI_AGENT_RUNTIME=<production-only-runtime> TEAMCITY_AXI_AGENT_AUTH_PATH=<authorized-private-model-auth> go run ./cmd/evaluate-agent"
   },
   "quality": {
     "gofmt": "passed",
     "goVet": "passed",
-    "goModVerify": "passed",
     "generatedDocs": "passed",
     "goOnlySourceGate": "passed",
+    "goModVerify": "passed",
     "race": "passed",
-    "lsp": "unavailable: gopls ENOENT; Go compilation/tests/race/vet used"
+    "lsp": "unavailable: gopls ENOENT; Go compilation/tests/race/vet used",
+    "counterFixVerification": {
+      "fullChecks": "make check test-real-cli passed after fix",
+      "focusedRace": "go test -race -tags realcli ./internal/evaluation -run ^TestRealCLIEvaluationRetainsCriticalEvidenceAndHonestNativeRegressions$ -count=1 passed",
+      "redGreen": "Original cumulative counter failed on second workflow: 10 requests instead of 5; corrected test passed with exact per-task counts",
+      "testInventory": "No new top-level test; existing 32-observation native test strengthened"
+    }
   },
+  "modelEvaluation": {
+    "status": "complete; independent answer and full tool/request trace grading passed",
+    "certifiedSessions": 16,
+    "artifact": "evaluations/results/linux-x64-go1.27-gpt6.1-sol-agent.json",
+    "sha256": "6d71e191ea5a2f831480c2ca50ce19db83c574789b3aff1adf583c8c4b1f4423",
+    "rawArtifact": "linux-x64-go1.27-gpt6.1-sol-agent.raw.json",
+    "rawReportSha256": "f8030ebe899d0381bf801a1b2ebf2e5e38ad552d00caf0495b8cb7fd45fefe62",
+    "independentGradingArtifact": "linux-x64-go1.27-gpt6.1-sol-agent.grades.json",
+    "independentGradingSha256": "ac77b8a8c843740ebfca1ffc98d036ecc1349eeecf935dbfc6d2374bf3070e9c",
+    "conditions": [
+      {
+        "condition": "wrapper",
+        "medianOutputTokens": 5576.5,
+        "medianToolTurns": 3,
+        "medianWallTimeMs": 55379.4599655,
+        "observations": 8,
+        "secretExposures": 0,
+        "taskSuccesses": 8,
+        "identityMistakes": 0,
+        "completenessMistakes": 0,
+        "unsupportedCausalClaims": 0,
+        "finalAnswerSecretExposures": 0,
+        "medianNativeSubprocessCount": 14.5,
+        "medianHttpRequestCount": 12.0,
+        "totalToolTurns": 30,
+        "totalNativeSubprocessCount": 120,
+        "totalHttpRequestCount": 99
+      },
+      {
+        "condition": "native",
+        "medianOutputTokens": 861.5,
+        "medianToolTurns": 3,
+        "medianWallTimeMs": 105055.322189,
+        "observations": 8,
+        "secretExposures": 0,
+        "taskSuccesses": 8,
+        "identityMistakes": 0,
+        "completenessMistakes": 0,
+        "unsupportedCausalClaims": 0,
+        "finalAnswerSecretExposures": 0,
+        "medianNativeSubprocessCount": 7.0,
+        "medianHttpRequestCount": 8.0,
+        "totalToolTurns": 22,
+        "totalNativeSubprocessCount": 101,
+        "totalHttpRequestCount": 109
+      }
+    ],
+    "lowerMedianToolCallTarget": "unmet: median 3 versus 3; total 30 versus 22, secret 9 versus 3; shared/cycle 2 versus 4 narrowly scoped benefits",
+    "priorAttempt": {
+      "completedSessions": 1,
+      "interruptedSessions": 1,
+      "reason": "Independent review found absent aggregate RPC stream ceiling; interrupted attempt excluded, runner fixed and tested before restarting all 16."
+    },
+    "abortedArtifact": "linux-x64-go1.27-gpt6.1-sol-agent.aborted.json",
+    "abortedSha256": "75f164b0d9efddb5cdd11949464e45b0d69fc46ca5c6f16afcc66a82d668f0e1"
+  },
+  "release": {
+    "version": "0.1.0",
+    "tag": "v0.1.0",
+    "url": "https://github.com/Periecle/teamcity-axi/releases/tag/v0.1.0",
+    "state": "ready for authorized publication; unsigned tag and remote CI/assets are checked during publication"
+  },
+  "notes": [
+    "Top-level test counts include the helper-process fixture test; all207original behaviors remain mapped in docs/go-test-parity.json.",
+    "Deterministic names from the fresh race run are a subset of the fresh219-test native run; make check also passed.",
+    "Publications and CI are verified separately against the final tag and assets."
+  ],
   "package": {
     "archive": "release/teamcity-axi-linux-amd64.tar.gz",
-    "sha256": "961313c74afb042e3e769d4e206b81e1614714c7f725488dbaf54625a4c02584",
-    "binarySha256": "33866022232a28e8f733d90f3956f4d2d609d3c3b223db5caa645528921c56b5",
-    "offlineCommandExecutions": 56,
+    "sha256": "5e0c5edf61234c328da919527088414ba073dc8f04530c90e81c604feabe8031",
+    "binarySha256": "f4d5e579051f19a9d3031bbadd7c78b7200ab08363d009a211bcf0237548e7f3",
     "allowedFiles": [
       "teamcity-axi",
       "LICENSE",
@@ -599,56 +655,90 @@
       "docs/commands.md",
       "docs/dependencies.md"
     ],
-    "schemasAndSkill": "embedded"
+    "offlineCommandExecutions": 56,
+    "schemasAndSkill": "embedded",
+    "sameBinaryAsScriptedAndModelEvaluation": true,
+    "method": "make -o build test-package preserves the exact previously built/evaluated executable while refreshing release documents",
+    "checksumManifest": "release/SHA256SUMS"
   },
-  "crossCompilation": {
-    "darwin/arm64": "passed-build-only",
-    "darwin/amd64": "passed-build-only",
-    "linux/arm64": "passed-build-only"
+  "scriptedEvaluation": {
+    "artifact": "evaluations/results/linux-x64-go1.27-native1.5.0-release.json",
+    "sha256": "4e8d2c7fd99e9e4e0e9296db26957768f2d878ecd807286888cdc2b338cbb84c",
+    "observations": 96,
+    "conditions": [
+      {
+        "agentTaskSuccess": null,
+        "completenessMistakes": 0,
+        "condition": "wrapper-toon",
+        "evidenceRetained": 24,
+        "identityMistakes": 0,
+        "medianAgentFacingToolTurns": null,
+        "medianNativeSubprocessCount": 6.5,
+        "medianOutputTokens": 3025,
+        "medianWallTimeMs": 111.497371,
+        "observations": 24,
+        "secretExposures": 0,
+        "unjustifiedCausalClaims": null
+      },
+      {
+        "agentTaskSuccess": null,
+        "completenessMistakes": 0,
+        "condition": "wrapper-json",
+        "evidenceRetained": 24,
+        "identityMistakes": 0,
+        "medianAgentFacingToolTurns": null,
+        "medianNativeSubprocessCount": 6.5,
+        "medianOutputTokens": 2718,
+        "medianWallTimeMs": 108.41987449999999,
+        "observations": 24,
+        "secretExposures": 0,
+        "unjustifiedCausalClaims": null
+      },
+      {
+        "agentTaskSuccess": null,
+        "completenessMistakes": 0,
+        "condition": "native-selected-json",
+        "evidenceRetained": 21,
+        "identityMistakes": 0,
+        "medianAgentFacingToolTurns": null,
+        "medianNativeSubprocessCount": 5.5,
+        "medianOutputTokens": 1009.5,
+        "medianWallTimeMs": 46.22331,
+        "observations": 24,
+        "secretExposures": 6,
+        "unjustifiedCausalClaims": null
+      },
+      {
+        "agentTaskSuccess": null,
+        "completenessMistakes": 0,
+        "condition": "native-failure-diagnostics",
+        "evidenceRetained": 0,
+        "identityMistakes": 0,
+        "medianAgentFacingToolTurns": null,
+        "medianNativeSubprocessCount": 1,
+        "medianOutputTokens": 238,
+        "medianWallTimeMs": 13.5108205,
+        "observations": 24,
+        "secretExposures": 3,
+        "unjustifiedCausalClaims": null
+      }
+    ],
+    "wrapperBinarySha256": "f4d5e579051f19a9d3031bbadd7c78b7200ab08363d009a211bcf0237548e7f3",
+    "httpRequestCounts": "per-workflow exact counts independently verified for all 96 observations; historical Go handoff counts were cumulative and remain preserved with documented limitation"
   },
+  "independentReviews": [
+    "Separate adapter/security reviewer found aggregate RPC capture gap, verified fix and independently graded all 16 model answers/tool/request traces",
+    "Separate command reviewer audited release documents, historical labels, installation and distribution",
+    "Parent verifies mandatory release gates, exact product-source/binary identity and final archive"
+  ],
   "wireArtifacts": {
     "tests/fixtures/native-v1.5.0/contract.json": {
       "sha256": "136a21f264c5e460778561b21023fafc7dc67842b20c733f19ed66a5b0448c7e",
-      "unchangedFromBaseline": true
+      "unchangedFromHistoricalBaseline": true
     },
     "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json": {
       "sha256": "c0687f121b93c566b86a0d5dbad9c7cfd8ce81d01342f233815851a12ac35c56",
-      "unchangedFromBaseline": true
+      "unchangedFromHistoricalBaseline": true
     }
-  },
-  "recorders": {
-    "native": "39sanitizedrecords; synthetic sentinel absent",
-    "live": "118sanitizedrecords; identity/permission guards passed;0600temporary output"
-  },
-  "scriptedBenchmark": {
-    "artifact": "evaluations/results/linux-x64-go1.27-native1.5.0.json",
-    "sha256": "e7ed6d88bd1f70b95e8ecd463eb2a72b42757b8590061df85090e00bc2664ea6",
-    "observations": 96,
-    "wrapperEvidenceRetained": 48,
-    "wrapperSecretExposures": 0,
-    "wrapperIdentityMistakes": 0,
-    "wrapperCompletenessMistakes": 0,
-    "modelClaims": "not performed"
-  },
-  "modelEvaluation": {
-    "runner": "ported toGo; deterministic protocol/tool/capture/cleanup checks passed; auth-free filesystem isolation probe passed",
-    "newCredentialBackedSessions": 0,
-    "status": "unexecuted pending explicit user approval after automatic approval review rejected credential/account-use launch",
-    "historicalResults": "TypeScript artifacts retained unchanged; do not certifyGo"
-  },
-  "independentReviews": [
-    "Root context/transport/output/native/live tooling; adapter and planner boundaries",
-    "Adapter security/evidence review ofcommands/planners; deterministic assertion audit",
-    "Planner independent command review and native status9 literal assertion audit",
-    "Adapter native evidence/watch10 literal assertion audit",
-    "Command owner runs/diagnostics15,collections13,graph7 literal assertion audit"
-  ],
-  "notes": [
-    "Top-level counts are Go test-result records, including a helper-process fixture test; behavioral parity uses the explicit207scenario map.",
-    "Go JSON package skip records mean no test files and are not skipped test cases.",
-    "Local execution evidence only; no remote CI or Go release publication claim."
-  ],
-  "recordPhase": "Historical Go implementation handoff before model evaluation and publication approval",
-  "currentReleaseEvidence": "release-verification.json",
-  "historicalScriptedHttpLimitation": "OriginalGo handoff benchmark contains cumulative HTTP counts; per-workflow request costs are corrected and independently verified in the release report referenced by docs/release-verification.json."
+  }
 }

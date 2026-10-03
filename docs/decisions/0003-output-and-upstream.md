@@ -2,13 +2,19 @@
 
 Accepted for the initial implementation, 2026-10-02.
 
-Strict TypeScript ESM on Node 24 is the implementation baseline. Public JSON
-schemas are runtime-validated by pinned Ajv 2020. Conditional seed schemas use
+The runtime/library selection below records the original TypeScript checkpoint
+and is superseded by [ADR 0017](0017-go-reimplementation.md). Current Go execution
+evidence is linked from [implementation status](../STATUS.md). The normalized
+output, redaction and upstream-boundary requirements remain in force.
+
+At that checkpoint, strict TypeScript ESM on Node 24 was the implementation
+baseline. Public JSON schemas were runtime-validated by pinned Ajv 2020.
+Conditional seed schemas used
 cross-subschema `required` and property constraints; Ajv's strictRequired,
 strictTypes and strictTuples lint checks are disabled without disabling their
-actual JSON Schema validation semantics. Other schema lint checks remain strict.
+actual JSON Schema validation semantics. Other schema lint checks remained strict.
 
-Pinned `@toon-format/toon` encodes the same model as JSON; no dispatcher SDK
+Pinned `@toon-format/toon` encoded the same model as JSON; no dispatcher SDK
 with implicit update operations is imported. Redact known environment secrets,
 recognizable authorization, credential URLs and private keys before serialization.
 Remove ANSI/control sequences and expose bidi controls as literal code points.

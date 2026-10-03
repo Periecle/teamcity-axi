@@ -1,4 +1,7 @@
 {
+  "evidenceKind": "historical-specification-seed-validation",
+  "scope": "Original core schemas and examples before CLI implementation; these counts and limitations describe that checkpoint only.",
+  "currentVerification": "docs/release-verification.json",
   "validatedSchemas": 5,
   "validatedExamples": 6,
   "negativeChecksPassed": 8,
@@ -7,9 +10,9 @@
   "graphEdgeReferencesChecked": true,
   "acceptanceScenariosSpecified": 20,
   "limitations": [
-    "No CLI implementation or live TeamCity integration was executed.",
-    "Gherkin acceptance scenarios are specifications without implemented step bindings.",
-    "TOON rendering must be tested with the pinned reference serializer during implementation.",
-    "Only core envelope/failure/configuration schemas are included; remaining command payload schemas are a release gate."
+    "At this original checkpoint, no CLI implementation or live TeamCity integration had been executed.",
+    "The original Gherkin acceptance scenarios were specifications without implemented step bindings; current behavioral coverage is recorded separately in docs/acceptance.md.",
+    "TOON rendering was not exercised by this seed validation; current serializer execution evidence is recorded separately.",
+    "This seed validation covered only core envelope/failure/configuration schemas; command payload schema verification is recorded in current Go checks."
   ]
 }

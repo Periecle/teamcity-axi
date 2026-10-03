@@ -3,8 +3,8 @@
 `internal/testfixture` contains invented, sanitized public sample data shaped from
 the official v1.5.0 CLI source. It is not a captured private/live server response.
 `internal/nativefixture/operations.json` lists the exact released-binary argv exercised against
-that local mock. `native-v1.5.0/contract.json` records resulting native stdout,
-stderr, exit codes and mock request method/path/query/authentication-presence.
+that local mock. `native-v1.5.0/contract.json` contains 39 observations of resulting
+native stdout, stderr, exit codes and mock request method/path/query/authentication-presence.
 
 The recorder checks the binary SHA-256 and version against
 `docs/compatibility.json` before attributing observations to the pinned release.
@@ -65,10 +65,11 @@ explicit and never silently skipped:
 
 ```sh
 TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity \
-TEAMCITY_AXI_LIVE_CREDENTIALS=/private/path/reader.json make test-live
+TEAMCITY_AXI_LIVE_CREDENTIALS=/private/path/reader.json \
+TEAMCITY_AXI_LIVE_CHECKOUT=/absolute/path/owned-fixture-checkout make test-live
 TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity \
 TEAMCITY_AXI_LIVE_CREDENTIALS=/private/path/reader.json \
-TEAMCITY_AXI_LIVE_OUTPUT=/tmp/new-sanitized-contract.json go run ./cmd/record-native-live
+TEAMCITY_AXI_LIVE_OUTPUT="${TMPDIR:-/tmp}/new-sanitized-contract.json" go run ./cmd/record-live
 ```
 
 The recorder refuses an existing output file and checks the captured server
@@ -94,7 +95,7 @@ scopes, positive continuation, an empty bounded page, foreign-project 403 and ex
 queued-run detail. The recorder binds them to the controlled execution IDs 10/11
 and owning jobs; it rejects moved identities or changed lifecycle. The queued
 detail omits status, which the wrapper preserves as an unknown result. The
-native/mock corpus now has 30 observations, including the bounded queue GET.
+native/mock corpus contains 39 observations, including the bounded queue GET.
 Negative executable cases reject malformed identity Unicode/controls, unsafe
 continuations, unsupported reads and oversized input/output without false empty
 success. Broader live state transitions and queue scope certification remain open.
@@ -107,6 +108,6 @@ fixture agent belongs to a dedicated pool, but the unchanged project-view reader
 still receives 404 for pool locators. That response remains an error. Omitted
 active-build data remains unknown activity. Positive live pool access, active
 pointers, explicit idle and mixed availability remain gates, with native/mock
-coverage. The native/mock corpus now contains 33 observations. Recorder guards
+coverage. Recorder guards
 bind current agent ID, pool and separate availability states and reject false
-empty pages; replay validates all 69 restricted reads without broader credentials.
+empty pages; replay validates all 118 restricted reads without broader credentials.

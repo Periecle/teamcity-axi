@@ -42,7 +42,7 @@
       "goVersion": "1.27.1"
     }
   ],
-  "supportStatus": "go-read-only-executed-for-recorded-combination-model-release-gate-pending",
+  "supportStatus": "go-read-only-v0.1.0-accepted-for-recorded-combination-with-documented-capability-and-performance-limits",
   "serverContract": "118 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; accepted read-only scope with recorded capability limitations",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-queued-running-canceled-failed-to-start-composite-and-denied; explicit outcome metadata; unknown on omissions/conflicts",
@@ -64,5 +64,8 @@
     "fixedRunWatch": "live-positive exact green/red/canceled/failed-to-start/composite terminal checks, queued deadline retention and actual running-to-canceled two-poll transition; native vanished/inaccessible retention, SIGINT/SIGTERM, byte/identity/provenance regressions; broader live lifecycle gates pending",
     "portableSkill": "versioned read-only portable SKILL.md and registry-generated help/examples; drift checked by make check"
   },
-  "goVerification": "docs/go-verification.json"
+  "goVerification": "docs/release-verification.json",
+  "historicalImplementationVerification": "docs/go-verification.json",
+  "modelEvaluation": "evaluations/results/linux-x64-go1.27-gpt6.1-sol-agent.json",
+  "scriptedEvaluation": "evaluations/results/linux-x64-go1.27-native1.5.0-release.json"
 }

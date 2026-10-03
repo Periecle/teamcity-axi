@@ -443,6 +443,7 @@ func Evaluate(ctx context.Context, options BenchmarkOptions) (Object, error) {
 			}
 			for _, condition := range conditions {
 				server.SetMode(axi.Str(task, "mode"))
+				server.ClearRequests()
 				calls := []Call{}
 				var callsMu sync.Mutex
 				start := time.Now()

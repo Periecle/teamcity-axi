@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased Go reimplementation
+## 0.1.0 — 2026-10-03
 
 Reimplements all eighteen accepted read-only commands and development tooling in
 Go. The standalone executable embeds offline schemas and the portable skill.
@@ -9,12 +9,23 @@ management stay with the official TeamCity CLI. No JS/TS runtime is required.
 
 The migration retains the original adversarial test behaviors and captured wire
 artifacts, adds Go race checks, and separately reruns native and restricted live
-contracts. See docs/go-test-baseline.json and the current release audit.
+contracts. See [the preserved baseline](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/go-test-baseline.json) and
+[the current release audit](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/release-audit.md).
 
-## 0.1.0 historical TypeScript release
+The Go release passes 163 deterministic tests, 56 additional native contracts,
+18 restricted live tests and race/vet/format/documentation checks. Sixteen
+independently graded model sessions pass all eight tasks in both conditions
+without correctness or credential-exposure errors. Median tool calls tie at
+three, total calls are 30 versus 22, and the secret task regresses to nine versus
+three. Shared-dependency and cycle tasks each improve to two versus four. The
+lower-median target is unmet; no general efficiency claim is made. The final
+scripted benchmark retains all wrapper evidence at about 110 ms, with optimized
+native workflows smaller and faster. See [measured results](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/evaluation.md).
 
-The initial read-only product implements eighteen command services: exact-checkout
-status, fixed-execution watch, independent run evidence and failure investigation,
+## Historical TypeScript checkpoint (unpublished)
+
+The initial read-only implementation covered eighteen command services:
+exact-checkout status, fixed-execution watch, independent run evidence and failure investigation,
 scoped jobs/queue/agents, context diagnostics, and local help/schema commands.
 
 - Preserves exact execution, job, project and VCS-root identity; distinguishes
@@ -43,4 +54,5 @@ turns were 3 versus 3.5 in this fixed sample, with a secret-task regression of 8
 versus 4. There is no general performance guarantee. The final release audit
 accepts only the recorded compatibility scope. Comparison, setup/hooks and
 mutations remain deferred. The compiled package and checksum are prepared for GitHub distribution.
-Publication awaits owner approval; no GitHub or npm registry release is claimed.
+At that checkpoint publication awaited owner approval. No TypeScript GitHub or
+npm registry release was published.

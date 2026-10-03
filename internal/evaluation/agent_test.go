@@ -98,6 +98,16 @@ func TestEvaluationHelperProcess(t *testing.T) {
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	emit := func(message Object) { bytes, _ := json.Marshal(message); fmt.Println(string(bytes)) }
+	if mode == "protocol-overflow" {
+		// Every ignored notification is well below the per-document ceiling.
+		// None is retained, so only the aggregate stream guard can reject this flood.
+		message := Object{"method": "fixture/ignored", "params": Object{"padding": strings.Repeat("x", 65536)}}
+		for emitted := 0; emitted <= modelProtocolCaptureLimit/65536; emitted++ {
+			emit(message)
+		}
+		time.Sleep(30 * time.Second)
+		os.Exit(0)
+	}
 	for scanner.Scan() {
 		var message Object
 		_ = json.Unmarshal(scanner.Bytes(), &message)
@@ -196,6 +206,26 @@ func TestEvaluationRPCTimeoutUnblocksPendingRequestsAndReapsProcess(t *testing.T
 	_, err := client.request("unanswered", Object{})
 	if !errors.Is(err, context.DeadlineExceeded) || time.Since(start) > time.Second {
 		t.Fatalf("pending request survived timeout: %v", err)
+	}
+}
+
+func TestEvaluationRPCAggregateCaptureBoundsIgnoredNotifications(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	client := testRPCClient(t, ctx, "protocol-overflow", nil)
+	_, err := client.request("unanswered", Object{})
+	if err == nil || !strings.Contains(err.Error(), "bounded protocol capture") || errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("valid multi-line protocol flood did not hit the aggregate capture ceiling: %v", err)
+	}
+	if len(client.Events()) != 0 {
+		t.Fatal("ignored notifications were incorrectly retained")
+	}
+	reaped := make(chan struct{})
+	go func() { client.Close(); close(reaped) }()
+	select {
+	case <-reaped:
+	case <-time.After(time.Second):
+		t.Fatal("overflowing RPC process was not reaped")
 	}
 }
 

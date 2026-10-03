@@ -50,5 +50,7 @@ Both serializers enforce actual UTF-8 output bounds; required queue rows are not
 silently removed to fit. Source diagnostics are grouped by code so a hundred-row
 page cannot overflow the diagnostic collection. No-hints and require-complete
 flags apply. Focused unit, native/mock and restricted live evidence proves this
-slice; broader queue lifecycle/permission/topology certification, agents, checkout
-status, watch and evaluation/release gates remain open.
+slice. At that original implementation checkpoint, broader queue
+lifecycle/permission/topology certification, agents, checkout status, watch and
+evaluation/release gates were still open. Current Go service coverage and
+remaining compatibility limits are tracked in [implementation status](../STATUS.md).

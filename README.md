@@ -1,8 +1,8 @@
 # teamcity-axi
 
 A read-only Go CLI for bounded TeamCity evidence. Implementation follows
-[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), with
-[SPECIFICATION.md](SPECIFICATION.md) as the normative contract.
+[IMPLEMENTATION_PLAN.md](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/IMPLEMENTATION_PLAN.md), with
+[SPECIFICATION.md](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/SPECIFICATION.md) as the normative contract.
 
 Observe the current checkout with `status`, investigate an exact execution with
 `run failure`, or wait for its outcome with `run watch`. The read-only command
@@ -10,10 +10,10 @@ surface also includes exact run/job/agent views, bounded run/job/queue/agent
 inventories, independent problems/tests/logs/changes/dependency reads, and local
 or verified context diagnostics. TOON is the default; optional JSON carries the same logical values.
 Typed validation, scope assertions, and query-bound cursors preserve identity.
-See the [generated command reference](docs/commands.md),
-[portable agent skill](skills/teamcity-axi/SKILL.md),
-[implementation status](docs/STATUS.md), and [compatibility](docs/compatibility.json).
-The [recorded evaluation](docs/evaluation.md) compares investigation evidence
+See the [generated command reference](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/commands.md),
+[portable agent skill](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/skills/teamcity-axi/SKILL.md),
+[implementation status](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/STATUS.md), and [compatibility](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/compatibility.json).
+The [recorded evaluation](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/evaluation.md) compares investigation evidence
 against optimized native workflows, including measured costs and limitations.
 
 The standalone executable requires a separately installed official `teamcity` CLI.
@@ -22,7 +22,10 @@ native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
 recorded but have not been executed. The read-only command services
 have been tested on TeamCity 2026.2 build 238924 with a restricted test identity;
 Go execution evidence covers that recorded combination and its stated capability
-limits; the separate model release gate remains pending.
+limits. The separate 16-session model comparison passed independent correctness
+and security grading. Both AXI and native CLI achieved 8/8 task success; median
+tool calls tied at three, with 30 versus 22 total calls. AXI output was larger;
+see the recorded evaluation for task costs and regressions.
 The wrapper never downloads native tools during installation.
 Use the official `teamcity` CLI directly for ordinary native operations and
 authentication management. AXI adds bounded agent-facing evidence, exact checkout
@@ -30,6 +33,26 @@ assessment, source accounting and investigation; it does not duplicate native
 setup or add an unrestricted command passthrough.
 Files in `examples/` use synthetic placeholder identities; live test evidence is
 recorded separately in the sanitized fixture corpus.
+
+Install the Linux amd64 build from v0.1.0:
+
+```sh
+curl -fLO https://github.com/Periecle/teamcity-axi/releases/download/v0.1.0/teamcity-axi-linux-amd64.tar.gz
+curl -fLO https://github.com/Periecle/teamcity-axi/releases/download/v0.1.0/SHA256SUMS
+sha256sum --check SHA256SUMS
+tar -xzf teamcity-axi-linux-amd64.tar.gz
+mkdir -p "$HOME/.local/bin"
+install -m 0755 teamcity-axi "$HOME/.local/bin/teamcity-axi"
+"$HOME/.local/bin/teamcity-axi" --version
+```
+
+Add `$HOME/.local/bin` to your `PATH` to invoke `teamcity-axi` directly. Install
+the official TeamCity CLI separately and select the checksum-tested v1.5.0
+binary recorded in [compatibility](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/compatibility.json). No Go toolchain is
+required to run the compiled wrapper. Only Linux amd64 has execution evidence;
+cross-compilation does not establish support for another platform.
+
+For a source checkout, build the executable and run the examples below:
 
 ```sh
 go mod download
@@ -120,7 +143,7 @@ reported separately. Scoped counts distinguish known leaves from depth, node,
 call and permission boundaries. Defaults are depth four, 30 nodes, 24 child
 processes, 20 seconds and 24 KiB output. `--depth 0` means root only. Non-terminal
 roots reserve a final observation, with provisional or changed evidence explicit.
-The graph never implies causal attribution. See [graph decisions](docs/decisions/0007-run-graph.md).
+The graph never implies causal attribution. See [graph decisions](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/decisions/0007-run-graph.md).
 
 `run failure` emits bounded observations with retrievable source evidence. It
 accounts separately for problems, unmuted tests, muted tests, dependency
@@ -130,26 +153,26 @@ reads. Diagnosis defaults to three runs, graph reads stop at ten, and non-termin
 roots reserve a final observation. The current live problem/test adapters retain
 unknown exhaustion, so failed-run investigations remain partial. Optional changes
 are reduced before required evidence when stdout is tight. See
-[failure decisions](docs/decisions/0008-failure-investigation.md).
+[failure decisions](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/decisions/0008-failure-investigation.md).
 
 `job list` reads one bounded page of jobs directly owned by the selected project.
 It defaults to 20 rows and preserves unknown totals and collection exhaustion.
 `job view` returns safe exact-ID metadata. Both commands expose nullable paused
 state and omit parameters and settings; current project policy applies to every
-invocation. See [job decisions](docs/decisions/0009-scoped-jobs.md).
+invocation. See [job decisions](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/decisions/0009-scoped-jobs.md).
 
 `queue list` requires a selected job or project and preserves exact queued
 execution IDs, optional branch/time and the provider's wait reason. It defaults
 to 20 rows; totals and missing bounded continuation remain unknown. Cursors bind
 the resolved scope and current policy, while offset consistency is best effort.
 Retrieval hints observe exact executions. A queued run without a reported result
-stays unknown with an explicit limitation. See [queue decisions](docs/decisions/0010-scoped-queue.md).
+stays unknown with an explicit limitation. See [queue decisions](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/decisions/0010-scoped-queue.md).
 
 `agent list` requires a pool or validated job/project scope; `agent view` reads an
 exact numeric ID. Connectivity, enablement and authorization stay separate and
 nullable. Safe active-run pointers must pass current project policy. Missing
 activity metadata never establishes idleness, and unavailable pool scopes remain
-errors. Pages preserve unknown totals and exhaustion. See [agent decisions](docs/decisions/0011-safe-agents.md).
+errors. Pages preserve unknown totals and exhaustion. See [agent decisions](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/decisions/0011-safe-agents.md).
 
 `context show` makes no server calls unless `--verify` is supplied. Verification
 reads only selected jobs/projects and the current identity; it reports a safe
@@ -162,8 +185,8 @@ Project-subtree policy follows at most eight observed parent links; unknown or
 cyclic ancestry cannot authorize access.
 
 Trusted configuration is `${XDG_CONFIG_HOME:-~/.config}/teamcity-axi/config.json`.
-Use [the schema](schemas/user-config.schema.json) and
-[synthetic example](examples/user-config.json). Set ownership to yourself and
+Use [the schema](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/schemas/user-config.schema.json) and
+[synthetic example](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/examples/user-config.json). Set ownership to yourself and
 permissions to `0600`. Repository `teamcity.toml` selects registered URLs and
 scope; `.teamcity-axi.json` supplies VCS mappings. Never put tokens in either.
 Use restricted official-CLI authentication. Inherited `TEAMCITY_TOKEN` requires
@@ -174,13 +197,13 @@ TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity make test-real-cli
 ```
 
 This suite requires the verified release binary and fails if it is absent or
-mismatched. It never silently skips. Read [security](docs/security.md),
-[fixture provenance](tests/fixtures/README.md) and [sources](SOURCES.md).
+mismatched. It never silently skips. Read [security](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/security.md),
+[fixture provenance](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/tests/fixtures/README.md) and [sources](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/SOURCES.md).
 
 `--debug` writes one JSON diagnostic to stderr with actual child, concurrency,
 capture, output and deadline limits. Limit-hit responses carry the same numeric
 ceilings, including output reductions that happen during rendering. Normal
 responses stay unchanged.
 
-The project uses the [MIT license](LICENSE). The [dependency inventory](docs/dependencies.md)
+The project uses the [MIT license](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/LICENSE). The [dependency inventory](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/dependencies.md)
 records the pinned Go module versions and declared third-party licenses.

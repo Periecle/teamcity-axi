@@ -1,6 +1,6 @@
 # Security boundary
 
-The development CLI is read-only. User configuration can register trusted
+The CLI is read-only. User configuration can register trusted
 servers; repository files cannot. Tokens are never accepted as CLI arguments or
 copied into wrapper configuration. The official CLI owns stored authentication.
 An inherited token is forwarded only to its explicitly bound canonical URL.

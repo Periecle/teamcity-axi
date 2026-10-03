@@ -1,6 +1,12 @@
 # Implementation plan and handoff
 
-This plan implements `SPECIFICATION.md`. It contains milestones and acceptance gates, not calendar estimates. The output of this package is a specification; the tasks below have not already been implemented.
+This plan implements `SPECIFICATION.md`. It retains milestone contracts and
+acceptance gates, not calendar estimates or a current completion report. The
+accepted read-only scope is implemented in Go. See
+[implementation status](docs/STATUS.md) and
+[the release verification record](docs/release-verification.json) for executed checks
+and release evidence. Comparison, setup/hooks and writes retain their separate
+deferred gates below.
 
 ## Milestone 0 — Verify and freeze the upstream contract
 

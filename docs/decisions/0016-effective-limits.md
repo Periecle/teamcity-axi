@@ -15,9 +15,14 @@ fallback retain effective ceilings. Limit errors identify the actual ceiling and
 observed count or bytes when available; no argv, environment or credential values
 are added.
 
-Verification includes profile minima, child/deadline/capture enforcement,
-renderer-only reduction, JSON/TOON equivalence, tighter trusted configuration,
+Historical TypeScript verification included profile minima,
+child/deadline/capture enforcement, renderer-only reduction, JSON/TOON equivalence,
+tighter trusted configuration,
 redaction and packaged debug behavior. Full checks: 133 deterministic, 56 pinned
 native and 18 restricted live tests; production-only package smoke checks: 18.
 Independent review found no remaining material issue. Some LSP requests timed out;
-fresh TypeScript compilation supplied semantic verification.
+fresh TypeScript compilation supplied semantic verification. Those counts and
+compiler observations describe the original checkpoint, not the Go release.
+The contract is retained by [ADR 0017](0017-go-reimplementation.md); current Go
+checks and package evidence are recorded in [implementation status](../STATUS.md)
+and [the release verification record](../release-verification.json).

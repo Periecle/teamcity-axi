@@ -2,6 +2,12 @@
 
 Consulted on **1 October 2026**. Links to `main` are mutable; the implementation must record immutable revisions and test released binaries. No TeamCity tenant belonging to Roman was queried.
 
+This register preserves the original research sources. The Go runtime decision
+supersedes the historical Node/JavaScript stack references S12 and S13; see
+[ADR 0017](docs/decisions/0017-go-reimplementation.md),
+[the pinned dependency inventory](docs/dependencies.md) and
+[current release evidence](docs/release-verification.json).
+
 ## S1 — Official CLI scripting and JSON contract
 
 `https://www.jetbrains.com/help/teamcity/teamcity-cli-scripting.html`

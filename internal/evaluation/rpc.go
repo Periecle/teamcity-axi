@@ -20,6 +20,23 @@ type rpcReply struct {
 	err   error
 }
 
+const modelProtocolCaptureLimit = 64 * 1024 * 1024
+
+// Count the entire stream, including notifications that are not retained as events.
+type protocolCaptureReader struct {
+	reader io.Reader
+	total  int
+}
+
+func (capture *protocolCaptureReader) Read(p []byte) (int, error) {
+	n, err := capture.reader.Read(p)
+	capture.total += n
+	if capture.total > modelProtocolCaptureLimit {
+		return 0, errors.New("Model runtime exceeded the aggregate protocol capture limit")
+	}
+	return n, err
+}
+
 type rpcClient struct {
 	ctx      context.Context
 	cancel   context.CancelCauseFunc
@@ -119,7 +136,7 @@ func (client *rpcClient) request(method string, params Object) (Object, error) {
 
 func (client *rpcClient) read(output io.Reader) {
 	defer close(client.closed)
-	scanner := bufio.NewScanner(output)
+	scanner := bufio.NewScanner(&protocolCaptureReader{reader: output})
 	scanner.Buffer(make([]byte, 65536), 2097152)
 	for scanner.Scan() {
 		var message Object

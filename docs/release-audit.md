@@ -17,16 +17,16 @@ not execution evidence.
 | Independent evidence sources | Problems/tests/logs/changes/dependencies acquired separately; swallowed summary errors and source denials remain explicit. |
 | Scoped authority and credentials | Trusted server selection, origin-bound tokens, project ancestry, actual reader permission inventory and foreign-project denial; canaries sanitized before previews/fingerprints. |
 | Bounded output and cleanup | Capture/launch/concurrency/deadline/output caps, reserved capacity, group cancellation including resistant descendants, valid bounded errors and retained watch observations. |
-| Functional/live compatibility | 56 checksum-pinned native scenarios and 18 restricted live tests pass. Native/mock contracts do not imply broader live support. Both Go recorders produced new guarded39/118-record captures without altering frozen fixtures. |
+| Functional/live compatibility | 56 checksum-pinned native scenarios and 18 restricted live tests pass. Native/mock contracts do not imply broader live support. Both Go recorders produced new guarded 39/118-record captures without altering frozen fixtures. |
 | Standalone distribution | Product Go executable, MIT/third-party licenses, README/changelog/reference/inventory; embedded schemas/skill; archive excludes fixtures, development tooling and credentials. 56 offline command executions pass. |
-| Scripted evaluation | Fresh 96 observations, both wrapper conditions retain24/24 tasks each, zero exposures or identity/completeness mistakes. Native baseline regressions and all rows retained. |
-| Model comparison release gate | Go runner and protocol/isolation/cleanup tests implemented and pass. Actual16 credential-backed sessions remain unexecuted pending explicit user approval; historical TypeScript model results are separate. |
+| Scripted evaluation | 96 observations, both wrapper conditions retain 24/24 tasks each, zero exposures or identity/completeness mistakes. Native baseline regressions and all rows retained. |
+| Model comparison release gate | 16 actual sessions independently graded: both conditions pass 8/8 tasks with zero correctness/security errors. Median calls tie at three; totals 30 versus 22 and secret task nine versus three remain explicit. Shared/cycle two-versus-four benefits are scoped to those tasks. Lower-median target is unmet. |
 
-Verification passed 162 deterministic top-level tests, 56 additional native
+Release verification passed 163 deterministic top-level tests, 56 additional native
 contract scenarios and 18 live tests, with no skips. The native tagged command
-passes218 top-level tests because it also runs deterministic coverage. Go race,
+passes 219 top-level tests because it also runs deterministic coverage. Go race,
 vet, gofmt, generated docs, source selection and package checks pass. The
-[verification record](go-verification.json) binds exact test lists, commands and
+[release verification record](release-verification.json) binds exact test lists, commands and
 artifact hashes. These are local execution results; no remote CI claim is made.
 
 Structured logs remain retained tails; no complete-log coverage is claimed.
@@ -42,8 +42,18 @@ now prevent ReaderFrom bypasses; empty explicit bindings and integral native
 JSON numbers have regression coverage. LSP was unavailable because gopls was
 missing; Go compilation, tests, race detection and vet are the fallback.
 
-The Go implementation and automated parity checks are complete. Full release
-certification still requires the new model comparison and independent answer
-and tool-trace grading. Automatic approval review rejected the credential-backed
-launch because explicit credential/account-use authorization was absent; no
-inference sessions were started. No GitHub release is published by this work.
+The Go implementation, parity checks and independent model grading are complete
+for the recorded scope. The model trace review reconciles 52 actual tool calls,
+221 native launches and 208 authenticated GETs, without unsupported operations
+or instrumentation bypass. The lower-median performance target did not pass;
+publication does not certify that target or general efficiency. The narrow
+shared/cycle fewer-call observations retain task-critical evidence, while every
+regressing task and aggregate cost remains visible in [the comparison](evaluation.md).
+
+The first model attempt was interrupted after review found an aggregate protocol
+capture gap. The runner now enforces a 64 MiB total stream ceiling with an
+overflow/cleanup regression. That attempt is retained separately from the
+restarted 16-session comparison. The released executable is the exact
+model-evaluated binary; product source is unchanged from its recorded checkpoint.
+Final archives contain updated release documents. Public tag, CI and downloaded
+asset verification are checked during the authorized publication operation.

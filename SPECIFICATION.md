@@ -3,8 +3,8 @@
 **Specification revision:** 0.1.0  
 **Prepared for:** Roman  
 **Research date:** 1 October 2026  
-**Proposed public response schema:** 1.0  
-**Status:** Design and acceptance contract. No application has been implemented or tested against a live TeamCity server as part of preparing this document.
+**Public response schema:** 1.0
+**Status:** Normative design and acceptance contract for the Go read-only implementation. Current execution evidence and compatibility limits are recorded in [implementation status](docs/STATUS.md), [the release audit](docs/release-audit.md) and [compatibility](docs/compatibility.json). The original research observations below describe the pre-implementation checkpoint.
 
 ## 1. Product definition
 
@@ -943,7 +943,8 @@ No transcript capture or session-end recording in the initial implementation. Th
 
 Mandatory: all deterministic fixtures pass, all supported combinations pass their contract suite, all output examples validate, every emitted next-action argv parses correctly, every TOON example round-trips through the pinned serializer/decoder where supported, and no secret-canary leak is observed.
 
-Performance targets to evaluate, not yet measured:
+Performance targets and measurement protocol; observed results are recorded in
+[the measured evaluation](docs/evaluation.md):
 
 - Version requires no filesystem, credential, Git or network initialization. Measure startup against the standalone executable on the same machine.
 - Three independent requests overlap, but no invocation exceeds configured child concurrency.
@@ -1077,20 +1078,27 @@ A v0.1 release is acceptable only when:
 9. The published compatibility matrix identifies actual tested releases; no unsupported minimum versions are invented.
 10. Agent evaluation artifacts report both benefits and regressions against a realistic optimized native baseline.
 
-## 22. Explicitly unresolved release gates
+## 22. Compatibility evidence and future gates
 
-These must be resolved by implementation/testing, not filled in with guesses:
+The initial research questions are resolved for the recorded v0.1.0 combination
+by the pinned CLI/source/checksums, restricted live endpoint and permission
+captures, DTO/locator tests, verified run-page exhaustion contract, exact selected
+VCS-root status checks and independent source reads. See
+[compatibility](docs/compatibility.json), [fixture provenance](tests/fixtures/README.md)
+and [acceptance](docs/acceptance.md). These records do not establish wider support.
 
-- Exact released TeamCity CLI version(s), source revision(s), binary checksums and tested server versions.
-- Exact source endpoints/DTOs and permission requirements for independent occurrence pages and snapshot edges on those servers.
-- A stable supported interface for non-tail log windows; lack of one must preserve the limited capability contract.
-- Semantics of build lookup scan caps and continuation for each supported release.
-- Exact VCS-root identity mapping for real multi-root configurations and branch specifications.
-- Which native semantic commands preserve enough pagination/coverage metadata to avoid the raw-API path.
-- Agent harness hook schemas and supported versions before automatic setup is shipped.
-- Whether future server capabilities support safe operation-marker reconciliation and configuration preconditions for mutations.
+The following still require implementation or execution evidence before expanding
+the corresponding capability:
 
-None of these gates requires blocking specification work. They are the first concrete verification tasks and prevent the implementation from claiming properties it has not demonstrated.
+- Additional CLI, server, operating-system and architecture combinations.
+- Complete non-tail log windows; v0.1.0 preserves the retained-tail limitation.
+- Broader live multi-root/hostile-branch, duplicate/muted-failure, shared-graph,
+  deployment-prefix, expired-token and restricted-pool fixtures.
+- Agent harness hook schemas and supported versions before automatic setup ships.
+- Provider operation-marker reconciliation and mutation preconditions before the
+  separate guarded-write milestone.
+
+Unknown or partial semantics remain explicit until the relevant gate passes.
 
 ## 23. Source register
 

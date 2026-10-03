@@ -68,5 +68,8 @@ silently dropped to fit. Missing-state diagnostics are grouped across hundred-ro
 pages, and invocation deadline/concurrency/eight-child limits are shared. Typed
 hints preserve pool/job/project scope; no-hints and require-complete apply to
 both commands. Focused adapter, executable, native/mock and live tests support
-this slice. Broader agent permission/availability certification, checkout status,
-watch, generated portable skill/help and evaluation/release gates remain required.
+this slice. At that original implementation checkpoint, broader agent
+permission/availability certification, checkout status, watch, generated portable
+skill/help and evaluation/release gates were still required. Current Go service
+coverage and remaining compatibility limits are tracked in
+[implementation status](../STATUS.md).
