@@ -225,7 +225,10 @@ func TestEvaluationRPCAggregateCaptureBoundsIgnoredNotifications(t *testing.T) {
 			t.Fatal("partial document reached retained events")
 		}
 	})
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	// Race instrumentation on CI can take more than five seconds to decode the
+	// full 64 MiB flood. This is a fixture deadline, not the capture/reap limit:
+	// the assertion below still requires overflow, rather than a timeout.
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	client := testRPCClient(t, ctx, "protocol-overflow", nil)
 	_, err := client.request("unanswered", Object{})
