@@ -12,6 +12,11 @@ checks retain their separate evidence boundaries. The Go model evaluation,
 independent review and package audit are recorded in [the release audit](release-audit.md).
 Historical TypeScript model results do not certify this implementation.
 
+The release figures below describe published v0.1.0. Current-source performance
+changes retain the same acceptance behaviors, add concurrent schema and detail
+hint regressions, and rerun native and restricted live checks. Their separate
+[performance evaluation](performance.md) records fresh model grading and costs.
+
 | Scenario | Behavior and evidence                                                                                                                                                                                                                                                                                        |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | A01      | Parser and executable boundary reject unknown flags with exit two before child execution: `internal/axi/boundary_test.go`, `internal/axi/boundary_test.go`.                                                                                                                                       |

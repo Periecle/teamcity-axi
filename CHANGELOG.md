@@ -10,6 +10,16 @@
   skill so investigations do not need routine help/schema discovery or rereads.
 - Add concurrent fail-closed schema validation and targeted hint regression
   coverage. New performance measurements remain separate from v0.1.0 evidence.
+- Alternating cold starts reduce schema/context medians about 34%; all four
+  scripted reports retain their 384 observations and unchanged evidence scores.
+  See the [performance comparison](docs/performance.md).
+- Give the 64 MiB protocol-flood test a longer fixture deadline under CI race
+  instrumentation; it still requires overflow and prompt process reaping.
+- Fresh independently graded model tasks use one wrapper tool call each, eight
+  total, versus native median three and 24 total. Both succeed on 8/8 tasks
+  without correctness/security errors. Median Go session time improves from
+  55.4 to 44.3 seconds; historical TS's 37.3 seconds remains faster and wrapper
+  output remains larger than native. All per-task timing regressions are retained.
 
 ## 0.1.0 — 2026-10-03
 

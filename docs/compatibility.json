@@ -67,5 +67,8 @@
   "goVerification": "docs/release-verification.json",
   "historicalImplementationVerification": "docs/go-verification.json",
   "modelEvaluation": "evaluations/results/linux-x64-go1.27-gpt6.1-sol-agent.json",
-  "scriptedEvaluation": "evaluations/results/linux-x64-go1.27-native1.5.0-release.json"
+  "scriptedEvaluation": "evaluations/results/linux-x64-go1.27-native1.5.0-release.json",
+  "postReleasePerformance": "docs/performance.md",
+  "postReleasePerformanceVerification": "docs/performance-verification.json",
+  "postReleaseModelEvaluation": "evaluations/results/linux-x64-go1.27-gpt6.1-sol-performance-agent.json"
 }

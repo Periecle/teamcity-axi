@@ -5,6 +5,11 @@ use the same eight-task corpus and checksum-pinned official TeamCity CLI 1.5.0.
 Synthetic observations establish this corpus's behavior; they do not certify
 additional live servers or platforms.
 
+The tables below describe the published v0.1.0 checkpoint and historical
+TypeScript results. The [post-release performance comparison](performance.md)
+records optimized current source, additional full scripted pairs and a fresh
+model evaluation. Original reports and released assets remain unchanged.
+
 ## Scripted evidence comparison
 
 The [release-binary Go report](../evaluations/results/linux-x64-go1.27-native1.5.0-release.json)

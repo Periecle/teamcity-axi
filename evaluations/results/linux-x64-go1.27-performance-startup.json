@@ -1,0 +1,1307 @@
+{
+  "kind": "alternating-cold-cli-startup",
+  "observedAt": "2026-10-03T16:01:41.314051+00:00",
+  "repetitions": 30,
+  "observations": [
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 0,
+      "wallTimeMs": 6.469135,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 0,
+      "wallTimeMs": 6.483952,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 1,
+      "wallTimeMs": 6.51471,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 1,
+      "wallTimeMs": 6.582728,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 2,
+      "wallTimeMs": 6.388132,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 2,
+      "wallTimeMs": 7.169779,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 3,
+      "wallTimeMs": 6.424852,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 3,
+      "wallTimeMs": 6.737528,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 4,
+      "wallTimeMs": 6.341505,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 4,
+      "wallTimeMs": 7.713118,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 5,
+      "wallTimeMs": 6.000696,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 5,
+      "wallTimeMs": 6.125881,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 6,
+      "wallTimeMs": 6.103569,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 6,
+      "wallTimeMs": 6.233653,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 7,
+      "wallTimeMs": 5.655218,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 7,
+      "wallTimeMs": 6.191705,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 8,
+      "wallTimeMs": 5.935564,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 8,
+      "wallTimeMs": 5.812042,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 9,
+      "wallTimeMs": 6.118818,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 9,
+      "wallTimeMs": 6.347737,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 10,
+      "wallTimeMs": 6.617463,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 10,
+      "wallTimeMs": 6.010745,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 11,
+      "wallTimeMs": 5.950933,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 11,
+      "wallTimeMs": 5.876994,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 12,
+      "wallTimeMs": 5.986108,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 12,
+      "wallTimeMs": 5.822913,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 13,
+      "wallTimeMs": 6.323532,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 13,
+      "wallTimeMs": 6.256796,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 14,
+      "wallTimeMs": 6.037505,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 14,
+      "wallTimeMs": 6.385538,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 15,
+      "wallTimeMs": 5.651942,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 15,
+      "wallTimeMs": 6.114399,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 16,
+      "wallTimeMs": 6.746455,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 16,
+      "wallTimeMs": 6.002188,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 17,
+      "wallTimeMs": 5.948278,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 17,
+      "wallTimeMs": 6.094071,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 18,
+      "wallTimeMs": 6.201783,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 18,
+      "wallTimeMs": 6.393823,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 19,
+      "wallTimeMs": 6.057853,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 19,
+      "wallTimeMs": 6.571567,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 20,
+      "wallTimeMs": 5.898655,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 20,
+      "wallTimeMs": 6.339241,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 21,
+      "wallTimeMs": 6.583569,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 21,
+      "wallTimeMs": 5.993753,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 22,
+      "wallTimeMs": 5.913372,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 22,
+      "wallTimeMs": 6.239544,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 23,
+      "wallTimeMs": 6.374427,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 23,
+      "wallTimeMs": 6.569923,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 24,
+      "wallTimeMs": 5.981149,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 24,
+      "wallTimeMs": 5.783067,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 25,
+      "wallTimeMs": 5.899927,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 25,
+      "wallTimeMs": 5.89105,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 26,
+      "wallTimeMs": 5.663393,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 26,
+      "wallTimeMs": 6.186685,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 27,
+      "wallTimeMs": 6.410215,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 27,
+      "wallTimeMs": 6.092358,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 28,
+      "wallTimeMs": 5.892012,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 28,
+      "wallTimeMs": 6.074665,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "repetition": 29,
+      "wallTimeMs": 6.659992,
+      "outputBytes": 6
+    },
+    {
+      "command": "version",
+      "condition": "released",
+      "repetition": 29,
+      "wallTimeMs": 5.931837,
+      "outputBytes": 6
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 0,
+      "wallTimeMs": 23.898509,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 0,
+      "wallTimeMs": 16.973499,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 1,
+      "wallTimeMs": 16.759097,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 1,
+      "wallTimeMs": 24.447598,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 2,
+      "wallTimeMs": 26.930335,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 2,
+      "wallTimeMs": 17.554949,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 3,
+      "wallTimeMs": 16.176914,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 3,
+      "wallTimeMs": 24.374211,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 4,
+      "wallTimeMs": 26.944472,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 4,
+      "wallTimeMs": 16.32925,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 5,
+      "wallTimeMs": 16.000624,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 5,
+      "wallTimeMs": 25.774026,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 6,
+      "wallTimeMs": 26.172884,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 6,
+      "wallTimeMs": 17.357219,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 7,
+      "wallTimeMs": 18.027967,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 7,
+      "wallTimeMs": 25.836433,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 8,
+      "wallTimeMs": 26.261501,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 8,
+      "wallTimeMs": 16.635485,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 9,
+      "wallTimeMs": 17.444131,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 9,
+      "wallTimeMs": 25.699817,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 10,
+      "wallTimeMs": 26.377839,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 10,
+      "wallTimeMs": 17.537737,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 11,
+      "wallTimeMs": 18.474645,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 11,
+      "wallTimeMs": 25.778144,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 12,
+      "wallTimeMs": 26.522,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 12,
+      "wallTimeMs": 19.148568,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 13,
+      "wallTimeMs": 20.294738,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 13,
+      "wallTimeMs": 26.080321,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 14,
+      "wallTimeMs": 26.685927,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 14,
+      "wallTimeMs": 18.022496,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 15,
+      "wallTimeMs": 20.204028,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 15,
+      "wallTimeMs": 29.587671,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 16,
+      "wallTimeMs": 24.077755,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 16,
+      "wallTimeMs": 16.647767,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 17,
+      "wallTimeMs": 18.481959,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 17,
+      "wallTimeMs": 24.449131,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 18,
+      "wallTimeMs": 26.827783,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 18,
+      "wallTimeMs": 17.859871,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 19,
+      "wallTimeMs": 16.263627,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 19,
+      "wallTimeMs": 26.419638,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 20,
+      "wallTimeMs": 25.804213,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 20,
+      "wallTimeMs": 16.571976,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 21,
+      "wallTimeMs": 17.708858,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 21,
+      "wallTimeMs": 27.819623,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 22,
+      "wallTimeMs": 25.481368,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 22,
+      "wallTimeMs": 19.41072,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 23,
+      "wallTimeMs": 17.092762,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 23,
+      "wallTimeMs": 24.508142,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 24,
+      "wallTimeMs": 27.57803,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 24,
+      "wallTimeMs": 17.899195,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 25,
+      "wallTimeMs": 16.424468,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 25,
+      "wallTimeMs": 26.385654,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 26,
+      "wallTimeMs": 25.705157,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 26,
+      "wallTimeMs": 16.768744,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 27,
+      "wallTimeMs": 17.248995,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 27,
+      "wallTimeMs": 26.301376,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 28,
+      "wallTimeMs": 26.463179,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 28,
+      "wallTimeMs": 16.485684,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "repetition": 29,
+      "wallTimeMs": 16.166425,
+      "outputBytes": 8176
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "repetition": 29,
+      "wallTimeMs": 28.259679,
+      "outputBytes": 8176
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 0,
+      "wallTimeMs": 23.244362,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 0,
+      "wallTimeMs": 17.961172,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 1,
+      "wallTimeMs": 16.232128,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 1,
+      "wallTimeMs": 26.42104,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 2,
+      "wallTimeMs": 25.151729,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 2,
+      "wallTimeMs": 15.778548,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 3,
+      "wallTimeMs": 17.468517,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 3,
+      "wallTimeMs": 24.433572,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 4,
+      "wallTimeMs": 24.358071,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 4,
+      "wallTimeMs": 15.81773,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 5,
+      "wallTimeMs": 16.125799,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 5,
+      "wallTimeMs": 22.968364,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 6,
+      "wallTimeMs": 23.249822,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 6,
+      "wallTimeMs": 17.013433,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 7,
+      "wallTimeMs": 16.411765,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 7,
+      "wallTimeMs": 26.156665,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 8,
+      "wallTimeMs": 24.413174,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 8,
+      "wallTimeMs": 16.02535,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 9,
+      "wallTimeMs": 15.801169,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 9,
+      "wallTimeMs": 24.572573,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 10,
+      "wallTimeMs": 22.371424,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 10,
+      "wallTimeMs": 16.864745,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 11,
+      "wallTimeMs": 16.097285,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 11,
+      "wallTimeMs": 23.428757,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 12,
+      "wallTimeMs": 22.970478,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 12,
+      "wallTimeMs": 17.206526,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 13,
+      "wallTimeMs": 15.423191,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 13,
+      "wallTimeMs": 25.116262,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 14,
+      "wallTimeMs": 26.674425,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 14,
+      "wallTimeMs": 16.277614,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 15,
+      "wallTimeMs": 16.386968,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 15,
+      "wallTimeMs": 24.017181,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 16,
+      "wallTimeMs": 26.251302,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 16,
+      "wallTimeMs": 16.363484,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 17,
+      "wallTimeMs": 15.968964,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 17,
+      "wallTimeMs": 22.512419,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 18,
+      "wallTimeMs": 24.098293,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 18,
+      "wallTimeMs": 15.231601,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 19,
+      "wallTimeMs": 14.696808,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 19,
+      "wallTimeMs": 24.46958,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 20,
+      "wallTimeMs": 24.578715,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 20,
+      "wallTimeMs": 16.639152,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 21,
+      "wallTimeMs": 15.144608,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 21,
+      "wallTimeMs": 25.344241,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 22,
+      "wallTimeMs": 22.610172,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 22,
+      "wallTimeMs": 15.752278,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 23,
+      "wallTimeMs": 16.602102,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 23,
+      "wallTimeMs": 23.855929,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 24,
+      "wallTimeMs": 24.713547,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 24,
+      "wallTimeMs": 16.183757,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 25,
+      "wallTimeMs": 16.550315,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 25,
+      "wallTimeMs": 23.293274,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 26,
+      "wallTimeMs": 23.524767,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 26,
+      "wallTimeMs": 17.359413,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 27,
+      "wallTimeMs": 15.120092,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 27,
+      "wallTimeMs": 23.372973,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 28,
+      "wallTimeMs": 25.736937,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 28,
+      "wallTimeMs": 16.095291,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "repetition": 29,
+      "wallTimeMs": 15.885387,
+      "outputBytes": 426
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "repetition": 29,
+      "wallTimeMs": 25.517124,
+      "outputBytes": 426
+    }
+  ],
+  "conditions": [
+    {
+      "command": "version",
+      "condition": "released",
+      "medianWallTimeMs": 6.1089839999999995
+    },
+    {
+      "command": "version",
+      "condition": "optimized",
+      "medianWallTimeMs": 6.2101690000000005
+    },
+    {
+      "command": "schema",
+      "condition": "released",
+      "medianWallTimeMs": 26.2171925
+    },
+    {
+      "command": "schema",
+      "condition": "optimized",
+      "medianWallTimeMs": 17.303107
+    },
+    {
+      "command": "context",
+      "condition": "released",
+      "medianWallTimeMs": 24.3856225
+    },
+    {
+      "command": "context",
+      "condition": "optimized",
+      "medianWallTimeMs": 16.154778
+    }
+  ],
+  "releasedBinarySha256": "f4d5e579051f19a9d3031bbadd7c78b7200ab08363d009a211bcf0237548e7f3",
+  "optimizedBinarySha256": "ddb0ee459046b667a770c62cb71b11d8f73791e9f653e2e4cbbd049341b58c08",
+  "optimizedSourceCheckpoint": "5300c8acc4aeb9db85bbe85670ac83f9dffaa2eb",
+  "limitations": [
+    "Thirty cold process starts per command/condition, alternating order; wall times include host scheduling.",
+    "Version is an unchanged fast-path control; schema/context exercise lazy schema initialization.",
+    "Required live tests ran during these samples; timings do not isolate a language effect."
+  ]
+}

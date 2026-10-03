@@ -16,13 +16,23 @@ See the [generated command reference](https://github.com/Periecle/teamcity-axi/b
 The [recorded evaluation](https://github.com/Periecle/teamcity-axi/blob/v0.1.0/docs/evaluation.md) compares investigation evidence
 against optimized native workflows, including measured costs and limitations.
 
+Current source includes performance improvements beyond the published v0.1.0
+build: schema initialization is lazy and the agent skill starts with a scoped
+read, avoiding routine discovery and repeated detail expansion. See the
+[fresh performance comparison](docs/performance.md): independently graded model
+tasks use one wrapper tool call each, versus native median three, with 8/8 success
+and no correctness/security errors. Median session time improves from released
+Go's 55.4 to 44.3 seconds, versus fresh native 135.3 seconds; historical TS's
+37.3 seconds remains faster. Build the current checkout to use these changes;
+the existing release download retains its original executable and evidence.
+
 The standalone executable requires a separately installed official `teamcity` CLI.
 Build from source with Go 1.26 or newer; no language runtime is needed after building. The tested
 native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
 recorded but have not been executed. The read-only command services
 have been tested on TeamCity 2026.2 build 238924 with a restricted test identity;
 Go execution evidence covers that recorded combination and its stated capability
-limits. The separate 16-session model comparison passed independent correctness
+limits. The published v0.1.0 16-session model comparison passed independent correctness
 and security grading. Both AXI and native CLI achieved 8/8 task success; median
 tool calls tied at three, with 30 versus 22 total calls. AXI output was larger;
 see the recorded evaluation for task costs and regressions.

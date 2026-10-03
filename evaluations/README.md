@@ -184,3 +184,12 @@ The original Go handoff scripted report contains cumulative HTTP counts; use the
 corrected release report for per-workflow HTTP costs. The maintained native test
 asserts exact counts independently for every corpus task and condition. This
 scripted-counter defect did not affect the fresh-server model sessions.
+
+## Post-release performance measurements
+
+The [current performance comparison](../docs/performance.md) records the source
+optimizations separately from v0.1.0. It retains both complete scripted pairs in
+reversed outer order (384 observations total), alternating cold-start samples
+and a fresh complete model comparison using this same protocol. None of the
+historical TypeScript or published Go reports is replaced. All sessions and
+independent grades, including any regressions, remain part of the comparison.

@@ -1,5 +1,9 @@
 # Go read-only implementation audit
 
+This document records the immutable published v0.1.0 release checkpoint.
+[Post-release performance work](performance.md) has separate source, test and
+evaluation evidence; it does not replace this release's reports or public assets.
+
 The Go reimplementation covers the accepted eighteen-service read-only scope,
 including its test, capture, documentation, evaluation and package tooling.
 Comparison, setup/hooks and mutations retain separate deferred gates. Executed

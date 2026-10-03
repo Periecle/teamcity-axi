@@ -4,10 +4,21 @@ Post-release performance work compiles only requested schemas and limits promote
 detail hints to truncated retained excerpts. The portable skill now documents
 concrete first-read commands and the report's item/source fields. Required source
 acquisition, scope, unknown/partial states and exact retrieval actions remain
-unchanged. Focused and full race checks pass 165 deterministic tests; the pinned
-native suite passes. Fresh scripted and model comparisons plus restored live
-checks are in progress. The published v0.1.0 tag and assets remain unchanged;
-the release evidence below describes that immutable checkpoint.
+unchanged. Full race checks pass 165 deterministic tests on Go 1.27.1 and 1.26.0;
+the pinned native suite and all 18 restored restricted live tests pass. Four fresh
+scripted reports retain all 384 observations without wrapper evidence or safety
+regressions. Alternating schema/context startup improves about 34%. All sixteen
+fresh model sessions pass independent grading: both conditions succeed on 8/8
+tasks with zero correctness/security errors. Wrapper calls are one per task,
+eight total, versus native median three and 24 total. Median time improves from
+released Go's 55.4 to 44.3 seconds, versus fresh native 135.3 seconds; historical
+TypeScript's 37.3 seconds remains faster. Wrapper output remains larger than
+native; depth and green timing regressions stay recorded. See
+[post-release performance](performance.md) and [its verification](performance-verification.json).
+[Current-source CI](https://github.com/Periecle/teamcity-axi/actions/runs/37128735144)
+passes both jobs after a test-only flood fixture deadline correction. The
+published v0.1.0 tag and assets remain unchanged; the release evidence below
+describes that immutable checkpoint.
 
 All eighteen accepted read-only services and the recorder, documentation,
 evaluation and package tooling are implemented in Go. The worktree contains no

@@ -4,6 +4,7 @@ coverage/
 test-results/
 
 bin/teamcity-axi
+bin/teamcity-axi-optimized
 release/
 *.test
 core.*
