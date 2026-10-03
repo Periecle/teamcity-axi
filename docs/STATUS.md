@@ -49,5 +49,9 @@ passes deterministic, race, archive and pinned-native checks on Go 1.26.0 at
 `890bdb5`. Its first attempt exposed a capture-error classification bug at a
 partial final protocol line; the reviewed evaluator correction and deterministic
 regression pass without changing the completed model results or product binary.
-The final archive is prepared; public tag and downloaded assets are verified
-during publication.
+Go [v0.1.0 is published](https://github.com/Periecle/teamcity-axi/releases/tag/v0.1.0)
+at `3cfc504`, whose [final CI](https://github.com/Periecle/teamcity-axi/actions/runs/37117779999)
+passes both jobs. The unsigned public tag, downloaded checksum/archive, exact
+evaluated executable and all 56 offline archive commands were verified. See
+[the publication record](release-publication.json); the tag retains the documents
+completed before publication.

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "recordPhase": "Go v0.1.0 published and downloaded assets verified",
+  "observedAt": "2026-10-03T12:54:27Z",
+  "release": {
+    "tag": "v0.1.0",
+    "commit": "3cfc504fb6da81d5ad6e8b2fbab27b8cbbd3abdf",
+    "tagObject": "d8e6097c3c2696535c0257b28a343bc71aa47e5e",
+    "unsignedTag": true,
+    "url": "https://github.com/Periecle/teamcity-axi/releases/tag/v0.1.0",
+    "publishedAt": "2026-10-03T10:53:51Z",
+    "draft": false,
+    "prerelease": false
+  },
+  "finalCommitCI": {
+    "runId": 37117779999,
+    "url": "https://github.com/Periecle/teamcity-axi/actions/runs/37117779999",
+    "commit": "3cfc504fb6da81d5ad6e8b2fbab27b8cbbd3abdf",
+    "conclusion": "success",
+    "goVersion": "1.26.0",
+    "jobs": ["deterministic", "released-cli-contract"],
+    "checks": ["make check", "go test -race ./...", "make test-package", "checksum-pinned make test-real-cli"],
+    "liveTests": "18 separately executed local restricted-reader tests; not executed in CI"
+  },
+  "assets": [
+    {
+      "name": "teamcity-axi-linux-amd64.tar.gz",
+      "size": 4711453,
+      "sha256": "5e0c5edf61234c328da919527088414ba073dc8f04530c90e81c604feabe8031",
+      "url": "https://github.com/Periecle/teamcity-axi/releases/download/v0.1.0/teamcity-axi-linux-amd64.tar.gz"
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 98,
+      "sha256": "61cc1dec818c9d2a3ad4a1d92f4b0d3fb8c994d70fc18cffcd94e49d4cef2c55",
+      "url": "https://github.com/Periecle/teamcity-axi/releases/download/v0.1.0/SHA256SUMS"
+    }
+  ],
+  "downloadVerification": {
+    "freshDirectory": true,
+    "checksumManifest": "sha256sum --check SHA256SUMS: archive OK",
+    "archiveMatchesCertifiedHash": true,
+    "publicAssetDigestsMatchDownloadedBytes": true,
+    "allowedFileCount": 7,
+    "binarySha256": "f4d5e579051f19a9d3031bbadd7c78b7200ab08363d009a211bcf0237548e7f3",
+    "sameBinaryAsScriptedAndModelEvaluation": true,
+    "productSourceCheckpoint": "231815d1b35c2afbef5653de3c1ad1f5acc16c01",
+    "productSourceUnchangedAtRelease": true,
+    "packagedDocumentsMatchReleaseCommit": true,
+    "offlineCommandExecutions": 56,
+    "packageAudit": "TEAMCITY_AXI_PACKAGE=<fresh downloaded archive> go test -tags packageaudit -count=1 ./tests/distribution: PASS",
+    "offlineEnvironment": "empty credential/configuration directory, PATH=/nonexistent; canary omitted from output; no language runtime or native CLI required"
+  },
+  "prePublicationCertification": "release-verification.json",
+  "modelEvaluation": "../evaluations/results/linux-x64-go1.27-gpt6.1-sol-agent.json",
+  "limitations": [
+    "Execution support remains Linux amd64, official TeamCity CLI 1.5.0 and restricted TeamCity 2026.2 build 238924 with documented capability limits.",
+    "Both model conditions pass 8/8 tasks; median tool calls tie at three, total calls are 30 versus 22, and the lower-median target is unmet.",
+    "Go 1.26.0 CI uses synthetic native contracts; actual restricted live and model evidence was executed with the recorded Go 1.27.1 product binary.",
+    "Publication verification is recorded after release and does not rewrite the immutable v0.1.0 tag."
+  ]
+}

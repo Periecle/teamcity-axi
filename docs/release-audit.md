@@ -63,5 +63,9 @@ failure left a partial final JSON line. The later evaluator-only correction
 checks the stream error before decoding that fragment; a deterministic fragment
 case and the original flood/cleanup case pass. Independent review confirms that
 the completed model report and its original harness hash remain valid.
-Final archives contain updated release documents. Public tag, CI and downloaded
-asset verification are checked during the authorized publication operation.
+The final archive contains the documents completed before publication.
+Go [v0.1.0 is published](https://github.com/Periecle/teamcity-axi/releases/tag/v0.1.0)
+at `3cfc504`, with successful [final-commit CI](https://github.com/Periecle/teamcity-axi/actions/runs/37117779999).
+The unsigned tag and fresh downloaded assets match the recorded hashes, and the
+downloaded archive passes all 56 offline command executions. See
+[the publication verification record](release-publication.json).
