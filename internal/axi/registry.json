@@ -1,0 +1,655 @@
+{
+  "registry": [
+    {
+      "name": "status",
+      "summary": "CI orientation for the exact current checkout",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Logical branch or @this"
+        },
+        "literal-branch": {
+          "type": "string",
+          "description": "Literal logical branch"
+        },
+        "all-branches": {
+          "type": "boolean",
+          "description": "Include all logical branches"
+        },
+        "revision": {
+          "type": "string",
+          "description": "Commit identity or @head"
+        },
+        "vcs-root": {
+          "type": "string",
+          "description": "Exact VCS root ID"
+        },
+        "check": {
+          "type": "boolean",
+          "description": "Assert completed successful exact checkout"
+        }
+      }
+    },
+    {
+      "name": "context.show",
+      "summary": "Resolve local trusted context",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Logical branch or @this"
+        },
+        "literal-branch": {
+          "type": "string",
+          "description": "Literal logical branch"
+        },
+        "all-branches": {
+          "type": "boolean",
+          "description": "Include all logical branches"
+        },
+        "revision": {
+          "type": "string",
+          "description": "Commit identity or @head"
+        },
+        "vcs-root": {
+          "type": "string",
+          "description": "Exact VCS root ID"
+        },
+        "verify": {
+          "type": "boolean",
+          "description": "Verify selected scope remotely"
+        }
+      }
+    },
+    {
+      "name": "doctor",
+      "summary": "Inspect dependency, authentication and capabilities",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "offline": {
+          "type": "boolean",
+          "description": "Never perform network reads"
+        }
+      }
+    },
+    {
+      "name": "schema",
+      "summary": "Inspect a packaged command contract",
+      "positional": "command",
+      "flags": {}
+    },
+    {
+      "name": "run.list",
+      "summary": "Read one bounded scoped execution page",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Logical branch or @this"
+        },
+        "literal-branch": {
+          "type": "string",
+          "description": "Literal logical branch"
+        },
+        "all-branches": {
+          "type": "boolean",
+          "description": "Include all logical branches"
+        },
+        "revision": {
+          "type": "string",
+          "description": "Commit identity or @head"
+        },
+        "vcs-root": {
+          "type": "string",
+          "description": "Exact VCS root ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma separated public fields"
+        },
+        "state": {
+          "type": "string",
+          "description": "Lifecycle filter",
+          "choices": [
+            "queued",
+            "running",
+            "finished"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "description": "Outcome filter",
+          "choices": [
+            "success",
+            "failure",
+            "error",
+            "canceled",
+            "failed_to_start",
+            "unknown"
+          ]
+        },
+        "since": {
+          "type": "string",
+          "description": "RFC 3339 finish-time lower bound"
+        },
+        "until": {
+          "type": "string",
+          "description": "RFC 3339 finish-time upper bound"
+        }
+      },
+      "fields": [
+        "id",
+        "jobId",
+        "branch",
+        "state",
+        "result",
+        "number",
+        "statusText",
+        "personal",
+        "composite",
+        "queuedAt",
+        "startedAt",
+        "finishedAt",
+        "durationMs",
+        "webUrl",
+        "revisions"
+      ]
+    },
+    {
+      "name": "run.view",
+      "summary": "Observe one exact execution",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma separated public fields"
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Expand text previews within budgets"
+        }
+      },
+      "fields": [
+        "id",
+        "jobId",
+        "branch",
+        "state",
+        "result",
+        "number",
+        "statusText",
+        "personal",
+        "composite",
+        "queuedAt",
+        "startedAt",
+        "finishedAt",
+        "durationMs",
+        "webUrl",
+        "revisions"
+      ]
+    },
+    {
+      "name": "run.problems",
+      "summary": "Read independent problem occurrences",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        },
+        "problem": {
+          "type": "string",
+          "description": "Exact problem occurrence ID"
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Expand text previews within budgets"
+        }
+      }
+    },
+    {
+      "name": "run.tests",
+      "summary": "Read independent test occurrences",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma separated public fields"
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Expand text previews within budgets"
+        },
+        "failed": {
+          "type": "boolean",
+          "description": "Unmuted failures"
+        },
+        "muted": {
+          "type": "boolean",
+          "description": "Muted failures"
+        },
+        "include-muted": {
+          "type": "boolean",
+          "description": "Include muted failures with --failed"
+        },
+        "test": {
+          "type": "string",
+          "description": "Exact test occurrence ID"
+        }
+      },
+      "fields": [
+        "id",
+        "runId",
+        "name",
+        "result",
+        "testId",
+        "suite",
+        "durationMs",
+        "muted",
+        "ignored",
+        "details"
+      ]
+    },
+    {
+      "name": "run.log",
+      "summary": "Read a bounded structured log tail",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "tail": {
+          "type": "integer",
+          "description": "Tail messages",
+          "min": 1,
+          "max": 1000
+        },
+        "contains": {
+          "type": "string",
+          "description": "Literal filter within the fetched window"
+        },
+        "failed": {
+          "type": "boolean",
+          "description": "Failure-oriented evidence"
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Expand text previews within budgets"
+        }
+      }
+    },
+    {
+      "name": "run.changes",
+      "summary": "Read bounded contextual changes",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        },
+        "fields": {
+          "type": "string",
+          "description": "Comma separated public fields"
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Expand text previews within budgets"
+        },
+        "files": {
+          "type": "boolean",
+          "description": "Include bounded changed file names"
+        }
+      },
+      "fields": [
+        "id",
+        "version",
+        "vcsRootId",
+        "message",
+        "timestamp",
+        "files"
+      ]
+    },
+    {
+      "name": "run.tree",
+      "summary": "Traverse bounded snapshot execution graph",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "depth": {
+          "type": "integer",
+          "description": "Maximum snapshot traversal depth",
+          "min": 0,
+          "max": 12
+        },
+        "max-nodes": {
+          "type": "integer",
+          "description": "Maximum unique executions",
+          "min": 1,
+          "max": 200
+        }
+      }
+    },
+    {
+      "name": "run.failure",
+      "summary": "Investigate independent failure evidence",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "depth": {
+          "type": "integer",
+          "description": "Maximum snapshot traversal depth",
+          "min": 0,
+          "max": 12
+        },
+        "max-nodes": {
+          "type": "integer",
+          "description": "Maximum unique executions",
+          "min": 1,
+          "max": 200
+        },
+        "full": {
+          "type": "boolean",
+          "description": "Expand text previews within budgets"
+        },
+        "max-diagnosed-runs": {
+          "type": "integer",
+          "description": "Maximum diagnosed executions including root",
+          "min": 1,
+          "max": 10
+        }
+      }
+    },
+    {
+      "name": "run.watch",
+      "summary": "Observe one execution until terminal or deadline",
+      "positional": "runId",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "interval": {
+          "type": "duration",
+          "description": "Poll interval (ms, s or m)",
+          "min": 5000,
+          "max": 1800000
+        },
+        "check": {
+          "type": "boolean",
+          "description": "Assert terminal success"
+        }
+      }
+    },
+    {
+      "name": "job.list",
+      "summary": "Read scoped jobs",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        }
+      }
+    },
+    {
+      "name": "job.view",
+      "summary": "Read safe exact job metadata",
+      "positional": "id",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        }
+      }
+    },
+    {
+      "name": "queue.list",
+      "summary": "Read scoped queued executions",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        }
+      }
+    },
+    {
+      "name": "agent.list",
+      "summary": "Read scoped agent availability",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Maximum requested rows",
+          "min": 1,
+          "max": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque bounded continuation"
+        },
+        "pool": {
+          "type": "string",
+          "description": "Exact agent pool ID"
+        }
+      }
+    },
+    {
+      "name": "agent.view",
+      "summary": "Read safe exact agent metadata",
+      "positional": "id",
+      "flags": {
+        "project": {
+          "type": "string",
+          "description": "Exact project ID"
+        },
+        "job": {
+          "type": "string",
+          "description": "Exact job ID"
+        },
+        "pool": {
+          "type": "string",
+          "description": "Assert exact agent pool ID"
+        }
+      }
+    }
+  ],
+  "globalFlags": {
+    "help": {
+      "type": "boolean",
+      "description": "Show local command help"
+    },
+    "version": {
+      "type": "boolean",
+      "description": "Show application version"
+    },
+    "format": {
+      "type": "string",
+      "description": "Output serialization",
+      "choices": [
+        "toon",
+        "json"
+      ]
+    },
+    "json": {
+      "type": "boolean",
+      "description": "Alias for --format json"
+    },
+    "server": {
+      "type": "string",
+      "description": "Registered trusted server alias"
+    },
+    "cwd": {
+      "type": "string",
+      "description": "Resolve worktree context from this directory"
+    },
+    "timeout": {
+      "type": "duration",
+      "description": "Overall deadline (ms, s or m)",
+      "min": 1,
+      "max": 1800000
+    },
+    "max-bytes": {
+      "type": "integer",
+      "description": "Serialized stdout byte ceiling",
+      "min": 2048,
+      "max": 262144
+    },
+    "require-complete": {
+      "type": "boolean",
+      "description": "Fail if the requested answer is partial"
+    },
+    "no-hints": {
+      "type": "boolean",
+      "description": "Omit optional read suggestions"
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "Redacted metadata on stderr"
+    }
+  }
+}

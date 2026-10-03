@@ -12,6 +12,11 @@ scoped `status` or exact-ID `run failure` over an unscoped inventory. The wrappe
 only reads TeamCity; it does not queue, restart, cancel, edit jobs, install hooks,
 or update itself.
 
+TOON is the primary and default evidence format. Use `--json` only when a JSON
+consumer needs it; both formats preserve the same normalized identities and
+limitations. Ordinary native operations and authentication management use the
+official `teamcity` CLI directly.
+
 Resolve scope with `context show` when it is unclear. Servers must be registered
 in the user's trusted configuration. Repository `teamcity.toml` selects a binding
 and tracked jobs; `.teamcity-axi.json` can map a Git remote to a TeamCity VCS-root
@@ -66,7 +71,7 @@ exit one means a failed assertion or acquisition failure. Permission/schema
 failures cannot be interpreted as an empty successful inventory.
 
 Read the [generated command reference](../../docs/commands.md) for valid examples,
-flags, and safe expansion commands. Use `schema COMMAND --json` for the packaged
+flags, and safe expansion commands. Use `schema COMMAND` for the packaged
 payload contract. Read [compatibility](../../docs/compatibility.json) before
 claiming support: recorded mocks, live evidence, and full release certification
 are distinct.

@@ -1,6 +1,17 @@
 # Changelog
 
-## 0.1.0
+## Unreleased Go reimplementation
+
+Reimplements all eighteen accepted read-only commands and development tooling in
+Go. The standalone executable embeds offline schemas and the portable skill.
+TOON remains the default; JSON is optional. Ordinary native operations and auth
+management stay with the official TeamCity CLI. No JS/TS runtime is required.
+
+The migration retains the original adversarial test behaviors and captured wire
+artifacts, adds Go race checks, and separately reruns native and restricted live
+contracts. See docs/go-test-baseline.json and the current release audit.
+
+## 0.1.0 historical TypeScript release
 
 The initial read-only product implements eighteen command services: exact-checkout
 status, fixed-execution watch, independent run evidence and failure investigation,

@@ -1,8 +1,8 @@
 # Fixture provenance
 
-`mock-server.mjs` contains invented, sanitized public sample data shaped from
+`internal/testfixture` contains invented, sanitized public sample data shaped from
 the official v1.5.0 CLI source. It is not a captured private/live server response.
-`native-operations.mjs` lists the exact released-binary argv exercised against
+`internal/nativefixture/operations.json` lists the exact released-binary argv exercised against
 that local mock. `native-v1.5.0/contract.json` records resulting native stdout,
 stderr, exit codes and mock request method/path/query/authentication-presence.
 
@@ -15,15 +15,15 @@ test data; official binaries/source are downloaded only into temporary storage
 and are not bundled in the package.
 
 ```sh
-TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity npm run fixtures:record
-TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity npm run test:real-cli
+TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity go run ./cmd/record-native
+TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity make test-real-cli
 ```
 
 The raw operations verify CLI request construction and response transport. They
 do not prove that a real server implements locator/field/continuation semantics.
 No minimum supported server version is inferred from them.
 
-`teamcity-2026.2-native-1.5.0/contract.json` contains 69 captured reads through
+`teamcity-2026.2-native-1.5.0/contract.json` contains 118 captured reads through
 the same released Linux x64 CLI against actual TeamCity 2026.2 build 238924.
 Its projects, builds, tests and user are original synthetic test data. The
 permission inventory proves project viewing without build-run permission;
@@ -60,15 +60,15 @@ live context prefixes and scoped agent/pool behavior remain open gates.
 Live tooling is test-only, requires its pinned binary and a private, owned
 regular JSON credential file with `serverUrl` and `token` (optional `password`
 is also redacted), and fails when inputs are absent. Keep that file outside the
-repository. Replaying fixtures is included in `npm test`; live execution is
+repository. Replaying fixtures is included in `make test`; live execution is
 explicit and never silently skipped:
 
 ```sh
 TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity \
-TEAMCITY_AXI_LIVE_CREDENTIALS=/private/path/reader.json npm run test:live
+TEAMCITY_AXI_LIVE_CREDENTIALS=/private/path/reader.json make test-live
 TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity \
 TEAMCITY_AXI_LIVE_CREDENTIALS=/private/path/reader.json \
-TEAMCITY_AXI_LIVE_OUTPUT=/tmp/new-sanitized-contract.json npm run fixtures:record-live
+TEAMCITY_AXI_LIVE_OUTPUT=/tmp/new-sanitized-contract.json go run ./cmd/record-native-live
 ```
 
 The recorder refuses an existing output file and checks the captured server

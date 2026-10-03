@@ -7,19 +7,21 @@ released native CLI against a projecting loopback fixture server. Both condition
 see the same fixed evidence and task scope. These are synthetic contracts, not
 live TeamCity acceptance or model-agent task results.
 
-Run on Node 24 with the checksum-pinned native executable:
+Run with Go 1.26+ and the checksum-pinned native executable:
 
 ```sh
-npm ci --ignore-scripts
-TEAMCITY_AXI_TEST_BINARY=/absolute/path/to/teamcity npm run evaluate
+make build
+TEAMCITY_AXI_TEST_BINARY=/absolute/path/to/teamcity \
+TEAMCITY_AXI_EVAL_WRAPPER="$PWD/bin/teamcity-axi" go run ./cmd/evaluate
 ```
 
-The default is three repetitions; `TEAMCITY_AXI_EVAL_REPETITIONS` accepts 1–10.
+TEAMCITY_AXI_EVAL_WRAPPER binds measurements to a specific executable; otherwise
+the runner builds Go from the working tree. The default is three repetitions; `TEAMCITY_AXI_EVAL_REPETITIONS` accepts 1–10.
 `TEAMCITY_AXI_EVAL_OUTPUT` selects the report path, which defaults to ignored
 `test-results/evaluation.json`. Each report includes the corpus hash, native
 checksum, runtime/platform, paired startup samples, every command/output/exit,
 and per-task scores. CI runs one repetition in the native contract suite.
-The [recorded report](results/linux-x64-node24-native1.5.0.json) and
+The [Go report](results/linux-x64-go1.27-native1.5.0.json) and
 [measured comparison](../docs/evaluation.md) retain the results rather than only
 a favorable aggregate.
 
@@ -50,7 +52,7 @@ work than these small fixtures contain.
 ## Measurement and scoring
 
 Output tokens are counted from each original stdout and stderr channel with
-`js-tiktoken@1.0.21`, `o200k_base` (GPT-4o vocabulary). Special-token spellings in
+`github.com/tiktoken-go/tokenizer@v0.8.1`, `o200k_base` (GPT-4o vocabulary). Special-token spellings in
 text are encoded as ordinary text. Counts exclude prompts, reasoning, and chat
 framing. The model vocabulary names the tokenizer; no GPT-4o inference is run.
 Tokenization happens after timed command execution. A random synthetic canary
@@ -61,7 +63,7 @@ the scrubbed artifact is not expected to reproduce canary-containing counts.
 Latency covers each scripted workflow, including child startup and orchestration.
 Conditions alternate order between repetitions. Native subprocess counts and
 HTTP request counts are separate. Wrapper counts include its native version
-probe. Nine alternating bare-Node/`--version` pairs measure startup; version
+probe. Nine alternating no-op/`--version` pairs measure startup; version
 probes must make zero HTTP requests. Host timings are observations, not portable
 performance guarantees.
 
@@ -99,11 +101,11 @@ scripted report remains a separate measurement.
 
 ## Running the model evaluation
 
-`node scripts/evaluate-agent.mjs` uses a local Codex app-server and one actual
-client-executed shell tool. Requires Linux `bwrap`, Node 24, the checksum-pinned
+`go run ./cmd/evaluate-agent` uses a local Codex app-server and one actual
+client-executed shell tool. Requires Linux `bwrap`, Go 1.26+, the checksum-pinned
 native binary, a private local model-auth path, and a production-only runtime.
-The runtime contains only `node_modules/teamcity-axi/{bin,dist,schemas,package.json}`
-and its separately installed production dependencies. Exclude project docs,
+The runtime contains only the standalone `teamcity-axi` Go executable. Schemas
+and the portable skill are embedded; no runtime modules are needed. Exclude project docs,
 tests, scripts and the evaluation corpus from that filesystem. The portable skill
 is provided in the wrapper prompt; documented selected-field JSON, bounded tails
 and failure diagnostics are provided in the native prompt.
@@ -135,8 +137,9 @@ combinations. The provider reports a model alias rather than an immutable backen
 weight revision. Canaries, loopback ports and temporary paths are scrubbed only
 after original output metrics are computed.
 
-The [actual model-agent report](results/linux-x64-node24-gpt6.1-sol-agent.json)
-records16 independently graded sessions; both conditions passed all8 tasks.
+The historical TypeScript [model-agent report](results/linux-x64-node24-gpt6.1-sol-agent.json)
+records 16 independently graded sessions. It does not certify the Go executable.
+New Go model observations require separate independent grading.
 See [the measured comparison](../docs/evaluation.md) for every task, total calls
 and per-task regressions. The executed source snapshot is an audit record; use
-the maintained runner, which includes stronger failure cleanup, for new runs.
+the maintained Go runner, which includes stronger failure cleanup, for new runs.

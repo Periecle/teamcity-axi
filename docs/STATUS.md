@@ -1,63 +1,37 @@
-# Product delivery and acceptance
+# Go implementation status
 
-The read-only v0.1.0 product is implemented and accepted for the recorded tested
-combination. Milestones 0–7, all 18 registered command services, and all 32 mandatory
-scenario behaviors are complete. Comparison, setup/hooks and mutations remain
-outside this release according to the implementation plan.
+All eighteen accepted read-only services and the recorder, documentation,
+evaluation and package tooling are implemented in Go. The worktree contains no
+JS/TS source files, Node modules or Node configuration. TOON is the default; JSON is
+optional. Official TeamCity operations continue through the native CLI.
+Comparison, setup/hooks and mutations remain deferred.
 
-The product observes exact checkout status and execution outcomes, investigates
-failures through independent sources and bounded graph traversal, exposes scoped
-jobs/queue/agents, and packages local diagnostics, help, schemas and the portable
-skill. Identity, unknown/partial semantics, restricted read transport, resource
-limits and JSON/TOON validity have executable evidence.
+The original implementation was executed before removal on Node 24.14.0:
+133 deterministic, 56 official-binary mock and 18 restricted live scenarios
+passed with no skips. The frozen inventory is [go-test-baseline.json](go-test-baseline.json).
+All 207 behaviors map to executable Go tests in [go-test-parity.json](go-test-parity.json).
+Captured native/live JSON wire artifacts are unchanged. Both Go recorders also
+executed successfully into new private temporary files:39synthetic native
+records and118restricted live records; identity and credential guards passed.
 
-## Executed verification
+Current Go verification passes 162 deterministic top-level tests, the 56
+additional official-binary contract scenarios, and all 18 restricted live tests.
+The native tagged run includes deterministic tests (218 total top-level passes).
+Go race detection, vet, formatting, generated documentation and the Go-only
+source gate pass. The standalone archive passes content/license inspection and
+56 offline command executions without language runtimes or native credentials.
+No checks silently skip. See [the release audit](release-audit.md).
 
-On Linux x64 / Node 24.14.0 / official TeamCity CLI 1.5.0:
+Independent reviews covered trusted context, process authority, adapters,
+commands, planners, redaction and evidence accounting. Review fixes include
+explicit empty-binding identity rejection, JSON integral-number compatibility,
+and bounded capture writer handling. LSP could not start because gopls is absent;
+Go compilation, tests, race detection and vet supply the verification fallback.
 
-- 133 deterministic tests, including pinned formatter and generated-doc drift gates.
-- 56 released-native mock contracts.
-- 18 restricted live tests on TeamCity 2026.2 build 238924.
-- 21 production-only installed-package smoke checks.
-- 16 actual model-agent sessions, all independently graded successful, with zero
-  identity, completeness, unsupported-cause or secret-exposure errors.
-- No skips. Compiler, schema, portable-skill and diff checks pass.
-
-The [scenario audit](acceptance.md), [release audit](release-audit.md),
-[compatibility matrix](compatibility.json), [changelog](../CHANGELOG.md), and
-[dependency/license inventory](dependencies.md) retain acceptance evidence and
-limits. Independent evidence/security review found no remaining material issue
-in the accepted scope. LSP returned stale data/timeouts for some TypeScript files;
-fresh compilation served as fallback. The .mjs evaluator is unsupported by LSP
-and has syntax plus actual execution/cleanup checks.
-
-Exact-head CI passed both jobs at the effective-limit checkpoint `8c0e727`
-([run 37044990473](https://github.com/Periecle/teamcity-axi/actions/runs/37044990473));
-Final product CI passed both jobs at `a88ddef`
-([run37049362753](https://github.com/Periecle/teamcity-axi/actions/runs/37049362753)). The compiled package ships
-MIT licensing, changelog, schemas, skill and generated reference. It excludes
-test/setup/evaluation tools, wire captures and credentials. Native installation
-is separate; there is no postinstall download, hidden update or telemetry.
-
-## Measured results and support limits
-
-The [scripted benchmark](evaluation.md) preserves required wrapper evidence in
-48/48 observations without canary exposure. Its optimized native baseline is
-smaller and faster. The actual eight-task agent sample passes 8/8 in each
-condition: wrapper median 3 versus native 3.5 tool calls, but totals 30 versus 26 and
-regressions on shared-dependency, exact-green and secret tasks. Output is larger.
-No statistical, token-saving or broad superiority claim is made.
-
-Support is limited to the recorded platform/native/server combination and
-capability limits. Other platform binaries are checksum-recorded but unexecuted.
-Logs are retained tails. Unknown provider exhaustion remains unknown; exact
-first-page run-list zero depends on the verified server pagination contract.
-Restricted pool reads remain unavailable, and missing activity never proves
-idleness. Optional broader live fixtures and new platform/server versions need
-separate execution evidence.
-
-The owned localhost test server and restricted reader remain available for
-reproducible integration testing. The reader has project-view scope on
-AxiContract, no inherited All Users roles and no build-run permission. Evaluation
-sessions and their temporary model-auth copies are cleaned up; ordinary product
-commands never persist transcripts or credentials.
+The fresh scripted Go benchmark records all 96 observations; both wrapper
+formats retain required evidence without identity/completeness errors or secret
+exposures. The model runner and isolation/cleanup checks pass, but the new
+16-session model evaluation awaits explicit credential/account-use approval
+after automatic review rejected its launch. Historical model results do not
+certify Go, and the model release gate remains open. No Go release publication
+or remote CI result is claimed.

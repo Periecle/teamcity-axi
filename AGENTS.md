@@ -6,19 +6,19 @@ Never infer live support from synthetic/mock contract tests. Defer comparison,
 setup and all mutations according to their separate scope gates.
 
 Use the supplied Context7 instructions for library/CLI documentation. Use LSP
-diagnostics after edits; when stale or unavailable, use `tsc --noEmit` and report
+diagnostics after edits; when stale or unavailable, use Go compilation/vet and report
 the limitation. Preserve exact run/server/job/root identity and all unknown or
 partial semantics. No raw upstream objects reach public output.
 
-Run `npm test` on Node 24. For the official-binary mock contract suite, supply a
-checksum-verified binary through `TEAMCITY_AXI_TEST_BINARY` and run
-`npm run test:real-cli`. Missing fixtures/binaries are failures, never skips.
+Run `make test` and `go test -race ./...`. For the official-binary mock contract
+suite, supply a checksum-verified binary through `TEAMCITY_AXI_TEST_BINARY` and
+run `make test-real-cli`. Missing fixtures/binaries are failures, never skips.
+Use `make test-live` with the private restricted-reader fixture for live checks.
 Use independent review of security/evidence handling as required by the plan.
 Do not sign commits. The user authorizes pushes to `Periecle/teamcity-axi`.
 
-Keep source, tests, scripts, schemas and configuration readable with the pinned
-ESLint Stylistic spacing rules and Prettier formatter: run `npm run format`
-after edits and `npm run format:check` before handoff. ESLint inserts blank lines between import groups, top-level
-definitions, class methods, control blocks and returns; Prettier handles layout.
-`npm test` enforces the formatting gate in CI. Preserve captured
-wire artifacts; `.prettierignore` excludes them from automatic rewriting.
+Keep Go source readable with gofmt: run `make format` after edits and
+`make format-check` before handoff. `make test` enforces formatting and generated
+documentation drift. Preserve captured wire artifacts; never reformat captures.
+The full Go rewrite supersedes the previous Node/npm/TypeScript formatter rules.
+When Go LSP is unavailable, use Go compilation/tests/vet and report the limitation.

@@ -63,22 +63,22 @@ These are external observations. Everything expressed as a requirement elsewhere
 
 ### 3.1 Selected baseline
 
-**GPT Opinion:** TypeScript is the appropriate baseline for this project: it keeps the effort focused on typed normalization, output contracts and orchestration, and can use the TOON reference implementation directly. Native-code performance is not the main problem this wrapper needs to solve.
+The owner selected a full Go reimplementation of the accepted read-only scope. [ADR 0017](docs/decisions/0017-go-reimplementation.md) supersedes the original TypeScript stack choice. Go supplies a standalone executable, explicit cancellation, invocation-local concurrency and embedded offline contracts.
 
 Proposed stack:
 
 | Concern | Decision |
 |---|---|
-| Language | TypeScript, strict mode, ESM |
-| Runtime | Node.js 24 LTS baseline; add newer LTS lines only after testing. Node 24 is an LTS line in the researched release table. [S12] |
+| Language | Go, one implementation |
+| Build toolchain | Go 1.26 or newer; delivered executable requires no language runtime |
 | CLI dispatch | Small command registry and strict argument parser; one registry drives validation, help, schema discovery and skill examples |
-| TOON | Reference `@toon-format/toon` serializer behind a renderer interface; pin an exact version in the lockfile [S11] |
+| TOON | `github.com/toon-format/toon-go`, pinned in go.mod/go.sum behind the renderer interface [S11] |
 | JSON | Same normalized data model as TOON; never pass raw upstream JSON through to callers |
 | Validation | Runtime validators for upstream DTOs; JSON Schema for public contracts and configuration |
-| Transport | `node:child_process.spawn`, argument arrays, no shell; official native `teamcity` binary |
+| Transport | Go os/exec argument arrays, contexts, process groups and bounded capture; official native `teamcity` binary |
 | Persistence | None for remote responses in v0.1; configuration only |
 | Tests | Pure-logic tests, fake executable contract tests, real-CLI/mock-server tests, optional live sandbox acceptance, agent evaluations |
-| Distribution | npm package containing compiled JavaScript and schemas; external installation of official CLI |
+| Distribution | Standalone Go executable with embedded schemas and skill; external installation of official CLI |
 | Platforms | macOS arm64/x64 and Linux arm64/x64 first; Windows later with dedicated process-termination and quoting tests |
 
 Do not add multiple implementations in different languages. Do not import the official CLI's internal source packages or fork its transport code.
@@ -118,35 +118,27 @@ Rules:
 
 ### 3.4 Core interfaces
 
-These are interface requirements, not a supplied implementation:
+The reader uses a typed operation request and an explicit availability result:
 
-```ts
-interface TeamCityReader {
-  getRun(ref: RunRef, budget: Budget): Promise<ReadResult<Run>>;
-  listRuns(query: RunQuery, budget: Budget): Promise<ReadResult<Page<Run>>>;
-  listSnapshotDependencies(ref: RunRef, page: PageRequest, budget: Budget):
-    Promise<ReadResult<Page<Run>>>;
-  listProblems(ref: RunRef, page: PageRequest, budget: Budget):
-    Promise<ReadResult<Page<Problem>>>;
-  listTests(ref: RunRef, query: TestQuery, budget: Budget):
-    Promise<ReadResult<Page<TestOccurrence>>>;
-  readLog(ref: RunRef, query: LogQuery, budget: Budget):
-    Promise<ReadResult<LogWindow>>;
-  listChanges(ref: RunRef, page: PageRequest, budget: Budget):
-    Promise<ReadResult<Page<Change>>>;
-  getJob(ref: JobRef, budget: Budget): Promise<ReadResult<Job>>;
-  listJobs(query: JobQuery, budget: Budget): Promise<ReadResult<Page<Job>>>;
-  listQueue(query: QueueQuery, budget: Budget): Promise<ReadResult<Page<QueueItem>>>;
-  listAgents(query: AgentQuery, budget: Budget): Promise<ReadResult<Page<Agent>>>;
-  getAgent(ref: AgentRef, budget: Budget): Promise<ReadResult<Agent>>;
+```go
+type Reader interface {
+    Read(context.Context, ReadRequest, Budget) ReadResult
 }
 
-type ReadResult<T> =
-  | { state: "available"; value: T; provenance: Provenance }
-  | { state: "unavailable"; error: DomainError; provenance: Provenance };
+type ReadResult struct {
+    State      string // available or unavailable
+    Value      Object // validated normalized DTO, never a raw upstream object
+    Error      *DomainError
+    Provenance Provenance
+}
 ```
 
-`Page`, graph edges and source coverage carry more information than `T[]`. No helper may turn a failed `ReadResult` into an empty array.
+`ReadRequest` represents each supported detail, page, evidence, metadata and status
+operation with exact identities and bounded parameters. Presence fields distinguish
+absent filters from explicit false. `Budget.MaxChildProcesses` uses -1 for the
+shared ceiling and nonnegative values for a reserved launch ceiling. Page,
+graph edges and source coverage carry more information than an item slice. No
+helper may turn a failed `ReadResult` into an empty collection.
 
 ## 4. Scope and release sequence
 
@@ -953,7 +945,7 @@ Mandatory: all deterministic fixtures pass, all supported combinations pass thei
 
 Performance targets to evaluate, not yet measured:
 
-- Version path adds minimal work over a bare Node process on the same machine; no import of the full command graph.
+- Version requires no filesystem, credential, Git or network initialization. Measure startup against the standalone executable on the same machine.
 - Three independent requests overlap, but no invocation exceeds configured child concurrency.
 - The failure corpus demonstrates lower median agent-facing call count without lower task success than an optimized native baseline.
 - Every default response remains under its specified byte budget; no claim of exact token savings without measurement.
@@ -965,34 +957,28 @@ Do not use a flattering aggregate to hide a regression in wrong-run selection, e
 
 ```text
 teamcity-axi/
-  bin/teamcity-axi.mjs             # version fast path; lazy import
-  src/
-    cli/                          # registry, strict parser, descriptors
-    commands/                     # status, run, job, queue, agent, doctor
-    context/                      # trusted targets, TOML, worktrees, revisions
-    domain/                       # public types, invariants, errors
-    adapter/                      # native mappings, DTO validation, locators
-    transport/                    # spawn, deadlines, capture, cleanup
-    investigation/                # graph, source coverage, findings
-    output/                       # projection, budget, TOON/JSON, redaction
-    setup/                        # optional later explicit local integration
-  schemas/
-  skills/teamcity-axi/
-  tests/
-    unit/
-    executable-contract/
-    real-cli-mock-server/
-    live-sandbox/
-    fixtures/                     # sanitized; license/source metadata
-  evals/
+  cmd/teamcity-axi/                # standalone product entrypoint
+  cmd/axi-dev/                     # docs and release verification
+  cmd/record-native/               # synthetic native contract capture
+  cmd/record-live/                 # restricted live capture tooling
+  cmd/evaluate/                    # scripted benchmark
+  cmd/evaluate-agent/              # explicit model evaluation tooling
+  internal/axi/                    # registry, context, transport, adapters,
+                                   # command services, planners and renderer
+  internal/testfixture/            # projecting HTTP mock and tree fixture
+  internal/nativefixture/          # checksum-pinned native protocol captures
+  internal/livefixture/            # private restricted-reader harness
+  internal/evaluation/             # measurement and evidence rubric
+  schemas/                        # embedded public contracts
+  skills/teamcity-axi/             # embedded portable skill
+  tests/                          # native/live functional acceptance
+  tests/fixtures/                 # immutable sanitized wire captures
+  evaluations/                    # corpus and historical measured results
   docs/
-    SPECIFICATION.md
-    compatibility.json
-    security.md
-    decisions/
-  package.json
-  package-lock.json
-  tsconfig.json
+  assets.go
+  go.mod
+  go.sum
+  Makefile
   AGENTS.md
 ```
 
@@ -1058,11 +1044,11 @@ Mutation code must not ship enabled until these behaviors and their limitations 
 
 ### 20.1 Packaging
 
-Publish a compiled package with an exact declared Node support range, executable entrypoint, schemas, skill and changelog. The proposed package name is not a claim that a package is already published or available to reserve.
+Publish a compiled executable package with its tested platform/toolchain range, embedded schemas and skill, license and changelog. The proposed package name is not a claim that a package is already published or available to reserve.
 
-Do not download/install the official CLI in an npm lifecycle hook. Installation docs separate the two tools and show how to select a tested upstream release. No postinstall hooks, unsolicited network checks or self-update command in the initial wrapper.
+Do not download/install the official CLI through an install hook. Installation docs separate the two tools and show how to select a tested upstream release. No postinstall hooks, unsolicited network checks or self-update command in the initial wrapper.
 
-Ship lockfiles and dependency/license inventory. Verify package contents with `npm pack` before publication; exclude credentials, raw fixtures, internal URLs, local paths and research downloads. Do not bundle private enterprise configuration.
+Ship lockfiles and dependency/license inventory. Verify compiled package contents with `make package` before publication; exclude credentials, raw fixtures, internal URLs, local paths and research downloads. Do not bundle private enterprise configuration.
 
 ### 20.2 Compatibility and versioning
 

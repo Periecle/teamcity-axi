@@ -1,0 +1,1047 @@
+{
+  "baselineCommit": "be1c494",
+  "runtime": "Node 24.14.0",
+  "nativeVersion": "1.5.0",
+  "executedCounts": {
+    "deterministic": 133,
+    "realcli": 56,
+    "live": 18
+  },
+  "scenarios": [
+    {
+      "source": "tests/executable-contract/boundary.test.mjs",
+      "scenario": "version and help need no credentials, Git, dependency executable or initialization",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/boundary.test.mjs",
+      "scenario": "usage errors produce a valid document, exit 2 and silent stderr before child execution",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/boundary.test.mjs",
+      "scenario": "the local no-argument view is small and round-trips",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/boundary.test.mjs",
+      "scenario": "short known secrets cannot corrupt public structural keys in either error rendering path",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "frozen argv, environment and neutral CWD prevent implicit repository behavior",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "origin-bound tokens, unsafe headers and workspace binaries fail before launch",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "unallowlisted, traversing and forged adapter operations never launch children",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "shared child launch and concurrency bounds govern overlapping reads",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "overlapping reads cannot consume reserved launches or raise the configured ceiling",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "oversized stdout and stderr are rejected, nonzero status remains distinct from valid JSON",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "deadline cleans up a process group including a descendant ignoring SIGTERM",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/executable-contract/transport.test.mjs",
+      "scenario": "abort interrupts active and waiting reads without extra children",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/live-server/outcomes.test.mjs",
+      "scenario": "restricted live outcome reads retain cancellation, failed start and composite across command services",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "pinned CLI confirms the live server and restricted permission inventory with bounded reads",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual bounded run list returns a page then proves exhausted continuation without inventing a total",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual wrapper returns exact failed observation and preserves denied, missing and mismatch errors",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "live context verification and doctor preserve restricted scope and optional log limits",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "live independent occurrences retain exact run, selected occurrence, filter and paging identities",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "live bounded logs cap native overdelivery and failure view accounts independent sources",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "live changes preserve root identity, message expansion, files and cursor scope",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual restricted run tree proves immediate direction and scoped leaves with bounded partial expansion",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual restricted failure reports preserve run-bound source evidence and success short circuit",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual restricted job reads retain direct project scope, safe metadata and unknown bounded exhaustion",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual restricted queue reads preserve positive queued IDs, scoped continuation and provider wait reason",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/read.test.mjs",
+      "scenario": "actual scoped agent reads retain separate availability and unknown activity with exact retrieval and denied pools",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/run-list.test.mjs",
+      "scenario": "restricted live run-list predicates preserve exclusive fractional windows despite coarse DTO dates",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/run-list.test.mjs",
+      "scenario": "restricted live unknown-result filtering includes queued evidence and preserves finished candidate counts",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/run-list.test.mjs",
+      "scenario": "restricted live finished-empty scope returns exact zero while lookup-capped searches keep continuation",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/status.test.mjs",
+      "scenario": "restricted live status certifies the exact clean checkout and fails dirty, stale, missing and unmatched-root assertions",
+      "suite": "live"
+    },
+    {
+      "source": "tests/live-server/watch.test.mjs",
+      "scenario": "live watch observes fixed green/red/queued executions read-only with assertion and deadline semantics",
+      "suite": "live"
+    },
+    {
+      "source": "tests/real-cli-mock-server/agents.test.mjs",
+      "scenario": "released agent reads preserve separate states, scoped pages, pool zero and exact retrieval in both serializers",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/agents.test.mjs",
+      "scenario": "agent denial, missing capability, wrong exact ID, pool mismatch and malformed DTOs cannot become empty success",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/agents.test.mjs",
+      "scenario": "agent continuation binds policy/scope/filter/page size and retains useful rows after unsafe or expired continuation",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/agents.test.mjs",
+      "scenario": "agent active pointers obey current project policy, preserve exact retrieval and respect strict/no-hints and byte ceilings",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/agents.test.mjs",
+      "scenario": "interruption during an active-pointer policy read preserves exit 130 and emits one error document",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/diagnostics.test.mjs",
+      "scenario": "context is local until verify; verified scope and identity agree in JSON and TOON",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/diagnostics.test.mjs",
+      "scenario": "offline doctor has no HTTP; online probes are bounded and unsupported optional logs stay explicit",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/evaluation.test.mjs",
+      "scenario": "released native evaluation retains critical wrapper evidence and publishes honest baseline regressions",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/evidence.test.mjs",
+      "scenario": "independent pages preserve duplicate names, muted/ignored categories, safe cursors and exact expansion",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/evidence.test.mjs",
+      "scenario": "independent source errors, unsafe continuation, empty pages and malformed identities cannot become false success",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/evidence.test.mjs",
+      "scenario": "log filtering searches declared full messages, tail bounds hold, and failure mode retains sibling evidence",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/evidence.test.mjs",
+      "scenario": "changes preserve mandatory identity, scoped paging, file caps, expansion and source errors",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/evidence.test.mjs",
+      "scenario": "immediate dependency adapters preserve direction, scoped counts and independent failures with the pinned CLI",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/jobs.test.mjs",
+      "scenario": "released CLI job views and scoped pages expose only safe metadata with typed continuation",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/jobs.test.mjs",
+      "scenario": "job permission, identity, policy, capability and schema errors never become empty success",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/jobs.test.mjs",
+      "scenario": "job cursor reconstruction rejects scope changes and preserves rows after unsafe continuation",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/jobs.test.mjs",
+      "scenario": "unknown paused state, redacted names and oversized job output remain explicit in both serializers",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/native.test.mjs",
+      "scenario": "released CLI transport contract preserves context path and independent errors",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/queue.test.mjs",
+      "scenario": "released CLI scoped queue pages preserve observed state/reason, nullable totals and query-bound hints",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/queue.test.mjs",
+      "scenario": "queue permission/capability/scope/schema failures remain errors; unsafe continuation keeps useful rows",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/queue.test.mjs",
+      "scenario": "queue cursors bind page size, command, project, resolved job scope and reject malformed tokens locally",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/queue.test.mjs",
+      "scenario": "queue unknown/changed state, wait-text redaction, output/capture ceilings and grouped diagnostics stay explicit",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-list.test.mjs",
+      "scenario": "released CLI list preserves one page, mandatory identities, typed continuation and empty continuation",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-list.test.mjs",
+      "scenario": "verified exhausted empty lists return exact scoped zero; capped and unverified emptiness stay partial",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-list.test.mjs",
+      "scenario": "unsafe continuations preserve rows while scope, malformed and denied responses fail closed",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-list.test.mjs",
+      "scenario": "unknown-result pages retain candidate coverage, empty continuation and independent cursor identity",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-list.test.mjs",
+      "scenario": "fractional windows survive provider bounds, exact verification, default lookback and cursor continuation",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-list.test.mjs",
+      "scenario": "long exact bounds preserve useful rows when continuation exceeds its cursor budget",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "actual wrapper and released CLI observe an exact failed run successfully in both formats",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "permission, authentication, wrong identity, malformed and oversized reads never become empty success",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "preview expansion is bounded and next actions parse; SIGINT/deadline remain read-only",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "released CLI output redacts long credentials before previews and marks omitted revisions partial",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "released native outcome projections remain explicit across view, list, watch and investigation",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "a full unknown-outcome page retains all rows within the public diagnostic ceiling",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/run-view.test.mjs",
+      "scenario": "debug and limit-hit responses expose actual tighter ceilings without credentials in both serializers",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "exact clean status checks five required jobs within home budgets and both serializers",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "red is exit zero for observation and one for assertion; active exact executions never fall back to green",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "stale, missing, newer unknown, personal and multi-root checkouts never assert green",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "dirty, detached, explicit foreign revision and omitted sixth required job have distinct checks",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "status preserves local unconfigured home, scoped errors, permission denial and output limits",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "strict status and dash-leading identity hints preserve public flag contracts",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "concurrent separate checkouts preserve their own revisions with invocation-local status state",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "linked worktrees use independent servers and origin-bound tokens concurrently without config writes",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/status.test.mjs",
+      "scenario": "checkout checks distinguish exceptional and composite outcomes without false green",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "released CLI tree retains a shared DAG and cycle, equivalent renderers and exact scope",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "tree boundaries and process ceilings remain explicit without dangling edges or false leaves",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "independent graph failures preserve siblings and exclude foreign identities and diagnostics",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "tree reserves a final non-terminal root observation even when graph discovery has no capacity",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "released CLI failure report preserves independent source references, duplicate/muted identities and bounded diagnosis",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "released CLI failure source errors, final read, redaction and byte ceilings remain explicit",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/tree.test.mjs",
+      "scenario": "released CLI failure preserves Unicode tail retrieval and reduces optional changes before core evidence",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/watch.test.mjs",
+      "scenario": "watch emits one document for completed failure and success, with explicit assertion exits",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/watch.test.mjs",
+      "scenario": "bounded polls distinguish terminal transition, vanished and inaccessible executions and retain prior identity",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/watch.test.mjs",
+      "scenario": "watch deadline retains latest queued/running evidence, remains partial and fails check",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/watch.test.mjs",
+      "scenario": "watch interruption during polling sleep preserves signal exit and never mutates the run",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/real-cli-mock-server/watch.test.mjs",
+      "scenario": "watch cannot replace the frozen ID or selected scope and surfaces inaccessible initial reads",
+      "suite": "realcli"
+    },
+    {
+      "source": "tests/unit/adapter.test.mjs",
+      "scenario": "raw parser handles the actual released CLI envelope and classifies status rather than English",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/adapter.test.mjs",
+      "scenario": "DTO identity validation tolerates additive fields while refusing unsafe IDs and malformed revisions",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/adapter.test.mjs",
+      "scenario": "recorded queued detail has an unknown result when status is absent; other missing results are rejected",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/adapter.test.mjs",
+      "scenario": "requested exact ID is never replaced by an unrelated green run",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/adapter.test.mjs",
+      "scenario": "redaction precedes diagnostic and summary truncation; omitted revisions stay unknown",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/adapter.test.mjs",
+      "scenario": "HTTP failures retain internal pacing metadata without serializing response headers",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/agents.test.mjs",
+      "scenario": "recorded agent scopes preserve separate availability, safe pool metadata and unreported activity",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/agents.test.mjs",
+      "scenario": "agent unknown states and omitted build never imply ready or idle; positive active pointers require exact identity",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/agents.test.mjs",
+      "scenario": "unsafe agent identities, state types, active scope and duplicate/malformed pages fail closed",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/agents.test.mjs",
+      "scenario": "agent continuation preserves rows after unsafe filtering and groups hundred-row missing metadata",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/agents.test.mjs",
+      "scenario": "recorded exact agent reader checks requested ID and preserves unavailable pool and scope reads",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/context.test.mjs",
+      "scenario": "canonical trusted URLs preserve context paths and reject normalized traversal",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/context.test.mjs",
+      "scenario": "native TOML deepest paths overlay defaults and explicit flags win",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/context.test.mjs",
+      "scenario": "two worktrees retain distinct branches and trusted server selections",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/context.test.mjs",
+      "scenario": "repository cannot register targets, redirect credentials or smuggle overlay privileges",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/context.test.mjs",
+      "scenario": "detached HEAD, dirty checkout, literal @this and VCS remote mapping stay explicit",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/context.test.mjs",
+      "scenario": "special/oversized/non-UTF8 configs and duplicate canonical aliases fail closed",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/continuation.test.mjs",
+      "scenario": "continuation is reduced to a bounded position and never forwarded as a URL",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/cursor.test.mjs",
+      "scenario": "cursor binds command/server/filters and reconstructible page position without raw URL",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/cursor.test.mjs",
+      "scenario": "fractional window cursors preserve exact precision and reject reversed or noncanonical times",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evaluation.test.mjs",
+      "scenario": "published evaluation binds the current corpus and distinguishes measured evidence from agent claims",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evaluation.test.mjs",
+      "scenario": "evaluation fixture applies nested REST projections before native output is captured",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evaluation.test.mjs",
+      "scenario": "evaluation counts tokenizer tokens per channel, including literal special-token text",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evaluation.test.mjs",
+      "scenario": "evaluation rejects wrong identities, false empty sources, omissions, and exposed canaries without inventing agent accuracy",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evaluation.test.mjs",
+      "scenario": "evaluation rejects foreign sibling identities and unsupported complete-coverage claims",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evaluation.test.mjs",
+      "scenario": "evaluation binds compound occurrence identity to its exact finding and source execution",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evidence.test.mjs",
+      "scenario": "live bounded occurrence pages preserve identity and reconstruct continuation",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evidence.test.mjs",
+      "scenario": "exact occurrences are run-bound; definitions, raw selectors and mismatched rows fail closed",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evidence.test.mjs",
+      "scenario": "known secrets are removed before previews and unknown test flags/outcomes remain explicit",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evidence.test.mjs",
+      "scenario": "log timestamp offsets normalize to UTC and invalid dates stay unavailable",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/evidence.test.mjs",
+      "scenario": "malformed Unicode is visibly escaped and evidence remains equivalent in JSON and TOON",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/exhaustion.test.mjs",
+      "scenario": "recorded exhausted empty page certifies only the verified server and exact production request",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/exhaustion.test.mjs",
+      "scenario": "actual capped empty and undersized positive pages cannot certify exhaustion or increase scan budgets",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/exhaustion.test.mjs",
+      "scenario": "malformed continuation and a full page missing its required continuation retain uncertainty",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "finished success short-circuits without any evidence or graph reads",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "complete direct evidence yields observations, stable IDs and separately accounted muted occurrences",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "source denial preserves successful siblings and requires log fallback without creating false zero",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "DAG candidate selection is bounded, deterministic and does not equate depth with cause",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "cycles, foreign observations and depth caps never create complete leaf assertions",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "primary evidence and final state survive discovery exhaustion and root changes",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "unknown, canceled and failed-to-start outcomes stay explicit and interruption propagates",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "redaction precedes fingerprints and previews; full evidence remains bounded",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "graph ancestry respects primary evidence reservations and wholly denied dependencies remain unavailable",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "sensitive identity components are redacted before fingerprints are generated",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "nonempty optional changes preserve timestamp and verified root scope without causal findings",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "previewed summaries and multiline changes declare truncation",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "optional change reductions preserve required findings and reconcile actual JSON/TOON bytes and counts",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "log findings declare their inspected window and safely encode hostile literal text",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/failure.test.mjs",
+      "scenario": "dependency evidence never JSON-escapes sensitive metadata before redaction",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "shared DAG retains every parent edge and one node per execution without false cycles",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "cycles are reported separately from shared descendants and cannot recurse forever",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "zero depth performs no dependency reads and boundaries are never declared leaves",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "node caps retain known edges only, account omitted unique targets and preserve sibling expansion",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "count/page denial, malformed continuation and conflicting counts preserve useful siblings",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "policy-denied children never enter retained nodes or edges and call caps remain explicit",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "empty continued pages are followed; duplicate pages cannot create exact exhaustion",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "conflicting or denied observations of retained IDs cannot publish rejected metadata",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/graph.test.mjs",
+      "scenario": "shared metadata changes stay explicit and hard node ceilings bound repeated budget diagnostics",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/jobs.test.mjs",
+      "scenario": "actual scoped job pages retain exact metadata, continuation and unknown empty-page exhaustion",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/jobs.test.mjs",
+      "scenario": "job adapters reject foreign/duplicate/malformed rows and unsafe page bounds before exposing metadata",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/jobs.test.mjs",
+      "scenario": "unsafe job continuations retain useful scoped rows and unavailable paused metadata stays unknown",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/jobs.test.mjs",
+      "scenario": "native job methods preserve actual restricted DTOs and errors without manufacturing empty success",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/limits.test.mjs",
+      "scenario": "effective read ceilings follow actual command profiles and tighter trusted settings",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-contract.test.mjs",
+      "scenario": "live restricted identity and exact failed/green DTOs are preserved independently of HTTP failures",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-contract.test.mjs",
+      "scenario": "live continuation reconstructs encoded scope and finish-time filters without forwarding hrefs",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-contract.test.mjs",
+      "scenario": "live independent evidence and optional structured log have distinct native shapes",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "live recorder redacts decoded credentials including JSON and Go escapes before public capture",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "live session redaction preserves JSON delimiters and continuation identity",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "live recorder refuses reattributing reused numeric IDs to another job, project or result",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "FIFO credential input fails promptly before reading or launching the native executable",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "live recorder rejects reattributing bounded job pages to another identity or project",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "live recorder refuses queue ID reuse, scope changes and finished-state substitution",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "agent capture guards reject reused identity, changed availability, pool movement and false empty pages",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/live-harness.test.mjs",
+      "scenario": "lifecycle permission captures cannot broaden the restricted reader inventory",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/locator.test.mjs",
+      "scenario": "untrusted names cannot introduce additional locator dimensions",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/metadata.test.mjs",
+      "scenario": "recorded project, server and current identity normalize without raw or personal fields",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/metadata.test.mjs",
+      "scenario": "native log overdelivery is capped and credentials are removed before text previews",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/metadata.test.mjs",
+      "scenario": "policy admits only observed ancestor chains and caches within one invocation",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/metadata.test.mjs",
+      "scenario": "the eighth observed ancestor is accepted without a ninth read",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/outcomes.test.mjs",
+      "scenario": "actual native outcome captures distinguish exceptional results and composite from lifecycle",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/outcomes.test.mjs",
+      "scenario": "missing, malformed and conflicting explicit outcome metadata cannot validate green",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/outcomes.test.mjs",
+      "scenario": "ordinary list result filters exclude exceptional runs; exceptional filters use explicit dimensions",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/outcomes.test.mjs",
+      "scenario": "actual restricted native running capture preserves lifecycle independently of its nominal status",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "explicitly forwarded header values are redacted longest first regardless of environment name",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "all supplied response examples validate and JSON/TOON preserve logical values",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "trusted safe name patterns redact environment values and untrusted fields",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "known secrets and terminal controls are removed before rendering in both formats",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "oversized evidence produces one valid bounded error instead of lying about retained evidence",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "large pages and graphs retain unknown outcomes without exceeding the diagnostic schema ceiling",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/output.test.mjs",
+      "scenario": "renderer introduces actual limit metadata only when byte reduction begins, including removed hints",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/parser.test.mjs",
+      "scenario": "strict parsing rejects typos, invalid projections, duplicates, surplus and writes",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/parser.test.mjs",
+      "scenario": "global flags are accepted before or after commands, IDs remain strings",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/parser.test.mjs",
+      "scenario": "explicit inline string values preserve leading option-like literal text",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/queue.test.mjs",
+      "scenario": "actual positive queue pages preserve execution/project/job identity, wait text, UTC time and continuation",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/queue.test.mjs",
+      "scenario": "missing optional queue fields remain unknown and unknown/changed lifecycle is explicit",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/queue.test.mjs",
+      "scenario": "scoped queue adapters reject missing/conflicting/foreign identity, duplicate rows and malformed collections",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/queue.test.mjs",
+      "scenario": "queue boundaries retain useful rows, never invent empty exhaustion, and bound hundred-row diagnostics",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/queue.test.mjs",
+      "scenario": "native queue reader preserves recorded GET input and independent permission errors",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/related.test.mjs",
+      "scenario": "actual positive changes retain commit/root identity and reconstruct bounded continuation",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/related.test.mjs",
+      "scenario": "unsafe paging retains changes; missing roots/files remain explicit; file names are bounded and redacted",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/related.test.mjs",
+      "scenario": "actual snapshot direction and scoped dependency counts preserve unknown exhaustion and proven leaves",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "run page preserves bounded continuation, including empty pages; counts are not global totals",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "run page fails on wrong scope, unsafe counts and duplicate IDs instead of fabricating empty success",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "unsafe or escalating provider continuation keeps useful rows and reports partial acquisition",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "revision candidates require the requested root identity and exact revision; missing metadata stays partial",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "unknown results filter normalized candidates while retaining provider coverage and continuation",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "provider millisecond membership survives coarse DTO timestamps while disjoint rows are excluded",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/run-page.test.mjs",
+      "scenario": "reported-second intervals cannot substitute for the precise provider finish timestamp",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "recorded bulk status preserves five exact jobs and queued lifecycles with bounded activity",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "actual production locators remain identical to recorded unpadded and exact-branch requests",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "red status is a successful observation; newer exact red never falls back to green",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "newest exact running and queued runs block older completed green",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "newer different checkout allows an older exact run; newer unknown revision never certifies it",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "missing roots, jobs and bounded empty candidates never prove global absence or success",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "all other root identities are retained; personal and missing personal state cannot certify checkout",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "status rejects foreign identities, duplicates, reordered candidates and unbounded DTOs",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "status selectors fail locally and cannot inject branch or job locator dimensions",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/status.test.mjs",
+      "scenario": "status reader preserves recorded operation and transport failures without manufacturing missing jobs",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/time.test.mjs",
+      "scenario": "RFC3339 windows preserve fractional precision through UTC conversion and lookback",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/time.test.mjs",
+      "scenario": "invalid dates and reversed sub-millisecond windows fail before acquisition",
+      "suite": "deterministic"
+    },
+    {
+      "source": "tests/unit/time.test.mjs",
+      "scenario": "recorded restricted native predicates prove precise membership without fabricating DTO milliseconds",
+      "suite": "deterministic"
+    }
+  ]
+}

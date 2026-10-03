@@ -1,4 +1,4 @@
-name: foundation checks
+name: Go checks
 on:
   push:
   pull_request:
@@ -9,27 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-go@v5
         with:
-          node-version: '24'
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - run: npm test
-      - run: npm pack --dry-run
+          go-version-file: go.mod
+          cache: true
+      - run: make check
+      - run: go test -race ./...
+      - run: make test-package
   released-cli-contract:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-go@v5
         with:
-          node-version: '24'
-          cache: npm
-      - run: npm ci --ignore-scripts
-      - name: Download and verify pinned official CLI
+          go-version-file: go.mod
+          cache: true
+      - name: Download pinned official CLI
         run: |
           mkdir -p "$RUNNER_TEMP/teamcity-native"
           curl -fLsS https://github.com/JetBrains/teamcity-cli/releases/download/v1.5.0/teamcity_1.5.0_linux_x86_64.tar.gz -o "$RUNNER_TEMP/teamcity-native/release.tar.gz"
-          node --input-type=module -e 'import {readFileSync} from "node:fs"; import {createHash} from "node:crypto"; const manifest=JSON.parse(readFileSync("docs/compatibility.json")); const artifact=manifest.artifacts.find(a=>a.archive.endsWith("linux_x86_64.tar.gz")); const actual=createHash("sha256").update(readFileSync(process.env.RUNNER_TEMP+"/teamcity-native/release.tar.gz")).digest("hex"); if(actual!==artifact.archiveSha256) throw Error("Archive checksum mismatch");'
+          echo "73136b2b3176b20ad9719edeca08ba6961864b8e2ffa916f0903390c0fe48c4c  $RUNNER_TEMP/teamcity-native/release.tar.gz" | sha256sum -c -
           tar -xzf "$RUNNER_TEMP/teamcity-native/release.tar.gz" -C "$RUNNER_TEMP/teamcity-native"
-      - name: Verify actual native requests against local mock
-        run: TEAMCITY_AXI_TEST_BINARY="$RUNNER_TEMP/teamcity-native/teamcity" npm run test:real-cli
+      - run: make test-real-cli TEAMCITY_AXI_TEST_BINARY="$RUNNER_TEMP/teamcity-native/teamcity"

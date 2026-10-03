@@ -34,15 +34,15 @@
       "version": "2026.2",
       "buildNumber": "238924",
       "platform": "linux-x64",
-      "nodeVersion": "24.14.0",
       "nativeVersion": "1.5.0",
       "evidence": "tests/fixtures/teamcity-2026.2-native-1.5.0/contract.json",
       "scope": "accepted read-only v0.1 on the recorded platform/native/server combination; capability limitations below remain explicit",
       "contextPath": "/",
-      "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles"
+      "identity": "PROJECT_VIEWER on AxiContract; no inherited All Users roles",
+      "goVersion": "1.27.1"
     }
   ],
-  "supportStatus": "read-only-v0.1-accepted-for-recorded-tested-combination",
+  "supportStatus": "go-read-only-executed-for-recorded-combination-model-release-gate-pending",
   "serverContract": "118 captured restricted-identity reads on synthetic fixture projects in actual TeamCity 2026.2; accepted read-only scope with recorded capability limitations",
   "capabilities": {
     "structuredRunDetail": "live-tested-exact-failed-green-queued-running-canceled-failed-to-start-composite-and-denied; explicit outcome metadata; unknown on omissions/conflicts",
@@ -62,6 +62,7 @@
     "scopedJobRead": "live-tested-exact-job-safe-fields-and-direct-project-page; count/start/lookupLimit/nextHref, unknown exhaustion and foreign-project 403; broader live policy and paused-state fixtures pending",
     "exactCheckoutStatus": "live-positive clean Git HEAD/root completed-success assertion, dirty/stale/missing/unmatched-root failures, five-job bulk snapshots and encoded branch-filtered empty pages; native multi-root/newer unknown/personal/concurrent checkout/budget regressions; broader live branch/multi-root gates pending",
     "fixedRunWatch": "live-positive exact green/red/canceled/failed-to-start/composite terminal checks, queued deadline retention and actual running-to-canceled two-poll transition; native vanished/inaccessible retention, SIGINT/SIGTERM, byte/identity/provenance regressions; broader live lifecycle gates pending",
-    "portableSkill": "versioned read-only portable SKILL.md and registry-generated help/examples; drift checked by npm test"
-  }
+    "portableSkill": "versioned read-only portable SKILL.md and registry-generated help/examples; drift checked by make check"
+  },
+  "goVerification": "docs/go-verification.json"
 }

@@ -1,7 +1,9 @@
-node_modules/
-dist/
 coverage/
-*.tgz
 .serena/
 .env
 test-results/
+
+bin/teamcity-axi
+release/
+*.test
+core.*

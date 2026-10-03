@@ -1,6 +1,6 @@
 # teamcity-axi
 
-A read-only TypeScript CLI for bounded TeamCity evidence. Implementation follows
+A read-only Go CLI for bounded TeamCity evidence. Implementation follows
 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), with
 [SPECIFICATION.md](SPECIFICATION.md) as the normative contract.
 
@@ -8,52 +8,59 @@ Observe the current checkout with `status`, investigate an exact execution with
 `run failure`, or wait for its outcome with `run watch`. The read-only command
 surface also includes exact run/job/agent views, bounded run/job/queue/agent
 inventories, independent problems/tests/logs/changes/dependency reads, and local
-or verified context diagnostics. JSON and TOON carry the same logical values;
-typed validation, scope assertions, and query-bound cursors preserve identity.
+or verified context diagnostics. TOON is the default; optional JSON carries the same logical values.
+Typed validation, scope assertions, and query-bound cursors preserve identity.
 See the [generated command reference](docs/commands.md),
 [portable agent skill](skills/teamcity-axi/SKILL.md),
 [implementation status](docs/STATUS.md), and [compatibility](docs/compatibility.json).
 The [recorded evaluation](docs/evaluation.md) compares investigation evidence
 against optimized native workflows, including measured costs and limitations.
 
-Requires Node 24 and a separately installed official `teamcity` CLI. The tested
+The standalone executable requires a separately installed official `teamcity` CLI.
+Build from source with Go 1.26 or newer; no language runtime is needed after building. The tested
 native wire contract is v1.5.0 on Linux x64. Other Unix archives are checksum
 recorded but have not been executed. The read-only command services
 have been tested on TeamCity 2026.2 build 238924 with a restricted test identity;
-v0.1.0 acceptance covers that recorded combination and its stated capability limits.
+Go execution evidence covers that recorded combination and its stated capability
+limits; the separate model release gate remains pending.
 The wrapper never downloads native tools during installation.
+Use the official `teamcity` CLI directly for ordinary native operations and
+authentication management. AXI adds bounded agent-facing evidence, exact checkout
+assessment, source accounting and investigation; it does not duplicate native
+setup or add an unrestricted command passthrough.
 Files in `examples/` use synthetic placeholder identities; live test evidence is
 recorded separately in the sanitized fixture corpus.
 
 ```sh
-npm ci --ignore-scripts
-npm run build
-node bin/teamcity-axi.mjs --version
-node bin/teamcity-axi.mjs --help
-node bin/teamcity-axi.mjs context show --json
-node bin/teamcity-axi.mjs schema run.view --json
-node bin/teamcity-axi.mjs status --job Payments_Build --server work --vcs-root Payments_Git --check --json
-node bin/teamcity-axi.mjs run watch 482193 --server work --check --json
-node bin/teamcity-axi.mjs run view 482193 --server work --json
-node bin/teamcity-axi.mjs run tests 482193 --server work --failed --json
-node bin/teamcity-axi.mjs run log 482193 --server work --tail 80 --json
-node bin/teamcity-axi.mjs job list --project Payments --server work --json
-node bin/teamcity-axi.mjs job view Payments_Build --server work --json
-node bin/teamcity-axi.mjs queue list --job Payments_Build --server work --json
-node bin/teamcity-axi.mjs agent list --job Payments_Build --server work --json
-node bin/teamcity-axi.mjs agent view 7 --project Payments --server work --json
-npm test
-npm run format
-npm run format:check
-npm run docs:generate
+go mod download
+make build
+bin/teamcity-axi --version
+bin/teamcity-axi --help
+bin/teamcity-axi context show
+bin/teamcity-axi schema run.view
+bin/teamcity-axi status --job Payments_Build --server work --vcs-root Payments_Git --check
+bin/teamcity-axi run watch 482193 --server work --check
+bin/teamcity-axi run view 482193 --server work
+bin/teamcity-axi run tests 482193 --server work --failed
+bin/teamcity-axi run log 482193 --server work --tail 80
+bin/teamcity-axi job list --project Payments --server work
+bin/teamcity-axi job view Payments_Build --server work
+bin/teamcity-axi queue list --job Payments_Build --server work
+bin/teamcity-axi agent list --job Payments_Build --server work
+bin/teamcity-axi agent view 7 --project Payments --server work
+make test
+make format
+make format-check
+make docs
 ```
 
-Code uses pinned ESLint Stylistic and Prettier. ESLint adds blank lines between
-import groups, definitions, methods, control statements (including single-line
-guards) and returns. Prettier applies
-two-space indentation, semicolons, single quotes, trailing commas and LF endings. `npm test` checks formatting before compiling
-and running tests, so the same rules are enforced in CI. Captured wire artifacts
-are excluded from automatic rewriting.
+The examples emit TOON. Add `--json` when a JSON consumer needs it, for example
+`teamcity-axi run failure 482193 --server work --json`.
+
+Go source uses gofmt. `make test` enforces formatting and generated help drift
+before running deterministic tests. Native mock and live suites are explicit
+separate targets; required fixture inputs fail when missing. Captured wire
+artifacts are never reformatted.
 
 `status` reads at most five required tracked jobs and displays one relevant run
 per job. Each bounded candidate window includes queued, running, and finished
@@ -163,7 +170,7 @@ Use restricted official-CLI authentication. Inherited `TEAMCITY_TOKEN` requires
 matching `TEAMCITY_URL`.
 
 ```sh
-TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity npm run test:real-cli
+TEAMCITY_AXI_TEST_BINARY=/absolute/path/teamcity make test-real-cli
 ```
 
 This suite requires the verified release binary and fails if it is absent or
@@ -176,4 +183,4 @@ ceilings, including output reductions that happen during rendering. Normal
 responses stay unchanged.
 
 The project uses the [MIT license](LICENSE). The [dependency inventory](docs/dependencies.md)
-records the exact lockfile versions and declared third-party licenses.
+records the pinned Go module versions and declared third-party licenses.

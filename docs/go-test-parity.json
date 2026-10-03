@@ -1,0 +1,1460 @@
+{
+  "baselineCommit": "be1c494",
+  "originalExecutedCounts": {
+    "deterministic": 133,
+    "realcli": 56,
+    "live": 18
+  },
+  "meaning": "Behavior traceability; Go tests may group several original scenarios. Execution evidence is recorded separately.",
+  "scenarios": [
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/boundary.test.mjs",
+      "sourceTest": "version and help need no credentials, Git, dependency executable or initialization",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestLocalFastPathsAndErrors"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/boundary.test.mjs",
+      "sourceTest": "usage errors produce a valid document, exit 2 and silent stderr before child execution",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestLocalFastPathsAndErrors"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/boundary.test.mjs",
+      "sourceTest": "the local no-argument view is small and round-trips",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestUnconfiguredHomeAndRemoteContextGate"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/boundary.test.mjs",
+      "sourceTest": "short known secrets cannot corrupt public structural keys in either error rendering path",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestShortSecretPreservesExecutableErrorStructure"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "frozen argv, environment and neutral CWD prevent implicit repository behavior",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportFrozenEnvironmentAndCWD"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "origin-bound tokens, unsafe headers and workspace binaries fail before launch",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportPrelaunchSecurity"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "unallowlisted, traversing and forged adapter operations never launch children",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportPrelaunchSecurity"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "shared child launch and concurrency bounds govern overlapping reads",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportConcurrentAndReservedLimits"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "overlapping reads cannot consume reserved launches or raise the configured ceiling",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportConcurrentAndReservedLimits"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "oversized stdout and stderr are rejected, nonzero status remains distinct from valid JSON",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportCaptureAndExit"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "deadline cleans up a process group including a descendant ignoring SIGTERM",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportDeadlineKillsDescendants"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/executable-contract/transport.test.mjs",
+      "sourceTest": "abort interrupts active and waiting reads without extra children",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTransportAbortActiveAndQueued"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/outcomes.test.mjs",
+      "sourceTest": "restricted live outcome reads retain cancellation, failed start and composite across command services",
+      "goFile": "tests/live-server/outcomes_watch_test.go",
+      "goTest": "TestLiveExceptionalOutcomesAcrossViewListWatchAndFailure"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "pinned CLI confirms the live server and restricted permission inventory with bounded reads",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLivePinnedCLIRestrictedPermissionAndBoundedReads"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual bounded run list returns a page then proves exhausted continuation without inventing a total",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveBoundedRunListContinuationTotalsAndCursorScope"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual wrapper returns exact failed observation and preserves denied, missing and mismatch errors",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveExactFailedObservationDeniedMissingMismatchAndExpiredAuth"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "live context verification and doctor preserve restricted scope and optional log limits",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveContextDoctorRestrictedScopeAndOptionalLogLimits"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "live independent occurrences retain exact run, selected occurrence, filter and paging identities",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveIndependentOccurrenceIdentitySelectedFiltersAndPaging"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "live bounded logs cap native overdelivery and failure view accounts independent sources",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveLogsCapNativeOverdeliveryAndFailureIndependentSources"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "live changes preserve root identity, message expansion, files and cursor scope",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveChangesRootMessageFilesAndCursorScope"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual restricted run tree proves immediate direction and scoped leaves with bounded partial expansion",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveRestrictedRunTreeDirectionLeavesAndBoundedExpansion"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual restricted failure reports preserve run-bound source evidence and success short circuit",
+      "goFile": "tests/live-server/live_test.go",
+      "goTest": "TestLiveFailureReportsRunBoundSourcesAndSuccessShortCircuit"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual restricted job reads retain direct project scope, safe metadata and unknown bounded exhaustion",
+      "goFile": "tests/live-server/collections_test.go",
+      "goTest": "TestLiveRestrictedJobsDirectScopeMetadataAndUnknownExhaustion"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual restricted queue reads preserve positive queued IDs, scoped continuation and provider wait reason",
+      "goFile": "tests/live-server/collections_test.go",
+      "goTest": "TestLiveRestrictedQueuePositiveIDsContinuationAndWaitReason"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/read.test.mjs",
+      "sourceTest": "actual scoped agent reads retain separate availability and unknown activity with exact retrieval and denied pools",
+      "goFile": "tests/live-server/collections_test.go",
+      "goTest": "TestLiveScopedAgentsSeparateAvailabilityUnknownActivityAndDeniedPools"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/run-list.test.mjs",
+      "sourceTest": "restricted live run-list predicates preserve exclusive fractional windows despite coarse DTO dates",
+      "goFile": "tests/live-server/run_list_test.go",
+      "goTest": "TestLiveExclusiveFractionalRunWindowsDespiteCoarseDTODates"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/run-list.test.mjs",
+      "sourceTest": "restricted live unknown-result filtering includes queued evidence and preserves finished candidate counts",
+      "goFile": "tests/live-server/run_list_test.go",
+      "goTest": "TestLiveUnknownResultQueuedEvidenceAndFinishedCandidateCounts"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/run-list.test.mjs",
+      "sourceTest": "restricted live finished-empty scope returns exact zero while lookup-capped searches keep continuation",
+      "goFile": "tests/live-server/run_list_test.go",
+      "goTest": "TestLiveFinishedEmptyExactZeroAndLookupCapContinuation"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/status.test.mjs",
+      "sourceTest": "restricted live status certifies the exact clean checkout and fails dirty, stale, missing and unmatched-root assertions",
+      "goFile": "tests/live-server/status_test.go",
+      "goTest": "TestLiveStatusExactCleanCheckoutDirtyStaleMissingAndUnmatchedRoot"
+    },
+    {
+      "suite": "live",
+      "sourceFile": "tests/live-server/watch.test.mjs",
+      "sourceTest": "live watch observes fixed green/red/queued executions read-only with assertion and deadline semantics",
+      "goFile": "tests/live-server/outcomes_watch_test.go",
+      "goTest": "TestLiveWatchFixedGreenRedQueuedCheckAndDeadline"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/adapter.test.mjs",
+      "sourceTest": "raw parser handles the actual released CLI envelope and classifies status rather than English",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRawReleasedCLIEnvelope"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/adapter.test.mjs",
+      "sourceTest": "DTO identity validation tolerates additive fields while refusing unsafe IDs and malformed revisions",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRunSafeDTOContract"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/adapter.test.mjs",
+      "sourceTest": "recorded queued detail has an unknown result when status is absent; other missing results are rejected",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRunRecordedQueuedUnknownResult"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/adapter.test.mjs",
+      "sourceTest": "requested exact ID is never replaced by an unrelated green run",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRunRequestedIDCannotBeReplacedByGreen"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/adapter.test.mjs",
+      "sourceTest": "redaction precedes diagnostic and summary truncation; omitted revisions stay unknown",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRunRedactionBeforeTruncationAndMissingRevisions"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/adapter.test.mjs",
+      "sourceTest": "HTTP failures retain internal pacing metadata without serializing response headers",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRawInternalPacingMetadata"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/agents.test.mjs",
+      "sourceTest": "recorded agent scopes preserve separate availability, safe pool metadata and unreported activity",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterRecordedAgentStatesPoolAndUnreportedActivity"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/agents.test.mjs",
+      "sourceTest": "agent unknown states and omitted build never imply ready or idle; positive active pointers require exact identity",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterAgentUnknownIdleActiveAndScopedPointers"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/agents.test.mjs",
+      "sourceTest": "unsafe agent identities, state types, active scope and duplicate/malformed pages fail closed",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterAgentUnsafeIdentityTypesScopePagesAndBounds"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/agents.test.mjs",
+      "sourceTest": "agent continuation preserves rows after unsafe filtering and groups hundred-row missing metadata",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterAgentUnsafeContinuationAndGroupedHundredRows"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/agents.test.mjs",
+      "sourceTest": "recorded exact agent reader checks requested ID and preserves unavailable pool and scope reads",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterNativeAgentExactIDInputsAndUnavailableScopes"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/context.test.mjs",
+      "sourceTest": "canonical trusted URLs preserve context paths and reject normalized traversal",
+      "goFile": "internal/axi/context_test.go",
+      "goTest": "TestCanonicalURLTrust"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/context.test.mjs",
+      "sourceTest": "native TOML deepest paths overlay defaults and explicit flags win",
+      "goFile": "internal/axi/context_test.go",
+      "goTest": "TestNativeBindingDeepestScopeAndFlags"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/context.test.mjs",
+      "sourceTest": "two worktrees retain distinct branches and trusted server selections",
+      "goFile": "internal/axi/context_test.go",
+      "goTest": "TestWorktreeIsolation"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/context.test.mjs",
+      "sourceTest": "repository cannot register targets, redirect credentials or smuggle overlay privileges",
+      "goFile": "internal/axi/context_test.go",
+      "goTest": "TestRepositoryCannotRedirectCredentials"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/context.test.mjs",
+      "sourceTest": "detached HEAD, dirty checkout, literal @this and VCS remote mapping stay explicit",
+      "goFile": "internal/axi/context_test.go",
+      "goTest": "TestDetachedDirtyLiteralAndVCSMapping"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/context.test.mjs",
+      "sourceTest": "special/oversized/non-UTF8 configs and duplicate canonical aliases fail closed",
+      "goFile": "internal/axi/context_test.go",
+      "goTest": "TestConfigurationBoundsAndAmbiguity"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/continuation.test.mjs",
+      "sourceTest": "continuation is reduced to a bounded position and never forwarded as a URL",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterContinuationReducedToBoundedPosition"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/cursor.test.mjs",
+      "sourceTest": "cursor binds command/server/filters and reconstructible page position without raw URL",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterCursorBindingAndHostileInputs"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/cursor.test.mjs",
+      "sourceTest": "fractional window cursors preserve exact precision and reject reversed or noncanonical times",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterCursorExactFractionalWindow"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evaluation.test.mjs",
+      "sourceTest": "published evaluation binds the current corpus and distinguishes measured evidence from agent claims",
+      "goFile": "internal/evaluation/metrics_test.go",
+      "goTest": "TestPublishedHistoricalEvidenceReportBindsCorpusWithoutClaimingGoOrAgentResults"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evaluation.test.mjs",
+      "sourceTest": "evaluation fixture applies nested REST projections before native output is captured",
+      "goFile": "internal/evaluation/metrics_test.go",
+      "goTest": "TestEvaluationNestedFixtureProjection"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evaluation.test.mjs",
+      "sourceTest": "evaluation counts tokenizer tokens per channel, including literal special-token text",
+      "goFile": "internal/evaluation/metrics_test.go",
+      "goTest": "TestEvaluationTokenizerMatchesVerifiedJSTiktokenCounts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evaluation.test.mjs",
+      "sourceTest": "evaluation rejects wrong identities, false empty sources, omissions, and exposed canaries without inventing agent accuracy",
+      "goFile": "internal/evaluation/metrics_test.go",
+      "goTest": "TestEvaluationScoringRejectsIdentityOmissionsFalseZerosAndSecrets"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evaluation.test.mjs",
+      "sourceTest": "evaluation rejects foreign sibling identities and unsupported complete-coverage claims",
+      "goFile": "internal/evaluation/metrics_test.go",
+      "goTest": "TestEvaluationScoringRejectsForeignSiblingsAndCoverageClaims"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evaluation.test.mjs",
+      "sourceTest": "evaluation binds compound occurrence identity to its exact finding and source execution",
+      "goFile": "internal/evaluation/metrics_test.go",
+      "goTest": "TestEvaluationCompoundIdentityBindsFindingAndSource"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evidence.test.mjs",
+      "sourceTest": "live bounded occurrence pages preserve identity and reconstruct continuation",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterOccurrencePagesContinuationAndUnknownFilteredExhaustion"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evidence.test.mjs",
+      "sourceTest": "exact occurrences are run-bound; definitions, raw selectors and mismatched rows fail closed",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterExactOccurrencesRunBoundAndDefinitionsRejected"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evidence.test.mjs",
+      "sourceTest": "known secrets are removed before previews and unknown test flags/outcomes remain explicit",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterOccurrenceSecretsUnknownFlagsAndFilters"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evidence.test.mjs",
+      "sourceTest": "log timestamp offsets normalize to UTC and invalid dates stay unavailable",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterLogTimestampOffsetAndInvalidDates"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/evidence.test.mjs",
+      "sourceTest": "malformed Unicode is visibly escaped and evidence remains equivalent in JSON and TOON",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterMalformedUnicodeVisibleAndJSONTOONEquivalent"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/exhaustion.test.mjs",
+      "sourceTest": "recorded exhausted empty page certifies only the verified server and exact production request",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterVerifiedServerOnlyCertifiesExhaustedEmptyRunPage"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/exhaustion.test.mjs",
+      "sourceTest": "actual capped empty and undersized positive pages cannot certify exhaustion or increase scan budgets",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterCappedRunPagesCannotCertifyExhaustionOrIncreaseBudget"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/exhaustion.test.mjs",
+      "sourceTest": "malformed continuation and a full page missing its required continuation retain uncertainty",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterMalformedOrMissingFullPageContinuationRetainsUncertainty"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "finished success short-circuits without any evidence or graph reads",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureSuccessShortCircuit"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "complete direct evidence yields observations, stable IDs and separately accounted muted occurrences",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureDirectEvidenceStableIDsAndMutedCounts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "source denial preserves successful siblings and requires log fallback without creating false zero",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureIndependentDenialAndBoundedCoverage"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "DAG candidate selection is bounded, deterministic and does not equate depth with cause",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureBoundedDeterministicDAGSelection"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "cycles, foreign observations and depth caps never create complete leaf assertions",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureCyclesForeignObservationsAndDepthCaps"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "primary evidence and final state survive discovery exhaustion and root changes",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailurePrimaryReservationAndFinalRecheck"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "unknown, canceled and failed-to-start outcomes stay explicit and interruption propagates",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureUnknownAndCanceledOutcomesAndInterrupt"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "redaction precedes fingerprints and previews; full evidence remains bounded",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureRedactionBeforeFingerprintsAndFullBounds"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "graph ancestry respects primary evidence reservations and wholly denied dependencies remain unavailable",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureAncestryCannotSpendReservedPrimaryEvidence"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "sensitive identity components are redacted before fingerprints are generated",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureSensitiveIdentityFingerprintRedaction"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "nonempty optional changes preserve timestamp and verified root scope without causal findings",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureOptionalChangesPreserveScopeAndTimestamp"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "previewed summaries and multiline changes declare truncation",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailurePreviewedSummariesAndMultilineChanges"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "optional change reductions preserve required findings and reconcile actual JSON/TOON bytes and counts",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureOptionalOutputReductionsPreserveRequiredEvidence"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "log findings declare their inspected window and safely encode hostile literal text",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureLogWindowAndHostileLiteralRetrieval"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/failure.test.mjs",
+      "sourceTest": "dependency evidence never JSON-escapes sensitive metadata before redaction",
+      "goFile": "internal/axi/planner_failure_test.go",
+      "goTest": "TestPlannerFailureDependencyEvidenceRedactsBeforeEscaping"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "shared DAG retains every parent edge and one node per execution without false cycles",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphSharedDAG"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "cycles are reported separately from shared descendants and cannot recurse forever",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphCycle"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "zero depth performs no dependency reads and boundaries are never declared leaves",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphDepthBoundaries"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "node caps retain known edges only, account omitted unique targets and preserve sibling expansion",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphNodeCap"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "count/page denial, malformed continuation and conflicting counts preserve useful siblings",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphIndependentFailures"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "policy-denied children never enter retained nodes or edges and call caps remain explicit",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphPolicyAndCallCaps"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "empty continued pages are followed; duplicate pages cannot create exact exhaustion",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphOffsetContinuation"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "conflicting or denied observations of retained IDs cannot publish rejected metadata",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphRejectsMetadataFromDeniedOrConflictingIdentities"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/graph.test.mjs",
+      "sourceTest": "shared metadata changes stay explicit and hard node ceilings bound repeated budget diagnostics",
+      "goFile": "internal/axi/planner_graph_test.go",
+      "goTest": "TestPlannerGraphChangedObservationAndDiagnosticDeduplication"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/jobs.test.mjs",
+      "sourceTest": "actual scoped job pages retain exact metadata, continuation and unknown empty-page exhaustion",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterRecordedJobPageAndUnknownEmptyExhaustion"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/jobs.test.mjs",
+      "sourceTest": "job adapters reject foreign/duplicate/malformed rows and unsafe page bounds before exposing metadata",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterJobForeignDuplicateMalformedRowsAndBounds"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/jobs.test.mjs",
+      "sourceTest": "unsafe job continuations retain useful scoped rows and unavailable paused metadata stays unknown",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterJobUnsafePagingUnknownPausedAndSanitizedMetadata"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/jobs.test.mjs",
+      "sourceTest": "native job methods preserve actual restricted DTOs and errors without manufacturing empty success",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterNativeJobMethodsRecordedInputsAndErrors"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/limits.test.mjs",
+      "sourceTest": "effective read ceilings follow actual command profiles and tighter trusted settings",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestEffectiveReadLimitsRespectProfilesAndTrustedCeilings"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-contract.test.mjs",
+      "sourceTest": "live restricted identity and exact failed/green DTOs are preserved independently of HTTP failures",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveCapturedRestrictedIdentityAndFailedGreenDTOs"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-contract.test.mjs",
+      "sourceTest": "live continuation reconstructs encoded scope and finish-time filters without forwarding hrefs",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveCapturedEncodedContinuationAndFinishFilters"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-contract.test.mjs",
+      "sourceTest": "live independent evidence and optional structured log have distinct native shapes",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveCapturedEvidenceAndDistinctStructuredLogShape"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "live recorder redacts decoded credentials including JSON and Go escapes before public capture",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveRecorderDecodedCredentialsAndJSONGoEscapes"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "live session redaction preserves JSON delimiters and continuation identity",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveSessionRedactionPreservesJSONAndContinuation"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "live recorder refuses reattributing reused numeric IDs to another job, project or result",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveRecorderRejectsRunIdentityProjectResultReuse"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "FIFO credential input fails promptly before reading or launching the native executable",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveFIFOCredentialsFailPromptlyBeforeNativeLaunch"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "live recorder rejects reattributing bounded job pages to another identity or project",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveRecorderRejectsJobIdentityProjectPausedChanges"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "live recorder refuses queue ID reuse, scope changes and finished-state substitution",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveRecorderRejectsQueueIDScopeAndStateReuse"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "agent capture guards reject reused identity, changed availability, pool movement and false empty pages",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveRecorderRejectsAgentReusePoolAvailabilityAndFalseEmpty"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/live-harness.test.mjs",
+      "sourceTest": "lifecycle permission captures cannot broaden the restricted reader inventory",
+      "goFile": "internal/livefixture/harness_test.go",
+      "goTest": "TestLiveLifecyclePermissionInventoryCannotBroaden"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/locator.test.mjs",
+      "sourceTest": "untrusted names cannot introduce additional locator dimensions",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterLocatorNamesCannotInjectDimensions"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/metadata.test.mjs",
+      "sourceTest": "recorded project, server and current identity normalize without raw or personal fields",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterRecordedProjectServerAndPrivateIdentity"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/metadata.test.mjs",
+      "sourceTest": "native log overdelivery is capped and credentials are removed before text previews",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterNativeLogOverdeliveryIdentityOrderAndRedaction"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/metadata.test.mjs",
+      "sourceTest": "policy admits only observed ancestor chains and caches within one invocation",
+      "goFile": "internal/axi/adapter_policy_test.go",
+      "goTest": "TestAdapterPolicyObservedAncestorsCacheCycleDepthAndUnavailable"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/metadata.test.mjs",
+      "sourceTest": "the eighth observed ancestor is accepted without a ninth read",
+      "goFile": "internal/axi/adapter_policy_test.go",
+      "goTest": "TestAdapterPolicyAcceptsEighthObservedAncestor"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/outcomes.test.mjs",
+      "sourceTest": "actual native outcome captures distinguish exceptional results and composite from lifecycle",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRecordedExplicitOutcomes"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/outcomes.test.mjs",
+      "sourceTest": "missing, malformed and conflicting explicit outcome metadata cannot validate green",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterMissingConflictingAndMalformedExplicitOutcomes"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/outcomes.test.mjs",
+      "sourceTest": "ordinary list result filters exclude exceptional runs; exceptional filters use explicit dimensions",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterOrdinaryAndExceptionalOutcomeFilters"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/outcomes.test.mjs",
+      "sourceTest": "actual restricted native running capture preserves lifecycle independently of its nominal status",
+      "goFile": "internal/axi/adapter_raw_test.go",
+      "goTest": "TestAdapterRecordedRunningOutcome"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "explicitly forwarded header values are redacted longest first regardless of environment name",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestSanitizerContracts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "all supplied response examples validate and JSON/TOON preserve logical values",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestOutputExamplesAndTOON"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "trusted safe name patterns redact environment values and untrusted fields",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestSanitizerContracts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "known secrets and terminal controls are removed before rendering in both formats",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestSanitizerContracts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "oversized evidence produces one valid bounded error instead of lying about retained evidence",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestOutputBudgetsPreserveEvidence"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "large pages and graphs retain unknown outcomes without exceeding the diagnostic schema ceiling",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestDiagnosticCompactionPreservesUnknownRuns"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/output.test.mjs",
+      "sourceTest": "renderer introduces actual limit metadata only when byte reduction begins, including removed hints",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestOutputBudgetsPreserveEvidence"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/parser.test.mjs",
+      "sourceTest": "strict parsing rejects typos, invalid projections, duplicates, surplus and writes",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestParserContracts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/parser.test.mjs",
+      "sourceTest": "global flags are accepted before or after commands, IDs remain strings",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestParserContracts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/parser.test.mjs",
+      "sourceTest": "explicit inline string values preserve leading option-like literal text",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestParserContracts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/queue.test.mjs",
+      "sourceTest": "actual positive queue pages preserve execution/project/job identity, wait text, UTC time and continuation",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterRecordedQueuePageIdentityTimeAndContinuation"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/queue.test.mjs",
+      "sourceTest": "missing optional queue fields remain unknown and unknown/changed lifecycle is explicit",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterQueueMissingUnknownChangedAndRedactedMetadata"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/queue.test.mjs",
+      "sourceTest": "scoped queue adapters reject missing/conflicting/foreign identity, duplicate rows and malformed collections",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterQueueRejectsScopeIdentityTypesCollectionsAndBounds"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/queue.test.mjs",
+      "sourceTest": "queue boundaries retain useful rows, never invent empty exhaustion, and bound hundred-row diagnostics",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterQueueUnsafePagingUnknownExhaustionAndGroupedNotes"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/queue.test.mjs",
+      "sourceTest": "native queue reader preserves recorded GET input and independent permission errors",
+      "goFile": "internal/axi/adapter_collections_test.go",
+      "goTest": "TestAdapterNativeQueueRecordedGETAndPermission"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/related.test.mjs",
+      "sourceTest": "actual positive changes retain commit/root identity and reconstruct bounded continuation",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterActualChangesCommitRootAndFiles"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/related.test.mjs",
+      "sourceTest": "unsafe paging retains changes; missing roots/files remain explicit; file names are bounded and redacted",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterChangesUnsafePagingMissingRootsAndBoundedRedactedFiles"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/related.test.mjs",
+      "sourceTest": "actual snapshot direction and scoped dependency counts preserve unknown exhaustion and proven leaves",
+      "goFile": "internal/axi/adapter_evidence_test.go",
+      "goTest": "TestAdapterSnapshotDirectionScopedCountsAndUnknownExhaustion"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "run page preserves bounded continuation, including empty pages; counts are not global totals",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterRunPagesBoundedContinuationAndUnknownExhaustion"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "run page fails on wrong scope, unsafe counts and duplicate IDs instead of fabricating empty success",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterRunPagesRejectScopeCountsDuplicates"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "unsafe or escalating provider continuation keeps useful rows and reports partial acquisition",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterRunPagesUnsafeContinuationKeepsRows"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "revision candidates require the requested root identity and exact revision; missing metadata stays partial",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterRunPagesExactRevisionRoot"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "unknown results filter normalized candidates while retaining provider coverage and continuation",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterRunPagesUnknownOutcomeRetainsProviderCoverage"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "provider millisecond membership survives coarse DTO timestamps while disjoint rows are excluded",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterRunPagesFractionalFinishMembership"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/run-page.test.mjs",
+      "sourceTest": "reported-second intervals cannot substitute for the precise provider finish timestamp",
+      "goFile": "internal/axi/adapter_paging_test.go",
+      "goTest": "TestAdapterReportedSecondDoesNotSubstituteForPreciseFinish"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "recorded bulk status preserves five exact jobs and queued lifecycles with bounded activity",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterRecordedFiveJobStatusQueuedLifecycle"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "actual production locators remain identical to recorded unpadded and exact-branch requests",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterStatusProductionPathsAndEmptyMissingJobs"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "red status is a successful observation; newer exact red never falls back to green",
+      "goFile": "internal/axi/planner_status_test.go",
+      "goTest": "TestPlannerStatusNewestExactOutcome"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "newest exact running and queued runs block older completed green",
+      "goFile": "internal/axi/planner_status_test.go",
+      "goTest": "TestPlannerStatusActiveCandidatesBlockOlderGreen"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "newer different checkout allows an older exact run; newer unknown revision never certifies it",
+      "goFile": "internal/axi/planner_status_test.go",
+      "goTest": "TestPlannerStatusDifferentAndUnknownNewerRevision"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "missing roots, jobs and bounded empty candidates never prove global absence or success",
+      "goFile": "internal/axi/planner_status_test.go",
+      "goTest": "TestPlannerStatusMissingAndAmbiguousRevision"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "all other root identities are retained; personal and missing personal state cannot certify checkout",
+      "goFile": "internal/axi/planner_status_test.go",
+      "goTest": "TestPlannerStatusOtherRootsAndPersonalCheckouts"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "status rejects foreign identities, duplicates, reordered candidates and unbounded DTOs",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterStatusForeignDuplicatesOrderRootAndBoundedCollections"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "status selectors fail locally and cannot inject branch or job locator dimensions",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterStatusSelectorsRejectInvalidAndEncodeInjection"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/status.test.mjs",
+      "sourceTest": "status reader preserves recorded operation and transport failures without manufacturing missing jobs",
+      "goFile": "internal/axi/adapter_status_test.go",
+      "goTest": "TestAdapterStatusReaderRecordedInputAndPermissionErrors"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/time.test.mjs",
+      "sourceTest": "RFC3339 windows preserve fractional precision through UTC conversion and lookback",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTimePrecision"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/time.test.mjs",
+      "sourceTest": "invalid dates and reversed sub-millisecond windows fail before acquisition",
+      "goFile": "internal/axi/boundary_test.go",
+      "goTest": "TestTimePrecision"
+    },
+    {
+      "suite": "deterministic",
+      "sourceFile": "tests/unit/time.test.mjs",
+      "sourceTest": "recorded restricted native predicates prove precise membership without fabricating DTO milliseconds",
+      "goFile": "internal/axi/adapter_date_contract_test.go",
+      "goTest": "TestAdapterRecordedPreciseNativeDatePredicates"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "actual wrapper and released CLI observe an exact failed run successfully in both formats",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunViewFormats",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "permission, authentication, wrong identity, malformed and oversized reads never become empty success",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunViewFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "preview expansion is bounded and next actions parse; SIGINT/deadline remain read-only",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunViewBoundsAndInterrupt",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "released CLI output redacts long credentials before previews and marks omitted revisions partial",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunViewRedactionAndMissingRevisions",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "released native outcome projections remain explicit across view, list, watch and investigation",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIExceptionalOutcomes",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "a full unknown-outcome page retains all rows within the public diagnostic ceiling",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIUnknownOutcomePage",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-view.test.mjs",
+      "sourceTest": "debug and limit-hit responses expose actual tighter ceilings without credentials in both serializers",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIEffectiveLimits",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-list.test.mjs",
+      "sourceTest": "released CLI list preserves one page, mandatory identities, typed continuation and empty continuation",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunListPaging",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-list.test.mjs",
+      "sourceTest": "verified exhausted empty lists return exact scoped zero; capped and unverified emptiness stay partial",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunListExhaustion",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-list.test.mjs",
+      "sourceTest": "unsafe continuations preserve rows while scope, malformed and denied responses fail closed",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIRunListUnsafeAndFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-list.test.mjs",
+      "sourceTest": "unknown-result pages retain candidate coverage, empty continuation and independent cursor identity",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIUnknownResultCandidates",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-list.test.mjs",
+      "sourceTest": "fractional windows survive provider bounds, exact verification, default lookback and cursor continuation",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIFractionalWindows",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/run-list.test.mjs",
+      "sourceTest": "long exact bounds preserve useful rows when continuation exceeds its cursor budget",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLILongWindowCursorBudget",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/diagnostics.test.mjs",
+      "sourceTest": "context is local until verify; verified scope and identity agree in JSON and TOON",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIContextVerification",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/diagnostics.test.mjs",
+      "sourceTest": "offline doctor has no HTTP; online probes are bounded and unsupported optional logs stay explicit",
+      "goFile": "internal/axi/command_realcli_runs_test.go",
+      "goTest": "TestRealCLIDoctorProbes",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/jobs.test.mjs",
+      "sourceTest": "released CLI job views and scoped pages expose only safe metadata with typed continuation",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIJobMetadataAndPaging",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/jobs.test.mjs",
+      "sourceTest": "job permission, identity, policy, capability and schema errors never become empty success",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIJobFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/jobs.test.mjs",
+      "sourceTest": "job cursor reconstruction rejects scope changes and preserves rows after unsafe continuation",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIJobCursorBinding",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/jobs.test.mjs",
+      "sourceTest": "unknown paused state, redacted names and oversized job output remain explicit in both serializers",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIJobUnknownAndLimits",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/queue.test.mjs",
+      "sourceTest": "released CLI scoped queue pages preserve observed state/reason, nullable totals and query-bound hints",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIQueuePaging",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/queue.test.mjs",
+      "sourceTest": "queue permission/capability/scope/schema failures remain errors; unsafe continuation keeps useful rows",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIQueueFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/queue.test.mjs",
+      "sourceTest": "queue cursors bind page size, command, project, resolved job scope and reject malformed tokens locally",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIQueueCursorBinding",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/queue.test.mjs",
+      "sourceTest": "queue unknown/changed state, wait-text redaction, output/capture ceilings and grouped diagnostics stay explicit",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIQueueUnknownAndLimits",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/agents.test.mjs",
+      "sourceTest": "released agent reads preserve separate states, scoped pages, pool zero and exact retrieval in both serializers",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIAgentStatesAndScopes",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/agents.test.mjs",
+      "sourceTest": "agent denial, missing capability, wrong exact ID, pool mismatch and malformed DTOs cannot become empty success",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIAgentFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/agents.test.mjs",
+      "sourceTest": "agent continuation binds policy/scope/filter/page size and retains useful rows after unsafe or expired continuation",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIAgentCursorBinding",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/agents.test.mjs",
+      "sourceTest": "agent active pointers obey current project policy, preserve exact retrieval and respect strict/no-hints and byte ceilings",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIAgentPolicyAndLimits",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/agents.test.mjs",
+      "sourceTest": "interruption during an active-pointer policy read preserves exit 130 and emits one error document",
+      "goFile": "internal/axi/command_realcli_collections_test.go",
+      "goTest": "TestRealCLIAgentPolicyInterrupt",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/evidence.test.mjs",
+      "sourceTest": "independent pages preserve duplicate names, muted/ignored categories, safe cursors and exact expansion",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIEvidenceIdentityAndPaging",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/evidence.test.mjs",
+      "sourceTest": "independent source errors, unsafe continuation, empty pages and malformed identities cannot become false success",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIEvidenceFailuresAndUnknown",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/evidence.test.mjs",
+      "sourceTest": "log filtering searches declared full messages, tail bounds hold, and failure mode retains sibling evidence",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLILogWindowAndIndependentSources",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/evidence.test.mjs",
+      "sourceTest": "changes preserve mandatory identity, scoped paging, file caps, expansion and source errors",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIChangesEvidence",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/evidence.test.mjs",
+      "sourceTest": "immediate dependency adapters preserve direction, scoped counts and independent failures with the pinned CLI",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIDependencyAdapters",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/watch.test.mjs",
+      "sourceTest": "watch emits one document for completed failure and success, with explicit assertion exits",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIWatchFinished",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/watch.test.mjs",
+      "sourceTest": "bounded polls distinguish terminal transition, vanished and inaccessible executions and retain prior identity",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIWatchTransitions",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/watch.test.mjs",
+      "sourceTest": "watch deadline retains latest queued/running evidence, remains partial and fails check",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIWatchDeadline",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/watch.test.mjs",
+      "sourceTest": "watch interruption during polling sleep preserves signal exit and never mutates the run",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIWatchInterrupt",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/watch.test.mjs",
+      "sourceTest": "watch cannot replace the frozen ID or selected scope and surfaces inaccessible initial reads",
+      "goFile": "internal/axi/command_realcli_evidence_watch_test.go",
+      "goTest": "TestRealCLIWatchIdentityFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "released CLI tree retains a shared DAG and cycle, equivalent renderers and exact scope",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLITreeDAGAndCycle",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "tree boundaries and process ceilings remain explicit without dangling edges or false leaves",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLITreeBoundaries",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "independent graph failures preserve siblings and exclude foreign identities and diagnostics",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLITreeIndependentFailures",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "tree reserves a final non-terminal root observation even when graph discovery has no capacity",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLITreeReservedFinal",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "released CLI failure report preserves independent source references, duplicate/muted identities and bounded diagnosis",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLIFailureSourcesAndDiagnosis",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "released CLI failure source errors, final read, redaction and byte ceilings remain explicit",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLIFailureErrorsAndBounds",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/tree.test.mjs",
+      "sourceTest": "released CLI failure preserves Unicode tail retrieval and reduces optional changes before core evidence",
+      "goFile": "internal/axi/command_realcli_graph_test.go",
+      "goTest": "TestRealCLIFailureUnicodeAndReduction",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "exact clean status checks five required jobs within home budgets and both serializers",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusFiveJobs",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "red is exit zero for observation and one for assertion; active exact executions never fall back to green",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusRedAndActivity",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "stale, missing, newer unknown, personal and multi-root checkouts never assert green",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusUnverifiedCandidates",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "dirty, detached, explicit foreign revision and omitted sixth required job have distinct checks",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusCheckoutBoundaries",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "status preserves local unconfigured home, scoped errors, permission denial and output limits",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusErrorsAndUnconfiguredHome",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "strict status and dash-leading identity hints preserve public flag contracts",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusStrictAndDashHints",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "concurrent separate checkouts preserve their own revisions with invocation-local status state",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusConcurrentCheckouts",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "linked worktrees use independent servers and origin-bound tokens concurrently without config writes",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusLinkedWorktreeOrigins",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/status.test.mjs",
+      "sourceTest": "checkout checks distinguish exceptional and composite outcomes without false green",
+      "goFile": "internal/axi/command_realcli_status_test.go",
+      "goTest": "TestRealCLIStatusExceptionalOutcomes",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/native.test.mjs",
+      "sourceTest": "released CLI transport contract preserves context path and independent errors",
+      "goFile": "tests/native-contract/native_test.go",
+      "goTest": "TestReleasedNativeProtocolAndSummaryOmission",
+      "suite": "realcli"
+    },
+    {
+      "sourceFile": "tests/real-cli-mock-server/evaluation.test.mjs",
+      "sourceTest": "released native evaluation retains critical wrapper evidence and publishes honest baseline regressions",
+      "goFile": "internal/evaluation/benchmark_realcli_test.go",
+      "goTest": "TestRealCLIEvaluationRetainsCriticalEvidenceAndHonestNativeRegressions",
+      "suite": "realcli"
+    }
+  ]
+}
