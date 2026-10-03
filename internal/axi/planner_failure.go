@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
 )
 
 type FailureOptions struct {
@@ -68,9 +69,16 @@ func SelectDiagnosedRuns(graph Object, depths map[string]int, cap int, reference
 }
 
 func boundedText(value string, limit int) (string, bool) {
-	runes := []rune(value)
-	if len(runes) > limit {
-		return string(runes[:limit]), true
+	count := 0
+	for offset := range value {
+		if count == limit {
+			prefix := value[:offset]
+			if !utf8.ValidString(prefix) {
+				prefix = string([]rune(prefix))
+			}
+			return prefix, true
+		}
+		count++
 	}
 	return value, false
 }
@@ -163,7 +171,7 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 		}
 		return args
 	}
-	excerpt := func(value, kind, id string) string {
+	excerpt := func(value, kind, id string) (string, bool) {
 		limit := 2000
 		if options.Full {
 			limit = 8192
@@ -180,7 +188,7 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 				appendLimitations(Limitation{Code: "TEXT_HARD_LIMIT", Message: "Evidence excerpt reached its bounded full-text ceiling", Source: kind, RunID: id})
 			}
 		}
-		return text
+		return text, cut
 	}
 	finding := func(run, source Object, kind, itemID, summary, text string, argv []string) {
 		safeText := SanitizeText(text, options.Secrets)
@@ -206,9 +214,9 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 		safeSummary, cut := boundedText(SanitizeText(summary, options.Secrets), 1200)
 		truncated = truncated || cut
 		id := Str(run, "id")
-		preview := excerpt(safeText, Str(source, "kind"), id)
+		preview, previewCut := excerpt(safeText, Str(source, "kind"), id)
 		reference := Object{"id": "ev:" + id + ":" + hash, "sourceRef": source["id"], "runId": id, "kind": evidenceKind, "itemId": itemID, "excerpt": preview, "observedAt": source["observedAt"], "retrieve": Object{"reason": reason, "argv": argv}}
-		if len([]rune(preview)) < len([]rune(SanitizeText(safeText, options.Secrets))) {
+		if previewCut {
 			truncatedEvidence[Str(reference, "id")] = true
 			Obj(reference["retrieve"])["reason"] = "Read truncated supporting evidence"
 		}
@@ -503,7 +511,8 @@ func InvestigateFailure(ctx context.Context, reader Reader, ec ExecutionContext,
 						truncated = truncated || firstLine(message) != message
 						message = firstLine(message)
 					}
-					optionalChanges = append(optionalChanges, Object{"id": item["id"], "version": item["version"], "vcsRootId": item["vcsRootId"], "timestamp": item["timestamp"], "message": excerpt(message, "changes", rootID)})
+					preview, _ := excerpt(message, "changes", rootID)
+					optionalChanges = append(optionalChanges, Object{"id": item["id"], "version": item["version"], "vcsRootId": item["vcsRootId"], "timestamp": item["timestamp"], "message": preview})
 				}
 			}
 		}

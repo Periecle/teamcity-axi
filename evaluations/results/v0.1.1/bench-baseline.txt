@@ -1,0 +1,33 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Periecle/teamcity-axi/internal/axi
+cpu: AMD Ryzen 5 3600 6-Core Processor              
+BenchmarkRender/status.exact/json-12         	     319	    542387 ns/op	  116271 B/op	    3291 allocs/op
+BenchmarkRender/status.exact/json-12         	     336	    535189 ns/op	  116451 B/op	    3291 allocs/op
+BenchmarkRender/status.exact/json-12         	     330	    534637 ns/op	  116658 B/op	    3291 allocs/op
+BenchmarkRender/status.exact/toon-12         	     310	    586056 ns/op	  136226 B/op	    3627 allocs/op
+BenchmarkRender/status.exact/toon-12         	     296	    619146 ns/op	  136991 B/op	    3629 allocs/op
+BenchmarkRender/status.exact/toon-12         	     290	    627103 ns/op	  136874 B/op	    3627 allocs/op
+BenchmarkRender/failure.partial/json-12      	     184	    967719 ns/op	  226577 B/op	    6716 allocs/op
+BenchmarkRender/failure.partial/json-12      	     181	    987708 ns/op	  227641 B/op	    6715 allocs/op
+BenchmarkRender/failure.partial/json-12      	     187	    960767 ns/op	  226988 B/op	    6715 allocs/op
+BenchmarkRender/failure.partial/toon-12      	     166	   1074020 ns/op	  261412 B/op	    7354 allocs/op
+BenchmarkRender/failure.partial/toon-12      	     168	   1075812 ns/op	  262312 B/op	    7357 allocs/op
+BenchmarkRender/failure.partial/toon-12      	     170	   1065028 ns/op	  262433 B/op	    7360 allocs/op
+BenchmarkRender/compacted-notes/json-12      	     100	   1682431 ns/op	  436026 B/op	   13180 allocs/op
+BenchmarkRender/compacted-notes/json-12      	      94	   1699803 ns/op	  439971 B/op	   13181 allocs/op
+BenchmarkRender/compacted-notes/json-12      	     100	   1725272 ns/op	  445113 B/op	   13185 allocs/op
+BenchmarkRender/compacted-notes/toon-12      	     100	   1745059 ns/op	  446383 B/op	   13266 allocs/op
+BenchmarkRender/compacted-notes/toon-12      	     100	   1707742 ns/op	  445175 B/op	   13265 allocs/op
+BenchmarkRender/compacted-notes/toon-12      	     100	   1710836 ns/op	  447642 B/op	   13264 allocs/op
+BenchmarkSanitizeText/ascii-12               	     861	    216505 ns/op	   30315 B/op	      29 allocs/op
+BenchmarkSanitizeText/ascii-12               	     818	    219183 ns/op	   30325 B/op	      29 allocs/op
+BenchmarkSanitizeText/ascii-12               	     820	    219605 ns/op	   30370 B/op	      29 allocs/op
+BenchmarkSanitizeText/unicode-12             	    2943	     61345 ns/op	   12942 B/op	      27 allocs/op
+BenchmarkSanitizeText/unicode-12             	    2938	     61561 ns/op	   13006 B/op	      27 allocs/op
+BenchmarkSanitizeText/unicode-12             	    2941	     61064 ns/op	   12930 B/op	      27 allocs/op
+BenchmarkSanitizeText/controls-12            	    1464	    121957 ns/op	   20721 B/op	      86 allocs/op
+BenchmarkSanitizeText/controls-12            	    1436	    121273 ns/op	   20697 B/op	      86 allocs/op
+BenchmarkSanitizeText/controls-12            	    1524	    120061 ns/op	   20759 B/op	      86 allocs/op
+PASS
+ok  	github.com/Periecle/teamcity-axi/internal/axi	4.913s

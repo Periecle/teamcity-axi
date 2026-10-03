@@ -21,6 +21,9 @@ func (s *ReadSession) Close() error {
 	}
 	return s.Transport.Close()
 }
+
+var nativeVersionResponse = regexp.MustCompile(`^teamcity version ([a-zA-Z0-9.+-]{1,80})\r?\n$`)
+
 func OpenReadSession(ctx context.Context, ec ExecutionContext, profile string) (*ReadSession, error) {
 	env := Environment()
 	path := ""
@@ -57,7 +60,7 @@ func OpenReadSession(ctx context.Context, ec ExecutionContext, profile string) (
 		transport.Close()
 		return nil, err
 	}
-	match := regexp.MustCompile(`^teamcity version ([a-zA-Z0-9.+-]{1,80})\r?\n$`).FindSubmatch(capture.Stdout)
+	match := nativeVersionResponse.FindSubmatch(capture.Stdout)
 	if capture.ExitCode != 0 || capture.Signal != "" || match == nil {
 		transport.Close()
 		return nil, NewError("DEPENDENCY_UNSUPPORTED", "Native executable has an unsupported version response", 1)

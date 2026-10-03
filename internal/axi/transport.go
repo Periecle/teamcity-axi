@@ -81,6 +81,10 @@ func ResolveBinary(path, repository string, allowWorkspace bool, env map[string]
 	}
 	return "", NewError("DEPENDENCY_MISSING", "A trusted official teamcity executable is required", 1)
 }
+
+var safeHeaderName = regexp.MustCompile(`^TEAMCITY_HEADER_[A-Z0-9_]+$`)
+var forbiddenHeaderName = regexp.MustCompile(`AUTHORIZATION|HOST|COOKIE|PROXY_AUTHORIZATION|CONNECTION|TRANSFER_ENCODING`)
+
 func ChildEnvironment(env map[string]string, serverURL string, headers []string) (map[string]string, error) {
 	child := map[string]string{}
 	for _, n := range []string{"HOME", "PATH", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_RUNTIME_DIR", "USER", "LOGNAME", "LANG", "LC_ALL", "SSL_CERT_FILE", "SSL_CERT_DIR", "HTTPS_PROXY", "HTTP_PROXY", "ALL_PROXY", "NO_PROXY", "https_proxy", "http_proxy", "all_proxy", "no_proxy"} {
@@ -96,9 +100,8 @@ func ChildEnvironment(env map[string]string, serverURL string, headers []string)
 		}
 		child["TEAMCITY_TOKEN"] = env["TEAMCITY_TOKEN"]
 	}
-	safeHeader := regexp.MustCompile(`^TEAMCITY_HEADER_[A-Z0-9_]+$`)
 	for _, n := range headers {
-		if !safeHeader.MatchString(n) || regexp.MustCompile(`AUTHORIZATION|HOST|COOKIE|PROXY_AUTHORIZATION|CONNECTION|TRANSFER_ENCODING`).MatchString(n) {
+		if !safeHeaderName.MatchString(n) || forbiddenHeaderName.MatchString(n) {
 			return nil, NewError("POLICY_DENIED", "Unsafe custom header environment name", 1)
 		}
 		if v, ok := env[n]; ok {

@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"unicode/utf8"
 
 	assets "github.com/Periecle/teamcity-axi"
 	"github.com/santhosh-tekuri/jsonschema/v6"
@@ -73,29 +74,52 @@ func SanitizeText(text string, secrets []string) string {
 			text = strings.ReplaceAll(text, v, "[REDACTED]")
 		}
 	}
-	text = osc.ReplaceAllString(text, "")
-	text = csi.ReplaceAllString(text, "")
-	var b strings.Builder
-	for _, r := range text {
-		if r <= 8 || (r >= 11 && r <= 31) || (r >= 127 && r <= 159) {
-			continue
-		}
-		if (r >= 0x202a && r <= 0x202e) || (r >= 0x2066 && r <= 0x2069) {
-			fmt.Fprintf(&b, "\\u%04x", r)
-		} else {
-			b.WriteRune(r)
-		}
+	if strings.ContainsRune(text, '\x1b') {
+		text = osc.ReplaceAllString(text, "")
+		text = csi.ReplaceAllString(text, "")
 	}
-	text = b.String()
+	// Preserve invalid UTF-8 normalization and the second secret pass: removing
+	// controls can join pieces of a credential that the first pass cannot see.
+	if !utf8.ValidString(text) || strings.IndexFunc(text, unsafeTextRune) >= 0 {
+		var b strings.Builder
+		b.Grow(len(text))
+		for _, r := range text {
+			if r <= 8 || (r >= 11 && r <= 31) || (r >= 127 && r <= 159) {
+				continue
+			}
+			if (r >= 0x202a && r <= 0x202e) || (r >= 0x2066 && r <= 0x2069) {
+				fmt.Fprintf(&b, "\\u%04x", r)
+			} else {
+				b.WriteRune(r)
+			}
+		}
+		text = b.String()
+	}
 	for _, v := range secrets {
 		if v != "" {
 			text = strings.ReplaceAll(text, v, "[REDACTED]")
 		}
 	}
-	text = privateKey.ReplaceAllString(text, "[REDACTED PRIVATE KEY]")
-	text = authSecret.ReplaceAllString(text, "${1}[REDACTED]")
-	text = inlineSecret.ReplaceAllString(text, "${1}=[REDACTED]")
-	return urlSecret.ReplaceAllString(text, "${1}[REDACTED]@")
+	// ReplaceAllString allocates even when no replacement is needed. Most public
+	// identities and ordinary prose do not match any recognizable secret form.
+	if privateKey.MatchString(text) {
+		text = privateKey.ReplaceAllString(text, "[REDACTED PRIVATE KEY]")
+	}
+	if authSecret.MatchString(text) {
+		text = authSecret.ReplaceAllString(text, "${1}[REDACTED]")
+	}
+	if inlineSecret.MatchString(text) {
+		text = inlineSecret.ReplaceAllString(text, "${1}=[REDACTED]")
+	}
+	if urlSecret.MatchString(text) {
+		text = urlSecret.ReplaceAllString(text, "${1}[REDACTED]@")
+	}
+	return text
+}
+
+func unsafeTextRune(r rune) bool {
+	return r <= 8 || (r >= 11 && r <= 31) || (r >= 127 && r <= 159) ||
+		(r >= 0x202a && r <= 0x202e) || (r >= 0x2066 && r <= 0x2069)
 }
 
 var protectedKeys = map[string]bool{}
@@ -105,7 +129,7 @@ func init() {
 		protectedKeys[k] = true
 	}
 }
-func sanitizeValue(value any, secrets []string, matchers []*regexp.Regexp, depth int, path []string, protect bool) any {
+func sanitizeValue(value any, secrets []string, matchers []*regexp.Regexp, depth int, inMeta bool, protect bool) any {
 	if depth > 30 {
 		return "[INPUT_DEPTH_LIMIT]"
 	}
@@ -115,13 +139,13 @@ func sanitizeValue(value any, secrets []string, matchers []*regexp.Regexp, depth
 	case []any:
 		r := make([]any, len(v))
 		for i, x := range v {
-			r[i] = sanitizeValue(x, secrets, matchers, depth+1, path, protect)
+			r[i] = sanitizeValue(x, secrets, matchers, depth+1, inMeta, protect)
 		}
 		return r
 	case map[string]any:
 		r := Object{}
 		for k, x := range v {
-			structural := protect && protectedKeys[k] && (depth == 0 || (len(path) > 0 && path[0] == "meta"))
+			structural := protect && protectedKeys[k] && (depth == 0 || inMeta)
 			sensitive := !structural && secretName.MatchString(k)
 			for _, p := range matchers {
 				sensitive = sensitive || (!structural && p.MatchString(k))
@@ -133,8 +157,7 @@ func sanitizeValue(value any, secrets []string, matchers []*regexp.Regexp, depth
 			if sensitive {
 				r[key] = "[REDACTED]"
 			} else {
-				next := append(append([]string{}, path...), k)
-				r[key] = sanitizeValue(x, secrets, matchers, depth+1, next, protect)
+				r[key] = sanitizeValue(x, secrets, matchers, depth+1, inMeta || (depth == 0 && k == "meta"), protect)
 			}
 		}
 		return r
@@ -159,7 +182,7 @@ func Sanitize(value any, secrets, patterns []string) any {
 	if err != nil {
 		return "[INVALID_VALUE]"
 	}
-	return sanitizeValue(normalized, secrets, m, 0, nil, false)
+	return sanitizeValue(normalized, secrets, m, 0, false, false)
 }
 
 type offlineLoader struct{}
@@ -219,6 +242,16 @@ func PackagedSchema(name string) (Object, error) {
 	return Obj(v), err
 }
 func validateSchema(name string, v any) error {
+	value, err := jsonValue(v)
+	if err != nil {
+		return err
+	}
+	return validateNormalizedSchema(name, value)
+}
+
+// Only accepts the detached JSON tree produced by jsonValue. Both envelope
+// and payload validation can share it without repeatedly encoding the response.
+func validateNormalizedSchema(name string, value any) error {
 	schemaOnce.Do(loadSchemas)
 	if schemaErr != nil {
 		return schemaErr
@@ -241,10 +274,6 @@ func validateSchema(name string, v any) error {
 		compiledSchemas[name] = s
 	}
 	schemaMu.Unlock()
-	value, err := jsonValue(v)
-	if err != nil {
-		return err
-	}
 	return s.Validate(value)
 }
 func ValidateConfig(name string, v any) error {
@@ -254,15 +283,23 @@ func ValidateConfig(name string, v any) error {
 	return nil
 }
 func ValidateResponse(v Response) error {
-	if err := validateSchema("response", v); err != nil {
+	normalized, err := jsonValue(v)
+	if err != nil {
 		return NewError("INTERNAL_ERROR", "Normalized output violated its public contract", 1)
 	}
-	if v.Status != "error" && v.Command != "schema" {
-		name := strings.ReplaceAll(v.Command, ".", "-")
-		if v.Command == "run.failure" {
+	return validateNormalizedResponse(Obj(normalized))
+}
+
+func validateNormalizedResponse(v Object) error {
+	if err := validateNormalizedSchema("response", v); err != nil {
+		return NewError("INTERNAL_ERROR", "Normalized output violated its public contract", 1)
+	}
+	if Str(v, "status") != "error" && Str(v, "command") != "schema" {
+		name := strings.ReplaceAll(Str(v, "command"), ".", "-")
+		if Str(v, "command") == "run.failure" {
 			name = "failure"
 		}
-		if err := validateSchema(name, v.Data); err != nil {
+		if err := validateNormalizedSchema(name, v["data"]); err != nil {
 			return NewError("INTERNAL_ERROR", "Normalized payload violated its public contract", 1)
 		}
 	}
@@ -279,6 +316,10 @@ func serializeResponse(r Response, format string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	return serializeNormalizedResponse(v, format)
+}
+
+func serializeNormalizedResponse(v any, format string) (string, error) {
 	if format == "json" {
 		b, err := json.Marshal(v)
 		return string(b) + "\n", err
@@ -306,7 +347,7 @@ func Render(input Response, format string, maxBytes int, secrets, patterns []str
 	if err != nil {
 		return Rendered{}, err
 	}
-	safe := sanitizeValue(normalized, secrets, matchers, 0, nil, true)
+	safe := sanitizeValue(normalized, secrets, matchers, 0, false, true)
 	b, err := json.Marshal(safe)
 	if err != nil {
 		return Rendered{}, err
@@ -346,10 +387,14 @@ func Render(input Response, format string, maxBytes int, secrets, patterns []str
 		}
 		value.Meta["limitations"] = notes
 	}
-	if err = ValidateResponse(value); err != nil {
+	normalized, err = jsonValue(value)
+	if err != nil {
 		return Rendered{}, err
 	}
-	doc, err := serializeResponse(value, format)
+	if err = validateNormalizedResponse(Obj(normalized)); err != nil {
+		return Rendered{}, err
+	}
+	doc, err := serializeNormalizedResponse(normalized, format)
 	if err != nil {
 		return Rendered{}, err
 	}

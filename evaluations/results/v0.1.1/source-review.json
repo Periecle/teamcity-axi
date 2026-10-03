@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "independent-security-evidence-source-review",
+  "reviewStatus": "accepted",
+  "reviewer": "adapter/security/evidence reviewer independent of performance-change author",
+  "baselineCommit": "6f7a1f2d96e1d64c6cdfd3ade26f32042ed26d02",
+  "reviewedFilesSha256": {
+    "internal/axi/output.go": "6b5accdae927085fad4c1690ce1a0e9bc157b6ebbea3d7be51d37e81227dc521",
+    "internal/axi/main.go": "73f6bb492ff5399ef99d657cd31671524e22d8f8e21aa1b1cc8df43bf8321697",
+    "internal/axi/session.go": "68ecb930a52374a23e313ef140c13d885fa93c76f4b2dcfdf3e50366ee66d3f3",
+    "internal/axi/transport.go": "0a4fe1931c4406b40137968520c506ddf75e2457fb541fd9dcaed2e46c15fbf8",
+    "internal/axi/planner_failure.go": "4b268982543d754e5f52d94fc5035056d33845d87f30bb309bf7cbd60b8d5d3c",
+    "skills/teamcity-axi/SKILL.md": "c78a23a2380296ceec071d69fa5a0836114129e90c3a4813b64ced3f6911e552",
+    "internal/axi/render_regression_test.go": "26877f323fb469ce67ffb857e5e30a2fec4b786804f4341c237601b8b3148f84",
+    "internal/axi/testdata/render-v0.1.0.json": "42450aeb6aaa35c8f6349fdd5fda38d7b4c3ff5990c33fbeac7dd960781b4893"
+  },
+  "scope": [
+    "sanitizer exact pass order, recognized-form regex guards, malformed UTF8/control/bidi handling",
+    "equivalent root/meta structural protection",
+    "both envelope and command-specific payload validation; unsupported JSON values fail closed",
+    "JSON/TOON wire identity and byte reductions, input immutability",
+    "rune boundaries, sanitized fingerprints and truncated retained evidence hints",
+    "invocation-local environment reuse; immutable regexes; no acquisition/policy/checkouts changes",
+    "generic compacted skill preserves exact IDs, independent source coverage, status/watch checks, untrusted prose and typed optional expansion"
+  ],
+  "findings": [
+    {
+      "severity": "test-coverage",
+      "finding": "Initial run.failure empty payload already failed base envelope; it did not independently verify command payload validation.",
+      "resolution": "Corrected to nonempty run.view {bogus:true} and assert exact payload-specific DomainError message. Focused test passed.",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedFindings": [],
+  "differential": {
+    "comparison": "actual baseline output.go loaded through Go overlay versus current output.go; helper uses deterministic synthetic text and explicit fixed secret policies only",
+    "helperPath": "/tmp/teamcity-axi-v0.1.1/reviewer/compare.go",
+    "helperSha256": "12230e8ccd93e4c938ec8c03327d1bcc2f9383c86cd1ebb5f8278fe4f0980dfb",
+    "baselineOverlayPath": "/tmp/teamcity-axi-v0.1.1/reviewer/baseline-overlay.json",
+    "baselineOverlaySha256": "eb8f207fbd6ea7565503c8366e23d49809ae72fddcbab7aa0e06e59b47f5448b",
+    "candidateOverlayPath": "/tmp/teamcity-axi-v0.1.1/reviewer/candidate-overlay.json",
+    "candidateOverlaySha256": "5a51c1a366fd0eba1c4bdf1b6bcec8cabdc48a75c98e44338abe3efca1a20758",
+    "baselineImplementationCopyPath": "/tmp/teamcity-axi-v0.1.1/reviewer/output-baseline.go",
+    "baselineImplementationCopySha256": "95f4b5bb5e96e9adc05fceb56d847de2c53857d15158722831eee73674799584",
+    "textInputs": 1011,
+    "secretPolicies": 11,
+    "textResults": 11121,
+    "objectPatternPolicies": 4,
+    "renderFormats": [
+      "json",
+      "toon"
+    ],
+    "renderAndObjectResults": 132,
+    "totalRecordsPerCondition": 11253,
+    "differentRecords": 0,
+    "exactByteEquality": true,
+    "baselineResultsPath": "/tmp/teamcity-axi-v0.1.1/reviewer/baseline.jsonl",
+    "candidateResultsPath": "/tmp/teamcity-axi-v0.1.1/reviewer/candidate.jsonl",
+    "baselineResultsSha256": "9affe6946aa80e98da7a1f78e7af4a8f23a1f5c88ae8fac7374b608c5294e509",
+    "candidateResultsSha256": "9affe6946aa80e98da7a1f78e7af4a8f23a1f5c88ae8fac7374b608c5294e509",
+    "caseCoverage": [
+      "ASCII and multilingual text",
+      "malformed UTF8",
+      "ANSI CSI and OSC",
+      "C1/NUL/bidi controls",
+      "secret fragments joined by control removal",
+      "one-character and overlapping secrets, including REDACTED markers",
+      "bearer/basic/inline/URL/private-key forms",
+      "nested typed arrays, null/empty values, patterns matching structural-looking keys under data versus root/meta"
+    ],
+    "commands": [
+      "GOPATH=/tmp/teamcity-axi-go GOCACHE=/tmp/teamcity-axi-go-cache go run -overlay=/tmp/teamcity-axi-v0.1.1/reviewer/baseline-overlay.json internal/evaluation/reviewer_compare/main.go > /tmp/teamcity-axi-v0.1.1/reviewer/baseline.jsonl",
+      "GOPATH=/tmp/teamcity-axi-go GOCACHE=/tmp/teamcity-axi-go-cache go run -overlay=/tmp/teamcity-axi-v0.1.1/reviewer/candidate-overlay.json internal/evaluation/reviewer_compare/main.go > /tmp/teamcity-axi-v0.1.1/reviewer/candidate.jsonl"
+    ]
+  },
+  "frozenWireProvenance": {
+    "wireSnapshots": 28,
+    "matrix": "7 scenarios x 2 formats x 2 byte budgets",
+    "baselineCommand": "GOPATH=/tmp/teamcity-axi-go GOCACHE=/tmp/teamcity-axi-go-cache go test -overlay=/tmp/teamcity-axi-v0.1.1/reviewer/baseline-overlay.json ./internal/axi -run ^TestRenderRetainsPreOptimizationWire$ -count=1",
+    "baselineResult": "passed",
+    "candidateResult": "passed under race"
+  },
+  "finalFocusedRace": {
+    "tests": [
+      "TestRenderRetainsPreOptimizationWire",
+      "TestBoundedTextPreservesRuneBoundaries",
+      "TestRenderRejectsNonJSONAndInvalidPayload",
+      "TestSanitizerContracts",
+      "TestConcurrentPackagedSchemaValidationFailsClosed",
+      "TestCommandFailureHintsOnlyExpandTruncatedRetainedEvidence",
+      "TestPlannerFailureRedactionBeforeFingerprintsAndFullBounds",
+      "TestPlannerFailureSensitiveIdentityFingerprintRedaction",
+      "TestPlannerFailureDependencyEvidenceRedactsBeforeEscaping"
+    ],
+    "result": "passed",
+    "goReportedPackageElapsedSeconds": 1.574
+  },
+  "semanticFeedback": {
+    "lspFiles": [
+      "internal/axi/output.go",
+      "internal/axi/planner_failure.go",
+      "internal/axi/render_regression_test.go"
+    ],
+    "lspStatus": "unavailable",
+    "reason": "gopls ENOENT",
+    "fallback": "focused Go compilation/race tests",
+    "gofmtTouchedFiles": "clean",
+    "gitDiffCheck": "passed"
+  },
+  "limitations": [
+    "These focused independent checks are not a full deterministic/native/live certification; root owns those required gates.",
+    "This is source semantic review, not a claim of measured speed improvement or model task success.",
+    "No model inference executed by this reviewer; full paired grading is required after candidate freeze.",
+    "Only synthetic inputs were used; no private credentials were read.",
+    "Copied baseline implementation and overlay helper remain under /tmp; they must not be committed into the product repository."
+  ]
+}

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const Version = "0.1.0"
+const Version = "0.1.1"
 
 func defaultMaxBytes(name string) int {
 	switch name {
@@ -41,6 +41,7 @@ func Run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 	exit := 0
 	var output Response
 	var patterns, additional []string
+	var env map[string]string
 	var safeContext, effective Object
 	debug := false
 	p, err := Parse(args)
@@ -99,7 +100,8 @@ func Run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 			}
 		} else {
 			var ec ExecutionContext
-			ec, err = ResolveContext(ctx, p, Environment())
+			env = Environment()
+			ec, err = ResolveContext(ctx, p, env)
 			if err == nil {
 				patterns = secretPatterns(ec)
 				if ec.Config != nil && ec.Server != "" {
@@ -162,13 +164,17 @@ func Run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 	if effective != nil && (debug || limitHit) {
 		output.Meta["limits"] = effective
 	}
-	rendered, e := Render(output, format, maxBytes, KnownSecrets(Environment(), patterns, additional), patterns, effective)
+	if env == nil {
+		env = Environment()
+	}
+	secrets := KnownSecrets(env, patterns, additional)
+	rendered, e := Render(output, format, maxBytes, secrets, patterns, effective)
 	if e != nil {
 		fallback := NewResponse(command, nil)
 		fallback.Status = "error"
 		fallback.Meta["complete"] = false
 		fallback.Error = NewError("INTERNAL_ERROR", "Cannot render the normalized result safely", 1)
-		rendered, e = Render(fallback, format, max(2048, maxBytes), KnownSecrets(Environment(), patterns, additional), patterns, nil)
+		rendered, e = Render(fallback, format, max(2048, maxBytes), secrets, patterns, nil)
 		exit = 1
 	}
 	if e != nil {

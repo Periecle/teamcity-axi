@@ -1,0 +1,677 @@
+{
+  "kind": "Go in-process renderer and text benchmarks",
+  "baselineSourceCheckpoint": "6f7a1f2d96e1d64c6cdfd3ade26f32042ed26d02",
+  "candidateSourceCheckpoint": "recorded in release verification",
+  "command": "go test ./internal/axi -run '^TestRenderRetainsPreOptimizationWire$' -bench 'Benchmark(Render|SanitizeText)$' -benchtime=150ms -count=3",
+  "goVersion": "go1.27.1-X:nodwarf5",
+  "conditions": {
+    "baseline": {
+      "rawSha256": "f39ff08a2adbd19a1aa6f230ef36bcc703d09aae9514f8d6a53406a7d7c9616a",
+      "benchmarks": {
+        "BenchmarkRender/status.exact/json": {
+          "samples": [
+            {
+              "nanoseconds": 542387.0,
+              "bytes": 116271,
+              "allocations": 3291
+            },
+            {
+              "nanoseconds": 535189.0,
+              "bytes": 116451,
+              "allocations": 3291
+            },
+            {
+              "nanoseconds": 534637.0,
+              "bytes": 116658,
+              "allocations": 3291
+            }
+          ],
+          "median": {
+            "nanoseconds": 535189.0,
+            "bytes": 116451,
+            "allocations": 3291
+          }
+        },
+        "BenchmarkRender/status.exact/toon": {
+          "samples": [
+            {
+              "nanoseconds": 586056.0,
+              "bytes": 136226,
+              "allocations": 3627
+            },
+            {
+              "nanoseconds": 619146.0,
+              "bytes": 136991,
+              "allocations": 3629
+            },
+            {
+              "nanoseconds": 627103.0,
+              "bytes": 136874,
+              "allocations": 3627
+            }
+          ],
+          "median": {
+            "nanoseconds": 619146.0,
+            "bytes": 136874,
+            "allocations": 3627
+          }
+        },
+        "BenchmarkRender/failure.partial/json": {
+          "samples": [
+            {
+              "nanoseconds": 967719.0,
+              "bytes": 226577,
+              "allocations": 6716
+            },
+            {
+              "nanoseconds": 987708.0,
+              "bytes": 227641,
+              "allocations": 6715
+            },
+            {
+              "nanoseconds": 960767.0,
+              "bytes": 226988,
+              "allocations": 6715
+            }
+          ],
+          "median": {
+            "nanoseconds": 967719.0,
+            "bytes": 226988,
+            "allocations": 6715
+          }
+        },
+        "BenchmarkRender/failure.partial/toon": {
+          "samples": [
+            {
+              "nanoseconds": 1074020.0,
+              "bytes": 261412,
+              "allocations": 7354
+            },
+            {
+              "nanoseconds": 1075812.0,
+              "bytes": 262312,
+              "allocations": 7357
+            },
+            {
+              "nanoseconds": 1065028.0,
+              "bytes": 262433,
+              "allocations": 7360
+            }
+          ],
+          "median": {
+            "nanoseconds": 1074020.0,
+            "bytes": 262312,
+            "allocations": 7357
+          }
+        },
+        "BenchmarkRender/compacted-notes/json": {
+          "samples": [
+            {
+              "nanoseconds": 1682431.0,
+              "bytes": 436026,
+              "allocations": 13180
+            },
+            {
+              "nanoseconds": 1699803.0,
+              "bytes": 439971,
+              "allocations": 13181
+            },
+            {
+              "nanoseconds": 1725272.0,
+              "bytes": 445113,
+              "allocations": 13185
+            }
+          ],
+          "median": {
+            "nanoseconds": 1699803.0,
+            "bytes": 439971,
+            "allocations": 13181
+          }
+        },
+        "BenchmarkRender/compacted-notes/toon": {
+          "samples": [
+            {
+              "nanoseconds": 1745059.0,
+              "bytes": 446383,
+              "allocations": 13266
+            },
+            {
+              "nanoseconds": 1707742.0,
+              "bytes": 445175,
+              "allocations": 13265
+            },
+            {
+              "nanoseconds": 1710836.0,
+              "bytes": 447642,
+              "allocations": 13264
+            }
+          ],
+          "median": {
+            "nanoseconds": 1710836.0,
+            "bytes": 446383,
+            "allocations": 13265
+          }
+        },
+        "BenchmarkSanitizeText/ascii": {
+          "samples": [
+            {
+              "nanoseconds": 216505.0,
+              "bytes": 30315,
+              "allocations": 29
+            },
+            {
+              "nanoseconds": 219183.0,
+              "bytes": 30325,
+              "allocations": 29
+            },
+            {
+              "nanoseconds": 219605.0,
+              "bytes": 30370,
+              "allocations": 29
+            }
+          ],
+          "median": {
+            "nanoseconds": 219183.0,
+            "bytes": 30325,
+            "allocations": 29
+          }
+        },
+        "BenchmarkSanitizeText/unicode": {
+          "samples": [
+            {
+              "nanoseconds": 61345.0,
+              "bytes": 12942,
+              "allocations": 27
+            },
+            {
+              "nanoseconds": 61561.0,
+              "bytes": 13006,
+              "allocations": 27
+            },
+            {
+              "nanoseconds": 61064.0,
+              "bytes": 12930,
+              "allocations": 27
+            }
+          ],
+          "median": {
+            "nanoseconds": 61345.0,
+            "bytes": 12942,
+            "allocations": 27
+          }
+        },
+        "BenchmarkSanitizeText/controls": {
+          "samples": [
+            {
+              "nanoseconds": 121957.0,
+              "bytes": 20721,
+              "allocations": 86
+            },
+            {
+              "nanoseconds": 121273.0,
+              "bytes": 20697,
+              "allocations": 86
+            },
+            {
+              "nanoseconds": 120061.0,
+              "bytes": 20759,
+              "allocations": 86
+            }
+          ],
+          "median": {
+            "nanoseconds": 121273.0,
+            "bytes": 20721,
+            "allocations": 86
+          }
+        }
+      }
+    },
+    "candidate-initial": {
+      "rawSha256": "d9f6d661898f3d34afd0dc71af6a0d49aa5d840628f658874b56c46a3a3eb2f4",
+      "benchmarks": {
+        "BenchmarkRender/status.exact/json": {
+          "samples": [
+            {
+              "nanoseconds": 416677.0,
+              "bytes": 83537,
+              "allocations": 2188
+            },
+            {
+              "nanoseconds": 425820.0,
+              "bytes": 83565,
+              "allocations": 2189
+            },
+            {
+              "nanoseconds": 417062.0,
+              "bytes": 83642,
+              "allocations": 2189
+            }
+          ],
+          "median": {
+            "nanoseconds": 417062.0,
+            "bytes": 83565,
+            "allocations": 2189
+          }
+        },
+        "BenchmarkRender/status.exact/toon": {
+          "samples": [
+            {
+              "nanoseconds": 512445.0,
+              "bytes": 103352,
+              "allocations": 2524
+            },
+            {
+              "nanoseconds": 495844.0,
+              "bytes": 103007,
+              "allocations": 2524
+            },
+            {
+              "nanoseconds": 481397.0,
+              "bytes": 103150,
+              "allocations": 2524
+            }
+          ],
+          "median": {
+            "nanoseconds": 495844.0,
+            "bytes": 103150,
+            "allocations": 2524
+          }
+        },
+        "BenchmarkRender/failure.partial/json": {
+          "samples": [
+            {
+              "nanoseconds": 732108.0,
+              "bytes": 165332,
+              "allocations": 4508
+            },
+            {
+              "nanoseconds": 782064.0,
+              "bytes": 165983,
+              "allocations": 4511
+            },
+            {
+              "nanoseconds": 751223.0,
+              "bytes": 166786,
+              "allocations": 4512
+            }
+          ],
+          "median": {
+            "nanoseconds": 751223.0,
+            "bytes": 165983,
+            "allocations": 4511
+          }
+        },
+        "BenchmarkRender/failure.partial/toon": {
+          "samples": [
+            {
+              "nanoseconds": 850571.0,
+              "bytes": 202205,
+              "allocations": 5156
+            },
+            {
+              "nanoseconds": 826287.0,
+              "bytes": 200420,
+              "allocations": 5152
+            },
+            {
+              "nanoseconds": 839570.0,
+              "bytes": 201453,
+              "allocations": 5153
+            }
+          ],
+          "median": {
+            "nanoseconds": 839570.0,
+            "bytes": 201453,
+            "allocations": 5153
+          }
+        },
+        "BenchmarkRender/compacted-notes/json": {
+          "samples": [
+            {
+              "nanoseconds": 1476850.0,
+              "bytes": 331598,
+              "allocations": 8734
+            },
+            {
+              "nanoseconds": 1506010.0,
+              "bytes": 332406,
+              "allocations": 8735
+            },
+            {
+              "nanoseconds": 1509879.0,
+              "bytes": 332338,
+              "allocations": 8735
+            }
+          ],
+          "median": {
+            "nanoseconds": 1506010.0,
+            "bytes": 332338,
+            "allocations": 8735
+          }
+        },
+        "BenchmarkRender/compacted-notes/toon": {
+          "samples": [
+            {
+              "nanoseconds": 1488953.0,
+              "bytes": 335879,
+              "allocations": 8816
+            },
+            {
+              "nanoseconds": 1482738.0,
+              "bytes": 338484,
+              "allocations": 8817
+            },
+            {
+              "nanoseconds": 1487408.0,
+              "bytes": 336974,
+              "allocations": 8817
+            }
+          ],
+          "median": {
+            "nanoseconds": 1487408.0,
+            "bytes": 336974,
+            "allocations": 8817
+          }
+        },
+        "BenchmarkSanitizeText/ascii": {
+          "samples": [
+            {
+              "nanoseconds": 208961.0,
+              "bytes": 16551,
+              "allocations": 12
+            },
+            {
+              "nanoseconds": 211715.0,
+              "bytes": 16548,
+              "allocations": 12
+            },
+            {
+              "nanoseconds": 207412.0,
+              "bytes": 16548,
+              "allocations": 12
+            }
+          ],
+          "median": {
+            "nanoseconds": 208961.0,
+            "bytes": 16548,
+            "allocations": 12
+          }
+        },
+        "BenchmarkSanitizeText/unicode": {
+          "samples": [
+            {
+              "nanoseconds": 59367.0,
+              "bytes": 7286,
+              "allocations": 12
+            },
+            {
+              "nanoseconds": 58786.0,
+              "bytes": 7299,
+              "allocations": 12
+            },
+            {
+              "nanoseconds": 58065.0,
+              "bytes": 7250,
+              "allocations": 12
+            }
+          ],
+          "median": {
+            "nanoseconds": 58786.0,
+            "bytes": 7286,
+            "allocations": 12
+          }
+        },
+        "BenchmarkSanitizeText/controls": {
+          "samples": [
+            {
+              "nanoseconds": 121611.0,
+              "bytes": 20536,
+              "allocations": 79
+            },
+            {
+              "nanoseconds": 119911.0,
+              "bytes": 20592,
+              "allocations": 79
+            },
+            {
+              "nanoseconds": 121462.0,
+              "bytes": 20539,
+              "allocations": 79
+            }
+          ],
+          "median": {
+            "nanoseconds": 121462.0,
+            "bytes": 20539,
+            "allocations": 79
+          }
+        }
+      }
+    },
+    "candidate": {
+      "rawSha256": "2d26936dbb9c50469aa19e2ae048e54494ed44d542073b14595aacdffd040ca1",
+      "benchmarks": {
+        "BenchmarkRender/status.exact/json": {
+          "samples": [
+            {
+              "nanoseconds": 395080.0,
+              "bytes": 71195,
+              "allocations": 1420
+            },
+            {
+              "nanoseconds": 388383.0,
+              "bytes": 71242,
+              "allocations": 1420
+            },
+            {
+              "nanoseconds": 384196.0,
+              "bytes": 72098,
+              "allocations": 1420
+            }
+          ],
+          "median": {
+            "nanoseconds": 388383.0,
+            "bytes": 71242,
+            "allocations": 1420
+          }
+        },
+        "BenchmarkRender/status.exact/toon": {
+          "samples": [
+            {
+              "nanoseconds": 436109.0,
+              "bytes": 90227,
+              "allocations": 1754
+            },
+            {
+              "nanoseconds": 439560.0,
+              "bytes": 90599,
+              "allocations": 1754
+            },
+            {
+              "nanoseconds": 431645.0,
+              "bytes": 90647,
+              "allocations": 1755
+            }
+          ],
+          "median": {
+            "nanoseconds": 436109.0,
+            "bytes": 90599,
+            "allocations": 1754
+          }
+        },
+        "BenchmarkRender/failure.partial/json": {
+          "samples": [
+            {
+              "nanoseconds": 634202.0,
+              "bytes": 139520,
+              "allocations": 2696
+            },
+            {
+              "nanoseconds": 628973.0,
+              "bytes": 140085,
+              "allocations": 2697
+            },
+            {
+              "nanoseconds": 627146.0,
+              "bytes": 140726,
+              "allocations": 2698
+            }
+          ],
+          "median": {
+            "nanoseconds": 628973.0,
+            "bytes": 140085,
+            "allocations": 2697
+          }
+        },
+        "BenchmarkRender/failure.partial/toon": {
+          "samples": [
+            {
+              "nanoseconds": 709843.0,
+              "bytes": 174347,
+              "allocations": 3338
+            },
+            {
+              "nanoseconds": 746119.0,
+              "bytes": 174363,
+              "allocations": 3338
+            },
+            {
+              "nanoseconds": 755064.0,
+              "bytes": 176032,
+              "allocations": 3339
+            }
+          ],
+          "median": {
+            "nanoseconds": 746119.0,
+            "bytes": 174363,
+            "allocations": 3338
+          }
+        },
+        "BenchmarkRender/compacted-notes/json": {
+          "samples": [
+            {
+              "nanoseconds": 1202604.0,
+              "bytes": 253671,
+              "allocations": 3858
+            },
+            {
+              "nanoseconds": 1213905.0,
+              "bytes": 252479,
+              "allocations": 3857
+            },
+            {
+              "nanoseconds": 1202582.0,
+              "bytes": 252437,
+              "allocations": 3858
+            }
+          ],
+          "median": {
+            "nanoseconds": 1202604.0,
+            "bytes": 252479,
+            "allocations": 3858
+          }
+        },
+        "BenchmarkRender/compacted-notes/toon": {
+          "samples": [
+            {
+              "nanoseconds": 1225545.0,
+              "bytes": 260183,
+              "allocations": 3941
+            },
+            {
+              "nanoseconds": 1250942.0,
+              "bytes": 262000,
+              "allocations": 3943
+            },
+            {
+              "nanoseconds": 1248597.0,
+              "bytes": 257563,
+              "allocations": 3940
+            }
+          ],
+          "median": {
+            "nanoseconds": 1248597.0,
+            "bytes": 260183,
+            "allocations": 3941
+          }
+        },
+        "BenchmarkSanitizeText/ascii": {
+          "samples": [
+            {
+              "nanoseconds": 194659.0,
+              "bytes": 40,
+              "allocations": 0
+            },
+            {
+              "nanoseconds": 193893.0,
+              "bytes": 41,
+              "allocations": 0
+            },
+            {
+              "nanoseconds": 195961.0,
+              "bytes": 1,
+              "allocations": 0
+            }
+          ],
+          "median": {
+            "nanoseconds": 194659.0,
+            "bytes": 40,
+            "allocations": 0
+          }
+        },
+        "BenchmarkSanitizeText/unicode": {
+          "samples": [
+            {
+              "nanoseconds": 53002.0,
+              "bytes": 11,
+              "allocations": 0
+            },
+            {
+              "nanoseconds": 52851.0,
+              "bytes": 11,
+              "allocations": 0
+            },
+            {
+              "nanoseconds": 52573.0,
+              "bytes": 11,
+              "allocations": 0
+            }
+          ],
+          "median": {
+            "nanoseconds": 52851.0,
+            "bytes": 11,
+            "allocations": 0
+          }
+        },
+        "BenchmarkSanitizeText/controls": {
+          "samples": [
+            {
+              "nanoseconds": 111756.0,
+              "bytes": 13088,
+              "allocations": 67
+            },
+            {
+              "nanoseconds": 111154.0,
+              "bytes": 13243,
+              "allocations": 67
+            },
+            {
+              "nanoseconds": 110790.0,
+              "bytes": 13110,
+              "allocations": 67
+            }
+          ],
+          "median": {
+            "nanoseconds": 111154.0,
+            "bytes": 13110,
+            "allocations": 67
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Three sequential samples per benchmark and condition on one host; no statistical guarantee.",
+    "Baseline ran before the product edits, candidate after them; raw initial candidate retained.",
+    "In-process costs are not complete model-session latency."
+  ]
+}
