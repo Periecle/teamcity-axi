@@ -631,6 +631,27 @@
     "abortedArtifact": "linux-x64-go1.27-gpt6.1-sol-agent.aborted.json",
     "abortedSha256": "75f164b0d9efddb5cdd11949464e45b0d69fc46ca5c6f16afcc66a82d668f0e1"
   },
+  "remoteCI": {
+    "runId": 37117635743,
+    "url": "https://github.com/Periecle/teamcity-axi/actions/runs/37117635743",
+    "commit": "890bdb548a07a0a686c97ce5e13c09c6eeedf34d",
+    "conclusion": "success",
+    "goVersion": "1.26.0",
+    "jobs": ["deterministic", "released-cli-contract"],
+    "checks": ["make check", "go test -race ./...", "make test-package", "checksum-pinned make test-real-cli"],
+    "liveTests": "separate local restricted-reader evidence; not executed in CI"
+  },
+  "subsequentEvaluatorCorrection": {
+    "failedRunId": 37117354096,
+    "failedCommit": "3be8b3ee1fde0c83a374ceb04c926d4d86947daa",
+    "correctedCommit": "890bdb548a07a0a686c97ce5e13c09c6eeedf34d",
+    "behavior": "Scanner can return a partial final token after a capture-reader error; inspect the stream error before JSON decoding so capture failure is not masked as malformed JSON",
+    "regression": "deterministic fragment plus limit-error case added to existing aggregate flood/cleanup test; focused race count=3, full 163-test race and make check/test-real-cli pass",
+    "independentReview": "accepted; original overflow already invalidated the session, and completed model answers/measurements are unaffected",
+    "modelReportAndExecutedHarnessHashesUnchanged": true,
+    "productSourceAndEvaluatedBinaryUnchanged": true,
+    "sandboxInfrastructure": "native fixture socket binding returned EPERM in sandbox; equivalent outside-sandbox required check passed"
+  },
   "release": {
     "version": "0.1.0",
     "tag": "v0.1.0",

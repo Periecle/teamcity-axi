@@ -27,7 +27,10 @@ contract scenarios and 18 live tests, with no skips. The native tagged command
 passes 219 top-level tests because it also runs deterministic coverage. Go race,
 vet, gofmt, generated docs, source selection and package checks pass. The
 [release verification record](release-verification.json) binds exact test lists, commands and
-artifact hashes. These are local execution results; no remote CI claim is made.
+artifact hashes. Remote [Go CI](https://github.com/Periecle/teamcity-axi/actions/runs/37117635743)
+also passes on Go 1.26.0 at `890bdb5`: deterministic/vet/format/docs checks,
+race checks, offline archive execution and checksum-pinned native contracts.
+Restricted live evidence remains the separately recorded local execution.
 
 Structured logs remain retained tails; no complete-log coverage is claimed.
 Exact first-page zero requires the recorded server's verified pagination
@@ -55,5 +58,10 @@ capture gap. The runner now enforces a 64 MiB total stream ceiling with an
 overflow/cleanup regression. That attempt is retained separately from the
 restarted 16-session comparison. The released executable is the exact
 model-evaluated binary; product source is unchanged from its recorded checkpoint.
+The first remote CI run exposed unstable error classification when a capture
+failure left a partial final JSON line. The later evaluator-only correction
+checks the stream error before decoding that fragment; a deterministic fragment
+case and the original flood/cleanup case pass. Independent review confirms that
+the completed model report and its original harness hash remain valid.
 Final archives contain updated release documents. Public tag, CI and downloaded
 asset verification are checked during the authorized publication operation.

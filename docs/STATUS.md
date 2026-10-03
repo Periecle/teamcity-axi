@@ -44,5 +44,10 @@ was stopped after one completed session, then the runner was fixed and tested
 before restarting all 16 sessions. Raw, graded, independent-review and aborted
 records remain published as separate sanitized synthetic evidence. Historical
 TypeScript results remain unchanged. The owner has authorized Go v0.1.0
-publication; final archive and remote CI/publication verification follow these
-local execution records.
+publication. Remote [Go CI](https://github.com/Periecle/teamcity-axi/actions/runs/37117635743)
+passes deterministic, race, archive and pinned-native checks on Go 1.26.0 at
+`890bdb5`. Its first attempt exposed a capture-error classification bug at a
+partial final protocol line; the reviewed evaluator correction and deterministic
+regression pass without changing the completed model results or product binary.
+The final archive is prepared; public tag and downloaded assets are verified
+during publication.
