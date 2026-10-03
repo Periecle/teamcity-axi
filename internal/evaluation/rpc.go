@@ -139,6 +139,12 @@ func (client *rpcClient) read(output io.Reader) {
 	scanner := bufio.NewScanner(&protocolCaptureReader{reader: output})
 	scanner.Buffer(make([]byte, 65536), 2097152)
 	for scanner.Scan() {
+		// Scanner can return an incomplete final token after a reader error.
+		// Preserve the capture failure before attempting to decode that token.
+		if scanner.Err() != nil {
+			client.fail(errors.New("Model runtime output exceeded the bounded protocol capture or failed"))
+			return
+		}
 		var message Object
 		if err := json.Unmarshal(scanner.Bytes(), &message); err != nil {
 			client.fail(errors.New("Invalid model runtime protocol document"))

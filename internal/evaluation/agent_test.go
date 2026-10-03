@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -210,6 +211,20 @@ func TestEvaluationRPCTimeoutUnblocksPendingRequestsAndReapsProcess(t *testing.T
 }
 
 func TestEvaluationRPCAggregateCaptureBoundsIgnoredNotifications(t *testing.T) {
+	t.Run("partial-final-document", func(t *testing.T) {
+		ctx, cancel := context.WithCancelCause(context.Background())
+		defer cancel(nil)
+		client := &rpcClient{ctx: ctx, cancel: cancel, pending: map[string]chan rpcReply{}, complete: make(chan rpcReply, 1), closed: make(chan struct{})}
+		// The limit error arrives after a fragment has already reached Scanner.
+		output := io.MultiReader(strings.NewReader(`{"method":`), &protocolCaptureReader{reader: strings.NewReader("x"), total: modelProtocolCaptureLimit})
+		client.read(output)
+		if err := context.Cause(ctx); err == nil || !strings.Contains(err.Error(), "bounded protocol capture") {
+			t.Fatalf("partial document hid the capture-limit failure: %v", err)
+		}
+		if len(client.Events()) != 0 {
+			t.Fatal("partial document reached retained events")
+		}
+	})
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	client := testRPCClient(t, ctx, "protocol-overflow", nil)
