@@ -2,6 +2,7 @@ package evaluation
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -18,6 +19,75 @@ import (
 
 	"github.com/Periecle/teamcity-axi/internal/axi"
 )
+
+func TestFailedModelTurnPreservesStatusAndWithholdsProviderDetails(t *testing.T) {
+	for _, status := range []string{"failed", "interrupted", "private-provider-value", "completed"} {
+		events := []Object{
+			{"method": "error", "params": Object{"message": "private-provider-value"}},
+			{"method": "turn/completed", "params": Object{"turn": Object{"status": status, "error": Object{"message": "private-provider-value"}}}},
+			{"method": "item/completed", "params": Object{"item": Object{"type": "agentMessage", "text": "partial answer"}}},
+		}
+		var err error
+		if status == "completed" {
+			err = context.DeadlineExceeded
+		}
+		got, failed := modelTurnStatus(Object{"status": status}, err, events)
+		if !failed || (got != "failed" && got != "interrupted") {
+			t.Fatal("failed turn marked complete", got, failed)
+		}
+		b, err := json.Marshal(events)
+		if err != nil || bytes.Contains(b, []byte("private-provider-value")) || !bytes.Contains(b, []byte("partial answer")) {
+			t.Fatal("failed-turn details leaked or partial evidence lost", err)
+		}
+	}
+	events := []Object{{"method": "turn/completed", "params": Object{"turn": Object{"status": "completed", "error": nil}}}}
+	before, _ := json.Marshal(events)
+	status, failed := modelTurnStatus(Object{"status": "completed"}, nil, events)
+	after, _ := json.Marshal(events)
+	if status != "completed" || failed || !bytes.Equal(before, after) {
+		t.Fatal("completed trace changed")
+	}
+}
+
+func TestFailedObservationIsPersistedBeforeReturningFailure(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "report.json")
+	report := Object{"observations": []Object{}}
+	row := Object{"condition": "native", "taskId": "depth-boundary", "sessionStatus": "failed", "calls": []Call{{Command: "partial read", WallTimeMS: 12, Stdout: "partial evidence", CaptureLimitHit: true}}, "events": []Object{{"method": "item/started"}}, "httpRequests": []Object{{"method": "GET"}}, "agentFacingToolTurns": 1, "outputTokens": 2, "wallTimeMs": 123.0}
+	failure := errors.New("model reported failure")
+	if err := persistAgentObservation(report, row, failure, path); !errors.Is(err, failure) {
+		t.Fatal("failure lost", err)
+	}
+	b, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var saved Object
+	if err = json.Unmarshal(b, &saved); err != nil {
+		t.Fatal(err)
+	}
+	rows := axi.Objects(saved["observations"])
+	if len(rows) != 1 || axi.Str(rows[0], "sessionStatus") != "failed" || !bytes.Contains(b, []byte("partial evidence")) || !bytes.Contains(b, []byte("captureLimitHit")) || !bytes.Contains(b, []byte("httpRequests")) {
+		t.Fatal("partial failed attempt not retained")
+	}
+	blockedParent := filepath.Join(t.TempDir(), "regular-file")
+	if err := os.WriteFile(blockedParent, []byte("blocks directory creation"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := persistAgentObservation(Object{}, row, failure, filepath.Join(blockedParent, "report.json")); err == nil || errors.Is(err, failure) {
+		t.Fatal("report write failure lost", err)
+	}
+}
+
+func TestFailedCallKeepsLaunchedEvidenceAndRejectsUnstartedCall(t *testing.T) {
+	result := Call{Argv: []string{"--fixture"}, Code: -1, Signal: "killed", Stdout: "partial evidence", WallTimeMS: 12, CaptureLimitHit: true}
+	got, attempted := prepareAgentCall(result, "call-id", "bounded read")
+	if !attempted || got.Command != "bounded read" || got.CallID != "call-id" || got.Stdout != result.Stdout || got.WallTimeMS != result.WallTimeMS || !got.CaptureLimitHit || got.Code != -1 || got.Signal != "killed" {
+		t.Fatal("launched failure evidence lost")
+	}
+	if _, attempted := prepareAgentCall(Call{}, "call-id", "never started"); attempted {
+		t.Fatal("unstarted process counted")
+	}
+}
 
 func TestEvaluationRuntimeDigestDeterministicAndRejectsSymlinks(t *testing.T) {
 	root := t.TempDir()

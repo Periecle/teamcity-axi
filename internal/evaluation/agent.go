@@ -191,13 +191,15 @@ func agentSession(ctx context.Context, options AgentOptions, task Object, condit
 		readCtx, cancel := context.WithTimeout(toolCtx, 30*time.Second)
 		defer cancel()
 		result, err := Execute(readCtx, options.Bubblewrap, append(append([]string{}, bubble...), "/bin/bash", "-c", command), os.Environ(), work, 1048576)
+		result, attempted := prepareAgentCall(result, axi.Str(params, "callId"), command)
+		if attempted {
+			callsMu.Lock()
+			calls = append(calls, result)
+			callsMu.Unlock()
+		}
 		if err != nil {
 			return nil, err
 		}
-		result.Argv, result.CallID, result.Command = nil, axi.Str(params, "callId"), command
-		callsMu.Lock()
-		calls = append(calls, result)
-		callsMu.Unlock()
 		bytes, err := json.Marshal(result)
 		if err != nil {
 			return nil, err
@@ -232,15 +234,13 @@ func agentSession(ctx context.Context, options AgentOptions, task Object, condit
 	if _, err := client.request("turn/start", Object{"threadId": axi.Str(axi.Obj(metadata["thread"]), "id"), "model": options.Model, "effort": options.Effort, "input": []Object{{"type": "text", "text": prompt}}}); err != nil {
 		return nil, err
 	}
-	turn, err := client.awaitTurn()
-	if err != nil || axi.Str(turn, "status") != "completed" {
-		return nil, fmt.Errorf("Model turn failed: %v", err)
-	}
+	turn, turnErr := client.awaitTurn()
 	client.tools.Wait()
-	if client.ctx.Err() != nil {
-		return nil, context.Cause(client.ctx)
+	if turnErr == nil && client.ctx.Err() != nil {
+		turnErr = context.Cause(client.ctx)
 	}
 	events := client.Events()
+	status, failed := modelTurnStatus(turn, turnErr, events)
 	answers := []string{}
 	for _, event := range events {
 		if axi.Str(event, "method") == "item/completed" {
@@ -264,11 +264,46 @@ func agentSession(ctx context.Context, options AgentOptions, task Object, condit
 		return nil, err
 	}
 	final := strings.Join(answers, "\n")
-	row := Object{"taskId": task["id"], "condition": condition, "prompt": prompt, "model": metadata["model"], "modelProvider": metadata["modelProvider"], "reasoningEffort": metadata["reasoningEffort"], "turnEffort": options.Effort, "wallTimeMs": float64(time.Since(start)) / float64(time.Millisecond), "agentFacingToolTurns": len(calls), "nativeSubprocessCount": len(strings.Fields(string(launches))), "httpRequestCount": len(server.Requests()), "finalAnswerSecretExposure": strings.Contains(final, canary), "finalAnswer": final, "calls": calls, "events": events, "httpRequests": server.Requests(), "sessionStatus": turn["status"], "grading": nil}
+	row := Object{"taskId": task["id"], "condition": condition, "prompt": prompt, "model": metadata["model"], "modelProvider": metadata["modelProvider"], "reasoningEffort": metadata["reasoningEffort"], "turnEffort": options.Effort, "wallTimeMs": float64(time.Since(start)) / float64(time.Millisecond), "agentFacingToolTurns": len(calls), "nativeSubprocessCount": len(strings.Fields(string(launches))), "httpRequestCount": len(server.Requests()), "finalAnswerSecretExposure": strings.Contains(final, canary), "finalAnswer": final, "calls": calls, "events": events, "httpRequests": server.Requests(), "sessionStatus": status, "grading": nil}
 	for key, value := range output {
 		row[key] = value
 	}
-	return PortableReport(row, map[string]string{canary: "<secret-canary>", server.BaseURL: "http://127.0.0.1:PORT/teamcity", directory: "<isolated-session>", options.Repository: "<repository>"})
+	row, err = PortableReport(row, map[string]string{canary: "<secret-canary>", server.BaseURL: "http://127.0.0.1:PORT/teamcity", directory: "<isolated-session>", options.Repository: "<repository>"})
+	if err != nil {
+		return nil, err
+	}
+	if failed {
+		return row, fmt.Errorf("Model session ended with status %s; failed observation retained", status)
+	}
+	return row, nil
+}
+
+func modelTurnStatus(turn Object, turnErr error, events []Object) (string, bool) {
+	status := axi.Str(turn, "status")
+	failed := turnErr != nil || status != "completed"
+	if failed {
+		// Preserve the failed attempt's tool/HTTP evidence, but provider error
+		// messages can contain private runtime details and are not public evidence.
+		for _, event := range events {
+			params := axi.Obj(event["params"])
+			if axi.Str(event, "method") == "error" {
+				event["params"] = Object{"errorReported": true}
+			} else if axi.Str(event, "method") == "turn/completed" {
+				if completed := axi.Obj(params["turn"]); completed != nil {
+					if completed["error"] != nil {
+						completed["error"] = Object{"errorReported": true}
+					}
+					if !has([]string{"completed", "failed", "interrupted"}, axi.Str(completed, "status")) {
+						completed["status"] = "failed"
+					}
+				}
+			}
+		}
+		if !has([]string{"failed", "interrupted"}, status) {
+			status = "failed"
+		}
+	}
+	return status, failed
 }
 
 // EvaluateAgents runs fresh isolated threads; grades stay pending until independent review.
@@ -334,7 +369,6 @@ func EvaluateAgents(ctx context.Context, options AgentOptions) (Object, error) {
 	if err != nil || version.Code != 0 {
 		return nil, fmt.Errorf("Cannot observe Codex runtime version: %v", err)
 	}
-	observations := []Object{}
 	var report Object
 	for index, task := range corpus.Tasks {
 		if options.Task != "" && axi.Str(task, "id") != options.Task {
@@ -346,36 +380,56 @@ func EvaluateAgents(ctx context.Context, options AgentOptions) (Object, error) {
 		}
 		for _, condition := range conditions {
 			row, err := agentSession(ctx, options, task, condition)
-			if err != nil {
+			if err != nil && row == nil {
 				return report, err
 			}
-			observations = append(observations, row)
-			report = Object{"kind": "actual-model-agent-evaluation", "corpusSha256": hex.EncodeToString(corpusDigest[:]), "nativeSha256": nativeDigest, "isolatedRuntimeSha256": runtimeDigest, "harnessSha256": hex.EncodeToString(harness.Sum(nil)), "wrapperPackageSha256": packageDigest, "wrapperSourceCheckpoint": options.SourceCheckpoint, "codexCliVersion": strings.TrimSpace(version.Stdout), "goVersion": runtime.Version(), "platform": runtime.GOOS, "architecture": runtime.GOARCH, "sessionTimeoutMs": options.SessionTimeout.Milliseconds(), "model": options.Model, "effort": options.Effort, "tokenizerIdentity": TokenizerIdentity, "repetitions": 1, "observations": observations, "independentGrading": "pending"}
-			conditions := []Object{}
-			for _, kind := range []string{"wrapper", "native"} {
-				turns, tokens, times, exposures := []float64{}, []float64{}, []float64{}, 0
-				for _, observed := range observations {
-					if axi.Str(observed, "condition") == kind {
-						turns = append(turns, float64(axi.Int(observed, "agentFacingToolTurns")))
-						tokens = append(tokens, float64(axi.Int(observed, "outputTokens")))
-						if ms, ok := observed["wallTimeMs"].(float64); ok {
-							times = append(times, ms)
-						}
-						exposures += axi.Int(observed, "secretExposures")
-					}
-				}
-				conditions = append(conditions, Object{"condition": kind, "observations": len(turns), "medianToolTurns": Median(turns), "medianOutputTokens": Median(tokens), "medianWallTimeMs": Median(times), "secretExposures": exposures})
+			if report == nil {
+				report = Object{"kind": "actual-model-agent-evaluation", "corpusSha256": hex.EncodeToString(corpusDigest[:]), "nativeSha256": nativeDigest, "isolatedRuntimeSha256": runtimeDigest, "harnessSha256": hex.EncodeToString(harness.Sum(nil)), "wrapperPackageSha256": packageDigest, "wrapperSourceCheckpoint": options.SourceCheckpoint, "codexCliVersion": strings.TrimSpace(version.Stdout), "goVersion": runtime.Version(), "platform": runtime.GOOS, "architecture": runtime.GOARCH, "sessionTimeoutMs": options.SessionTimeout.Milliseconds(), "model": options.Model, "effort": options.Effort, "tokenizerIdentity": TokenizerIdentity, "repetitions": 1, "observations": []Object{}, "independentGrading": "pending"}
 			}
-			report["conditions"] = conditions
-			if options.Output != "" {
-				if err := WriteReport(options.Output, report); err != nil {
-					return report, err
-				}
+			if err := persistAgentObservation(report, row, err, options.Output); err != nil {
+				return report, err
 			}
+
 		}
 	}
-	if len(observations) == 0 {
+	if len(axi.Objects(report["observations"])) == 0 {
 		return nil, fmt.Errorf("No corpus task matches the requested selection")
 	}
 	return report, nil
+}
+
+func prepareAgentCall(result Call, callID, command string) (Call, bool) {
+	if len(result.Argv) == 0 {
+		return result, false
+	}
+	result.Argv, result.CallID, result.Command = nil, callID, command
+	return result, true
+}
+
+func persistAgentObservation(report Object, row Object, sessionErr error, output string) error {
+	observations := append(axi.Objects(report["observations"]), row)
+	report["observations"] = observations
+	conditions := []Object{}
+	for _, kind := range []string{"wrapper", "native"} {
+		turns, tokens, times, exposures := []float64{}, []float64{}, []float64{}, 0
+		for _, observed := range observations {
+			if axi.Str(observed, "condition") == kind {
+				turns = append(turns, float64(axi.Int(observed, "agentFacingToolTurns")))
+				tokens = append(tokens, float64(axi.Int(observed, "outputTokens")))
+				if ms, ok := observed["wallTimeMs"].(float64); ok {
+					times = append(times, ms)
+				}
+				exposures += axi.Int(observed, "secretExposures")
+			}
+		}
+		conditions = append(conditions, Object{"condition": kind, "observations": len(turns), "medianToolTurns": Median(turns), "medianOutputTokens": Median(tokens), "medianWallTimeMs": Median(times), "secretExposures": exposures})
+	}
+	report["conditions"] = conditions
+
+	if output != "" {
+		if err := WriteReport(output, report); err != nil {
+			return err
+		}
+	}
+	return sessionErr
 }

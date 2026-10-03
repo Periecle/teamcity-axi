@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "independent-evaluator-failure-retention-review",
+  "reviewer": "Separate adapter/security/evidence reviewer; independent of evaluator author",
+  "reviewStatus": "accepted",
+  "reviewScope": "Harness-only failed-turn evidence retention in agent.go and three meaningful agent_test.go regressions; no product changes, model inference or raw-answer edits performed by reviewer.",
+  "sourceSha256": {
+    "internal/evaluation/agent.go": "a54b1dbf75020b0430566afa6fde94ecd063ca994f01771adcd02b8ff0822bba",
+    "internal/evaluation/agent_test.go": "0ba424137847de52fe644d393ab6df137ff8077ef2f1ee4035558622b435878d",
+    "internal/evaluation/rpc.go": "051a90f635ab16f0cf5322259a88e3ae2c43b907a05904198984189e436e4243",
+    "internal/evaluation/process.go": "e781c626dfc8fd776cf2f94e32c17111807a617abe2ac220e7584a704686cd21",
+    "internal/evaluation/metrics.go": "667e484f9938e18436f0d6a42bf08f057d3e1371da41affc7cf52f4e92788d7c",
+    "internal/evaluation/benchmark.go": "beec080bcc0f2e45e718786c6d4b534bd86422b1e20b23eea6b06cd7ce0651ca"
+  },
+  "harnessSha256": "556348ccf2653b7f503981e06b84d6d4e49874b9058e06d38854b2f09fe7ddc1",
+  "productSourceCheckpoint": "0ee4d4d84ef5c8418b2004c58abb08b9f1d84f47",
+  "productBinarySha256": "8f5aad58e7b2c0d3dfe68dea159e097bc81f8d62f98bcb4b1850218b8fd893a2",
+  "findings": [
+    {
+      "id": "unknown-provider-status",
+      "status": "resolved",
+      "detail": "Unknown turn status is normalized in both failed row and retained turn/completed event; failed/interrupted statuses retain their meaning. Provider error payloads are replaced with a presence marker, with safe partial answer/tool/HTTP evidence preserved."
+    },
+    {
+      "id": "partial-launched-call-costs",
+      "status": "resolved",
+      "detail": "prepareAgentCall preserves launched timeout/capture call IDs, commands, bounded partial outputs, duration, exit/signal and captureLimitHit before propagating Execute error. A zero unstarted result is excluded. Native process instrumentation remains independent."
+    },
+    {
+      "id": "failed-row-persistence",
+      "status": "resolved",
+      "detail": "persistAgentObservation appends a failed observation and recalculates condition aggregates from all retained observations, writes the report, then returns the session error. Write failure takes precedence and is tested using a regular-file parent directory. A noncompleted turn with nil underlying error receives a clear nonnil failure result."
+    }
+  ],
+  "securityAndEvidenceAssessment": [
+    "Filesystem isolation, credential placement outside the agent mount, tool restrictions, aggregate protocol and tool capture ceilings, read-only checks and process cleanup are unchanged.",
+    "Failed status never upgrades to completed or a passing task grade. Failed observations include available costs, rather than becoming zero-cost omitted rows.",
+    "Output metrics and final-answer canary flags are calculated before PortableReport scrubbing; no raw provider failure text is newly published.",
+    "The normal completed-session event and returned-call shape remain unchanged; completed trace preservation, tool roundtrip and timeout cleanup regressions pass.",
+    "Only the new harness digest binds future evaluation runs; the ten-row first attempt retains its original digest and missing failed-session trace is explicitly disclosed."
+  ],
+  "verification": {
+    "lsp": {
+      "files": [
+        "internal/evaluation/agent.go",
+        "internal/evaluation/agent_test.go"
+      ],
+      "status": "unavailable",
+      "reason": "gopls ENOENT",
+      "fallback": "Focused Go compilation/tests with race detector"
+    },
+    "focusedRace": {
+      "command": "GOPATH=/tmp/teamcity-axi-go GOCACHE=/tmp/teamcity-axi-go-cache go test -race ./internal/evaluation -run '^(TestFailedModelTurnPreservesStatusAndWithholdsProviderDetails|TestFailedObservationIsPersistedBeforeReturningFailure|TestFailedCallKeepsLaunchedEvidenceAndRejectsUnstartedCall|TestEvaluationPortableReportRedactsBeforeJSONEscaping|TestEvaluationRPCHandshakeToolRoundtripAndFinalEvents|TestEvaluationRPCTimeoutUnblocksPendingRequestsAndReapsProcess)$' -count=1",
+      "tests": [
+        "TestFailedModelTurnPreservesStatusAndWithholdsProviderDetails",
+        "TestFailedObservationIsPersistedBeforeReturningFailure",
+        "TestFailedCallKeepsLaunchedEvidenceAndRejectsUnstartedCall",
+        "TestEvaluationPortableReportRedactsBeforeJSONEscaping",
+        "TestEvaluationRPCHandshakeToolRoundtripAndFinalEvents",
+        "TestEvaluationRPCTimeoutUnblocksPendingRequestsAndReapsProcess"
+      ],
+      "exitCode": 0,
+      "result": "PASS, package time1.140s",
+      "scope": "Reviewer-run focused checks, separate from parent full evaluation race suite"
+    },
+    "format": {
+      "command": "gofmt -l internal/evaluation/agent.go internal/evaluation/agent_test.go",
+      "exitCode": 0,
+      "output": ""
+    },
+    "diffCheck": {
+      "command": "git diff --check -- internal/evaluation/agent.go internal/evaluation/agent_test.go",
+      "exitCode": 0
+    }
+  },
+  "firstAttempt": {
+    "rawPath": "agent-attempt-1.raw.json",
+    "rawSha256": "5a21e5deb98c27b0a4637c6127bc184bb431b3cda869c9bc1338a4fad2ab21d9",
+    "gradingPath": "agent-attempt-1.grades.json",
+    "gradingSha256": "e40691d74bd338c7899a737fcff1f39b65c9a0f775d1a911124dd359232eca4b",
+    "completedSessions": 10,
+    "requiredSessions": 16,
+    "fullEvaluationAccepted": false,
+    "failedSessionTraceRetained": false
+  },
+  "limitations": [
+    "This correction does not reconstruct the unrecorded eleventh session of the first attempt.",
+    "Pre-turn setup, metrics/scrubbing or filesystem-write failures still fail explicitly and may not produce a new session row; they cannot be claimed as successful evaluation.",
+    "Durable report means the write completes before failure returns; it does not claim fsync crash durability or atomic file replacement.",
+    "The focused review does not replace the required fresh full sixteen-session paired run and independent answer/full-trace grading."
+  ]
+}
