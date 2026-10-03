@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased performance improvements
+## 0.1.1 — 2026-10-03
 
 - Compile packaged schemas only when their contracts are validated, with a
   synchronized compiler/cache and unchanged offline validation requirements.
@@ -15,11 +15,30 @@
   See the [performance comparison](docs/performance.md).
 - Give the 64 MiB protocol-flood test a longer fixture deadline under CI race
   instrumentation; it still requires overflow and prompt process reaping.
-- Fresh independently graded model tasks use one wrapper tool call each, eight
+- The earlier independently graded optimized-source sample uses one wrapper tool
+  call each, eight
   total, versus native median three and 24 total. Both succeed on 8/8 tasks
   without correctness/security errors. Median Go session time improves from
   55.4 to 44.3 seconds; historical TS's 37.3 seconds remains faster and wrapper
   output remains larger than native. All per-task timing regressions are retained.
+
+- Share initial JSON normalization across both validation gates and serialization;
+  retain canonical output and fail-closed payload checks.
+- Remove clean-text builder/path allocations and regex replacement allocations
+  when no recognizable secret matches; retain all redaction passes and patterns.
+- Compile fixed header/version patterns once, reuse command environment secrets,
+  bound text without whole rune slices, and reuse actual excerpt truncation.
+- Compact portable guidance by 31% without changing the task corpus or safety
+  semantics. Independent differential review accepts 11,253 identical results;
+  28 frozen wire outputs and Unicode/non-JSON/payload regressions pass.
+- Renderer microbenchmarks improve 27–35%, with 52–71% fewer allocations.
+  Complete workflows retain native startup and required HTTP cost; no universal
+  model/session speedup is promised. See [the v0.1.1 report](https://github.com/Periecle/teamcity-axi/blob/v0.1.1/docs/performance-v0.1.1.md).
+
+- Preserve failed model-evaluation attempts and partial launched-tool evidence
+  before returning errors; withhold private provider details. The first v0.1.1
+  attempt's ten completed sessions and failure record remain separate from the
+  complete retry, with no selectively discarded performance rows.
 
 ## 0.1.0 — 2026-10-03
 

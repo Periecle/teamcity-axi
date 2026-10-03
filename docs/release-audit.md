@@ -1,6 +1,10 @@
 # Go read-only implementation audit
 
-This document records the immutable published v0.1.0 release checkpoint.
+Current v0.1.1 certification is recorded in
+[its release verification](release-v0.1.1-verification.json) and
+[performance/release audit](performance-v0.1.1.md).
+
+This document retains the immutable published v0.1.0 release checkpoint.
 [Post-release performance work](performance.md) has separate source, test and
 evaluation evidence; it does not replace this release's reports or public assets.
 

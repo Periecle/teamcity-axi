@@ -1,7 +1,7 @@
 {
   "kind": "Go in-process renderer and text benchmarks",
   "baselineSourceCheckpoint": "6f7a1f2d96e1d64c6cdfd3ade26f32042ed26d02",
-  "candidateSourceCheckpoint": "recorded in release verification",
+  "candidateSourceCheckpoint": "0ee4d4d84ef5c8418b2004c58abb08b9f1d84f47",
   "command": "go test ./internal/axi -run '^TestRenderRetainsPreOptimizationWire$' -bench 'Benchmark(Render|SanitizeText)$' -benchtime=150ms -count=3",
   "goVersion": "go1.27.1-X:nodwarf5",
   "conditions": {

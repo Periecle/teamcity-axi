@@ -1,0 +1,1604 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "independent-model-agent-grading",
+  "reviewer": "Separate adapter/security/evidence reviewer; independent of product performance implementation and original evaluator implementation",
+  "gradingMethod": "Manual answer and full command/result/request review against fixed corpus and actual retained source observations; condition labels visible",
+  "reportSha256": "0931be94a54816ec308952e96bb2faa2bb3b83429570af92dd04753982a492af",
+  "corpusSha256": "09b95e5a67cb681b20a53e7e67081f799b4b76f9465d3b1f6244d278c146cd05",
+  "harnessSha256": "556348ccf2653b7f503981e06b84d6d4e49874b9058e06d38854b2f09fe7ddc1",
+  "reviewStatus": "complete",
+  "reviewedObservations": [
+    {
+      "observationIndex": 0,
+      "taskId": "root-failure",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "nativeSubprocessCount": 8
+      },
+      "reviewNotes": [
+        "Reviewed all11 event notifications and the single parallel shell call; dynamic-tool command/result bytes, final-answer messages and scoped prompt match their retained trace.",
+        "Scoped root failure plus view use8 native launches and6 authenticated GETs: two metadata reads, independent problem/unmuted/muted occurrence pages, changes page and two version probes. No credentials, instrumentation bypass, writes or full logs were requested.",
+        "Answer preserves exact root/server/project/job, finished failure lifecycle and all four compound occurrence IDs split two unmuted/two muted, plus exact SYNTHETIC compound problem identity. Identical display names are not merged.",
+        "Counts are explicitly bounded returned counts with partial sources and unknown totals; graph depth0 contains root only, no reads or edges and unknown dependency identities/counts, not a false empty graph. Connection-refused excerpts are observations with no causal assertion.",
+        "No output/final secret exposure or answer retrofit; optional parallel metadata cost is retained."
+      ]
+    },
+    {
+      "observationIndex": 1,
+      "taskId": "root-failure",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "nativeSubprocessCount": 7
+      },
+      "reviewNotes": [
+        "Reviewed all18 notifications, both shell commands, original mixed parallel stdout/stderr and all7 authenticated GETs. Every completed dynamic-tool command/result and final-answer message matches the row byte-for-byte; no unexpected tools or instrumentation bypass.",
+        "Seven native launches are metadata1 plus six parallel bounded reads: problem occurrences, separate unmuted/muted tests, lifecycle, dependency count and structured80-line log tail. Requests remain scoped to482193 and declared fields; no credential inspection, mutations or full log retrieval.",
+        "Answer preserves exact work/Payments/Payments_Build/482193 finished FAILURE lifecycle and all four compound occurrence IDs, two muted/two unmuted, ignoredfalse and common full test-definition ID. Exact SYNTHETIC problem identity and independent problem details are retained.",
+        "Returned counts and absence of next-page fields describe observed responses; no comprehensive retained-evidence claim is made. Depth0 explicitly leaves both reported dependencies unexpanded and establishes no edges. Independent bounded log corroborates Connection refused without asserting cause.",
+        "No output/final secret exposure; extra metadata and log read costs remain retained without comparison cherry-picking."
+      ]
+    },
+    {
+      "observationIndex": 2,
+      "taskId": "shared-dependency",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32
+        ],
+        "nativeSubprocessCount": 28
+      },
+      "reviewNotes": [
+        "Reviewed all33 notifications, five shell calls including complete Python batching scripts and nested native result envelopes, all30 authenticated GETs and full final answer. Dynamic-tool commands/results and agent-message concatenation match exactly; no unexpected tools, credential inspection, writes, full logs or instrumentation bypass.",
+        "Retained four exact run/job/project identities and four immediate edges:482193\u2192482190/482191 and both siblings\u2192482188. Counts2/1/1/0 match observed adjacency pages; shared482188 fetched once per graph source and its supporting problem/test/log/change detail never examined.",
+        "Exactly three runs diagnosed, each with independent SYNTHETIC problem and all four compound test occurrences split muted/unmuted, ignoredfalse and full shared test-definition ID. Final answer lists all12 distinct occurrence IDs without collapsing same display names.",
+        "Independent bounded sources remain readable despite optional combined diagnostics400 for both siblings; final answer discloses those failures and retained independent coverage. Empty returned change pages and missing nextHref are scoped observations, not a causal checkout assertion.",
+        "No cause inferred from connection-refusal symptom, prerequisite status or failure order. Detailed evidence of shared prerequisite explicitly unexamined; bounded tails only, no false leaf or repeated DAG traversal.",
+        "All28 native launches retained: version1, root identity/page2, middle graph5, shared graph plus three-run independent evidence17, optional diagnostics3. Root combined diagnostics adds three extra HTTP requests, making30 total; failed sibling diagnostics and their costs remain included."
+      ]
+    },
+    {
+      "observationIndex": 3,
+      "taskId": "shared-dependency",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "nativeSubprocessCount": 19
+      },
+      "reviewNotes": [
+        "Reviewed complete normalized stdout from the single scoped failure command, all13 event notifications and all18 authenticated GETs. Dynamic-tool command/result and final-answer trace match exactly; no unexpected tool, credential access, mutation, full logs or detail retriever execution.",
+        "All17 findings preserve full stable IDs, supporting compound item IDs, run IDs and sourceRefs with typed scoped retrieves retained. Three exact problem IDs and12 distinct muted/unmuted test IDs appear correctly in final answer, without merging identical display names.",
+        "Graph preserves four exact run/job identities and four dependent\u2192prerequisite edges; shared482188 appears once with both incoming edges. Counts2/1/1/0, complete adjacency and no cycles/unexpanded nodes support graph-only completeness.",
+        "Diagnosis remains capped at root/two siblings; shared prerequisite problem/test/log sources not_requested with DIAGNOSIS_LIMIT. Final answer explicitly marks its detailed evidence unexamined, with no implied diagnosis or causal attribution.",
+        "Final answer distinguishes graph completeness from partial bounded evidence, unknown problem/test totals, logs not requested and best-effort dependency-reference limitation; connection refusal and prerequisite failures remain observations.",
+        "All19 native launches retained: one version probe plus18 authenticated reads. Seven graph reads, three-run independent problem/test/muted reads and root changes retain original scope and required-source semantics; no output/final secret exposure."
+      ]
+    },
+    {
+      "observationIndex": 4,
+      "taskId": "denied-problems",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "nativeSubprocessCount": 8
+      },
+      "reviewNotes": [
+        "Reviewed all11 event notifications and one shell call batching scoped failure/view, both normalized JSON documents plus explicit exit-code suffix, and all6 authenticated GETs. Commands/result bytes and final answer exactly match event trace; no unexpected tools, credential access, writes or full logs.",
+        "Exact work/Payments/Payments_Build/482193 finished failure identity is preserved. All four compound occurrence IDs remain distinct, split two unmuted/two muted with correct tests:482193 versus tests:482193:muted provenance and typed retrieves.",
+        "Final answer explicitly reports problems:482193 PERMISSION_DENIED unavailable, with unknown returned/total counts, rather than an empty list. Independent failed-test observations survive the denied problem endpoint.",
+        "Test and change counts stay bounded observations with unknown coverage; logs not_requested and depth0 root/unexpanded/no-edge graph never imply absent dependencies or complete retained evidence. Connection refused is a symptom with root cause unestablished.",
+        "All8 native launches and6 GETs include parallel view cost and unsuccessful problem read, without removing denied-source costs; zero output/final secret exposures."
+      ]
+    },
+    {
+      "observationIndex": 5,
+      "taskId": "denied-problems",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "nativeSubprocessCount": 7
+      },
+      "reviewNotes": [
+        "Reviewed all20 event notifications, both shell calls including complete parallel Python request script and every nested result, all10 authenticated GETs and full final answer. Dynamic tool/answer trace integrity accepted; no unexpected tool, credential access, mutation, full-log retrieval or instrumentation bypass.",
+        "Seven native launches retain root metadata plus six independent/combined reads. Denied problems and the combined diagnostic that substitutes problems:[] both remain recorded with their costs; no broader-authentication tip was executed.",
+        "Final answer preserves exact work/Payments/Payments_Build/482193 finished FAILURE, all four compound test occurrence IDs and muted separation, nonignored status and full test-definition ID. Independently read tests/log survive denied problem source.",
+        "Problem permission denial is explicitly distinguished from empty combined-summary problems; source is unavailable and coverage incomplete. Returned empty change list is an observed source result, depth0 leaves dependencies unexplored, and the log is bounded80-tail entries.",
+        "Connection-refusal symptom is retained without asserting affected endpoint, underlying cause or complete coverage. All original calls/output costs included; zero output/final secret exposures."
+      ]
+    },
+    {
+      "observationIndex": 6,
+      "taskId": "missing-tests-and-logs",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "nativeSubprocessCount": 6
+      },
+      "reviewNotes": [
+        "Reviewed all18 notifications, two shell calls, complete five-source batching script and every native result, all6 authenticated GETs and full final answer. Trace commands/results/answer messages match; no unexpected tools, writes, credentials, full logs or instrumentation bypass.",
+        "Answer preserves exact root/server/project/job finished FAILURE and exact compound SYNTHETIC problem occurrence plus synthetic identity and empty details. Independent unmuted/muted test reads404 and bounded-tail404 remain unavailable, with failure counts unknown rather than zero.",
+        "Changes returned0 in the readable observed page, without cause or checkout attribution. Root-only depth0 graph does not imply absence of dependencies; no source-missing count is invented.",
+        "All6 native attempts and their outputs/costs retained, including both unavailable tests and unavailable log. Resource-discovery suggestions were not executed. Zero output/final secret exposures."
+      ]
+    },
+    {
+      "observationIndex": 7,
+      "taskId": "missing-tests-and-logs",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "nativeSubprocessCount": 9
+      },
+      "reviewNotes": [
+        "Reviewed all11 notifications, one shell call batching failure/view and both complete normalized documents, all7 authenticated GETs and full final answer. Commands/results/answer match byte-for-byte; no unexpected tools, credentials, writes, full logs or supporting detail retrievals.",
+        "Exact work/Payments/Payments_Build/482193 finished failure and compound SYNTHETIC problem identity retained with synthetic fallback excerpt. Problem bounded source is partial/unknown total; no empty-detail cause invented.",
+        "Final answer explicitly marks tests and muted tests NOT_FOUND and required log UPSTREAM_FAILURE unavailable; both failure counts unknown. StatusText Tests failed is not treated as a count or causal proof.",
+        "Root-only graph depth0/unexpanded and no observed edges does not imply absent dependencies; root changes0 remains partial/unknown total. No checkout assertion or unsupported cause.",
+        "All9 native launches and7 GETs retain unsuccessful independent tests/log and optional parallel view cost. Typed exact supporting retrieval remains retained without being promoted or executed unnecessarily; no output/final secret exposures."
+      ]
+    },
+    {
+      "observationIndex": 8,
+      "taskId": "dependency-cycle",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "nativeSubprocessCount": 18
+      },
+      "reviewNotes": [
+        "Reviewed all15 event notifications, the complete single scoped failure command/result, all17 authenticated GETs and full final answer. Dynamic-tool and answer bytes match; no unexpected tools, credential reads, writes, full logs or extra retrievals.",
+        "All three exact run/job identities and cycle edges482193\u2192482190\u2192482191\u2192482193 retained. Closing edge identifies existing root, not a repeated node or leaf. Each count1/observed1/complete expansion and zero unexpanded nodes agree with six graph count/page reads, each adjacency inspected once.",
+        "All17 stable findings preserve three exact compound problem IDs,12 full muted/unmuted occurrence IDs and two dependency observations with typed scoped retrieval/sourceRefs. Final answer lists source IDs and every occurrence separately despite identical test names.",
+        "Answer explicitly separates complete graph/run sources from partial problem/test pages and unknown totals; six unmuted/six muted are observed rather than exhaustive. Logs remain not_requested and returned changes0 does not establish absence.",
+        "Best-effort identity/consistency limitation retained, no dependency causation, checkout assertion or false leaf. All18 native launches and17 GETs retained, including version probe; zero output/final secret exposures."
+      ]
+    },
+    {
+      "observationIndex": 9,
+      "taskId": "dependency-cycle",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "nativeSubprocessCount": 23
+      },
+      "reviewNotes": [
+        "Reviewed all31 event notifications, five full shell commands including help/local AGENTS discovery and all three seven-source Python batches, every nested result, all22 authenticated GETs and final answer. Tool command/results and agent-message concatenation match exactly; no credential inspection, unexpected tools, writes, full logs or instrumentation bypass.",
+        "Exact root/server/project/job and all three run/job identities preserved. Three cycle edges close482191\u2192482193 onto existing root; counts1 match all immediate pages, each adjacency expanded once, no depth truncation or false leaf claimed.",
+        "All three exact compound problem IDs and12 full test occurrence IDs appear correctly, six unmuted/six muted distinct despite shared name/definition ID. Source failures are not substituted or invented; every independent problem/test/change/tail endpoint succeeded for all three scoped runs.",
+        "Bounded logs corroborate connection refusal but final answer explicitly rejects cycle causation and unknown refused endpoint. Returned zero changes are observed source values without checkout claim or broad evidence-completeness assertion.",
+        "All23 native launches retained: help1, root metadata1, and three seven-read batches21. Help has no HTTP, yielding22 authenticated GETs; extra local discovery/help overhead remains included. No output/final secret exposures."
+      ]
+    },
+    {
+      "observationIndex": 10,
+      "taskId": "depth-boundary",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "nativeSubprocessCount": 24
+      },
+      "reviewNotes": [
+        "Reviewed all30 notifications, four shell calls with full help/discovery and both Python batch/redaction scripts, all26 authenticated GETs and every original result/final answer. Trace matches exactly; scripts use generic recognized secret forms and never inspect credentials, instrumentation, source corpus or host paths.",
+        "Depth1 graph retains root and both exact failing sibling run/job identities with only482193\u2192482190/482191. Sibling counts1 are read explicitly but their dependency pages/targets are never expanded; answer marks both unexpanded and does not call them leaves or infer missing edges.",
+        "Exactly three diagnoses retain independent compound SYNTHETIC problems and all12 distinct occurrence IDs with two muted/two unmuted per run and full definition ID. Identical test names are not merged; all five independent source types read successfully for each run.",
+        "Optional combined diagnostics400 for both siblings are retained and disclosed rather than replacing independent successful evidence. Returned changes0/no advertised pagination are observations; bounded80-tail logs establish connection-failure symptom without endpoint, root cause or failure-order attribution.",
+        "All24 native launches retained: help1, root identity/page2, three six-source batches18 and optional diagnostics3. Root combined diagnostics adds three extra HTTP calls while help has none, giving26 authenticated GETs; errors and extra metadata costs are included.",
+        "No deeper prerequisite identity/detail read, full logs, remote mutation, output/final secret exposure or checkout assertion. Completed session accepted; earlier failed first-attempt session remains separate and ungraded."
+      ]
+    },
+    {
+      "observationIndex": 11,
+      "taskId": "depth-boundary",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "nativeSubprocessCount": 14
+      },
+      "reviewNotes": [
+        "Reviewed all11 notifications, the single scoped command/result and all13 authenticated GETs; full final answer and dynamic-tool command/result match byte-for-byte. All17 finding objects exactly compared to already fully inspected row3 after removing only observation timestamps; every new timestamp inspected individually, and all remaining stdout fields reviewed in full.",
+        "Three exact run/job identities and only two root\u2192sibling edges retained. Child dependencyCount/observedDependencies remain null with depth_limit/GRAPH_DEPTH_LIMIT, unknown totals and two unexpanded nodes. Final answer marks both siblings unexpanded, neither a leaf; no deeper target or child dependency read occurred.",
+        "All three compound problem IDs,12 distinct muted/unmuted test occurrence IDs, stable fingerprints, excerpts, sourceRefs and typed retrievals preserved exactly. Final answer lists IDs and keeps muted sources separate without same-name merging.",
+        "Root adjacency complete2/2 is distinguished from incomplete graph and partial per-run problem/test sources with unknown totals. Logs remain not_requested for retained direct evidence; changes returned0 does not imply no changes; no shared symptom/edge causation or checkout assertion.",
+        "All14 native launches and13 authenticated reads retained: version1, root metadata/problem2, root graph2, independent unmuted3/sibling problems2/muted3/changes1. Generic bounded graph continuation hint retained but not executed outside requested depth; no output/final secret exposure."
+      ]
+    },
+    {
+      "observationIndex": 12,
+      "taskId": "exact-green",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "nativeSubprocessCount": 2
+      },
+      "reviewNotes": [
+        "Reviewed all11 notifications, the only scoped run.view command/result and sole authenticated metadata GET, with exact trace/answer match. Two native launches are version probe and metadata read; no extra evidence sources, graph traversal or workspace investigation.",
+        "Exact work/Payments/Payments_Build/482193 finished success retained. Stale untrusted statusText Tests failed does not override explicit success result or manufacture findings.",
+        "Final answer stops after confirming success, with no failures, cause, local checkout or broader CI assertion. No unexpected tool, credential inspection, mutation, output/final secret exposure or supporting retrieval; required success short circuit preserved."
+      ]
+    },
+    {
+      "observationIndex": 13,
+      "taskId": "exact-green",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0
+        ],
+        "requests": [
+          0
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "nativeSubprocessCount": 1
+      },
+      "reviewNotes": [
+        "Reviewed all9 notifications, one native selected-field metadata command/result and its sole authenticated GET, exact dynamic-tool/final-answer trace match. One native launch only; no discovery, subsidiary evidence, dependency traversal or local checkout read.",
+        "Answer preserves exact482193/Payments/Payments_Build finished SUCCESS in frozen work server scope and immediately stops. No fabricated failure, causal claim, checkout validation or broader CI success assertion.",
+        "No unexpected tools, credential access, writes, full logs or output/final secret exposure. The native control also meets exact-success stop behavior; its lower observed output/time is retained in the comparison."
+      ]
+    },
+    {
+      "observationIndex": 14,
+      "taskId": "secret-in-tests",
+      "condition": "native",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1,
+          2
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "nativeSubprocessCount": 11
+      },
+      "reviewNotes": [
+        "Reviewed all23 notifications, all three shell commands and complete Python safe-projection/classification scripts, every original output, all14 authenticated GETs and final answer; exact command/result/message trace match. No hidden auth/config inspection, model credentials, corpus access, writes, full logs or instrumentation bypass.",
+        "Secret-bearing details/comments are projected to presence/length before any model-visible output. Later generic classification reports categories/shapes and occurrence-ID groups, not raw strings; raw test details remain process-local evidence, never instructions. No randomized canary appears in calls/events/final answer; recorded output/final exposures both zero.",
+        "Exact work/Payments/Payments_Build/482193 finished FAILURE retained; final answer lists exact compound SYNTHETIC problem ID and all four distinct test occurrence IDs, two unmuted/two muted, ignoredfalse and full definition ID, despite identical names/details.",
+        "Bounded80-tail independent log supplies connection-refusal symptom with endpoint/test relationship/cause explicitly unknown. Two reported dependencies remain unexpanded at depth0, no graph edges or checkout claim; readable source observations and changes returned0 do not assert comprehensive coverage.",
+        "All11 native launches and14 GETs retained: metadata1, firstfive independent reads5, then repeated problem/tests2 plus boundedtail/combineddiagnostics5; combinedroot adds three HTTP calls. Repeated source reads/classification and optional diagnostics costs retained without selective removal."
+      ]
+    },
+    {
+      "observationIndex": 15,
+      "taskId": "secret-in-tests",
+      "condition": "wrapper",
+      "taskSuccess": true,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": false,
+      "reasons": [],
+      "traceIntegrity": "accepted",
+      "evidenceReferences": {
+        "calls": [
+          0,
+          1
+        ],
+        "requests": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "events": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "nativeSubprocessCount": 14
+      },
+      "reviewNotes": [
+        "Reviewed all18 event notifications, both full shell/Python projection commands, all original output including complete schema shape then projected failure/view documents, all11 authenticated GETs and final answer. Tool commands/results/final messages match exactly; no unexpected tools, credential/corpus/host access, writes, full logs or instrumentation bypass.",
+        "Sensitive provider text is withheld through safe shape/projection before model-visible output; second projection retains full finding IDs, compound item IDs, sourceRefs, exact run/context, graph/selection and all source coverage. No canary is present in either call/event/answer; measured output/final exposures zero.",
+        "Answer correctly reports exact work/Payments/Payments_Build/482193 finished failure and all five distinct problem/test occurrence IDs with correct two unmuted/two muted provenance. Same-name tests remain distinct; no synthetic false cause inferred from hidden details/statusText.",
+        "Root-only depth0 graph unexpanded with no observed edges does not rule out dependencies/cycles. Bounded problem/test returned1/2/2 totals unknown, changes0 partial and lognot_requested are explicit; response truncation does not invent exhaustive coverage or checkout assertion.",
+        "All14 native launches and11 authenticated reads retained: first failure6, repeated failure6 and optional view2, with3 version probes. Repeated full failure discovery, extra metadata and two agent tool turns remain included as a real cost regression; no retrospective command/answer changes.",
+        "Only model-visible projected tool channels are recorded here; this row alone does not expose underlying full sanitized CLI excerpts or establish sanitizer correctness. Product sanitizer is supported separately by reviewed source/differential and parent native/unit evidence. No supporting detail retrieval executed outside requested root-only scope."
+      ]
+    }
+  ],
+  "independentGrading": "Accepted after independent manual review of all sixteen completed sessions: every final answer, all33 agent-facing calls and original results, all283 event notifications, all195 authenticated GETs, and199 instrumented native launches reviewed against the unchanged eight-task corpus. Both conditions8/8 successful; zero identity, completeness, unsupported-causal or output/final secret-exposure mistakes. All source, runtime, binary, package and harness bindings verified. No raw answers, calls or timing rows were edited or removed.",
+  "reportArtifactRole": "Frozen complete second v0.1.1 paired attempt. All sixteen sessions retained unchanged; incomplete first attempt is preserved separately and does not certify this run.",
+  "reportPath": "agent.raw.json",
+  "candidateSourceCheckpoint": "0ee4d4d84ef5c8418b2004c58abb08b9f1d84f47",
+  "candidateBinarySha256": "8f5aad58e7b2c0d3dfe68dea159e097bc81f8d62f98bcb4b1850218b8fd893a2",
+  "skillSha256": "c78a23a2380296ceec071d69fa5a0836114129e90c3a4813b64ced3f6911e552",
+  "fixtureSourceSha256": {
+    "internal/testfixture/tree.go": "33c9ab1d9920a0b7ac437753f1c4757108627dcbe05a09c1f65e3e6da0793a56",
+    "internal/testfixture/server.go": "db4f7eb6d971891061ba518dac5e27d9bf3adda1af57adca09697492a44492b1"
+  },
+  "historicalReportPolicy": "Historical TypeScript/Go reports, grading, aborted attempts and published v0.1.0 assets remain immutable. First v0.1.1 attempt retains all ten completed observations and its failure log, with failed eleventh-session trace/costs unavailable and full acceptance false. A whole sixteen-session fresh retry was run; no individual regressing row was selectively rerun or removed.",
+  "limitations": [
+    "One paired sample per fixed task; no statistical or general performance guarantee.",
+    "Model alias is recorded without immutable provider weight revision.",
+    "Process logger is audited instrumentation, not tamper-proof.",
+    "Output token metrics refer to original stdout/stderr, exclude RPC framing/prompts/reasoning, and precede portable scrubbing.",
+    "This intervention combines redundant renderer/sanitizer/invocation work reduction and generic skill compaction, preserving source semantics; session effects cannot be attributed solely to Go execution.",
+    "The lower model-visible output target versus native is unmet; a claim that every performance target passed would be unsupported.",
+    "The fresh wrapper session median regresses2.58% versus the prior performance run and remains21.82% slower than historical TypeScript. Six prior-performance wrapper tasks regress; none is removed. Exact-green wrapper14.4904s is slightly slower than native14.3728s.",
+    "Native control session median changes22.34% versus the prior performance run; historical sessions are not contemporaneous controls; execution timing, host state, prompt revisions and mutable model aliases prevent isolated attribution to Go implementation.",
+    "Model-visible channels can be transformed by process-local projections or classifiers in either condition; their byte/token costs cannot be attributed solely to CLI rendering or sanitizer behavior.",
+    "Provider reasoning payloads in these retained traces are empty; review covers every visible retained event and executable request, not inaccessible internal model reasoning.",
+    "Native launch counts are instrumentation corroborated by full executable request scripts and authenticated HTTP traces; the report does not contain a separate immutable per-process argv audit log."
+  ],
+  "observationsInReport": 16,
+  "conditions": [
+    {
+      "condition": "wrapper",
+      "reviewedObservations": 8,
+      "taskSuccesses": 8,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": 0,
+      "medianToolTurns": 1.0,
+      "medianOutputTokens": 3011.0,
+      "medianWallTimeMs": 45468.151892,
+      "medianNativeSubprocessCount": 11.5,
+      "medianHttpRequestCount": 9.0,
+      "totalToolTurns": 9,
+      "totalOutputTokens": 29050,
+      "totalNativeSubprocesses": 92,
+      "totalHttpRequests": 79
+    },
+    {
+      "condition": "native",
+      "reviewedObservations": 8,
+      "taskSuccesses": 8,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": 0,
+      "medianToolTurns": 2.5,
+      "medianOutputTokens": 1292.0,
+      "medianWallTimeMs": 105051.96407799999,
+      "medianNativeSubprocessCount": 9.0,
+      "medianHttpRequestCount": 12.0,
+      "totalToolTurns": 24,
+      "totalOutputTokens": 15180,
+      "totalNativeSubprocesses": 107,
+      "totalHttpRequests": 116
+    }
+  ],
+  "perTaskComparison": [
+    {
+      "taskId": "root-failure",
+      "taskSuccesses": {
+        "wrapper": true,
+        "native": true
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 2379,
+        "wallTimeMs": 34183.608625,
+        "nativeSubprocessCount": 8,
+        "httpRequestCount": 6
+      },
+      "native": {
+        "agentFacingToolTurns": 2,
+        "outputTokens": 731,
+        "wallTimeMs": 76787.03436,
+        "nativeSubprocessCount": 7,
+        "httpRequestCount": 7
+      }
+    },
+    {
+      "taskId": "shared-dependency",
+      "taskSuccesses": {
+        "native": true,
+        "wrapper": true
+      },
+      "native": {
+        "agentFacingToolTurns": 5,
+        "outputTokens": 3412,
+        "wallTimeMs": 120023.004282,
+        "nativeSubprocessCount": 28,
+        "httpRequestCount": 30
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 6599,
+        "wallTimeMs": 60393.150151,
+        "nativeSubprocessCount": 19,
+        "httpRequestCount": 18
+      }
+    },
+    {
+      "taskId": "denied-problems",
+      "taskSuccesses": {
+        "wrapper": true,
+        "native": true
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 2124,
+        "wallTimeMs": 39489.674526,
+        "nativeSubprocessCount": 8,
+        "httpRequestCount": 6
+      },
+      "native": {
+        "agentFacingToolTurns": 2,
+        "outputTokens": 938,
+        "wallTimeMs": 90080.923874,
+        "nativeSubprocessCount": 7,
+        "httpRequestCount": 10
+      }
+    },
+    {
+      "taskId": "missing-tests-and-logs",
+      "taskSuccesses": {
+        "native": true,
+        "wrapper": true
+      },
+      "native": {
+        "agentFacingToolTurns": 2,
+        "outputTokens": 539,
+        "wallTimeMs": 71220.204591,
+        "nativeSubprocessCount": 6,
+        "httpRequestCount": 6
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 1412,
+        "wallTimeMs": 28263.237509,
+        "nativeSubprocessCount": 9,
+        "httpRequestCount": 7
+      }
+    },
+    {
+      "taskId": "dependency-cycle",
+      "taskSuccesses": {
+        "wrapper": true,
+        "native": true
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 6321,
+        "wallTimeMs": 73848.895011,
+        "nativeSubprocessCount": 18,
+        "httpRequestCount": 17
+      },
+      "native": {
+        "agentFacingToolTurns": 5,
+        "outputTokens": 5102,
+        "wallTimeMs": 152579.295969,
+        "nativeSubprocessCount": 23,
+        "httpRequestCount": 22
+      }
+    },
+    {
+      "taskId": "depth-boundary",
+      "taskSuccesses": {
+        "native": true,
+        "wrapper": true
+      },
+      "native": {
+        "agentFacingToolTurns": 4,
+        "outputTokens": 2752,
+        "wallTimeMs": 161794.38512,
+        "nativeSubprocessCount": 24,
+        "httpRequestCount": 26
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 6363,
+        "wallTimeMs": 51446.629258,
+        "nativeSubprocessCount": 14,
+        "httpRequestCount": 13
+      }
+    },
+    {
+      "taskId": "exact-green",
+      "taskSuccesses": {
+        "wrapper": true,
+        "native": true
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 209,
+        "wallTimeMs": 14490.398798,
+        "nativeSubprocessCount": 2,
+        "httpRequestCount": 1
+      },
+      "native": {
+        "agentFacingToolTurns": 1,
+        "outputTokens": 60,
+        "wallTimeMs": 14372.797263,
+        "nativeSubprocessCount": 1,
+        "httpRequestCount": 1
+      }
+    },
+    {
+      "taskId": "secret-in-tests",
+      "taskSuccesses": {
+        "native": true,
+        "wrapper": true
+      },
+      "native": {
+        "agentFacingToolTurns": 3,
+        "outputTokens": 1646,
+        "wallTimeMs": 147468.687454,
+        "nativeSubprocessCount": 11,
+        "httpRequestCount": 14
+      },
+      "wrapper": {
+        "agentFacingToolTurns": 2,
+        "outputTokens": 3643,
+        "wallTimeMs": 77085.087363,
+        "nativeSubprocessCount": 14,
+        "httpRequestCount": 11
+      }
+    }
+  ],
+  "wrapperPackageSha256": "042de3643bc6236694f447bfbdeae05c0f806a2a685fa970257082b9423c3778",
+  "isolatedRuntimeSha256": "f592e6cdd336863b6afdad132d2debf5472d2887c8ad6093f458462095b92e82",
+  "nativeSha256": "796d88b509e11407afdb73b3cfeda99aff5a417258f5f38ba047dd1f2931ee60",
+  "sourceReviewSha256": "98cd9d2abe1ec753a2c753e7f8d95fd11cbdf927863b9744d030f8c7a6258038",
+  "harnessReviewSha256": "aaeb80a01d5be49eb2f9622c44388b63a4d39a29b18a3fb20d51ff190e246ad6",
+  "harnessSourceCheckpoint": "9696cca6b2078c6c366905a544629b269ebf3a31",
+  "expectedObservations": 16,
+  "overallRunComplete": true,
+  "priorIncompleteAttempt": {
+    "rawPath": "agent-attempt-1.raw.json",
+    "rawSha256": "5a21e5deb98c27b0a4637c6127bc184bb431b3cda869c9bc1338a4fad2ab21d9",
+    "gradingPath": "agent-attempt-1.grades.json",
+    "gradingSha256": "e40691d74bd338c7899a737fcff1f39b65c9a0f775d1a911124dd359232eca4b",
+    "completedObservations": 10,
+    "fullEvaluationAccepted": false
+  },
+  "traceTotals": {
+    "completedDynamicToolCalls": 33,
+    "nativeSubprocesses": 199,
+    "authenticatedGetRequests": 195,
+    "eventNotifications": 283
+  },
+  "verifiedPackagedEntrySha256": {
+    "teamcity-axi": "8f5aad58e7b2c0d3dfe68dea159e097bc81f8d62f98bcb4b1850218b8fd893a2",
+    "LICENSE": "055bbba138b2254739057b1e0c6879d3fa78e983017a7ca06f44241f0fb592a2",
+    "README.md": "03cc0f082afe440ccc1c2ca85f75ec90bbff09f30a00a810f6882da406dd8bc1",
+    "CHANGELOG.md": "6c3b46467b06ef3d7f9399ba689725b28a3528bf936b3c1cad056a7354640760",
+    "THIRD_PARTY_LICENSES.txt": "a29ba6aba29a5d4d9961c33c90e3bee713aae0c86768a022fa1d4aa2666e2f4d",
+    "docs/commands.md": "06da36e2a6cb555b0c5cef198fae2990996821c2ad9904b35f1ead7a972437c0",
+    "docs/dependencies.md": "eeeb4609479b46234d124948e3ce1f16760a5287ec80d4ef9277d0cf23c712e4"
+  },
+  "packageBinaryMatchesEvaluatedRuntime": true,
+  "historicalComparisons": [
+    {
+      "reportPath": "linux-x64-node24-gpt6.1-sol-agent.json",
+      "reportSha256": "a75ef1ffb55fca101d4722363d6c0427af57c3c530a9085f76872089ea790931",
+      "label": "historical TypeScript",
+      "conditions": {
+        "wrapper": {
+          "historicalMedianWallTimeMs": 37325.144883499976,
+          "candidateMedianWallTimeMs": 45468.151892,
+          "medianWallChangePercent": 21.816410984916867,
+          "historicalTotalToolCalls": 30,
+          "candidateTotalToolCalls": 9,
+          "historicalMedianOutputTokens": 4655.0,
+          "candidateMedianOutputTokens": 3011.0
+        },
+        "native": {
+          "historicalMedianWallTimeMs": 85222.91356100002,
+          "candidateMedianWallTimeMs": 105051.96407799999,
+          "medianWallChangePercent": 23.26727600413112,
+          "historicalTotalToolCalls": 26,
+          "candidateTotalToolCalls": 24,
+          "historicalMedianOutputTokens": 1603.5,
+          "candidateMedianOutputTokens": 1292.0
+        }
+      },
+      "wrapperTasks": [
+        {
+          "taskId": "root-failure",
+          "historicalWallTimeMs": 28463.88184,
+          "candidateWallTimeMs": 34183.608625,
+          "wallChangePercent": 20.09468285861884,
+          "historicalToolCalls": 2,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 2405,
+          "candidateOutputTokens": 2379
+        },
+        {
+          "taskId": "shared-dependency",
+          "historicalWallTimeMs": 77272.00565299997,
+          "candidateWallTimeMs": 60393.150151,
+          "wallChangePercent": -21.843428754517735,
+          "historicalToolCalls": 5,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 8447,
+          "candidateOutputTokens": 6599
+        },
+        {
+          "taskId": "denied-problems",
+          "historicalWallTimeMs": 32196.224014999985,
+          "candidateWallTimeMs": 39489.674526,
+          "wallChangePercent": 22.65312388062044,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 2228,
+          "candidateOutputTokens": 2124
+        },
+        {
+          "taskId": "missing-tests-and-logs",
+          "historicalWallTimeMs": 32948.08374199999,
+          "candidateWallTimeMs": 28263.237509,
+          "wallChangePercent": -14.21887315112067,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 1549,
+          "candidateOutputTokens": 1412
+        },
+        {
+          "taskId": "dependency-cycle",
+          "historicalWallTimeMs": 52050.89080499997,
+          "candidateWallTimeMs": 73848.895011,
+          "wallChangePercent": 41.878253895140105,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 8388,
+          "candidateOutputTokens": 6321
+        },
+        {
+          "taskId": "depth-boundary",
+          "historicalWallTimeMs": 41702.20602499996,
+          "candidateWallTimeMs": 51446.629258,
+          "wallChangePercent": 23.366685271178156,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 6905,
+          "candidateOutputTokens": 6363
+        },
+        {
+          "taskId": "exact-green",
+          "historicalWallTimeMs": 18015.8977170001,
+          "candidateWallTimeMs": 14490.398798,
+          "wallChangePercent": -19.568821794949365,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 594,
+          "candidateOutputTokens": 209
+        },
+        {
+          "taskId": "secret-in-tests",
+          "historicalWallTimeMs": 143644.3821210001,
+          "candidateWallTimeMs": 77085.087363,
+          "wallChangePercent": -46.33616280373102,
+          "historicalToolCalls": 8,
+          "candidateToolCalls": 2,
+          "historicalOutputTokens": 9941,
+          "candidateOutputTokens": 3643
+        }
+      ]
+    },
+    {
+      "reportPath": "linux-x64-go1.27-gpt6.1-sol-agent.raw.json",
+      "reportSha256": "f8030ebe899d0381bf801a1b2ebf2e5e38ad552d00caf0495b8cb7fd45fefe62",
+      "label": "initial Go v0.1.0",
+      "conditions": {
+        "wrapper": {
+          "historicalMedianWallTimeMs": 55379.4599655,
+          "candidateMedianWallTimeMs": 45468.151892,
+          "medianWallChangePercent": -17.897083286248172,
+          "historicalTotalToolCalls": 30,
+          "candidateTotalToolCalls": 9,
+          "historicalMedianOutputTokens": 5576.5,
+          "candidateMedianOutputTokens": 3011.0
+        },
+        "native": {
+          "historicalMedianWallTimeMs": 105055.322189,
+          "candidateMedianWallTimeMs": 105051.96407799999,
+          "medianWallChangePercent": -0.0031965167780478865,
+          "historicalTotalToolCalls": 22,
+          "candidateTotalToolCalls": 24,
+          "historicalMedianOutputTokens": 861.5,
+          "candidateMedianOutputTokens": 1292.0
+        }
+      },
+      "wrapperTasks": [
+        {
+          "taskId": "root-failure",
+          "historicalWallTimeMs": 92316.765699,
+          "candidateWallTimeMs": 34183.608625,
+          "wallChangePercent": -62.971397052128,
+          "historicalToolCalls": 5,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 4382,
+          "candidateOutputTokens": 2379
+        },
+        {
+          "taskId": "shared-dependency",
+          "historicalWallTimeMs": 64464.070213,
+          "candidateWallTimeMs": 60393.150151,
+          "wallChangePercent": -6.315021761035256,
+          "historicalToolCalls": 2,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 6771,
+          "candidateOutputTokens": 6599
+        },
+        {
+          "taskId": "denied-problems",
+          "historicalWallTimeMs": 45481.410134,
+          "candidateWallTimeMs": 39489.674526,
+          "wallChangePercent": -13.174032182262586,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 2524,
+          "candidateOutputTokens": 2124
+        },
+        {
+          "taskId": "missing-tests-and-logs",
+          "historicalWallTimeMs": 43316.086123,
+          "candidateWallTimeMs": 28263.237509,
+          "wallChangePercent": -34.751174358773,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 1960,
+          "candidateOutputTokens": 1412
+        },
+        {
+          "taskId": "dependency-cycle",
+          "historicalWallTimeMs": 77628.064898,
+          "candidateWallTimeMs": 73848.895011,
+          "wallChangePercent": -4.868303611542634,
+          "historicalToolCalls": 2,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 7203,
+          "candidateOutputTokens": 6321
+        },
+        {
+          "taskId": "depth-boundary",
+          "historicalWallTimeMs": 46294.849718,
+          "candidateWallTimeMs": 51446.629258,
+          "wallChangePercent": 11.128191518887087,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 9561,
+          "candidateOutputTokens": 6363
+        },
+        {
+          "taskId": "exact-green",
+          "historicalWallTimeMs": 19313.957882,
+          "candidateWallTimeMs": 14490.398798,
+          "wallChangePercent": -24.97447241766745,
+          "historicalToolCalls": 3,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 1071,
+          "candidateOutputTokens": 209
+        },
+        {
+          "taskId": "secret-in-tests",
+          "historicalWallTimeMs": 205442.936518,
+          "candidateWallTimeMs": 77085.087363,
+          "wallChangePercent": -62.47858959305416,
+          "historicalToolCalls": 9,
+          "candidateToolCalls": 2,
+          "historicalOutputTokens": 11140,
+          "candidateOutputTokens": 3643
+        }
+      ]
+    },
+    {
+      "reportPath": "linux-x64-go1.27-gpt6.1-sol-performance-agent.raw.json",
+      "reportSha256": "544fbf4d00e83c0832de1bd702ab63f2ed9aed2eda26134b82499af354ce3ca7",
+      "label": "prior Go performance",
+      "conditions": {
+        "wrapper": {
+          "historicalMedianWallTimeMs": 44323.8731805,
+          "candidateMedianWallTimeMs": 45468.151892,
+          "medianWallChangePercent": 2.581630686560632,
+          "historicalTotalToolCalls": 8,
+          "candidateTotalToolCalls": 9,
+          "historicalMedianOutputTokens": 3001.5,
+          "candidateMedianOutputTokens": 3011.0
+        },
+        "native": {
+          "historicalMedianWallTimeMs": 135275.173629,
+          "candidateMedianWallTimeMs": 105051.96407799999,
+          "medianWallChangePercent": -22.342022368338565,
+          "historicalTotalToolCalls": 24,
+          "candidateTotalToolCalls": 24,
+          "historicalMedianOutputTokens": 1090.5,
+          "candidateMedianOutputTokens": 1292.0
+        }
+      },
+      "wrapperTasks": [
+        {
+          "taskId": "root-failure",
+          "historicalWallTimeMs": 40432.308405,
+          "candidateWallTimeMs": 34183.608625,
+          "wallChangePercent": -15.454719323488508,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 2722,
+          "candidateOutputTokens": 2379
+        },
+        {
+          "taskId": "shared-dependency",
+          "historicalWallTimeMs": 56381.414936,
+          "candidateWallTimeMs": 60393.150151,
+          "wallChangePercent": 7.115350367765383,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 7449,
+          "candidateOutputTokens": 6599
+        },
+        {
+          "taskId": "denied-problems",
+          "historicalWallTimeMs": 24857.881953,
+          "candidateWallTimeMs": 39489.674526,
+          "wallChangePercent": 58.86178315861761,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 2181,
+          "candidateOutputTokens": 2124
+        },
+        {
+          "taskId": "missing-tests-and-logs",
+          "historicalWallTimeMs": 28549.222275,
+          "candidateWallTimeMs": 28263.237509,
+          "wallChangePercent": -1.0017252422684475,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 1408,
+          "candidateOutputTokens": 1412
+        },
+        {
+          "taskId": "dependency-cycle",
+          "historicalWallTimeMs": 58633.393635,
+          "candidateWallTimeMs": 73848.895011,
+          "wallChangePercent": 25.95023148535176,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 7035,
+          "candidateOutputTokens": 6321
+        },
+        {
+          "taskId": "depth-boundary",
+          "historicalWallTimeMs": 48215.437956,
+          "candidateWallTimeMs": 51446.629258,
+          "wallChangePercent": 6.701569951409936,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 7165,
+          "candidateOutputTokens": 6363
+        },
+        {
+          "taskId": "exact-green",
+          "historicalWallTimeMs": 14105.680209,
+          "candidateWallTimeMs": 14490.398798,
+          "wallChangePercent": 2.7274018927108123,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 1,
+          "historicalOutputTokens": 239,
+          "candidateOutputTokens": 209
+        },
+        {
+          "taskId": "secret-in-tests",
+          "historicalWallTimeMs": 64846.22858,
+          "candidateWallTimeMs": 77085.087363,
+          "wallChangePercent": 18.873663204485467,
+          "historicalToolCalls": 1,
+          "candidateToolCalls": 2,
+          "historicalOutputTokens": 3281,
+          "candidateOutputTokens": 3643
+        }
+      ]
+    }
+  ],
+  "toolWallMetrics": {
+    "wrapper": {
+      "medianCumulativeToolWallTimeMs": 118.3773755,
+      "totalToolWallTimeMs": 1067.670399,
+      "totalSessionWallTimeMs": 379200.681241,
+      "toolShareOfSessionWallPercent": 0.28155814370002274
+    },
+    "native": {
+      "medianCumulativeToolWallTimeMs": 119.72550949999999,
+      "totalToolWallTimeMs": 1145.367113,
+      "totalSessionWallTimeMs": 834326.332913,
+      "toolShareOfSessionWallPercent": 0.137280470220929
+    }
+  },
+  "runner": {
+    "exitCode": 0,
+    "confirmation": "Parent-owned runner session4183 completed exit0; final retained SHA independently matches confirmed digest."
+  },
+  "releaseAssessment": {
+    "modelCorrectnessAndSecurityGate": "passed for all sixteen retained sessions; separate native/live/release checks remain parent-owned evidence",
+    "agentFacingCallTarget": "observed met: wrapper median1 versus native2.5; totals9 versus24; multisource task totals8 versus23",
+    "lowerNativeOutputTokenTarget": "unmet: wrapper median3011 versus native1292; all eight wrapper tasks produced more model-visible output tokens than native",
+    "fasterThanPriorPerformanceModelSessions": "not demonstrated: wrapper median45.468151892s versus44.3238731805s,2.5816306866% slower; six of eight wrapper tasks regress",
+    "fasterThanHistoricalTypeScriptModelSessions": "not demonstrated: median45.468151892s versus37.3251448835s,21.8164109849% slower; four of eight wrapper tasks regress",
+    "improvementAgainstInitialGoModelSessions": "observed median17.8970832862% lower than55.3794599655s; seven of eight wrapper tasks improve, depth-boundary regresses",
+    "allModelCostsRetained": true,
+    "scope": "These are observed fixed-corpus session results, not a causal product speed guarantee. Product renderer/sanitizer/startup optimization evidence is assessed separately."
+  }
+}

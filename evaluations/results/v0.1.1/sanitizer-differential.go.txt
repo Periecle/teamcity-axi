@@ -1,0 +1,19 @@
+package main
+import("encoding/json";"os";"math/rand";"strings";axi "github.com/Periecle/teamcity-axi/internal/axi")
+func main(){
+ enc:=json.NewEncoder(os.Stdout)
+ inputs:=[]string{"", "ordinary prose", "日本語 café 🦊", "a\xffb", "can\x00ary-secret", "can\x1b[31mary-secret", "can\x1b]0;hostile\x07ary-secret", "\u202e\u2069", "Bearer alpha Basic beta token=gamma password:delta https://user:pass@example.test", "-----BEGIN RSA PRIVATE KEY-----\nbody\n-----END RSA PRIVATE KEY-----", "[REDACTED] A a secret abcab"}
+ rng:=rand.New(rand.NewSource(771))
+ alphabet:=[]string{"A","a","b","c"," ","\x00","\x07","\x1b","[31m", "]x\x07", "\u0085","\u202e", "\u2066","\xff","\xfe","日本語","🦊","token=x","Bearer foo", ":", "http://u:p@host", "\n","\t"}
+ for i:=0;i<1000;i++{var b strings.Builder;for j:=0;j<rng.Intn(40);j++{b.WriteString(alphabet[rng.Intn(len(alphabet))])};inputs=append(inputs,b.String())}
+ policies:=[][]string{nil,{"canary-secret"},{"A"},{"a"},{"["},{"REDACTED"},{"abc","ab"},{"Bearer","foo"},{"日本語"},{"\xff"},{"synthetic-credential","credential"}}
+ for _,s:=range inputs{for _,secrets:=range policies{enc.Encode(axi.SanitizeText(s,secrets))}}
+ for _,patterns:=range [][]string{nil,{"^status$","^complete$","^message$"},{"^childProcesses$"},{"^meta$"}}{
+  for _,secrets:=range policies{
+   r:=axi.NewResponse("schema",axi.Object{"status":"observed", "complete":"data-value", "meta":axi.Object{"complete":"nested-data", "childProcesses": 2}, "items":[]axi.Object{{"password":"arbitrary", "message":"can\x1b[31mary-secret", "nil":nil, "empty":[]axi.Object{}}}})
+   r.Meta["observedAt"]="2026-10-03T00:00:00.000Z";r.Meta["counts"]=axi.Object{"childProcesses":2}
+   for _,format:=range []string{"json","toon"}{v,e:=axi.Render(r,format,65536,secrets,patterns,nil);if e!=nil{enc.Encode(e.Error())}else{enc.Encode(v.Document)}}
+   enc.Encode(axi.Sanitize(r,secrets,patterns))
+  }
+ }
+}

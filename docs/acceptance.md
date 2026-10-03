@@ -12,6 +12,18 @@ checks retain their separate evidence boundaries. The Go model evaluation,
 independent review and package audit are recorded in [the release audit](release-audit.md).
 Historical TypeScript model results do not certify this implementation.
 
+v0.1.1 retains all acceptance behaviors and adds renderer wire, Unicode-boundary
+and fail-closed JSON/payload regressions. Current certification covers 171
+deterministic tests, 56 additional pinned-native scenarios and 18 restricted live
+tests; see [v0.1.1 verification](release-v0.1.1-verification.json) and
+[the complete performance comparison](performance-v0.1.1.md).
+
+The fresh complete v0.1.1 model run passes independent answer and full-trace
+grading on all 16 sessions: 8/8 tasks per condition, with zero correctness or
+secret errors. Wrapper median calls are one versus native 2.5. Whole-session
+latency regresses against earlier optimized Go and remains above historical TS;
+native output-token parity remains unmet. The failed first attempt stays separate.
+
 The release figures below describe published v0.1.0. Current-source performance
 changes retain the same acceptance behaviors, add concurrent schema and detail
 hint regressions, and rerun native and restricted live checks. Their separate
@@ -73,7 +85,7 @@ three; the lower-median performance target is unmet, and total/per-task costs
 remain explicit in [the comparison](evaluation.md). Section 15.3 effective-limit diagnostics now pass deterministic and native checks,
 including renderer-only reductions. The final Go verification and claims audit is tracked separately from the historical
 unpublished TypeScript checkpoint in [implementation status](STATUS.md) and
-[current release verification](release-verification.json).
+[v0.1.0 release verification](release-verification.json).
 
 Additional live hostile branches, multi-root builds, duplicate/muted failures,
 shared graphs, deployment prefixes, expired tokens and positive restricted pool

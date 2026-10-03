@@ -1,5 +1,24 @@
 # Go implementation status
 
+v0.1.1 product checkpoint `0ee4d4d` removes redundant rendering/sanitizer work
+and compacts portable guidance. All 171 deterministic tests pass under race on
+Go 1.27.1 and 1.26.0; pinned native contracts and all 18 restricted live tests
+pass. Independent source review accepts 11,253 identical differential outputs
+and 28 frozen JSON/TOON wire captures. Current [product CI](https://github.com/Periecle/teamcity-axi/actions/runs/37137225892)
+and [corrected evaluator CI](https://github.com/Periecle/teamcity-axi/actions/runs/37139313548) pass both jobs.
+See [v0.1.1 performance](performance-v0.1.1.md) and
+[release verification](release-v0.1.1-verification.json) for current release evidence.
+
+The fresh complete v0.1.1 model run passes independent answer and full-trace
+grading on all 16 sessions, with 8/8 successes per condition and zero correctness
+or secret errors. Wrapper median time is 45.47 s versus fresh native 105.05 s;
+median calls are one versus 2.5, with nine versus 24 total. The wrapper regresses
+2.6% against earlier optimized Go and remains 21.8% slower than historical TS.
+Output-token parity remains unmet (3011 versus native 1292). The first partial
+attempt and its failed turn are retained separately, never pooled into this run.
+
+The following sections retain earlier performance and immutable v0.1.0 records.
+
 Post-release performance work compiles only requested schemas and limits promoted
 detail hints to truncated retained excerpts. The portable skill now documents
 concrete first-read commands and the report's item/source fields. Required source
@@ -15,7 +34,7 @@ released Go's 55.4 to 44.3 seconds, versus fresh native 135.3 seconds; historica
 TypeScript's 37.3 seconds remains faster. Wrapper output remains larger than
 native; depth and green timing regressions stay recorded. See
 [post-release performance](performance.md) and [its verification](performance-verification.json).
-[Current-source CI](https://github.com/Periecle/teamcity-axi/actions/runs/37128735144)
+[Earlier optimized-source CI](https://github.com/Periecle/teamcity-axi/actions/runs/37128735144)
 passes both jobs after a test-only flood fixture deadline correction. The
 published v0.1.0 tag and assets remain unchanged; the release evidence below
 describes that immutable checkpoint.
@@ -34,14 +53,14 @@ Captured native/live JSON wire artifacts are unchanged. Both Go recorders also
 executed successfully into new private temporary files: 39 synthetic native
 records and 118 restricted live records; identity and credential guards passed.
 
-Current release verification passes 163 deterministic top-level tests, the 56
+Published v0.1.0 verification passes 163 deterministic top-level tests, the 56
 additional official-binary contract scenarios, and all 18 restricted live tests.
 The native tagged run includes deterministic tests (219 total top-level passes).
 Go race detection, vet, formatting, generated documentation and the Go-only
 source gate pass. The standalone archive passes content/license inspection and
 56 offline command executions without language runtimes or native credentials.
 No checks silently skip. See [the release audit](release-audit.md) and
-[current release verification](release-verification.json).
+[v0.1.0 release verification](release-verification.json).
 
 Independent reviews covered trusted context, process authority, adapters,
 commands, planners, redaction and evidence accounting. Review fixes include

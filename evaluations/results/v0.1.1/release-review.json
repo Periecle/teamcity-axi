@@ -1,0 +1,328 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "independent-release-claims-and-artifact-binding-review",
+  "reviewer": "Independent security/evidence reviewer; separate from product, evaluator and release author",
+  "reviewedAt": "2026-10-03T19:56:00.369835+00:00",
+  "reviewStatus": "accepted",
+  "blockers": [],
+  "releaseVersion": "0.1.1",
+  "scope": "Final prepared release claims, public evidence, complete model run, failure-attempt accounting, source/product/archive bindings and recorded verification. This reviewer did not execute new inference or rerun full certification suites.",
+  "productSourceCheckpoint": "0ee4d4d84ef5c8418b2004c58abb08b9f1d84f47",
+  "productSourceSnapshotSha256": "057be7ce58c939eb8f8d5d7b3e783c91402b9affe5bec02e37369605422b9418",
+  "productBinarySha256": "8f5aad58e7b2c0d3dfe68dea159e097bc81f8d62f98bcb4b1850218b8fd893a2",
+  "evaluationHarnessCheckpoint": "9696cca6b2078c6c366905a544629b269ebf3a31",
+  "evaluationHarnessSha256": "556348ccf2653b7f503981e06b84d6d4e49874b9058e06d38854b2f09fe7ddc1",
+  "package": {
+    "path": "release/v0.1.1/teamcity-axi-linux-amd64.tar.gz",
+    "sha256": "042de3643bc6236694f447bfbdeae05c0f806a2a685fa970257082b9423c3778",
+    "bytes": 4717021,
+    "checksumManifestSha256": "901a90531094a724ece931c72f79c22d335a713e64f1aa79129d310996062cdf",
+    "sameExecutableAsEvaluated": true,
+    "allowedRegularFiles": 7,
+    "entrySha256": {
+      "teamcity-axi": "8f5aad58e7b2c0d3dfe68dea159e097bc81f8d62f98bcb4b1850218b8fd893a2",
+      "LICENSE": "055bbba138b2254739057b1e0c6879d3fa78e983017a7ca06f44241f0fb592a2",
+      "README.md": "03cc0f082afe440ccc1c2ca85f75ec90bbff09f30a00a810f6882da406dd8bc1",
+      "CHANGELOG.md": "6c3b46467b06ef3d7f9399ba689725b28a3528bf936b3c1cad056a7354640760",
+      "THIRD_PARTY_LICENSES.txt": "a29ba6aba29a5d4d9961c33c90e3bee713aae0c86768a022fa1d4aa2666e2f4d",
+      "docs/commands.md": "06da36e2a6cb555b0c5cef198fae2990996821c2ad9904b35f1ead7a972437c0",
+      "docs/dependencies.md": "eeeb4609479b46234d124948e3ce1f16760a5287ec80d4ef9277d0cf23c712e4"
+    },
+    "packagedDocumentsFrozen": true,
+    "publicationNotesAndFinalEvidenceRemainOutsideArchive": true
+  },
+  "verificationRecord": {
+    "path": "../../../docs/release-v0.1.1-verification.json",
+    "sha256": "b5df5183ced2ba5b22f98b65e56e9fea5af98d1dc7badc282f530e5c478cea1c",
+    "hashDirection": "This review binds the verification record; verification need not hash this review, avoiding a circular dependency."
+  },
+  "reviewedDocuments": {
+    "README.md": "03cc0f082afe440ccc1c2ca85f75ec90bbff09f30a00a810f6882da406dd8bc1",
+    "CHANGELOG.md": "6c3b46467b06ef3d7f9399ba689725b28a3528bf936b3c1cad056a7354640760",
+    "SPECIFICATION.md": "ad504fc34e37a3e9f57dc7772f2f860efafaeb14fee104a4e6073c85ffc91169",
+    "IMPLEMENTATION_PLAN.md": "d19adcd1ce97b933fafd7ba4945df2a2163daeee750fdbeed71f754b6079765c",
+    "docs/STATUS.md": "a4727c5d2360613d811fd8025a97e46c78fdd548030794eb9b81707872cb9f82",
+    "docs/acceptance.md": "6d50c328e51da6d3b17c5205f51fcc87d878cf58b7418865d813b0457b4402c7",
+    "docs/evaluation.md": "4a2696fd7d2294df2b9be4430964f1ce55250204a4e79ff8ab92c2d6b6d89d12",
+    "docs/compatibility.json": "9730158296b655ad131bca690821f8b5021b9d2c89d028ccfd55f068452c736e",
+    "docs/performance-v0.1.1.md": "f01dc2d80cd4746300f94c0fd9014c4852304eea8c4949cd4c845c8c9d426d60",
+    "docs/performance.md": "d08b98aa61acfc0e1d5fe659a12245c4245dad5f378a369db0081b55c685075f",
+    "docs/release-audit.md": "710787c4ad2926272ff44f8990654a7e729cf4736a8e94941ca673da582b45db",
+    "evaluations/README.md": "96c632c575f6188cb9d94e2a3d495705bacc37a7cd19a20e6806bf8b528ccd56"
+  },
+  "preparedReleaseNotes": {
+    "role": "Exact reviewed publication body, prepared outside the repository",
+    "sha256": "0ee73c00303559adc0fcd177e3c69a4d009f08b3e9492ab739d0882c546c41da",
+    "claimsAccepted": true
+  },
+  "modelArtifacts": {
+    "raw": {
+      "path": "agent.raw.json",
+      "sha256": "0931be94a54816ec308952e96bb2faa2bb3b83429570af92dd04753982a492af"
+    },
+    "grades": {
+      "path": "agent.grades.json",
+      "sha256": "ae8ec79fd46dba7276c7b2b2028d25194d79dc2613834f8e0bef35f50f159e7e"
+    },
+    "enriched": {
+      "path": "agent.json",
+      "sha256": "0c671ca792d2d2b9e1a528ce388c597336785a409b871402861fa0a853980c8f"
+    },
+    "canonicalGradeReportPathResolves": true,
+    "publicRawEqualsFrozenRunnerBytes": true,
+    "independentGradesUnchangedApartFromCanonicalReportBasename": true,
+    "enrichmentPreservesEveryOriginalCallEventRequestPromptAnswerAndMetric": true,
+    "completedSessions": 16,
+    "acceptedSessions": 16,
+    "taskSuccessesPerCondition": {
+      "wrapper": 8,
+      "native": 8
+    },
+    "traceTotals": {
+      "completedDynamicToolCalls": 33,
+      "nativeSubprocesses": 199,
+      "authenticatedGetRequests": 195,
+      "eventNotifications": 283
+    },
+    "secretAndCorrectnessErrors": 0,
+    "allVisibleTraceRecordsCoveredByGrading": true,
+    "inaccessibleProviderReasoningWasNotReviewed": true
+  },
+  "firstAttempt": {
+    "rawSha256": "5a21e5deb98c27b0a4637c6127bc184bb431b3cda869c9bc1338a4fad2ab21d9",
+    "gradesSha256": "e40691d74bd338c7899a737fcff1f39b65c9a0f775d1a911124dd359232eca4b",
+    "logSha256": "98975b3e61d096c3ffe612e50e5da854802f19ce19b4abb7bb576663d19e3d50",
+    "completedSessions": 10,
+    "plannedSessions": 16,
+    "partialAndNotAcceptedAsFullEvaluation": true,
+    "nextSession": {
+      "indexOneBased": 11,
+      "taskId": "depth-boundary",
+      "condition": "native",
+      "status": "failed",
+      "traceAndCostsAvailable": false,
+      "underlyingCause": "unknown"
+    },
+    "pooledIntoFreshComparison": false,
+    "allCompletedRowsRetained": true,
+    "completeFreshRetryNotSelectiveTaskRetry": true,
+    "totalAttemptAccounting": {
+      "attemptedSessions": 27,
+      "completedSessions": 26,
+      "failedSessions": 1,
+      "failedSessionTraceUnavailable": 1,
+      "comparisonIncludesOnlyFullFreshAttempt": true
+    },
+    "allModelCostsRetainedInterpretation": "The grading releaseAssessment flag refers only to the complete fresh retry. The failed first-attempt turn has unavailable costs; neither its trace nor its costs are reconstructed or claimed retained."
+  },
+  "claimChecks": {
+    "independentBindingAndArithmeticChecks": 508,
+    "failedChecks": 0,
+    "artifactDigestsAndByteSizes": "Every artifact in the verification inventory matches the public file; original reviewed temp/public copies are byte-identical.",
+    "source": "Every listed product file matches its current SHA and exact frozen-checkpoint bytes; ordered snapshot hash recomputed. Current evaluator digest recomputed with its filename/NUL/bytes/NUL algorithm.",
+    "modelArithmetic": "Both condition summaries, per-task/historical comparisons, tool-wall shares and full-prompt medians recomputed from retained rows; exact final whole-trace totals verified.",
+    "enrichment": "Only independent grading/condition summaries and declared attribution/limitation fields are added; original report evidence and final answers remain unchanged.",
+    "microbenchmarks": "All three retained raw runs parsed; every sample and three-sample median matches microbenchmarks.json. Renderer time reduction27.02\u201335.00%; allocations51.64\u201370.73%, correctly rounded as27\u201335% and52\u201371%. ASCII/Unicode observed allocations29/27 to0 and time improvements11.19%/13.85%.",
+    "scripted": "All384 observations retained. Each wrapper format has48/48 accepted retained-evidence observations before and after. Required process/HTTP counts and wrapper token counts are identical; merged medians independently recomputed.",
+    "startup": "All180 alternating observations retained,30 per condition/command; exact medians recomputed. Version and context slight regressions remain explicit.",
+    "tests": "Both original168-test and fixed-harness171-test race streams match their recorded hashes and exact unique top-level inventories; zero failed or skipped tests. Eight package-level no-test skip events per stream are not skipped test behaviors.",
+    "fullSuiteExecutionAttribution": "Native/live/package and full local suite execution are release-author evidence. Reviewer verified their retained log/audit hashes and did not represent those suites as independently rerun.",
+    "localLinks": "All reviewed relative document links resolve after this record is emitted; future v0.1.1 tag/download URLs are prepared publication targets.",
+    "historicalIntegrity": "Historical evaluation files and v0.1.0 verification are unchanged against the baseline commit; retained v0.1.0 archive digest recomputed as5e0c5edf61234c328da919527088414ba073dc8f04530c90e81c604feabe8031.",
+    "credentialScanAttribution": "Verification records the author scan of actual private credential values across public files/archive with zero matches. Reviewer separately accepted visible model traces/canary handling and verifies unchanged evidence; private credentials are never quoted here."
+  },
+  "resolvedFinding": {
+    "issue": "Unqualified unchanged scripted output-token counts could incorrectly include native secret-case rows.",
+    "resolution": "Current report scopes exact unchanged token counts to wrapper outputs and explicitly retains native selected-JSON secret rows2116/2120 to2124/2132 and diagnostics1040/1042 to1044/1048. Native medians remain unchanged; fresh synthetic canary variation is disclosed.",
+    "status": "resolved before acceptance"
+  },
+  "metrics": {
+    "wrapper": {
+      "reviewedObservations": 8,
+      "taskSuccesses": 8,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": 0,
+      "medianToolTurns": 1.0,
+      "medianOutputTokens": 3011.0,
+      "medianWallTimeMs": 45468.151892,
+      "medianNativeSubprocessCount": 11.5,
+      "medianHttpRequestCount": 9.0,
+      "totalToolTurns": 9,
+      "totalOutputTokens": 29050,
+      "totalNativeSubprocesses": 92,
+      "totalHttpRequests": 79
+    },
+    "native": {
+      "reviewedObservations": 8,
+      "taskSuccesses": 8,
+      "identityMistakes": 0,
+      "completenessMistakes": 0,
+      "unsupportedCausalClaims": 0,
+      "outputSecretExposures": 0,
+      "finalAnswerSecretExposure": 0,
+      "medianToolTurns": 2.5,
+      "medianOutputTokens": 1292.0,
+      "medianWallTimeMs": 105051.96407799999,
+      "medianNativeSubprocessCount": 9.0,
+      "medianHttpRequestCount": 12.0,
+      "totalToolTurns": 24,
+      "totalOutputTokens": 15180,
+      "totalNativeSubprocesses": 107,
+      "totalHttpRequests": 116
+    },
+    "toolWallMetrics": {
+      "wrapper": {
+        "medianCumulativeToolWallTimeMs": 118.3773755,
+        "totalToolWallTimeMs": 1067.670399,
+        "totalSessionWallTimeMs": 379200.681241,
+        "toolShareOfSessionWallPercent": 0.28155814370002274
+      },
+      "native": {
+        "medianCumulativeToolWallTimeMs": 119.72550949999999,
+        "totalToolWallTimeMs": 1145.367113,
+        "totalSessionWallTimeMs": 834326.332913,
+        "toolShareOfSessionWallPercent": 0.137280470220929
+      }
+    },
+    "historicalWrapperComparisons": [
+      {
+        "label": "historical TypeScript",
+        "medianWallChangePercent": 21.816410984916867,
+        "tasksRegressed": 4
+      },
+      {
+        "label": "initial Go v0.1.0",
+        "medianWallChangePercent": -17.897083286248172,
+        "tasksRegressed": 1
+      },
+      {
+        "label": "prior Go performance",
+        "medianWallChangePercent": 2.581630686560632,
+        "tasksRegressed": 6
+      }
+    ],
+    "scripted": {
+      "baseline": {
+        "wrapper-toon": {
+          "medianWallTimeMs": 99.59779900000001,
+          "medianOutputTokens": 3004.0,
+          "retainedObservations": 48,
+          "secretExposingCalls": 0
+        },
+        "wrapper-json": {
+          "medianWallTimeMs": 100.449026,
+          "medianOutputTokens": 2699.0,
+          "retainedObservations": 48,
+          "secretExposingCalls": 0
+        },
+        "native-selected-json": {
+          "medianWallTimeMs": 46.270944,
+          "medianOutputTokens": 1009.5,
+          "retainedObservations": 42,
+          "secretExposingCalls": 12
+        },
+        "native-failure-diagnostics": {
+          "medianWallTimeMs": 13.223349500000001,
+          "medianOutputTokens": 238.0,
+          "retainedObservations": 0,
+          "secretExposingCalls": 6
+        }
+      },
+      "candidate": {
+        "wrapper-toon": {
+          "medianWallTimeMs": 99.552123,
+          "medianOutputTokens": 3004.0,
+          "retainedObservations": 48,
+          "secretExposingCalls": 0
+        },
+        "wrapper-json": {
+          "medianWallTimeMs": 98.4580665,
+          "medianOutputTokens": 2699.0,
+          "retainedObservations": 48,
+          "secretExposingCalls": 0
+        },
+        "native-selected-json": {
+          "medianWallTimeMs": 46.36466,
+          "medianOutputTokens": 1009.5,
+          "retainedObservations": 42,
+          "secretExposingCalls": 12
+        },
+        "native-failure-diagnostics": {
+          "medianWallTimeMs": 13.2347805,
+          "medianOutputTokens": 238.0,
+          "retainedObservations": 0,
+          "secretExposingCalls": 6
+        }
+      }
+    },
+    "startup": {
+      "baseline": {
+        "version": {
+          "medianWallTimeMs": 5.747727
+        },
+        "schema": {
+          "medianWallTimeMs": 15.7826695
+        },
+        "context": {
+          "medianWallTimeMs": 13.742758
+        }
+      },
+      "candidate": {
+        "version": {
+          "medianWallTimeMs": 5.801492
+        },
+        "schema": {
+          "medianWallTimeMs": 15.321820500000001
+        },
+        "context": {
+          "medianWallTimeMs": 13.9843165
+        }
+      }
+    }
+  },
+  "releaseAssessment": {
+    "mandatoryCorrectnessAndSecurity": "Accepted for the exact recorded product/native/Linux/server combination and stated live capability limits; all sixteen independent model grades pass. Source, required evidence, unknown/partial semantics and bounded retrieval remain intact.",
+    "agentFacingCallTarget": "Observed met: wrapper median1 versus native2.5, total9 versus24; multi-source tasks8 versus23 calls, with retained task-critical evidence.",
+    "latencyAndTokens": "Performance objectives remain partially unmet. Fresh wrapper median45.468151892s is2.5816306866% above prior optimizedGo and21.8164109849% above historicalTS. Six wrapper tasks regress against prior optimizedGo; secret task uses2 rather than1 call. Wrapper median output3011 exceeds native1292, as does every paired task.",
+    "localOptimization": "Renderer/sanitizer redundant-work savings and preserved behavior are supported independently. Complete scripted JSON improves about2%; TOON/startup largely unchanged. These do not establish a faster model session against prior optimizedGo or historicalTS.",
+    "causalLimits": "One pair per task, one host, mutable model alias, changed full skill prompts and shifting native controls prevent causal language-speed or general latency guarantees. Tools comprise only0.2815581437% of total wrapper session wall. Some scripted/startup observations overlap the first attempt and host cross-build activity.",
+    "scopeLimits": "Synthetic/native correctness is distinguished from restricted live support. Only Linux amd64 execution is certified; Darwin amd64/arm64 and Linux arm64 remain build-only. Broader server/native/platform/lifecycle fixtures and full non-tail log windows remain pending.",
+    "specificationInterpretation": "Specification1.2 and17.3 distinguish mandatory correctness/security from measured token/latency targets; section21 requires honest benefit/regression artifacts. The final claims retain unmet objectives rather than asserting all performance targets passed.",
+    "publicationReadiness": "Independent source, harness, answer/trace and prepared claims review accepted. Release author still owns final document/evidence commit, exact-final-head CI, tag/upload and post-publication asset checks; this record does not claim those future actions have occurred."
+  },
+  "recordedCIIndependentlyQueried": [
+    {
+      "runId": 37137225892,
+      "headSha": "0ee4d4d84ef5c8418b2004c58abb08b9f1d84f47",
+      "conclusion": "success",
+      "jobs": {
+        "deterministic": "success",
+        "released-cli-contract": "success"
+      }
+    },
+    {
+      "runId": 37139313548,
+      "headSha": "9696cca6b2078c6c366905a544629b269ebf3a31",
+      "conclusion": "success",
+      "jobs": {
+        "deterministic": "success",
+        "released-cli-contract": "success"
+      }
+    }
+  ],
+  "lsp": {
+    "status": "unavailable",
+    "reason": "gopls ENOENT confirmed on representative product output.go during final review",
+    "fallback": "Exact source snapshots and retained compilation/vet/focused/full race evidence validated; no supported source files changed during this final document review."
+  },
+  "reviewCommands": [
+    "python3 /tmp/teamcity-axi-v0.1.1/audit-release.py",
+    "gh run view 37137225892 --repo Periecle/teamcity-axi --json headSha,conclusion,jobs,url",
+    "gh run view 37139313548 --repo Periecle/teamcity-axi --json headSha,conclusion,jobs,url",
+    "git diff --check",
+    "Review current document diffs, final full performance report, prepared release notes and frozen archive README/CHANGELOG; resolve local links."
+  ]
+}

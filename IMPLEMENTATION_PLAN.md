@@ -4,7 +4,8 @@ This plan implements `SPECIFICATION.md`. It retains milestone contracts and
 acceptance gates, not calendar estimates or a current completion report. The
 accepted read-only scope is implemented in Go. See
 [implementation status](docs/STATUS.md) and
-[the release verification record](docs/release-verification.json) for executed checks
+[the current release verification](docs/release-v0.1.1-verification.json)
+and [historical v0.1.0 verification](docs/release-verification.json) for executed checks
 and release evidence. Comparison, setup/hooks and writes retain their separate
 deferred gates below.
 

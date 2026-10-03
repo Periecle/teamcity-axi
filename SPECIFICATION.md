@@ -1080,7 +1080,7 @@ A v0.1 release is acceptable only when:
 
 ## 22. Compatibility evidence and future gates
 
-The initial research questions are resolved for the recorded v0.1.0 combination
+The initial research questions are resolved for the recorded v0.1 combination
 by the pinned CLI/source/checksums, restricted live endpoint and permission
 captures, DTO/locator tests, verified run-page exhaustion contract, exact selected
 VCS-root status checks and independent source reads. See
@@ -1091,7 +1091,7 @@ The following still require implementation or execution evidence before expandin
 the corresponding capability:
 
 - Additional CLI, server, operating-system and architecture combinations.
-- Complete non-tail log windows; v0.1.0 preserves the retained-tail limitation.
+- Complete non-tail log windows; v0.1.1 preserves the retained-tail limitation.
 - Broader live multi-root/hostile-branch, duplicate/muted-failure, shared-graph,
   deployment-prefix, expired-token and restricted-pool fixtures.
 - Agent harness hook schemas and supported versions before automatic setup ships.
@@ -1103,3 +1103,7 @@ Unknown or partial semantics remain explicit until the relevant gate passes.
 ## 23. Source register
 
 Source identifiers throughout the document refer to `SOURCES.md`. They are primary documentation or upstream implementation references consulted on 1 October 2026. Source behavior can change, especially references to `main`. Design limits and acceptance targets are original requirements and must not be mistaken for measured upstream facts.
+
+Application v0.1.1 changes performance and portable guidance; specification revision
+0.1.0 and public schema version 1.0 remain unchanged. Its executed evidence is
+recorded in [the v0.1.1 audit](docs/performance-v0.1.1.md).

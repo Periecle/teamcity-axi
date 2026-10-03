@@ -1,5 +1,17 @@
 # Measured Go and TypeScript evaluation
 
+Current v0.1.1 before/after scripted, startup and model evidence is described in
+[the v0.1.1 report](performance-v0.1.1.md), with all raw observations retained
+under `evaluations/results/v0.1.1/`. The historical tables below remain unchanged.
+
+The fresh complete run succeeds on 8/8 tasks in both conditions after separate
+answer and full-trace review. Median whole-session time is 45.47 s for the wrapper
+and 105.05 s for native; median calls are one versus 2.5. The earlier optimized
+Go median was 44.32 s and historical TS was 37.33 s, so the fresh sample does not
+establish a faster wrapper model session against either checkpoint. Output-token
+parity also remains unmet: 3011 versus native 1292 median. The failed first
+attempt remains separately disclosed, with no pooling or selective task retries.
+
 The Go release has separate scripted and actual model-agent evaluations. Both
 use the same eight-task corpus and checksum-pinned official TeamCity CLI 1.5.0.
 Synthetic observations establish this corpus's behavior; they do not certify
@@ -7,7 +19,7 @@ additional live servers or platforms.
 
 The tables below describe the published v0.1.0 checkpoint and historical
 TypeScript results. The [post-release performance comparison](performance.md)
-records optimized current source, additional full scripted pairs and a fresh
+records the earlier optimized source checkpoint, additional full scripted pairs and a fresh
 model evaluation. Original reports and released assets remain unchanged.
 
 ## Scripted evidence comparison

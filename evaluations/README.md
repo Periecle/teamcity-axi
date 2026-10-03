@@ -187,9 +187,25 @@ scripted-counter defect did not affect the fresh-server model sessions.
 
 ## Post-release performance measurements
 
-The [current performance comparison](../docs/performance.md) records the source
+The [earlier performance comparison](../docs/performance.md) records the source
 optimizations separately from v0.1.0. It retains both complete scripted pairs in
 reversed outer order (384 observations total), alternating cold-start samples
 and a fresh complete model comparison using this same protocol. None of the
 historical TypeScript or published Go reports is replaced. All sessions and
 independent grades, including any regressions, remain part of the comparison.
+
+## v0.1.1
+
+[v0.1.1 performance and release](../docs/performance-v0.1.1.md) adds three-sample
+renderer/sanitizer benchmarks, both complete scripted pairs (384 observations),
+180 alternating startup observations and a full paired model evaluation. The
+product checkpoint is `0ee4d4d`; corpus and grading remain unchanged. All earlier
+raw reports remain intact. Artifact bindings are in
+[release verification](../docs/release-v0.1.1-verification.json).
+
+The complete v0.1.1 model run is retained as `results/v0.1.1/agent.raw.json`,
+independent full-trace grading as `agent.grades.json`, and the enriched comparison
+as `agent.json`. Both conditions succeed on 8/8 tasks. Whole-session regression
+against earlier optimized Go, historical TS latency and native-token targets
+remain explicit. The first failed/partial attempt is retained under
+`agent-attempt-1.*` and is not pooled into complete-run medians.

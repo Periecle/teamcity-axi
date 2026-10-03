@@ -1,4 +1,8 @@
-# Post-release Go performance
+# Earlier post-release Go performance
+
+The new release includes these improvements and additional local optimizations.
+See [v0.1.1 performance and release](performance-v0.1.1.md) for current evidence.
+The measurements and checkpoint descriptions below retain this earlier sample.
 
 The slow historical number measured a complete model session, including model
 reasoning and tool round trips. The historical Go trace spent less wall time
@@ -33,8 +37,8 @@ remain unchanged. Full session prompts change through the updated portable skill
 it contains generic tool guidance, without corpus identities or oracle answers.
 
 The published v0.1.0 tag, archive and original reports remain unchanged. These
-improvements are available from the current source checkout; they are not part
-of the existing release download.
+improvements were first evaluated from source and are included in v0.1.1.
+They are not part of the immutable v0.1.0 release download.
 
 ## Executable measurements
 
