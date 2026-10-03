@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0",
+  "recordPhase": "Go v0.1.1 published and fresh downloaded assets verified",
+  "observedAt": "2026-10-03T20:01:39.112097+00:00",
+  "release": {
+    "tag": "v0.1.1",
+    "commit": "6272c2b9337061a3b92a4d2a608301db3315b73c",
+    "tagObject": "e9b44536456602688978b6407c7a42e47434b51c",
+    "unsignedTag": true,
+    "url": "https://github.com/Periecle/teamcity-axi/releases/tag/v0.1.1",
+    "publishedAt": "2026-10-03T18:01:03Z",
+    "draft": false,
+    "prerelease": false
+  },
+  "finalCommitCI": {
+    "runId": 37142451402,
+    "url": "https://github.com/Periecle/teamcity-axi/actions/runs/37142451402",
+    "commit": "6272c2b9337061a3b92a4d2a608301db3315b73c",
+    "conclusion": "success",
+    "goVersion": "1.26.0",
+    "jobs": [
+      "deterministic",
+      "released-cli-contract"
+    ],
+    "checks": [
+      "make check",
+      "go test -race ./...",
+      "make test-package",
+      "checksum-pinned make test-real-cli"
+    ],
+    "liveTests": "18 separately executed restricted-reader live tests; not executed in CI"
+  },
+  "assets": [
+    {
+      "name": "SHA256SUMS",
+      "size": 98,
+      "sha256": "901a90531094a724ece931c72f79c22d335a713e64f1aa79129d310996062cdf",
+      "url": "https://github.com/Periecle/teamcity-axi/releases/download/v0.1.1/SHA256SUMS"
+    },
+    {
+      "name": "teamcity-axi-linux-amd64.tar.gz",
+      "size": 4717021,
+      "sha256": "042de3643bc6236694f447bfbdeae05c0f806a2a685fa970257082b9423c3778",
+      "url": "https://github.com/Periecle/teamcity-axi/releases/download/v0.1.1/teamcity-axi-linux-amd64.tar.gz"
+    }
+  ],
+  "downloadVerification": {
+    "freshDirectory": true,
+    "checksumManifest": "sha256sum --check SHA256SUMS: archive OK",
+    "archiveMatchesCertifiedHash": true,
+    "publicAssetDigestsMatchDownloadedBytes": true,
+    "allowedFileCount": 7,
+    "binarySha256": "8f5aad58e7b2c0d3dfe68dea159e097bc81f8d62f98bcb4b1850218b8fd893a2",
+    "sameBinaryAsScriptedAndModelEvaluation": true,
+    "productSourceCheckpoint": "0ee4d4d84ef5c8418b2004c58abb08b9f1d84f47",
+    "productSourceUnchangedAtRelease": true,
+    "packagedDocumentsMatchReleaseCommit": true,
+    "offlineCommandExecutions": 56,
+    "packageAudit": "TEAMCITY_AXI_PACKAGE=<fresh downloaded archive> go test -tags packageaudit -count=1 ./tests/distribution: PASS",
+    "auditStreamSha256": "b4dde620585942d285654f4545a7ed4de56baa0205ed152dad0787fdfddae70f",
+    "offlineEnvironment": "empty HOME/configuration, PATH=/nonexistent; synthetic untrusted token canary excluded; no native CLI or language runtime needed"
+  },
+  "prePublicationCertification": "release-v0.1.1-verification.json",
+  "prePublicationCertificationSha256": "b5df5183ced2ba5b22f98b65e56e9fea5af98d1dc7badc282f530e5c478cea1c",
+  "finalIndependentReview": "../evaluations/results/v0.1.1/release-review.json",
+  "finalIndependentReviewSha256": "c0c59ec3aacdd65accd20d2cb26da0182ae168924b28f9f823605a8f58447004",
+  "modelEvaluation": "../evaluations/results/v0.1.1/agent.json",
+  "modelEvaluationSha256": "0c671ca792d2d2b9e1a528ce388c597336785a409b871402861fa0a853980c8f",
+  "publishedV010Unchanged": true,
+  "limitations": [
+    "Execution support remains Linux amd64, official TeamCity CLI1.5.0, restricted TeamCity2026.2build238924 with capability limits; cross-builds do not certify execution.",
+    "Fresh wrapper median45.47s exceeds earlier optimizedGo44.32s and historicalTS37.33s; native token parity remains unmet.",
+    "First partial attempt is retained separately; its failed turn trace/costs are unavailable and cause unknown.",
+    "This publication verification is recorded after release and does not rewrite the immutable v0.1.1 tag."
+  ],
+  "publishedTagCI": {
+    "runId": 37142636146,
+    "url": "https://github.com/Periecle/teamcity-axi/actions/runs/37142636146",
+    "commit": "6272c2b9337061a3b92a4d2a608301db3315b73c",
+    "conclusion": "success",
+    "jobs": [
+      "deterministic",
+      "released-cli-contract"
+    ]
+  },
+  "remoteTagObjectsVerified": true,
+  "publishedReleaseBodyMatchesReviewedNotes": true
+}

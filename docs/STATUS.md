@@ -1,5 +1,13 @@
 # Go implementation status
 
+Go [v0.1.1 is published](https://github.com/Periecle/teamcity-axi/releases/tag/v0.1.1)
+at `6272c2b`; [release-commit CI](https://github.com/Periecle/teamcity-axi/actions/runs/37142451402)
+passes both jobs. The unsigned tag, fresh downloaded public checksums, exact
+evaluated binary/source, packaged documents and all 56 offline archive commands
+are verified. See [the publication record](release-v0.1.1-publication.json).
+The tag contains the documents completed and independently reviewed before release;
+this publication record follows afterward. Published v0.1.0 remains unchanged.
+
 v0.1.1 product checkpoint `0ee4d4d` removes redundant rendering/sanitizer work
 and compacts portable guidance. All 171 deterministic tests pass under race on
 Go 1.27.1 and 1.26.0; pinned native contracts and all 18 restricted live tests
